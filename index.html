@@ -10,8 +10,8 @@
             --primary-color: #40E0D0; /* Turquoise */
             --secondary-color: #3498db; /* Blue */
             --accent-color: #e74c3c; /* Red */
-            --background-color: #27ae60; /* Green */
-            --text-light: #ffffff;
+            --background-color: #f0e68c; /* Changed for more vibrancy */
+            --text-light: #000000; /* Changed to darker for readability */
             --text-dark: #333333;
         }
         body {
@@ -34,13 +34,14 @@
             display: block;
             object-fit: cover;
         }
-        .shareallbooks img {
-            width: 150px;
-            height: 150px;
+        .hero p {
+            color: var(--text-light); /* Darker color for subtitle */
         }
         h2 {
-            text-align: center;
-            color: var(--text-light);
+            text-align: center; /* Center-align headers */
+        }
+        nav {
+            justify-content: center;
         }
         nav ul {
             display: flex;
@@ -59,16 +60,25 @@
             color: var(--accent-color);
             outline: none;
         }
+        .shareallbooks {
+            display: flex;
+            align-items: center; /* Aligns logo and header horizontally */
+            justify-content: center;
+        }
+        .shareallbooks img {
+            height: 150px;
+            width: 150px;
+            margin-right: 20px; /* Adds space between logo and text */
+        }
+        .social-links {
+            text-align: center; /* Centers social links */
+            margin-bottom: 20px; /* Added space below social links */
+        }
         .social-links a {
-            display: inline-block;
             margin: 10px;
             color: var(--primary-color);
             font-size: 24px;
             transition: transform 0.3s ease;
-        }
-        .social-links a:hover, .social-links a:focus {
-            transform: scale(1.1);
-            color: var(--accent-color);
         }
         .social-links i {
             margin-right: 8px;
@@ -101,6 +111,13 @@
         .resume-section a:hover, .resume-section a:focus {
             background-color: var(--primary-color);
         }
+        main section {
+            margin-bottom: 40px; /* Added space between sections */
+        }
+        main section:not(:last-of-type) {
+            border-bottom: 2px solid var(--primary-color); /* Separates sections */
+            padding-bottom: 40px; /* Adds padding to bottom of sections */
+        }
     </style>
     <title>Rudraksh Bhandari's Portfolio</title>
 </head>
@@ -110,51 +127,62 @@
         <h1>Rudraksh Bhandari</h1>
         <p>Exploring the world through technology, finance, sports, and music</p>
     </div>
-    <nav>
-        <ul>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#resume">Resume</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
+    <!-- <h2> -->
+    <nav >
+        <h2>
+           <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#resume">Resume</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>  
+        </h2>
+        
+        
     </nav>
+    <!-- </h2> -->
+   
     <main class="container">
         <section id="about">
             <h2>About Me</h2>
-            <p>I'm a 17 year-old based in the United Arab Emirates. Currently the Head Boy of Delhi Private School Sharjah. I'm a professional Table Tennis player, published App Developer, music enthusiast, martial artists, and a public speaker. 
-                My academic interests lie in the fields of Computer Science and Finance. I plan to pursue a dual degree in Computer Science and Economics in the United States.</p>
+            <p>I'm a 17-year-old student based in the United Arab Emirates. I currently hold the position of the Head Boy of Delhi Private School Sharjah. I'm a professional Table Tennis player, a published App Developer, a music enthusiast, a martial artist, a public speaker, and a volunteer. My academic interests lie in the fields of Computer Science and Finance. I plan to pursue a dual degree in Computer Science and Economics in the United States.</p>
+            <p>I invite you to explore my musical covers and dance performances showcased on my Instagram page, accessible via the Contact section. I am proficient in playing the keyboard, guitar, and drums and have qualified several Trinity College of London Examinations for each of them. Furthermore, my interest in Stocks, Cryptocurrencies, Technology, and Politics is shared on my X (formerly Twitter) account, details of which can also be found in the Contact section.</p>
+            <p></p>
         </section>
         <section id="projects">
             <h2>Projects</h2>
             <div class="shareallbooks">
-                <h3>ShareAllBooks</h3>
-                <img src="img/ShareAllBooks.jpg" alt="ShareAllBooks Logo" style="display: block; margin: auto;">
+                <img src="img/ShareAllBooks.jpg" alt="ShareAllBooks Logo" style="margin-right: 20px;">
+                <div>
+                    <h3>ShareAllBooks</h3>
+                    <h6>Website: <a href="https://www.shareallbooks.com">www.shareallbooks.com</a></h6>
+                    <p>ShareAllBooks is a mobile app I have developed using React Native and launched on the Apple App Store and Google Play Store. It provides a platform for users to donate, sell, and buy books within the UAE. Its mission is to increase access to books (especially educational books) by making them more affordable, reduce the environmental impact of printing books, and build a vibrant community of readers. </p>
+                    <p>Front-end: React Native. Back-end services: Firebase, EmailJS </p>
+                    <p>ShareAllBooks has been ranked up #41 in the Apple App Store's Top Charts under the "Book" category. Hundreds of books have been donated through ShareAllBooks. Download the ShareAllBooks App and join us!</p>
 
-                <h6>Website:  <a href="https://www.shareallbooks.com">www.shareallbooks.com</a></h2>
-                <p>ShareAllBooks is a mobile app I have developed using React Native and launched on the Apple App Store and Google Play Store. It provides a platform for users to donate, sell, and buy books in the UAE. Its mission is to increase access to books (especially educational books) by making them more affordable, reduce the environmetal impact of printing books, and build a vibrant community of readers.
-                    
-                </p>
+
+                </div>
             </div>
         </section>
         <section id="resume" class="resume-section">
             <h2>My Resume</h2>
             <p>Download my resume to learn more about my experiences and skills. </p>
             <p>Note: currently updating my resume, will re-upload it soon</p>
-            <a href="https://example.com/your-resume.pdf" target="_blank">Download Resume </a>
+            <a href="https://example.com/your-resume.pdf" target="_blank">Download Resume</a>
         </section>
         <section id="contact">
             <h2>Let's Connect</h2>
             <div class="social-links">
                 <a href="https://www.instagram.com/rudrakshbhandari?igsh=czJwZm92MTlkaXlh&utm_source=qr" target="_blank" title="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
                 <a href="https://www.linkedin.com/in/yourusername" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="https://x.com/rudrakshb06?s=21&t=sMpaYg0KYS4ttgJ9RPNOZw" target="_blank" title="X"><i class="fab fa-x"></i> X</a>
-                <!-- <a href="https://github.com/rudrakshbhandari" target="_blank" title="GitHub"><i class="fab fa-github"></i> GitHub</a> -->
+                <a href="https://x.com/rudrakshb06?s=21&t=sMpaYg0KYS4ttgJ9RPNOZw" target="_blank" title="X"><i class="fab fa-x"></i>(formerly Twitter)</a>
+                <!-- Commented out GitHub link -->
             </div>
         </section>
     </main>
     <footer>
         <p>© 2024 Rudraksh Bhandari. All Rights Reserved.</p>
-        <!-- <p><a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p> -->
+        <!-- Commented out Privacy Policy and Terms & Conditions links -->
     </footer>
 </body>
 </html>
