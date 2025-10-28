@@ -2,187 +2,355 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #40E0D0; /* Turquoise */
-            --secondary-color: #3498db; /* Blue */
-            --accent-color: #e74c3c; /* Red */
-            --background-color: #f0e68c; /* Changed for more vibrancy */
-            --text-light: #000000; /* Changed to darker for readability */
-            --text-dark: #333333;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-dark);
-            transition: color 0.3s ease;
-        }
-        .hero {
-            background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
-            color: var(--text-light);
-            padding: 2rem 0;
-            text-align: center;
-        }
-        .hero img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            margin: 20px auto;
-            display: block;
-            object-fit: cover;
-        }
-        .hero p {
-            color: var(--text-light); /* Darker color for subtitle */
-        }
-        h2 {
-            text-align: center; /* Center-align headers */
-        }
-        nav {
-            justify-content: center;
-        }
-        nav ul {
-            display: flex;
-            justify-content: center;
-            padding: 1rem;
-            list-style-type: none;
-        }
-        nav ul li a {
-            text-decoration: none;
-            color: var(--primary-color);
-            margin: 0 1rem;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-        nav ul li a:hover, nav ul li a:focus {
-            color: var(--accent-color);
-            outline: none;
-        }
-        .shareallbooks {
-            display: flex;
-            align-items: center; /* Aligns logo and header horizontally */
-            justify-content: center;
-        }
-        .shareallbooks img {
-            height: 150px;
-            width: 150px;
-            margin-right: 20px; /* Adds space between logo and text */
-        }
-        .social-links {
-            text-align: center; /* Centers social links */
-            margin-bottom: 20px; /* Added space below social links */
-        }
-        .social-links a {
-            margin: 10px;
-            color: var(--primary-color);
-            font-size: 24px;
-            transition: transform 0.3s ease;
-        }
-        .social-links i {
-            margin-right: 8px;
-        }
-        footer {
-            background: var(--secondary-color);
-            color: var(--text-light);
-            text-align: center;
-            padding: 1rem 0;
-            margin-top: 2rem;
-        }
-        footer a {
-            color: var(--text-light);
-            text-decoration: underline;
-            transition: color 0.3s ease;
-        }
-        footer a:hover, footer a:focus {
-            color: var(--primary-color);
-        }
-        .resume-section a {
-            display: inline-block;
-            background: var(--accent-color);
-            color: var(--text-light);
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background-color 0.3s ease;
-        }
-        .resume-section a:hover, .resume-section a:focus {
-            background-color: var(--primary-color);
-        }
-        main section {
-            margin-bottom: 40px; /* Added space between sections */
-        }
-        main section:not(:last-of-type) {
-            border-bottom: 2px solid var(--primary-color); /* Separates sections */
-            padding-bottom: 40px; /* Adds padding to bottom of sections */
-        }
-    </style>
-    <title>Rudraksh Bhandari's Portfolio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Rudraksh Bhandari - Portfolio Website">
+    <meta name="keywords" content="portfolio, developer, software engineer, web developer">
+    <meta name="author" content="Rudraksh Bhandari">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Rudraksh Bhandari - Portfolio">
+    <meta property="og:description" content="Portfolio website showcasing my projects and skills">
+    <meta property="og:image" content="img/Rudraksh.JPG">
+    <meta property="og:url" content="https://rudrakshbhandari.com">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Rudraksh Bhandari - Portfolio">
+    <meta name="twitter:description" content="Portfolio website showcasing my projects and skills">
+    <meta name="twitter:image" content="img/Rudraksh.JPG">
+    
+    <title>Rudraksh Bhandari | Portfolio</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <div class="hero">
-        <img src="img/Rudraksh.JPG" alt="Rudraksh Bhandari">
-        <h1>Rudraksh Bhandari</h1>
-        <p>Exploring the world through technology, finance, sports, and music</p>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="#home">RB</a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#projects" class="nav-link">Projects</a>
+                <a href="#skills" class="nav-link">Skills</a>
+                <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
     </div>
-    <!-- <h2> -->
-    <nav >
-        <h2>
-           <ul>
-                <li><a href="#about">About</a></li>
-                <li><a href="#projects">Projects</a></li>
-                <li><a href="#resume">Resume</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>  
-        </h2>
-        
-        
     </nav>
-    <!-- </h2> -->
-   
-    <main class="container">
-        <section id="about">
-            <h2>About Me</h2>
-            <p>I'm a 17-year-old student based in the United Arab Emirates. I currently hold the position of the Head Boy of Delhi Private School Sharjah. I'm a professional Table Tennis player, a published App Developer, a music enthusiast, a martial artist, a public speaker, and a self-directed investor. My academic interests lie in the fields of Computer Science and Finance. I plan to pursue a dual bachelor's degree in Computer Science and Economics in the United States.</p>
-            <p>I invite you to explore my musical covers and dance performances showcased on my Instagram page, accessible via the Contact section. I am proficient in playing the keyboard, guitar, and drums. Furthermore, my interest in Stocks, Cryptocurrencies, Technology, and Politics is shared on my X (formerly Twitter) account, details of which can also be found in the Contact section.</p>
-            <p>My ultimate goal is to leverage technological innovation to positively impact and contribute to society. I admire visionaries like Elon Musk, who are pioneers with the same mission. Additionally, I am interested in researching the intersection of Computer Science and Economics, particularly focusing on the economic impact of rapid technological innovation in areas such as Artificial Intelligence, as well as cryptocurrencies and blockchain technology. My aim is to explore how these advancements can revolutionize financial systems and foster global economic development. </p>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-image">
+                    <img src="img/Rudraksh.JPG" alt="Rudraksh Bhandari" class="profile-img">
+                </div>
+                <div class="hero-text">
+                    <h1 class="hero-title">
+                        Hi, I'm <span class="highlight">Rudraksh Bhandari</span>
+                    </h1>
+                    <p class="hero-subtitle">
+                        <!-- Update this with your current role/title -->
+                        Software Developer & Entrepreneur
+                    </p>
+                    <p class="hero-description">
+                        <!-- Update this with your current description -->
+                        Passionate about building innovative solutions and creating meaningful impact through technology.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#projects" class="btn btn-primary">View My Work</a>
+                        <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                    </div>
+                </div>
+            </div>
+            <div class="scroll-indicator">
+                <div class="scroll-arrow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">Get to know me better</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p class="about-description">
+                        <!-- Update this with your current story -->
+                        I'm a passionate developer with a love for creating innovative solutions. 
+                        Currently focused on building impactful projects and expanding my skills 
+                        in modern web technologies.
+                    </p>
+                    <p class="about-description">
+                        When I'm not coding, you can find me exploring new technologies, 
+                        contributing to open source projects, or working on personal ventures 
+                        that aim to solve real-world problems.
+                    </p>
+                    <div class="about-stats">
+                        <div class="stat">
+                            <h3 class="stat-number">5+</h3>
+                            <p class="stat-label">Projects Completed</p>
+                        </div>
+                        <div class="stat">
+                            <h3 class="stat-number">2+</h3>
+                            <p class="stat-label">Years Experience</p>
+                        </div>
+                        <div class="stat">
+                            <h3 class="stat-number">10+</h3>
+                            <p class="stat-label">Technologies Learned</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-image">
+                    <img src="img/Rudraksh.JPG" alt="Rudraksh Bhandari" class="about-img">
+                </div>
+            </div>
+        </div>
         </section>
-        <section id="projects">
-            <h2>Projects</h2>
-            <div class="shareallbooks">
-                <img src="img/ShareAllBooks.jpg" alt="ShareAllBooks Logo" style="margin-right: 20px;">
-                <div>
-                    <h3>ShareAllBooks</h3>
-                    <h6>Website: <a href="https://www.shareallbooks.com">www.shareallbooks.com</a></h6>
-                    <p>ShareAllBooks is a mobile app I have developed using React Native and launched on the Apple App Store and Google Play Store. It provides a platform for users to donate, sell, and buy books within the UAE. Its mission is to increase access to books (especially educational books) by making them more affordable, reduce the environmental impact of printing books, and build a vibrant community of readers. </p>
-                    <p>Front-end: React Native. Back-end services: Firebase, EmailJS </p>
-                    <p>ShareAllBooks has been ranked up #41 in the Apple App Store's Top Charts under the "Book" category. Hundreds of books have been donated through ShareAllBooks. Download the ShareAllBooks App and join us!</p>
 
+    <!-- Projects Section -->
+    <section id="projects" class="projects">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Featured Projects</h2>
+                <p class="section-subtitle">Some of my recent work</p>
+            </div>
+            <div class="projects-grid">
+                <!-- ShareAllBooks Project -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="img/ShareAllBooks.jpg" alt="ShareAllBooks App" class="project-img">
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="https://www.shareallbooks.com" target="_blank" class="project-link" title="Visit Website">
+                                    <i class="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href="#" class="project-link" title="View Details">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">ShareAllBooks</h3>
+                        <p class="project-description">
+                            A mobile app platform for donating, selling, and buying books within the UAE. 
+                            Built with React Native and Firebase.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">React Native</span>
+                            <span class="tech-tag">Firebase</span>
+                            <span class="tech-tag">JavaScript</span>
+                        </div>
+                    </div>
+                </div>
 
+                <!-- Add more project cards here -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">
+                            <i class="fas fa-code"></i>
+                        </div>
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link" title="View Details">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Project Title</h3>
+                        <p class="project-description">
+                            Project description goes here. Update this with your actual project details.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Technology</span>
+                            <span class="tech-tag">Framework</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="project-card">
+                    <div class="project-image">
+                        <div class="project-placeholder">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <div class="project-overlay">
+                            <div class="project-links">
+                                <a href="#" class="project-link" title="View Details">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">Another Project</h3>
+                        <p class="project-description">
+                            Another project description. Replace this with your actual project information.
+                        </p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Tech Stack</span>
+                            <span class="tech-tag">Tools</span>
+                        </div>
+                    </div>
+                </div>
                 </div>
             </div>
         </section>
-        <section id="resume" class="resume-section">
-            <h2>My Resume</h2>
-            <p>Download my resume to learn more about my experiences and skills. </p>
-            <p>Note: Resume under construction.</p>
-            <a href="https://example.com/your-resume.pdf" target="_blank">Download Resume</a>
+
+    <!-- Skills Section -->
+    <section id="skills" class="skills">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Skills & Technologies</h2>
+                <p class="section-subtitle">What I work with</p>
+            </div>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 class="skill-category-title">Frontend</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <i class="fab fa-html5"></i>
+                            <span>HTML5</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-css3-alt"></i>
+                            <span>CSS3</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-js-square"></i>
+                            <span>JavaScript</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-react"></i>
+                            <span>React</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 class="skill-category-title">Backend</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <i class="fab fa-node-js"></i>
+                            <span>Node.js</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-database"></i>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-server"></i>
+                            <span>Express</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-python"></i>
+                            <span>Python</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 class="skill-category-title">Tools & Others</h3>
+                    <div class="skill-items">
+                        <div class="skill-item">
+                            <i class="fab fa-git-alt"></i>
+                            <span>Git</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-docker"></i>
+                            <span>Docker</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-aws"></i>
+                            <span>AWS</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>React Native</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         </section>
-        <section id="contact">
-            <h2>Let's Connect</h2>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Let's Connect</h2>
+                <p class="section-subtitle">Get in touch with me</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Email</h3>
+                            <p>your.email@example.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="contact-details">
+                            <h3>Location</h3>
+                            <p>Your City, Country</p>
+                        </div>
+                    </div>
+                </div>
             <div class="social-links">
-                <a href="https://www.instagram.com/rudrakshbhandari?igsh=czJwZm92MTlkaXlh&utm_source=qr" target="_blank" title="Instagram"><i class="fab fa-instagram"></i> Instagram</a>
-                <a href="https://www.linkedin.com/in/rudraksh-bhandari-rb992006" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="https://x.com/rudrakshb06?s=21&t=sMpaYg0KYS4ttgJ9RPNOZw" target="_blank" title="X"><i class="fab fa-x"></i>(formerly Twitter)</a>
-                <!-- Commented out GitHub link -->
+                    <a href="https://www.linkedin.com/in/rudraksh-bhandari-rb992006" target="_blank" class="social-link" title="LinkedIn">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
+                    <a href="https://github.com/yourusername" target="_blank" class="social-link" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://www.instagram.com/rudrakshbhandari" target="_blank" class="social-link" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://x.com/rudrakshb06" target="_blank" class="social-link" title="X (Twitter)">
+                        <i class="fab fa-x-twitter"></i>
+                    </a>
+                </div>
+            </div>
             </div>
         </section>
-    </main>
-    <footer>
-        <p>© 2024 Rudraksh Bhandari. All Rights Reserved.</p>
-        <!-- Commented out Privacy Policy and Terms & Conditions links -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <p>&copy; 2024 Rudraksh Bhandari. All rights reserved.</p>
+                <p>Built with ❤️ and modern web technologies</p>
+            </div>
+        </div>
     </footer>
+
+    <!-- JavaScript -->
+    <script src="js/main.js"></script>
 </body>
 </html>
