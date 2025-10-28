@@ -1,0 +1,116 @@
+# Portfolio Website Development Rules
+
+## Code Quality & Best Practices
+
+### HTML
+
+- Use semantic HTML5 elements (header, nav, main, section, article, footer)
+- Include proper meta tags for SEO and social sharing
+- Ensure accessibility with proper ARIA labels and alt text
+- Use meaningful class names following BEM methodology
+- Validate HTML structure and fix any errors
+
+### CSS
+
+- Use CSS custom properties (variables) for consistent theming
+- Follow mobile-first responsive design approach
+- Use modern CSS features (Grid, Flexbox, CSS animations)
+- Keep specificity low and avoid !important unless absolutely necessary
+- Use consistent naming conventions and organize styles logically
+- Optimize for performance with efficient selectors
+
+### JavaScript
+
+- Use modern ES6+ features and syntax
+- Write clean, readable code with proper comments
+- Implement error handling and graceful degradation
+- Use semantic variable and function names
+- Follow DRY (Don't Repeat Yourself) principles
+
+### Performance
+
+- Optimize images (use appropriate formats, lazy loading)
+- Minimize HTTP requests
+- Use efficient CSS and JavaScript
+- Implement proper caching strategies
+- Ensure fast loading times (< 3 seconds)
+
+### Accessibility
+
+- Ensure proper color contrast ratios
+- Include keyboard navigation support
+- Use semantic HTML structure
+- Provide alternative text for images
+- Test with screen readers
+
+### Security
+
+- Sanitize any user inputs
+- Use HTTPS for all external resources
+- Implement proper CSP headers
+- Avoid inline scripts when possible
+
+## Git & Version Control
+
+### Conventional Commits
+
+Always use conventional commit format for all commits:
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Commit Types
+
+- `feat`: A new feature
+- `fix`: A bug fix
+- `docs`: Documentation only changes
+- `style`: Changes that do not affect the meaning of the code
+- `refactor`: A code change that neither fixes a bug nor adds a feature
+- `perf`: A code change that improves performance
+- `test`: Adding missing tests or correcting existing tests
+- `chore`: Changes to the build process or auxiliary tools
+
+### Examples
+
+```
+feat(hero): add animated gradient background
+fix(nav): resolve mobile menu toggle issue
+style(portfolio): improve card hover animations
+refactor(css): organize styles into logical sections
+docs(readme): update installation instructions
+```
+
+## File Organization
+
+- Keep HTML structure clean and semantic
+- Organize CSS into logical sections (variables, base, components, layout)
+- Use meaningful file and folder names
+- Keep assets organized in appropriate directories
+
+## Browser Support
+
+- Support modern browsers (Chrome, Firefox, Safari, Edge)
+- Use progressive enhancement
+- Test across different devices and screen sizes
+- Ensure graceful degradation for older browsers
+
+## Content Guidelines
+
+- Write clear, engaging copy
+- Use professional photography and graphics
+- Ensure all content is current and accurate
+- Include clear calls-to-action
+- Make contact information easily accessible
+
+## Testing
+
+- Test on multiple devices and browsers
+- Validate HTML and CSS
+- Check accessibility compliance
+- Test loading performance
+- Verify all links and forms work correctly
