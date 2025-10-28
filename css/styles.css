@@ -382,7 +382,7 @@ body {
 }
 
 .experience-timeline::before {
-  content: '';
+  content: "";
   position: absolute;
   left: 50%;
   top: 0;
@@ -464,7 +464,7 @@ body {
 }
 
 .experience-achievements li::before {
-  content: '▶';
+  content: "▶";
   position: absolute;
   left: 0;
   color: var(--primary-color);
@@ -475,18 +475,18 @@ body {
   .experience-timeline::before {
     left: 20px;
   }
-  
+
   .experience-item {
     flex-direction: column !important;
   }
-  
+
   .experience-date {
     flex: none;
     margin: var(--spacing-sm) 0;
     text-align: left;
     padding-left: var(--spacing-xl);
   }
-  
+
   .experience-content {
     margin-left: var(--spacing-xl);
   }
