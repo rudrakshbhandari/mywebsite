@@ -1,55 +1,23 @@
 {
-    "title": "Freelancer",
-    "name": "startbootstrap-freelancer",
-    "version": "5.1.2",
-    "scripts": {
-        "start": "node_modules/.bin/gulp watch",
-        "format": "prettier --write .",
-        "format:check": "prettier --check .",
-        "format:html": "prettier --write *.html"
-    },
-    "description": "A freelancer portfolio HTML theme for Bootstrap.",
-    "keywords": [
-        "css",
-        "sass",
-        "html",
-        "responsive",
-        "theme",
-        "template"
-    ],
-    "homepage": "https://startbootstrap.com/template-overviews/freelancer",
-    "bugs": {
-        "url": "https://github.com/BlackrockDigital/startbootstrap-freelancer/issues",
-        "email": "feedback@startbootstrap.com"
-    },
-    "license": "MIT",
-    "author": "Start Bootstrap",
-    "contributors": [
-        "David Miller (http://davidmiller.io/)"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/BlackrockDigital/startbootstrap-freelancer.git"
-    },
-    "dependencies": {
-        "@fortawesome/fontawesome-free": "5.9.0",
-        "bootstrap": "4.3.1",
-        "jquery": "3.4.1",
-        "jquery.easing": "^1.4.1",
-        "magnific-popup": "^1.1.0"
-    },
-    "devDependencies": {
-        "browser-sync": "2.26.7",
-        "del": "4.1.1",
-        "gulp": "4.0.2",
-        "gulp-autoprefixer": "6.1.0",
-        "gulp-clean-css": "4.2.0",
-        "gulp-header": "2.0.7",
-        "gulp-plumber": "^1.2.1",
-        "gulp-rename": "1.4.0",
-        "gulp-sass": "4.0.2",
-        "gulp-uglify": "3.0.2",
-        "merge-stream": "2.0.0",
-        "prettier": "^3.0.0"
-    }
+  "name": "rudraksh-portfolio",
+  "version": "1.0.0",
+  "description": "Rudraksh Bhandari's personal portfolio website",
+  "main": "index.html",
+  "scripts": {
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "format:html": "prettier --write *.html"
+  },
+  "keywords": [
+    "portfolio",
+    "website",
+    "personal",
+    "developer",
+    "computer-science"
+  ],
+  "author": "Rudraksh Bhandari",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  }
 }
