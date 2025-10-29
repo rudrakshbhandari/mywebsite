@@ -1,78 +1,76 @@
 # Rudraksh Bhandari - Portfolio Website
 
-This is my personal portfolio website built using the [Start Bootstrap - Freelancer](https://startbootstrap.com/template-overviews/freelancer/) template.
+A modern, responsive portfolio website showcasing my projects, experience, and skills as a Computer Science student at UC San Diego.
 
-## Repository Information
+## 🚀 Live Website
 
-**Default Branch:** `main` (switched from `master` in 2024)
+Visit: [rudrakshbhandari.com](https://rudrakshbhandari.com)
 
-**Important:** This repository uses `main` as the default branch. All development and contributions should be based on the `main` branch.
+## ✨ Features
 
-[Freelancer](http://startbootstrap.com/template-overviews/freelancer/) is a one page freelancer portfolio theme for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/). This theme features several content sections, a responsive portfolio grid, window modals for each portfolio item, and a working PHP contact form.
+- **Modern Design**: Clean, professional layout with smooth animations
+- **Responsive**: Mobile-first design that works on all devices
+- **Fast Loading**: Optimized performance with minimal dependencies
+- **Accessible**: Semantic HTML and proper ARIA labels
+- **SEO Optimized**: Proper meta tags and structured data
 
-## Preview
+## 🛠️ Technologies Used
 
-[![Freelancer Preview](https://startbootstrap.com/assets/img/screenshots/themes/freelancer.png)](https://blackrockdigital.github.io/startbootstrap-freelancer/)
+- **HTML5**: Semantic markup and accessibility features
+- **CSS3**: Modern CSS with Grid, Flexbox, and custom properties
+- **JavaScript**: Vanilla JS for interactions and animations
+- **Font Awesome**: Icons for social links and UI elements
+- **Google Fonts**: Inter font family for typography
 
-**[View Live Preview](https://blackrockdigital.github.io/startbootstrap-freelancer/)**
+## 📁 Project Structure
 
-## Status
+```
+├── index.html          # Main HTML file
+├── css/
+│   └── styles.css     # Custom CSS styles
+├── js/
+│   └── main.js        # JavaScript functionality
+├── img/
+│   ├── Rudraksh.JPG   # Profile photo
+│   └── ShareAllBooks.jpg # Project image
+└── README.md          # This file
+```
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/BlackrockDigital/startbootstrap-freelancer/master/LICENSE)
-[![npm version](https://img.shields.io/npm/v/startbootstrap-freelancer.svg)](https://www.npmjs.com/package/startbootstrap-freelancer)
-[![Build Status](https://travis-ci.org/BlackrockDigital/startbootstrap-freelancer.svg?branch=master)](https://travis-ci.org/BlackrockDigital/startbootstrap-freelancer)
-[![dependencies Status](https://david-dm.org/BlackrockDigital/startbootstrap-freelancer/status.svg)](https://david-dm.org/BlackrockDigital/startbootstrap-freelancer)
-[![devDependencies Status](https://david-dm.org/BlackrockDigital/startbootstrap-freelancer/dev-status.svg)](https://david-dm.org/BlackrockDigital/startbootstrap-freelancer?type=dev)
+## 🎯 Sections
 
-## Download and Installation
+- **Hero**: Introduction with profile photo and current status
+- **About**: Personal background and achievements
+- **Experience**: Professional timeline with Amazon AWS internship and other roles
+- **Projects**: Technical projects with detailed descriptions
+- **Skills**: Technologies and tools I work with
+- **Contact**: Contact information and social links
 
-To begin using this template, choose one of the following options to get started:
-* [Download the latest release on Start Bootstrap](https://startbootstrap.com/template-overviews/freelancer/)
-* Install via npm: `npm i startbootstrap-freelancer`
-* Clone the repo: `git clone https://github.com/rudrakshbhandari/mywebsite.git`
-* [Fork, Clone, or Download on GitHub](https://github.com/rudrakshbhandari/mywebsite)
+## 🚀 Deployment
 
-**Note:** This repository uses the `main` branch as the default branch.
+This website is deployed using GitHub Pages with a custom domain. The site automatically updates when changes are pushed to the main branch.
 
-## Usage
+## 📝 Development
 
-### Basic Usage
+### Code Formatting
 
-After downloading, simply edit the HTML and CSS files included with the template in a code editor to make changes. These are the only files you need to worry about, you can ignore everything else! To preview the changes you make to the code, you can open the `index.html` file in your web browser.
+The project uses Prettier for code formatting:
 
-### Advanced Usage
+```bash
+npm run format        # Format all files
+npm run format:check  # Check formatting
+npm run format:html   # Format HTML files only
+```
 
-After installation, run `npm install` and then run `npm start` which will open up a preview of the template in your default browser, watch for changes to core template files, and live reload the browser when changes are saved. You can view the `gulpfile.js` to see which tasks are included with the dev environment.
+### Git Workflow
 
-#### Gulp Tasks
+All commits follow conventional commit format for clear history and automated changelog generation.
 
-- `gulp` the default task that builds everything
-- `gulp watch` browserSync opens the project in your default browser and live reloads when changes are made
-- `gulp css` compiles SCSS files into CSS and minifies the compiled CSS
-- `gulp js` minifies the themes JS file
-- `gulp vendor` copies dependencies from node_modules to the vendor directory
+## 📧 Contact
 
-You must have npm and Gulp installed globally in order to use these features.
+- **Email**: rubhandari@ucsd.edu
+- **LinkedIn**: [rudrakshbhandari](https://www.linkedin.com/in/rudraksh-bhandari-rb992006)
+- **GitHub**: [rudrakshbhandari](https://github.com/rudrakshbhandari)
 
-## Bugs and Issues
+## 📄 License
 
-Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-freelancer/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/freelancer/).
-
-## About
-
-Start Bootstrap is an open source library of free Bootstrap templates and themes. All of the free templates and themes on Start Bootstrap are released under the MIT license, which means you can use them for any purpose, even for commercial projects.
-
-* https://startbootstrap.com
-* https://twitter.com/SBootstrap
-
-Start Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**, Owner of [Blackrock Digital](http://blackrockdigital.io/).
-
-* http://davidmiller.io
-* https://twitter.com/davidmillerskt
-* https://github.com/davidtmiller
-
-Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
-
-## Copyright and License
-
-Copyright 2013-2019 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-freelancer/blob/gh-pages/LICENSE) license.
+This project is licensed under the MIT License - see the LICENSE file for details.
