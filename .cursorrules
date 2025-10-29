@@ -85,6 +85,26 @@ refactor(css): organize styles into logical sections
 docs(readme): update installation instructions
 ```
 
+### Commit Workflow
+
+**MANDATORY**: After making any significant code changes, you MUST commit the changes using conventional commits:
+
+- **Always commit after completing a feature or fix**
+- **Always commit after updating documentation**
+- **Always commit after refactoring code**
+- **Always commit after making configuration changes**
+- **Use descriptive commit messages with proper conventional commit format**
+- **Include detailed body when the change is complex or affects multiple files**
+
+**Significant changes include:**
+- Adding new features or functionality
+- Fixing bugs or issues
+- Updating documentation (README, comments, etc.)
+- Refactoring existing code
+- Updating configuration files
+- Changing build processes or scripts
+- Updating dependencies or package files
+
 ## File Organization
 
 - Keep HTML structure clean and semantic
