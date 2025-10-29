@@ -1,4 +1,12 @@
-# [Start Bootstrap - Freelancer](https://startbootstrap.com/template-overviews/freelancer/)
+# Rudraksh Bhandari - Portfolio Website
+
+This is my personal portfolio website built using the [Start Bootstrap - Freelancer](https://startbootstrap.com/template-overviews/freelancer/) template.
+
+## Repository Information
+
+**Default Branch:** `main` (switched from `master` in 2024)
+
+**Important:** This repository uses `main` as the default branch. All development and contributions should be based on the `main` branch.
 
 [Freelancer](http://startbootstrap.com/template-overviews/freelancer/) is a one page freelancer portfolio theme for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/). This theme features several content sections, a responsive portfolio grid, window modals for each portfolio item, and a working PHP contact form.
 
@@ -21,8 +29,10 @@
 To begin using this template, choose one of the following options to get started:
 * [Download the latest release on Start Bootstrap](https://startbootstrap.com/template-overviews/freelancer/)
 * Install via npm: `npm i startbootstrap-freelancer`
-* Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-freelancer.git`
-* [Fork, Clone, or Download on GitHub](https://github.com/BlackrockDigital/startbootstrap-freelancer)
+* Clone the repo: `git clone https://github.com/rudrakshbhandari/mywebsite.git`
+* [Fork, Clone, or Download on GitHub](https://github.com/rudrakshbhandari/mywebsite)
+
+**Note:** This repository uses the `main` branch as the default branch.
 
 ## Usage
 
