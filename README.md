@@ -31,7 +31,7 @@ Visit: [rudrakshbhandari.com](https://rudrakshbhandari.com)
 ├── js/
 │   └── main.js        # JavaScript functionality
 ├── img/
-│   ├── Rudraksh.JPG   # Profile photo
+│   ├── Rudraksh-1.JPG   # Profile photo
 │   └── ShareAllBooks.jpg # Project image
 └── README.md          # This file
 ```
