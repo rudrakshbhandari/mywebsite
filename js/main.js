@@ -172,19 +172,39 @@ function initAnimations() {
 
 // Counter animation function
 function animateCounter(element) {
-  const target = parseInt(element.textContent.replace(/\D/g, ""));
-  const suffix = element.textContent.replace(/\d/g, "");
-  let current = 0;
-  const increment = target / 50;
-  const timer = setInterval(function () {
-    current += increment;
-    if (current >= target) {
-      element.textContent = target + suffix;
-      clearInterval(timer);
-    } else {
-      element.textContent = Math.floor(current) + suffix;
-    }
-  }, 30);
+  const originalText = element.textContent;
+  const isDecimal = originalText.includes('.');
+  
+  if (isDecimal) {
+    // Handle decimal numbers like "4.0"
+    const target = parseFloat(originalText);
+    let current = 0;
+    const increment = target / 50;
+    const timer = setInterval(function () {
+      current += increment;
+      if (current >= target) {
+        element.textContent = originalText;
+        clearInterval(timer);
+      } else {
+        element.textContent = current.toFixed(1);
+      }
+    }, 30);
+  } else {
+    // Handle integer numbers with suffixes like "2K+", "75%"
+    const target = parseInt(element.textContent.replace(/\D/g, ""));
+    const suffix = element.textContent.replace(/\d/g, "");
+    let current = 0;
+    const increment = target / 50;
+    const timer = setInterval(function () {
+      current += increment;
+      if (current >= target) {
+        element.textContent = target + suffix;
+        clearInterval(timer);
+      } else {
+        element.textContent = Math.floor(current) + suffix;
+      }
+    }, 30);
+  }
 }
 
 // Utility functions
