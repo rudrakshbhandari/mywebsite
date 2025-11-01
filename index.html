@@ -7,10 +7,18 @@
     <meta name="keywords" content="portfolio, developer, software engineer, web developer" />
     <meta name="author" content="Rudraksh Bhandari" />
 
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://rudrakshbhandari.com/" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="theme-color" content="#2563eb" />
+
     <!-- Open Graph Meta Tags -->
+    <meta property="og:site_name" content="Rudraksh Bhandari" />
     <meta property="og:title" content="Rudraksh Bhandari - Portfolio" />
     <meta property="og:description" content="Portfolio website showcasing my projects and skills" />
-    <meta property="og:image" content="img/Rudraksh-1.JPG" />
+    <meta property="og:image" content="https://rudrakshbhandari.com/img/Rudraksh-1.JPG" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
     <meta property="og:url" content="https://rudrakshbhandari.com" />
     <meta property="og:type" content="website" />
 
@@ -18,13 +26,16 @@
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Rudraksh Bhandari - Portfolio" />
     <meta name="twitter:description" content="Portfolio website showcasing my projects and skills" />
-    <meta name="twitter:image" content="img/Rudraksh-1.JPG" />
+    <meta name="twitter:image" content="https://rudrakshbhandari.com/img/Rudraksh-1.JPG" />
 
     <title>Rudraksh Bhandari | Portfolio</title>
 
-    <!-- Fonts -->
+    <!-- Preload Critical Resources -->
+    <link rel="preload" as="image" href="/img/Rudraksh-1.JPG" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Fonts -->
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -35,452 +46,600 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rudraksh Bhandari",
+        "url": "https://rudrakshbhandari.com/",
+        "alumniOf": "University of California San Diego",
+        "jobTitle": "Software Engineer",
+        "knowsAbout": ["React Native", "Node.js", "TypeScript", "AWS", "Firebase", "MongoDB"],
+        "sameAs": [
+          "https://www.linkedin.com/in/rudrakshbhandari-rb992006",
+          "https://github.com/rudrakshbhandari",
+          "https://x.com/rudrakshb06"
+        ]
+      }
+    </script>
   </head>
   <body>
+    <!-- Skip to main content link -->
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
     <!-- Development Mode Overlay -->
     <div id="dev-overlay" style="display: none"></div>
 
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-      <div class="nav-container">
-        <div class="nav-logo">
-          <a href="#home">RB</a>
-        </div>
-        <div class="nav-menu" id="nav-menu">
-          <a href="#home" class="nav-link">Home</a>
-          <a href="#about" class="nav-link">About</a>
-          <a href="#experience" class="nav-link">Experience</a>
-          <a href="#projects" class="nav-link">Projects</a>
-          <a href="#skills" class="nav-link">Skills</a>
-          <a href="#contact" class="nav-link">Contact</a>
-        </div>
-        <div class="nav-toggle" id="nav-toggle">
-          <span class="bar"></span>
-          <span class="bar"></span>
-          <span class="bar"></span>
-        </div>
-      </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-      <div class="hero-container">
-        <div class="hero-content">
-          <div class="hero-image">
-            <img src="img/Rudraksh-1.JPG" alt="Rudraksh Bhandari" class="profile-img" />
+    <!-- Header -->
+    <header>
+      <!-- Navigation -->
+      <nav class="navbar" id="navbar" aria-label="Primary">
+        <div class="nav-container">
+          <div class="nav-logo">
+            <a href="#home">Rudraksh Bhandari</a>
           </div>
-          <div class="hero-text">
-            <h1 class="hero-title">Hi, I'm <span class="highlight">Rudraksh Bhandari</span></h1>
-            <p class="hero-subtitle">CS Major @ UC San Diego | Prev SDE Intern @ AWS Hyperplane</p>
-            <p class="hero-description">
-              I design and build scalable full‑stack systems, turning complex ideas into reliable, production‑ready
-              software.
-            </p>
-            <div class="hero-buttons">
-              <a href="#projects" class="btn btn-primary">View My Work</a>
-              <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+          <div class="nav-menu" id="nav-menu">
+            <a href="#home" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#experience" class="nav-link">Experience</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="#skills" class="nav-link">Skills</a>
+            <a href="#contact" class="nav-link">Contact</a>
+            <a
+              href="/Rudraksh_Bhandari_Resume.pdf"
+              class="nav-link nav-resume"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Résumé</a
+            >
+          </div>
+          <button
+            id="nav-toggle"
+            class="nav-toggle"
+            aria-expanded="false"
+            aria-controls="nav-menu"
+            aria-label="Toggle navigation"
+          >
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+      <!-- Hero Section -->
+      <section id="home" class="hero">
+        <div class="hero-container">
+          <div class="hero-content">
+            <div class="hero-image">
+              <img src="img/Rudraksh-1.JPG" alt="Rudraksh Bhandari" class="profile-img" width="300" height="300" />
             </div>
-          </div>
-        </div>
-        <div class="scroll-indicator">
-          <div class="scroll-arrow"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about" class="about">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">About Me</h2>
-          <p class="section-subtitle">Get to know me better</p>
-        </div>
-        <div class="about-content">
-          <div class="about-text">
-            <p class="about-description">
-              I’m Rudraksh Bhandari, a Computer Science major at UC San Diego (4.0 GPA) and Software Development
-              Engineer Intern at Amazon Web Services (AWS Hyperplane team). I design and build scalable full‑stack
-              systems, turning complex ideas into reliable, production‑ready software.
-            </p>
-            <p class="about-description">
-              At AWS Hyperplane, I engineered backend and operational tools adopted across the team, including an
-              automation service that reduced on‑call manual effort by ~75% and accelerated incident response.
-            </p>
-            <p class="about-description">
-              I’m the Co‑founder and Lead Developer of DormDrop, a UCSD‑exclusive delivery startup with student courier
-              and customer apps built in React Native and Firebase, integrating Stripe payments, OTP verification, and
-              live tracking.
-            </p>
-            <p class="about-description">
-              Previously, I built ShareAllBooks, a UAE‑based book‑sharing platform featured in national press with
-              2,000+ downloads and 1,500+ book transactions.
-            </p>
-            <p class="about-description">
-              At Triton Software Engineering, I develop full‑stack features for the Psyches of Color mental health app
-              using React Native, Node.js, Express, and MongoDB.
-            </p>
-            <p class="about-description">
-              I also serve as Sophomore Representative at Triton Quantitative Trading, leading outreach and seminars on
-              risk management, game theory, and options strategies.
-            </p>
-            <div class="about-stats">
-              <div class="stat">
-                <h3 class="stat-number">4.0</h3>
-                <p class="stat-label">GPA @ UCSD</p>
+            <div class="hero-text">
+              <h1 class="hero-title">Hi, I'm <span class="highlight">Rudraksh Bhandari</span></h1>
+              <p class="hero-subtitle">CS Major @ UC San Diego | Former SDE Intern @ AWS Hyperplane</p>
+              <p class="hero-description">
+                I design and build scalable full‑stack systems, turning complex ideas into reliable, production‑ready
+                software.
+              </p>
+              <div class="hero-buttons">
+                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                <a
+                  href="/Rudraksh_Bhandari_Resume.pdf"
+                  class="btn btn-tertiary"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Download Résumé</a
+                >
               </div>
-              <div class="stat">
-                <h3 class="stat-number">2K+</h3>
-                <p class="stat-label">App Downloads</p>
-              </div>
-              <div class="stat">
-                <h3 class="stat-number">75%</h3>
-                <p class="stat-label">Efficiency Gain</p>
-              </div>
-            </div>
-          </div>
-          <div class="about-image">
-            <img src="img/Rudraksh-2.jpeg" alt="Rudraksh Bhandari" class="about-img" />
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Experience Section -->
-    <section id="experience" class="experience">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Professional Experience</h2>
-          <p class="section-subtitle">Where I've worked and what I've accomplished</p>
-        </div>
-        <div class="experience-timeline">
-          <div class="experience-item">
-            <div class="experience-date">June 2025 – September 2025</div>
-            <div class="experience-content">
-              <h3 class="experience-title">Software Development Engineer Intern</h3>
-              <h4 class="experience-company">Amazon Web Services - Hyperplane Team</h4>
-              <p class="experience-location">Sunnyvale, CA</p>
-              <ul class="experience-achievements">
-                <li>
-                  Partnered with operators and senior engineers to design and ship production-ready frontend and backend
-                  tools adopted by the entire Hyperplane team
-                </li>
-                <li>
-                  Automated on-call operations by developing a CLI command generator that cut manual engineer effort by
-                  75%
-                </li>
-                <li>
-                  Engineered a backend event-publishing service that unified patching visibility across 14 EC2 cluster
-                  groups
-                </li>
-                <li>Implemented services in Java and Python with AWS Lambda, SSM, SQS, and SNS</li>
-              </ul>
-            </div>
-          </div>
-          <div class="experience-item">
-            <div class="experience-date">November 2024 – May 2025</div>
-            <div class="experience-content">
-              <h3 class="experience-title">Software Developer</h3>
-              <h4 class="experience-company">Triton Software Engineering</h4>
-              <p class="experience-location">San Diego, CA</p>
-              <ul class="experience-achievements">
-                <li>
-                  Developed full-stack features for Psyches of Color mobile app using React Native, Node.js, ExpressJS,
-                  and MongoDB
-                </li>
-                <li>
-                  Collaborated within a 12-member cross-functional team to implement frontend screens and backend APIs
-                </li>
-                <li>Improved app usability and streamlined data flow for mental health resources</li>
-              </ul>
-            </div>
-          </div>
-          <div class="experience-item">
-            <div class="experience-date">August 2023 – September 2024</div>
-            <div class="experience-content">
-              <h3 class="experience-title">Founder & Lead Developer</h3>
-              <h4 class="experience-company">ShareAllBooks</h4>
-              <p class="experience-location">United Arab Emirates</p>
-              <ul class="experience-achievements">
-                <li>Founded and launched a book-sharing mobile app reaching 2,000+ downloads within the first year</li>
-                <li>Featured in national UAE press and facilitated 1,500+ donations/sales</li>
-                <li>Created a trusted community platform connecting book lovers across the UAE</li>
-                <li>Managed full-stack development using React Native, Firebase, and EmailJS</li>
-              </ul>
-            </div>
-          </div>
-          <div class="experience-item">
-            <div class="experience-date">September 2025 – Present</div>
-            <div class="experience-content">
-              <h3 class="experience-title">Co-founder & Lead Developer</h3>
-              <h4 class="experience-company">DormDrop</h4>
-              <p class="experience-location">San Diego, CA</p>
-              <ul class="experience-achievements">
-                <li>
-                  Co-founded and built two React Native apps: Student app for UCSD dining hall deliveries and Rider app
-                  for student couriers
-                </li>
-                <li>
-                  Implemented UCSD-only authentication, live tracking, OTP verification, and Stripe payment integration
-                </li>
-                <li>Designed end-to-end order flow with Firestore transaction logic preventing duplicate accepts</li>
-                <li>
-                  Integrated real-time notifications, in-app chat, and live ETAs using Expo Location and React Native
-                  Maps
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Featured Projects</h2>
-          <p class="section-subtitle">Technical projects and achievements</p>
-        </div>
-        <div class="projects-grid">
-          <!-- ShareAllBooks Project -->
-          <div class="project-card">
-            <div class="project-image">
-              <img src="img/ShareAllBooks.jpg" alt="ShareAllBooks App" class="project-img" />
-              <div class="project-overlay">
-                <div class="project-links">
-                  <a href="https://www.shareallbooks.com" target="_blank" class="project-link" title="Visit Website">
-                    <i class="fas fa-external-link-alt"></i>
-                  </a>
-                  <a href="#" class="project-link" title="View Details">
-                    <i class="fas fa-info-circle"></i>
-                  </a>
+              <div class="hero-highlights">
+                <div class="highlight-item">
+                  <span class="highlight-number">75%</span>
+                  <span class="highlight-text">on-call reduction</span>
+                </div>
+                <div class="highlight-item">
+                  <span class="highlight-number">2k+</span>
+                  <span class="highlight-text">app installs</span>
+                </div>
+                <div class="highlight-item">
+                  <span class="highlight-number">Featured</span>
+                  <span class="highlight-text">in national press</span>
                 </div>
               </div>
             </div>
-            <div class="project-content">
-              <h3 class="project-title">ShareAllBooks</h3>
-              <p class="project-description">
-                Built a comprehensive React Native mobile application with Firebase backend integration. Implemented
-                user authentication, real-time database operations, and email notifications using EmailJS. Achieved
-                2,000+ downloads and facilitated 1,500+ book transactions through optimized UI/UX design.
-              </p>
-              <div class="project-tech">
-                <span class="tech-tag">React Native</span>
-                <span class="tech-tag">Firebase</span>
-                <span class="tech-tag">JavaScript</span>
-                <span class="tech-tag">EmailJS</span>
-              </div>
-            </div>
           </div>
+          <div class="scroll-indicator">
+            <div class="scroll-arrow"></div>
+          </div>
+        </div>
+      </section>
 
-          <!-- DormDrop Project -->
-          <div class="project-card">
-            <div class="project-image">
-              <img src="img/dormdrop.png" alt="DormDrop Logo" class="project-img" />
-              <div class="project-overlay">
-                <div class="project-links">
-                  <a href="#" class="project-link" title="Coming Soon">
-                    <i class="fas fa-external-link-alt"></i>
-                  </a>
-                  <a href="#" class="project-link" title="View Details">
-                    <i class="fas fa-info-circle"></i>
-                  </a>
+      <!-- About Section -->
+      <section id="about" class="about">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">About Me</h2>
+            <p class="section-subtitle">Get to know me better</p>
+          </div>
+          <div class="about-content">
+            <div class="about-text">
+              <p class="about-description">
+                I'm Rudraksh Bhandari, a Computer Science major at UC San Diego (4.0 GPA) and former Software
+                Development Engineer Intern at Amazon Web Services (AWS, Hyperplane team). I design and build scalable
+                full‑stack systems, turning complex ideas into reliable, production‑ready software.
+              </p>
+              <p class="about-description">
+                At AWS Hyperplane, I engineered backend and operational tools adopted across the team, including an
+                automation service that reduced on‑call manual effort by ~75% and accelerated incident response.
+              </p>
+              <p class="about-description">
+                I'm the Co‑founder and Lead Developer of DormDrop, a UCSD‑exclusive delivery startup with student
+                courier and customer apps built in React Native and Firebase, integrating Stripe payments, OTP
+                verification, and live tracking.
+              </p>
+              <p class="about-description">
+                Previously, I built ShareAllBooks, a UAE‑based book‑sharing platform featured in national press with
+                2,000+ downloads and 1,500+ book transactions.
+              </p>
+              <p class="about-description">
+                At Triton Software Engineering, I develop full‑stack features for the Psyches of Color mental health app
+                using React Native, Node.js, Express.js, and MongoDB.
+              </p>
+              <p class="about-description">
+                I also serve as Sophomore Representative at Triton Quantitative Trading, leading outreach and seminars
+                on risk management, game theory, and options strategies.
+              </p>
+              <div class="about-stats">
+                <div class="stat">
+                  <h3 class="stat-number">4.0</h3>
+                  <p class="stat-label">GPA @ UCSD</p>
+                </div>
+                <div class="stat">
+                  <h3 class="stat-number">2K+</h3>
+                  <p class="stat-label">App Downloads</p>
+                </div>
+                <div class="stat">
+                  <h3 class="stat-number">75%</h3>
+                  <p class="stat-label">Efficiency Gain</p>
                 </div>
               </div>
             </div>
-            <div class="project-content">
-              <h3 class="project-title">DormDrop</h3>
-              <p class="project-description">
-                Developed dual React Native applications with TypeScript, implementing complex order management system.
-                Integrated Stripe payments, real-time location tracking with Expo Location, and Firebase Firestore
-                transactions. Built comprehensive notification system and in-app chat functionality for seamless user
-                experience.
-              </p>
-              <div class="project-tech">
-                <span class="tech-tag">React Native</span>
-                <span class="tech-tag">TypeScript</span>
-                <span class="tech-tag">Firebase</span>
-                <span class="tech-tag">Stripe</span>
+            <div class="about-image">
+              <img
+                src="img/Rudraksh-2.jpeg"
+                alt="Rudraksh Bhandari"
+                class="about-img"
+                loading="lazy"
+                decoding="async"
+                width="420"
+                height="560"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Experience Section -->
+      <section id="experience" class="experience">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Professional Experience</h2>
+            <p class="section-subtitle">Where I've worked and what I've accomplished</p>
+          </div>
+          <div class="experience-timeline">
+            <div class="experience-item">
+              <div class="experience-date">June 2025 – September 2025</div>
+              <div class="experience-content">
+                <h3 class="experience-title">Software Development Engineer Intern</h3>
+                <h4 class="experience-company">Amazon Web Services - Hyperplane Team</h4>
+                <p class="experience-location">Sunnyvale, CA</p>
+                <ul class="experience-achievements">
+                  <li>Cut on-call effort 75% by generating safe CLI runbooks adopted by the entire Hyperplane team</li>
+                  <li>Unified patching visibility across 14 EC2 cluster groups via event-publishing service</li>
+                  <li>
+                    Partnered with operators and senior engineers to design and ship production-ready frontend and
+                    backend tools
+                  </li>
+                  <li>Implemented services in Java and Python with AWS Lambda, SSM, SQS, and SNS</li>
+                </ul>
+              </div>
+            </div>
+            <div class="experience-item">
+              <div class="experience-date">November 2024 – May 2025</div>
+              <div class="experience-content">
+                <h3 class="experience-title">Software Developer</h3>
+                <h4 class="experience-company">Triton Software Engineering</h4>
+                <p class="experience-location">San Diego, CA</p>
+                <ul class="experience-achievements">
+                  <li>
+                    Developed full-stack features for Psyches of Color mobile app using React Native, Node.js,
+                    Express.js, and MongoDB
+                  </li>
+                  <li>
+                    Collaborated within a 12-member cross-functional team to implement frontend screens and backend APIs
+                  </li>
+                  <li>Improved app usability and streamlined data flow for mental health resources</li>
+                </ul>
+              </div>
+            </div>
+            <div class="experience-item">
+              <div class="experience-date">August 2023 – September 2024</div>
+              <div class="experience-content">
+                <h3 class="experience-title">Founder & Lead Developer</h3>
+                <h4 class="experience-company">ShareAllBooks</h4>
+                <p class="experience-location">United Arab Emirates</p>
+                <ul class="experience-achievements">
+                  <li>
+                    Founded and launched a book-sharing mobile app reaching 2,000+ downloads within the first year
+                  </li>
+                  <li>Featured in national UAE press and facilitated 1,500+ donations/sales</li>
+                  <li>Created a trusted community platform connecting book lovers across the UAE</li>
+                  <li>Managed full-stack development using React Native, Firebase, and EmailJS</li>
+                </ul>
+              </div>
+            </div>
+            <div class="experience-item">
+              <div class="experience-date">September 2025 – Present</div>
+              <div class="experience-content">
+                <h3 class="experience-title">Co-founder & Lead Developer</h3>
+                <h4 class="experience-company">DormDrop</h4>
+                <p class="experience-location">San Diego, CA</p>
+                <ul class="experience-achievements">
+                  <li>
+                    Co-founded and built two React Native apps: Student app for UCSD dining hall deliveries and Rider
+                    app for student couriers
+                  </li>
+                  <li>
+                    Implemented UCSD-only authentication, live tracking, OTP verification, and Stripe payment
+                    integration
+                  </li>
+                  <li>Designed end-to-end order flow with Firestore transaction logic preventing duplicate accepts</li>
+                  <li>
+                    Integrated real-time notifications, in-app chat, and live ETAs using Expo Location and React Native
+                    Maps
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
+        </div>
+      </section>
 
-          <!-- Triton Software Engineering -->
-          <div class="project-card">
-            <div class="project-image">
-              <img src="img/poc.png" alt="Psyches of Color Logo" class="project-img" />
-              <div class="project-overlay">
-                <div class="project-links">
-                  <a href="#" class="project-link" title="View Details">
-                    <i class="fas fa-info-circle"></i>
-                  </a>
+      <!-- Projects Section -->
+      <section id="projects" class="projects">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Featured Projects</h2>
+            <p class="section-subtitle">Technical projects and achievements</p>
+          </div>
+          <div class="projects-grid">
+            <!-- ShareAllBooks Project -->
+            <div class="project-card">
+              <div class="project-image">
+                <img
+                  src="img/ShareAllBooks.jpg"
+                  alt="ShareAllBooks App"
+                  class="project-img"
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="400"
+                />
+                <div class="project-overlay">
+                  <div class="project-links">
+                    <a
+                      href="https://www.shareallbooks.com"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="project-link"
+                      title="Visit Website"
+                      aria-label="ShareAllBooks live website"
+                    >
+                      <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                    </a>
+                    <a
+                      href="https://github.com/rudrakshbhandari"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="project-link"
+                      title="View Code"
+                      aria-label="ShareAllBooks GitHub repository"
+                    >
+                      <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <div class="project-content">
+                <h3 class="project-title">ShareAllBooks</h3>
+                <p class="project-problem">Built a book-sharing platform connecting book lovers across the UAE.</p>
+                <p class="project-description">
+                  2k+ installs, 1.5k+ transactions, featured in UAE national press. React Native mobile app with
+                  Firebase backend, user authentication, real-time database operations, and EmailJS notifications.
+                </p>
+                <div class="project-tech">
+                  <span class="tech-tag">React Native</span>
+                  <span class="tech-tag">Firebase</span>
+                  <span class="tech-tag">EmailJS</span>
                 </div>
               </div>
             </div>
-            <div class="project-content">
-              <h3 class="project-title">Psyches of Color</h3>
-              <p class="project-description">
-                Contributed to full-stack development of a mental health mobile application serving underserved
-                communities. Implemented React Native frontend components and Node.js/Express.js backend APIs with
-                MongoDB integration. Collaborated in agile development environment with 12-member cross-functional team.
-              </p>
-              <div class="project-tech">
-                <span class="tech-tag">React Native</span>
-                <span class="tech-tag">Node.js</span>
-                <span class="tech-tag">Express.js</span>
-                <span class="tech-tag">MongoDB</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Skills & Technologies</h2>
-          <p class="section-subtitle">What I work with</p>
-        </div>
-        <div class="skills-grid">
-          <div class="skill-category">
-            <h3 class="skill-category-title">Programming Languages</h3>
-            <div class="skill-items">
-              <div class="skill-item">
-                <i class="fab fa-java"></i>
-                <span>Java</span>
+            <!-- DormDrop Project -->
+            <div class="project-card">
+              <div class="project-image">
+                <img
+                  src="img/dormdrop.png"
+                  alt="DormDrop Logo"
+                  class="project-img"
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="400"
+                />
+                <div class="project-overlay">
+                  <div class="project-links">
+                    <a
+                      href="https://github.com/rudrakshbhandari"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="project-link"
+                      title="View Code"
+                      aria-label="DormDrop GitHub repository"
+                    >
+                      <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                    <a href="#" class="project-link" title="Case Study" aria-label="DormDrop case study (coming soon)">
+                      <i class="fas fa-file-alt" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div class="skill-item">
-                <i class="fab fa-python"></i>
-                <span>Python</span>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-js-square"></i>
-                <span>JavaScript</span>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-js-square"></i>
-                <span>TypeScript</span>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-code"></i>
-                <span>C</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-category">
-            <h3 class="skill-category-title">Frameworks & Libraries</h3>
-            <div class="skill-items">
-              <div class="skill-item">
-                <i class="fab fa-react"></i>
-                <span>React Native</span>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-react"></i>
-                <span>React.js</span>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-node-js"></i>
-                <span>Node.js</span>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-server"></i>
-                <span>Express.js</span>
+              <div class="project-content">
+                <h3 class="project-title">DormDrop</h3>
+                <p class="project-problem">
+                  UCSD-exclusive delivery startup connecting students with dining hall couriers.
+                </p>
+                <p class="project-description">
+                  UCSD-only authentication, live ETAs, Stripe payments. Dual React Native apps (Student & Rider) with
+                  TypeScript, Firebase Firestore transactions, real-time location tracking, OTP verification, and in-app
+                  chat.
+                </p>
+                <div class="project-tech">
+                  <span class="tech-tag">React Native</span>
+                  <span class="tech-tag">TypeScript</span>
+                  <span class="tech-tag">Firestore</span>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="skill-category">
-            <h3 class="skill-category-title">Databases</h3>
-            <div class="skill-items">
-              <div class="skill-item">
-                <i class="fas fa-database"></i>
-                <span>MongoDB</span>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-database"></i>
-                <span>Firestore</span>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-database"></i>
-                <span>MySQL</span>
-              </div>
-            </div>
-          </div>
-          <div class="skill-category">
-            <h3 class="skill-category-title">Cloud & Tools</h3>
-            <div class="skill-items">
-              <div class="skill-item">
-                <i class="fab fa-aws"></i>
-                <span>AWS</span>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-fire"></i>
-                <span>Firebase</span>
-              </div>
-              <div class="skill-item">
-                <i class="fab fa-git-alt"></i>
-                <span>Git</span>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-credit-card"></i>
-                <span>Stripe</span>
-              </div>
-              <div class="skill-item">
-                <i class="fas fa-mobile-alt"></i>
-                <span>Expo</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-      <div class="container">
-        <div class="section-header">
-          <h2 class="section-title">Let's Connect</h2>
-          <p class="section-subtitle">Get in touch with me</p>
-        </div>
-        <div class="contact-content">
-          <div class="contact-info">
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-envelope"></i>
+            <!-- Triton Software Engineering -->
+            <div class="project-card">
+              <div class="project-image">
+                <img
+                  src="img/poc.png"
+                  alt="Psyches of Color Logo"
+                  class="project-img"
+                  loading="lazy"
+                  decoding="async"
+                  width="600"
+                  height="400"
+                />
+                <div class="project-overlay">
+                  <div class="project-links">
+                    <a
+                      href="https://github.com/rudrakshbhandari"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="project-link"
+                      title="View Code"
+                      aria-label="Psyches of Color GitHub repository"
+                    >
+                      <i class="fab fa-github" aria-hidden="true"></i>
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div class="contact-details">
-                <h3>Email</h3>
-                <p>rubhandari@ucsd.edu</p>
-              </div>
-            </div>
-            <div class="contact-item">
-              <div class="contact-icon">
-                <i class="fas fa-map-marker-alt"></i>
-              </div>
-              <div class="contact-details">
-                <h3>Location</h3>
-                <p>San Diego, CA</p>
+              <div class="project-content">
+                <h3 class="project-title">Psyches of Color</h3>
+                <p class="project-problem">
+                  Psyches of Color develops a mental health app serving underserved communities.
+                </p>
+                <p class="project-description">
+                  Full-stack development with React Native frontend and Node.js/Express.js backend APIs with MongoDB.
+                  Collaborated in agile environment with 12-member cross-functional team to improve mental health
+                  resource access.
+                </p>
+                <div class="project-tech">
+                  <span class="tech-tag">React Native</span>
+                  <span class="tech-tag">Node.js</span>
+                  <span class="tech-tag">MongoDB</span>
+                </div>
               </div>
             </div>
           </div>
-          <div class="social-links">
-            <a href="https://www.linkedin.com/in/rudrakshbhandari" target="_blank" class="social-link" title="LinkedIn">
-              <i class="fab fa-linkedin-in"></i>
-            </a>
-            <a href="https://github.com/rudrakshbhandari" target="_blank" class="social-link" title="GitHub">
-              <i class="fab fa-github"></i>
-            </a>
-            <a href="https://www.instagram.com/rudrakshbhandari" target="_blank" class="social-link" title="Instagram">
-              <i class="fab fa-instagram"></i>
-            </a>
-            <a href="https://x.com/rudrakshb06" target="_blank" class="social-link" title="X (Twitter)">
-              <i class="fab fa-x-twitter"></i>
-            </a>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
+      <section id="skills" class="skills">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Skills & Technologies</h2>
+            <p class="section-subtitle">What I work with</p>
+          </div>
+          <div class="skills-grid">
+            <div class="skill-category">
+              <h3 class="skill-category-title">Programming Languages</h3>
+              <div class="skill-items">
+                <div class="skill-item">
+                  <i class="fab fa-java"></i>
+                  <span>Java</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-python"></i>
+                  <span>Python</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-js-square"></i>
+                  <span>JavaScript</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-js-square"></i>
+                  <span>TypeScript</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-code"></i>
+                  <span>C</span>
+                </div>
+              </div>
+            </div>
+            <div class="skill-category">
+              <h3 class="skill-category-title">Frameworks & Libraries</h3>
+              <div class="skill-items">
+                <div class="skill-item">
+                  <i class="fab fa-react"></i>
+                  <span>React Native</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-react"></i>
+                  <span>React.js</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-node-js"></i>
+                  <span>Node.js</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-server"></i>
+                  <span>Express.js</span>
+                </div>
+              </div>
+            </div>
+            <div class="skill-category">
+              <h3 class="skill-category-title">Databases</h3>
+              <div class="skill-items">
+                <div class="skill-item">
+                  <i class="fas fa-database"></i>
+                  <span>MongoDB</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-database"></i>
+                  <span>Firestore</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-database"></i>
+                  <span>MySQL</span>
+                </div>
+              </div>
+            </div>
+            <div class="skill-category">
+              <h3 class="skill-category-title">Cloud & Tools</h3>
+              <div class="skill-items">
+                <div class="skill-item">
+                  <i class="fab fa-aws"></i>
+                  <span>AWS</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-fire"></i>
+                  <span>Firebase</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fab fa-git-alt"></i>
+                  <span>Git</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-credit-card"></i>
+                  <span>Stripe</span>
+                </div>
+                <div class="skill-item">
+                  <i class="fas fa-mobile-alt"></i>
+                  <span>Expo</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="contact">
+        <div class="container">
+          <div class="section-header">
+            <h2 class="section-title">Let's Connect</h2>
+            <p class="section-subtitle">Get in touch with me</p>
+          </div>
+          <div class="contact-content">
+            <div class="contact-info">
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-envelope" aria-hidden="true"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>Email</h3>
+                  <p><a href="mailto:rubhandari@ucsd.edu">rubhandari@ucsd.edu</a></p>
+                </div>
+              </div>
+              <div class="contact-item">
+                <div class="contact-icon">
+                  <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                </div>
+                <div class="contact-details">
+                  <h3>Location</h3>
+                  <p>San Diego, CA</p>
+                </div>
+              </div>
+            </div>
+            <div class="social-links">
+              <a
+                href="https://www.linkedin.com/in/rudrakshbhandari-rb992006"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+                title="LinkedIn"
+                aria-label="LinkedIn profile"
+              >
+                <i class="fab fa-linkedin-in" aria-hidden="true"></i>
+              </a>
+              <a
+                href="https://github.com/rudrakshbhandari"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+                title="GitHub"
+                aria-label="GitHub profile"
+              >
+                <i class="fab fa-github" aria-hidden="true"></i>
+              </a>
+              <a
+                href="https://www.instagram.com/rudrakshbhandari"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+                title="Instagram"
+                aria-label="Instagram profile"
+              >
+                <i class="fab fa-instagram" aria-hidden="true"></i>
+              </a>
+              <a
+                href="https://x.com/rudrakshb06"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="social-link"
+                title="X (Twitter)"
+                aria-label="X (Twitter) profile"
+              >
+                <i class="fab fa-x-twitter" aria-hidden="true"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
 
     <!-- Footer -->
     <footer class="footer">
