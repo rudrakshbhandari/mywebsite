@@ -340,35 +340,6 @@ button:focus-visible {
   line-height: 1.7;
 }
 
-.hero-highlights {
-  display: flex;
-  gap: var(--spacing-xl);
-  margin-top: var(--spacing-xl);
-  padding-top: var(--spacing-xl);
-  border-top: 1px solid var(--border-color);
-  flex-wrap: wrap;
-}
-
-.highlight-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.highlight-number {
-  font-size: var(--font-size-2xl);
-  font-weight: 700;
-  color: var(--primary-color);
-  display: block;
-  margin-bottom: var(--spacing-xs);
-}
-
-.highlight-text {
-  font-size: var(--font-size-sm);
-  color: var(--text-secondary);
-}
-
 .hero-buttons {
   display: flex;
   gap: var(--spacing-lg);
@@ -597,7 +568,7 @@ button:focus-visible {
 
 .about-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: var(--spacing-lg);
   margin-top: var(--spacing-xl);
 }
@@ -966,9 +937,6 @@ button:focus-visible {
     margin-top: var(--spacing-sm);
   }
 
-  .hero-highlights {
-    justify-content: center;
-  }
 
   .nav-toggle.active .bar:nth-child(2) {
     opacity: 0;
