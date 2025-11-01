@@ -1,12 +1,50 @@
 // Main JavaScript file for portfolio website
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Initialize all functionality
-  initNavigation();
-  initScrollEffects();
-  initAnimations();
-  initMobileMenu();
+  // Check if we're in development mode
+  if (typeof IS_DEV_MODE !== 'undefined' && IS_DEV_MODE) {
+    initDevMode();
+  } else {
+    // Initialize all functionality
+    initNavigation();
+    initScrollEffects();
+    initAnimations();
+    initMobileMenu();
+  }
 });
+
+// Development Mode functionality
+function initDevMode() {
+  const overlay = document.getElementById("dev-overlay");
+  
+  if (overlay) {
+    overlay.innerHTML = `
+      <div class="dev-overlay-content">
+        <div class="dev-overlay-icon">
+          <i class="fas fa-code"></i>
+        </div>
+        <h1 class="dev-overlay-title">Work in Progress</h1>
+        <p class="dev-overlay-message">
+          This website is currently under development. 
+          I'm working hard to bring you an amazing experience!
+        </p>
+        <p class="dev-overlay-subtitle">
+          Check back soon for the final release 🚀
+        </p>
+      </div>
+    `;
+    overlay.style.display = "flex";
+    
+    // Add development badge
+    const badge = document.createElement("div");
+    badge.className = "dev-badge";
+    badge.textContent = "🚧 DEV";
+    document.body.appendChild(badge);
+    
+    // Prevent scrolling
+    document.body.style.overflow = "hidden";
+  }
+}
 
 // Navigation functionality
 function initNavigation() {
