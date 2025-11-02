@@ -937,7 +937,6 @@ button:focus-visible {
     margin-top: var(--spacing-sm);
   }
 
-
   .nav-toggle.active .bar:nth-child(2) {
     opacity: 0;
   }
