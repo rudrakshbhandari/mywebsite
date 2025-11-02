@@ -566,6 +566,19 @@ button:focus-visible {
   line-height: 1.7;
 }
 
+.about-description .press-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition-fast);
+  border-bottom: 1px solid transparent;
+}
+
+.about-description .press-link:hover {
+  border-bottom-color: var(--primary-color);
+  text-decoration: none;
+}
+
 .about-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
