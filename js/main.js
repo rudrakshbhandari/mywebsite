@@ -63,17 +63,23 @@ function initNavigation() {
   // Smooth scrolling for navigation links
   navLinks.forEach(link => {
     link.addEventListener('click', function (e) {
-      e.preventDefault();
       const targetId = this.getAttribute('href');
-      const targetSection = document.querySelector(targetId);
+      
+      // Only prevent default for hash links (internal navigation)
+      // Allow external links and file downloads to work normally
+      if (targetId && targetId.startsWith('#')) {
+        e.preventDefault();
+        const targetSection = document.querySelector(targetId);
 
-      if (targetSection) {
-        const offsetTop = targetSection.offsetTop - 70; // Account for fixed navbar
-        window.scrollTo({
-          top: offsetTop,
-          behavior: 'smooth',
-        });
+        if (targetSection) {
+          const offsetTop = targetSection.offsetTop - 70; // Account for fixed navbar
+          window.scrollTo({
+            top: offsetTop,
+            behavior: 'smooth',
+          });
+        }
       }
+      // If it's not a hash link (like PDF, external URL), let it work normally
     });
   });
 
