@@ -788,11 +788,17 @@ button:focus-visible {
 }
 
 .skill-items-horizontal {
-  display: flex;
+  display: flex !important;
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: var(--spacing-lg);
+  grid-template-columns: none !important;
+}
+
+.skill-items-horizontal .skill-item {
+  flex: 0 0 auto;
+  min-width: 100px;
 }
 
 .skill-item {
