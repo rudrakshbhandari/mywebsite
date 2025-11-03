@@ -64,7 +64,7 @@ function initNavigation() {
   navLinks.forEach(link => {
     link.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
-      
+
       // Only prevent default for hash links (internal navigation)
       // Allow external links and file downloads to work normally
       if (targetId && targetId.startsWith('#')) {
