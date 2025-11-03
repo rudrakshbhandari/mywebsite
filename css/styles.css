@@ -787,6 +787,14 @@ button:focus-visible {
   gap: var(--spacing-lg);
 }
 
+.skill-items-horizontal {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--spacing-lg);
+}
+
 .skill-item {
   display: flex;
   flex-direction: column;
@@ -996,6 +1004,11 @@ button:focus-visible {
 
   .skill-items {
     grid-template-columns: 1fr;
+  }
+
+  .skill-items-horizontal {
+    grid-template-columns: repeat(2, 1fr);
+    display: grid;
   }
 
   .contact-info {
