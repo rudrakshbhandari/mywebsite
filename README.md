@@ -65,6 +65,33 @@ npm run format:html   # Format HTML files only
 
 All commits follow conventional commit format for clear history and automated changelog generation.
 
+## 📋 TODO / Future Improvements
+
+### High Priority
+- [ ] Update Psyches of Color GitHub repository link with actual repo URL
+- [ ] Create and add OG image (`img/og-cover.jpg`) for social sharing (1200x630px)
+- [ ] Add favicon file (`favicon.ico`) to root directory
+
+### Content Enhancements
+- [ ] Add case study page for DormDrop with architecture diagram and demo video
+- [ ] Add press/testimonials strip for ShareAllBooks showcasing press coverage
+- [ ] Update project GitHub links with actual repository URLs when available
+
+### Feature Additions
+- [ ] Implement dark mode with `prefers-color-scheme` support
+- [ ] Add changelog or blog section for ongoing work and updates
+- [ ] Consider adding analytics tracking (e.g., Cloudflare Web Analytics) for recruiter traffic
+
+### Performance & Optimization
+- [ ] Convert images to next-gen formats (WebP/AVIF) with JPG fallbacks
+- [ ] Consider adding a contact form to Contact section
+- [ ] Optimize and minify CSS/JS for production
+
+### Accessibility & SEO
+- [ ] Add Content Security Policy headers when deploying on Vercel
+- [ ] Test and verify all accessibility features with screen readers
+- [ ] Update sitemap.xml lastmod dates when making content changes
+
 ## 📧 Contact
 
 - **Email**: rubhandari@ucsd.edu
