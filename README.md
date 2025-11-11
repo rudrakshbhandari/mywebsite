@@ -100,7 +100,7 @@ All commits follow conventional commit format for clear history and automated ch
 ## 📧 Contact
 
 - **Email**: rubhandari@ucsd.edu
-- **LinkedIn**: [rudrakshbhandari](https://www.linkedin.com/in/rudraksh-bhandari-rb992006)
+- **LinkedIn**: [rudrakshbhandari](https://www.linkedin.com/in/rudrakshbhandari)
 - **GitHub**: [rudrakshbhandari](https://github.com/rudrakshbhandari)
 
 ## 📄 License
