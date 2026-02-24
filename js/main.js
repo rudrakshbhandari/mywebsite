@@ -137,9 +137,9 @@ function initMobileMenu() {
   });
 }
 
-// Scroll effects and animations
+// Scroll effects (GSAP handles reveals in animations.js)
 function initScrollEffects() {
-  // Intersection Observer for fade-in animations
+  // Fallback fade-in for elements without GSAP (e.g. contact items)
   const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px',
@@ -153,45 +153,13 @@ function initScrollEffects() {
     });
   }, observerOptions);
 
-  // Observe elements for animation
-  const animateElements = document.querySelectorAll('.project-card, .skill-category, .contact-item, .stat');
-  animateElements.forEach(el => {
-    observer.observe(el);
-  });
-
-  // Parallax effect for hero section
-  window.addEventListener('scroll', function () {
-    const scrolled = window.pageYOffset;
-    const hero = document.querySelector('.hero');
-    const heroContent = document.querySelector('.hero-content');
-
-    if (hero && heroContent) {
-      const rate = scrolled * -0.5;
-      heroContent.style.transform = `translateY(${rate}px)`;
-    }
-  });
+  const animateElements = document.querySelectorAll('.contact-item');
+  animateElements.forEach(el => observer.observe(el));
 }
 
 // Animation utilities
 function initAnimations() {
-  // Typing animation for hero title
-  const heroTitle = document.querySelector('.hero-title');
-  if (heroTitle) {
-    const text = heroTitle.textContent;
-    heroTitle.textContent = '';
-
-    let i = 0;
-    const typeWriter = function () {
-      if (i < text.length) {
-        heroTitle.textContent += text.charAt(i);
-        i++;
-        setTimeout(typeWriter, 100);
-      }
-    };
-
-    // Start typing animation after a delay
-    setTimeout(typeWriter, 1000);
-  }
+  // Hero typing moved to terminal intro in animations.js
 
   // Counter animation for stats
   const stats = document.querySelectorAll('.stat-number');
@@ -280,20 +248,7 @@ function revealOnScroll() {
 // Add scroll event listener with debounce
 window.addEventListener('scroll', debounce(revealOnScroll, 10));
 
-// Project card hover effects
-document.addEventListener('DOMContentLoaded', function () {
-  const projectCards = document.querySelectorAll('.project-card');
-
-  projectCards.forEach(card => {
-    card.addEventListener('mouseenter', function () {
-      this.style.transform = 'translateY(-10px) scale(1.02)';
-    });
-
-    card.addEventListener('mouseleave', function () {
-      this.style.transform = 'translateY(0) scale(1)';
-    });
-  });
-});
+// Project card hover handled by GSAP in animations.js (3D tilt)
 
 // Contact form handling (if you add a contact form later)
 function handleContactForm() {
