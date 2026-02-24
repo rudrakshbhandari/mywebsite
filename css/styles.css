@@ -818,6 +818,19 @@ button:focus-visible {
   text-decoration: none;
 }
 
+.experience-achievements .press-link {
+  color: var(--accent-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: var(--transition-fast);
+  border-bottom: 1px solid transparent;
+}
+
+.experience-achievements .press-link:hover {
+  border-bottom-color: var(--accent-color);
+  text-decoration: none;
+}
+
 .about-stats {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
