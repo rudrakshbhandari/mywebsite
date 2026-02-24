@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a5f"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#22d3ee"/>
+    </linearGradient>
+  </defs>
+  <rect width="600" height="400" fill="url(#bg)"/>
+  <!-- Network nodes representing NPO relationships -->
+  <circle cx="200" cy="150" r="40" fill="url(#accent)" opacity="0.8"/>
+  <circle cx="400" cy="120" r="35" fill="url(#accent)" opacity="0.7"/>
+  <circle cx="300" cy="250" r="30" fill="url(#accent)" opacity="0.6"/>
+  <circle cx="150" cy="280" r="25" fill="url(#accent)" opacity="0.5"/>
+  <circle cx="450" cy="280" r="25" fill="url(#accent)" opacity="0.5"/>
+  <!-- Connection lines -->
+  <line x1="200" y1="150" x2="400" y2="120" stroke="#6366f1" stroke-width="2" opacity="0.5"/>
+  <line x1="200" y1="150" x2="300" y2="250" stroke="#6366f1" stroke-width="2" opacity="0.5"/>
+  <line x1="400" y1="120" x2="300" y2="250" stroke="#6366f1" stroke-width="2" opacity="0.5"/>
+  <line x1="300" y1="250" x2="150" y2="280" stroke="#6366f1" stroke-width="2" opacity="0.5"/>
+  <line x1="300" y1="250" x2="450" y2="280" stroke="#6366f1" stroke-width="2" opacity="0.5"/>
+  <text x="300" y="360" text-anchor="middle" fill="#94a3b8" font-family="Inter, sans-serif" font-size="24" font-weight="500">David Brower Center</text>
+  <text x="300" y="385" text-anchor="middle" fill="#64748b" font-family="Inter, sans-serif" font-size="14">NPO Relationship Database</text>
+</svg>
