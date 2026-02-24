@@ -45,7 +45,8 @@ When working on this codebase, follow these workflow rules:
 1. **Commit** all changes with a conventional commit message.
 2. **Push** the branch to the remote repository.
 3. **Create a Pull Request** (PR) targeting `main` with a clear title and description of the changes.
+4. **Always share the PR link** with the user when a PR is created (e.g., include the URL in your response).
 
 ## Summary
 
-1. Create branch → 2. Make changes → 3. Commit (conventional) → 4. Push branch → 5. Open PR
+1. Create branch → 2. Make changes → 3. Commit (conventional) → 4. Push branch → 5. Open PR → 6. Share PR link
