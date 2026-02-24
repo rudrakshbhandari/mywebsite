@@ -2,6 +2,16 @@
 
 When working on this codebase, follow these workflow rules:
 
+## Content Modification Guidelines (index.html)
+
+**This is a public-facing portfolio.** Every word and piece of content is carefully chosen. Agents must:
+
+- **Make only the specific changes requested** — Do not refactor, rephrase, or "improve" content unless explicitly asked.
+- **Never remove content liberally** — Treat deletions as high-risk. Only remove content when the human has clearly specified what to remove and why.
+- **When in doubt, ask** — If the requested change is ambiguous, could affect multiple sections, or might alter the intended meaning, ask for clarification before editing.
+- **Avoid scope creep** — Do not add, remove, or rewrite copy beyond the exact scope of the human's request.
+- **Preserve voice and tone** — Do not substitute synonyms or restructure sentences unless the human explicitly requests it.
+
 ## Branch Strategy
 
 - **Always create a feature branch** before making changes. Do not work directly on `main`.
