@@ -18,7 +18,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="img/android-chrome-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="img/android-chrome-512x512.png" />
 
-    <meta name="theme-color" content="#2563eb" />
+    <meta name="theme-color" content="#0f172a" />
 
     <!-- Open Graph Meta Tags -->
     <meta property="og:site_name" content="Rudraksh Bhandari" />
@@ -43,9 +43,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
-    <!-- Fonts -->
+    <!-- Fonts: Space Grotesk (hero/headings) + Inter (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -74,6 +76,10 @@
     </script>
   </head>
   <body>
+    <!-- Custom cursor (hidden on touch devices) -->
+    <div id="custom-cursor" class="custom-cursor" aria-hidden="true"></div>
+    <div id="custom-cursor-dot" class="custom-cursor-dot" aria-hidden="true"></div>
+
     <!-- Skip to main content link -->
     <a class="skip-link" href="#main-content">Skip to content</a>
 
@@ -91,6 +97,7 @@
           <div class="nav-menu" id="nav-menu">
             <a href="#home" class="nav-link">Home</a>
             <a href="#about" class="nav-link">About</a>
+            <a href="#currently" class="nav-link">Currently</a>
             <a href="#experience" class="nav-link">Experience</a>
             <a href="#projects" class="nav-link">Projects</a>
             <a href="#skills" class="nav-link">Skills</a>
@@ -116,11 +123,24 @@
 
     <!-- Main Content -->
     <main id="main-content">
-      <!-- Hero Section -->
-      <section id="home" class="hero">
-        <div class="hero-container">
+      <!-- Hero Section with Terminal Intro + Particle Background -->
+      <section id="home" class="hero snap-section">
+        <canvas id="particle-canvas" class="particle-canvas" aria-hidden="true"></canvas>
+        <div id="terminal-intro" class="terminal-intro">
+          <div class="terminal-header">
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-dot"></span>
+            <span class="terminal-title">rudraksh@portfolio ~</span>
+          </div>
+          <div class="terminal-body">
+            <p class="terminal-line"><span class="terminal-prompt">$</span> loading portfolio...</p>
+            <p class="terminal-line"><span class="terminal-prompt">$</span> <span id="terminal-typing"></span><span class="terminal-cursor">|</span></p>
+          </div>
+        </div>
+        <div class="hero-container hero-reveal">
           <div class="hero-content">
-            <div class="hero-image">
+            <div class="hero-image" data-tilt>
               <img src="img/Rudraksh-8.jpeg" alt="Rudraksh Bhandari" class="profile-img" width="300" height="300" />
             </div>
             <div class="hero-text">
@@ -130,15 +150,15 @@
                 I build efficient full-stack applications focused on reliability, scalability, and real-world impact.
               </p>
               <div class="hero-buttons">
-                <a href="#projects" class="btn btn-primary">View My Work</a>
+                <a href="#projects" class="btn btn-primary magnetic-btn">View My Work</a>
                 <a
                   href="Rudraksh_Bhandari_Resume.pdf"
-                  class="btn btn-tertiary"
+                  class="btn btn-tertiary magnetic-btn"
                   target="_blank"
                   rel="noopener noreferrer"
                   >Download Résumé</a
                 >
-                <a href="#contact" class="btn btn-secondary">Get In Touch</a>
+                <a href="#contact" class="btn btn-secondary magnetic-btn">Get In Touch</a>
               </div>
             </div>
           </div>
@@ -148,10 +168,51 @@
         </div>
       </section>
 
-      <!-- About Section -->
-      <section id="about" class="about">
+      <!-- Currently Section -->
+      <section id="currently" class="currently">
         <div class="container">
-          <div class="section-header">
+          <div class="section-header reveal-el">
+            <h2 class="section-title">Currently</h2>
+            <p class="section-subtitle">What I'm up to right now</p>
+          </div>
+          <div class="currently-grid">
+            <div class="currently-card reveal-el">
+              <div class="currently-icon"><i class="fas fa-code" aria-hidden="true"></i></div>
+              <h3>Building</h3>
+              <p>NomNom delivery platform & scaling Psyches of Color</p>
+            </div>
+            <div class="currently-card reveal-el">
+              <div class="currently-icon"><i class="fas fa-book" aria-hidden="true"></i></div>
+              <h3>Learning</h3>
+              <p>System design, distributed systems & AWS internals</p>
+            </div>
+            <div class="currently-card reveal-el">
+              <div class="currently-icon"><i class="fas fa-search" aria-hidden="true"></i></div>
+              <h3>Exploring</h3>
+              <p>SDE opportunities for Summer 2026</p>
+            </div>
+          </div>
+          <div class="code-snippet reveal-el">
+            <div class="code-snippet-header">
+              <span class="code-dot"></span>
+              <span class="code-dot"></span>
+              <span class="code-dot"></span>
+              <span class="code-filename">recent_work.ts</span>
+            </div>
+            <pre class="code-snippet-body"><code><span class="code-keyword">const</span> <span class="code-var">rudraksh</span> = {
+  <span class="code-prop">role</span>: <span class="code-string">"SDE Intern @ AWS"</span>,
+  <span class="code-prop">building</span>: [<span class="code-string">"NomNom"</span>, <span class="code-string">"Psyches of Color"</span>],
+  <span class="code-prop">stack</span>: [<span class="code-string">"React Native"</span>, <span class="code-string">"TypeScript"</span>, <span class="code-string">"Node.js"</span>],
+  <span class="code-prop">impact</span>: <span class="code-string">"~75% reduction in on-call effort"</span>
+};</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section id="about" class="about snap-section">
+        <div class="container">
+          <div class="section-header reveal-el">
             <h2 class="section-title">About Me</h2>
             <!-- <p class="section-subtitle">Get to know me better</p> -->
           </div>
@@ -219,7 +280,7 @@
       </section>
 
       <!-- Experience Section -->
-      <section id="experience" class="experience">
+      <section id="experience" class="experience snap-section">
         <div class="container">
           <div class="section-header">
             <h2 class="section-title">Experience</h2>
@@ -322,15 +383,14 @@
       </section>
 
       <!-- Projects Section -->
-      <section id="projects" class="projects">
+      <section id="projects" class="projects snap-section">
         <div class="container">
-          <div class="section-header">
+          <div class="section-header reveal-el">
             <h2 class="section-title">Projects</h2>
-            <!-- <p class="section-subtitle">Technical projects and achievements</p> -->
           </div>
-          <div class="projects-grid">
-            <!-- ShareAllBooks Project -->
-            <div class="project-card">
+          <div class="projects-grid projects-bento">
+            <!-- ShareAllBooks Project - Featured large -->
+            <div class="project-card project-card-large reveal-el">
               <div class="project-image">
                 <img
                   src="img/ShareAllBooks.jpg"
@@ -372,7 +432,7 @@
             </div>
 
             <!-- NomNom Project -->
-            <div class="project-card">
+            <div class="project-card reveal-el">
               <div class="project-image">
                 <img
                   src="img/nomnom.png"
@@ -417,7 +477,7 @@
             </div>
 
             <!-- Triton Software Engineering -->
-            <div class="project-card">
+            <div class="project-card reveal-el">
               <div class="project-image">
                 <img
                   src="img/poc.png"
@@ -465,9 +525,9 @@
       </section>
 
       <!-- Skills Section -->
-      <section id="skills" class="skills">
+      <section id="skills" class="skills snap-section">
         <div class="container">
-          <div class="section-header">
+          <div class="section-header reveal-el">
             <h2 class="section-title">Skills & Technologies</h2>
             <p class="section-subtitle">What I work with</p>
           </div>
@@ -565,7 +625,7 @@
       </section>
 
       <!-- Contact Section -->
-      <section id="contact" class="contact">
+      <section id="contact" class="contact snap-section">
         <div class="container">
           <div class="section-header">
             <h2 class="section-title">Let's Connect</h2>
@@ -648,9 +708,13 @@
       </div>
     </footer>
 
+    <!-- GSAP + ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <!-- JavaScript -->
     <script src="js/config.js"></script>
     <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
     <script src="js/speed-insights.js"></script>
   </body>
 </html>
