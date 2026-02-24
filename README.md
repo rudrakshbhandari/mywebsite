@@ -75,7 +75,7 @@ All commits follow conventional commit format for clear history and automated ch
 
 ### Content Enhancements
 
-- [ ] Add case study page for DormDrop with architecture diagram and demo video
+- [ ] Add case study page for NomNom with architecture diagram and demo video
 - [ ] Add press/testimonials strip for ShareAllBooks showcasing press coverage
 - [ ] Update project GitHub links with actual repository URLs when available
 
