@@ -65,7 +65,6 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-snap-type: y proximity;
 }
 
 /* Custom Cursor (Phase 2) - hidden on touch, visible on dark bg */
@@ -121,13 +120,9 @@ html {
   top: 0;
 }
 
-/* Section scroll offset for fixed navbar (Phase 4: scroll snap) */
+/* Section scroll offset for fixed navbar */
 section {
   scroll-margin-top: 80px;
-}
-.snap-section {
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
 }
 
 body {
@@ -787,6 +782,11 @@ button:focus-visible {
   }
 }
 
+.about {
+  padding: var(--spacing-4xl) 0;
+  padding-bottom: calc(var(--spacing-4xl) + var(--spacing-3xl));
+}
+
 .about-content {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -1345,15 +1345,7 @@ button:focus-visible {
   animation: fadeInUp 0.6s ease-out;
 }
 
-/* Smooth scrolling and scroll-snap - respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-snap-type: none;
-  }
-  .snap-section {
-    scroll-snap-align: none;
-  }
-}
+/* Smooth scrolling - respect reduced motion */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
