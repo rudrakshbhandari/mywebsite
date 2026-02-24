@@ -16,11 +16,13 @@ When working on this codebase, follow these workflow rules:
 ## Commits
 
 - **Use conventional commit format** for all commits:
+
   ```
   <type>[optional scope]: <description>
 
   [optional body]
   ```
+
 - **Types:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`
 - **Examples:**
   - `feat(hero): add terminal-style intro animation`
