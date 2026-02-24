@@ -5,6 +5,7 @@ When working on this codebase, follow these workflow rules:
 ## Branch Strategy
 
 - **Always create a feature branch** before making changes. Do not work directly on `main`.
+- **Changes get their own branch** — When modifying **any file**, create a **new branch from `main`** that matches the change (e.g., `docs/agents-content-guidelines`, `feat/dark-mode`). Do **not** commit to whatever feature branch the user is currently on. Push the new branch and **create a PR** — do not assume "just push" means push to the current branch.
 - **Name branches appropriately** based on the task:
   - `feat/short-description` — new features (e.g., `feat/dark-mode-toggle`)
   - `fix/short-description` — bug fixes (e.g., `fix/navbar-mobile-menu`)
