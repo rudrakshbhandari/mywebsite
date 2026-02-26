@@ -9,10 +9,15 @@ import { writeFileSync } from 'fs';
 
 const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
-const CLIENT_ID = 'dabfab14-4862-4e92-aed4-b04620d9c658';
-const CLIENT_SECRET = 'WrHK9KwKWjgVtPdEaAlmEFwwDJzSFlXfiQQmcwlfr8o';
+const CLIENT_ID = process.env.OURA_CLIENT_ID?.trim();
+const CLIENT_SECRET = process.env.OURA_CLIENT_SECRET?.trim();
 const REDIRECT_URI = 'http://localhost:3000/callback';
 const SCOPES = 'daily heartrate spo2Daily workout personal email session stress';
+
+if (!CLIENT_ID || !CLIENT_SECRET) {
+  console.error('Missing credentials. Set OURA_CLIENT_ID and OURA_CLIENT_SECRET first.');
+  process.exit(1);
+}
 
 console.log('=== Oura OAuth Token Generator (Form URL-Encoded) ===\n');
 
