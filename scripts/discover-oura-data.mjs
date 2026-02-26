@@ -83,7 +83,7 @@ async function main() {
     try {
       let url = 'https://api.ouraring.com/v2/usercollection/' + endpoint;
       if (endpoint !== 'personal_info') {
-        url += '?start_date=' + yesterdaysterday;
+        url += '?start_date=' + yesterday;
       } else {
         url += '?limit=1';
       }
