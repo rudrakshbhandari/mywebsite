@@ -40,6 +40,17 @@ When working on this codebase, follow these workflow rules:
   - `fix(contact): resolve form validation issue`
   - `style(about): increase spacing before experience section`
 
+## Implementation Rule (Critical)
+
+**When asked to fix, change, or implement something, you MUST use the tools to actually make the change.**
+
+- **Do NOT just explain the solution** — actually implement it using `StrReplace`, `Write`, etc.
+- **Do NOT ask "should I make this change?"** — if the user is pointing out a problem, fix it
+- **The full workflow is automatic** — branch → edit → commit → push → PR happens without asking for confirmation
+- **Only explain what you did after it's done**, not as a substitute for doing it
+
+If you catch yourself writing a code block or explaining "here's what you should change" — STOP. You should have already made the change via the tools.
+
 ## Proactive Automation
 
 **Run scripts yourself when possible.** If the codebase contains scripts/tools that can diagnose or fix an issue:
