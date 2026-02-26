@@ -11,8 +11,39 @@ import https from 'https';
 
 // Configuration
 const OUTPUT_PATH = resolve(process.cwd(), 'oura_public.json');
+const TOKEN_PATH = resolve(process.cwd(), '.oura_token');
 const OAUTH_ENDPOINT = 'https://api.ouraring.com/oauth/token';
 const API_BASE = 'api.ouraring.com';
+
+/**
+ * Load refresh token from file or env
+ * @returns {string|null}
+ */
+function loadRefreshToken() {
+  // Priority: 1. File, 2. Env var
+  if (existsSync(TOKEN_PATH)) {
+    try {
+      const token = readFileSync(TOKEN_PATH, 'utf-8').trim();
+      if (token) return token;
+    } catch (e) {
+      console.warn('Could not read token file:', e.message);
+    }
+  }
+  return process.env.OURA_REFRESH_TOKEN || null;
+}
+
+/**
+ * Save refresh token to file
+ * @param {string} token
+ */
+function saveRefreshToken(token) {
+  try {
+    writeFileSync(TOKEN_PATH, token);
+    console.log('Refresh token saved to file');
+  } catch (e) {
+    console.warn('Could not save token file:', e.message);
+  }
+}
 
 /**
  * Make an HTTPS request and return parsed JSON response
@@ -74,7 +105,7 @@ function httpsRequest(url, options = {}, body = null) {
  * @param {string} clientId
  * @param {string} clientSecret
  * @param {string} refreshToken
- * @returns {Promise<string>} - New access token
+ * @returns {Promise<{accessToken: string, newRefreshToken: string}>} - New tokens
  */
 async function refreshAccessToken(clientId, clientSecret, refreshToken) {
   // Oura OAuth requires form-urlencoded, not JSON
@@ -94,7 +125,10 @@ async function refreshAccessToken(clientId, clientSecret, refreshToken) {
     throw new Error('No access_token in OAuth response');
   }
 
-  return response.access_token;
+  return {
+    accessToken: response.access_token,
+    newRefreshToken: response.refresh_token // Oura may rotate refresh tokens
+  };
 }
 
 /**
@@ -186,12 +220,13 @@ function roundOrNull(value) {
 async function main() {
   const clientId = process.env.OURA_CLIENT_ID;
   const clientSecret = process.env.OURA_CLIENT_SECRET;
-  const refreshToken = process.env.OURA_REFRESH_TOKEN;
+  const refreshToken = loadRefreshToken();
 
   // Validate environment variables
   if (!clientId || !clientSecret || !refreshToken) {
-    console.error('Error: Missing required environment variables');
-    console.error('Required: OURA_CLIENT_ID, OURA_CLIENT_SECRET, OURA_REFRESH_TOKEN');
+    console.error('Error: Missing required credentials');
+    console.error('Required: OURA_CLIENT_ID, OURA_CLIENT_SECRET');
+    console.error('And either: .oura_token file or OURA_REFRESH_TOKEN env var');
     process.exit(1);
   }
 
@@ -203,8 +238,13 @@ async function main() {
   try {
     // Step 1: Refresh access token
     console.log('Refreshing OAuth token...');
-    const accessToken = await refreshAccessToken(clientId, clientSecret, refreshToken);
+    const { accessToken, newRefreshToken } = await refreshAccessToken(clientId, clientSecret, refreshToken);
     console.log('Token refreshed successfully');
+
+    // Save new refresh token if provided (Oura rotates tokens)
+    if (newRefreshToken && newRefreshToken !== refreshToken) {
+      saveRefreshToken(newRefreshToken);
+    }
 
     // Step 2: Determine date to fetch (today in PT)
     const todayPT = getTodayPT();
