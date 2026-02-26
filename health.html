@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Health Metrics - Oura Ring Data | Rudraksh Bhandari" />
+    <meta name="author" content="Rudraksh Bhandari" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://rudrakshbhandari.com/health" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+
+    <meta name="theme-color" content="#0f172a" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Health Metrics | Rudraksh Bhandari" />
+    <meta property="og:description" content="Daily health metrics from Oura Ring" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rudrakshbhandari.com/health" />
+
+    <title>Health Metrics | Rudraksh Bhandari</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+    <style>
+      /* CSS Variables - Matching main site */
+      :root {
+        --primary-color: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-glow: rgba(99, 102, 241, 0.4);
+        --secondary-color: #94a3b8;
+        --accent-color: #22d3ee;
+        --accent-glow: rgba(34, 211, 238, 0.3);
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --text-light: #ffffff;
+        --background-light: #0f172a;
+        --background-dark: #020617;
+        --background-gray: #1e293b;
+        --background-card: #1e293b;
+        --border-color: #334155;
+        --shadow-glow: 0 0 30px var(--primary-glow);
+
+        --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --font-display: 'Space Grotesk', var(--font-family);
+        --radius-lg: 0.75rem;
+        --radius-xl: 1rem;
+        --transition-normal: 0.3s ease-in-out;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-family);
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: var(--background-dark);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* Background gradient */
+      .page-background {
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 80%, rgba(34, 211, 238, 0.1) 0%, transparent 50%),
+                    var(--background-dark);
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* Header */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .nav-logo a {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-light);
+        text-decoration: none;
+        letter-spacing: -0.02em;
+      }
+
+      .nav-back {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: color var(--transition-normal);
+      }
+
+      .nav-back:hover {
+        color: var(--accent-color);
+      }
+
+      /* Main content */
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 7rem 1.5rem 4rem;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .page-title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 700;
+        color: var(--text-light);
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.02em;
+      }
+
+      .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
+      .data-source {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--accent-color);
+        font-size: 0.875rem;
+        font-weight: 500;
+        margin-top: 1rem;
+      }
+
+      .data-source i {
+        font-size: 1rem;
+      }
+
+      /* Metrics Grid */
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .metric-card {
+        background: var(--background-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: 1.5rem;
+        transition: all var(--transition-normal);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .metric-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        opacity: 0;
+        transition: opacity var(--transition-normal);
+      }
+
+      .metric-card:hover::before {
+        opacity: 1;
+      }
+
+      .metric-card:hover {
+        border-color: rgba(99, 102, 241, 0.5);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
+      }
+
+      .metric-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+
+      .metric-label {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .metric-icon {
+        width: 2rem;
+        height: 2rem;
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+      }
+
+      .metric-icon.sleep { background: rgba(139, 92, 246, 0.2); color: #a78bfa; }
+      .metric-icon.readiness { background: rgba(99, 102, 241, 0.2); color: #818cf8; }
+      .metric-icon.hr { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+      .metric-icon.hrv { background: rgba(34, 211, 238, 0.2); color: #67e8f9; }
+      .metric-icon.steps { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+      .metric-icon.calories { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+
+      .metric-status {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .metric-status.good { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
+      .metric-status.fair { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+      .metric-status.poor { background: rgba(239, 68, 68, 0.2); color: #f87171; }
+
+      .metric-value {
+        font-family: var(--font-display);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-light);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+      }
+
+      .metric-value.null {
+        color: var(--text-secondary);
+        font-size: 1.5rem;
+        font-weight: 500;
+      }
+
+      .metric-unit {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-left: 0.25rem;
+      }
+
+      .metric-footer {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-top: 0.75rem;
+      }
+
+      /* Loading State */
+      .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+      }
+
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 3px solid var(--border-color);
+        border-top-color: var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1.5rem;
+      }
+
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Error State */
+      .error-container {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+      }
+
+      .error-icon {
+        font-size: 3rem;
+        color: #f87171;
+        margin-bottom: 1rem;
+      }
+
+      .error-message {
+        font-size: 1.125rem;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+      }
+
+      .retry-btn {
+        background: var(--primary-color);
+        color: var(--text-light);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-lg);
+        font-family: var(--font-family);
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-normal);
+      }
+
+      .retry-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-glow);
+      }
+
+      /* Footer */
+      footer {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1.5rem;
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+      }
+
+      .last-updated {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .update-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+      }
+
+      .privacy-note {
+        font-size: 0.75rem;
+        opacity: 0.7;
+      }
+
+      /* Hidden states */
+      .hidden {
+        display: none !important;
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .metrics-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .metric-value {
+          font-size: 2rem;
+        }
+
+        footer {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-background"></div>
+
+    <header>
+      <div class="nav-container">
+        <div class="nav-logo">
+          <a href="/">Rudraksh Bhandari</a>
+        </div>
+        <a href="/" class="nav-back">
+          <i class="fas fa-arrow-left"></i>
+          Back to Portfolio
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-header">
+        <h1 class="page-title">Health Metrics</h1>
+        <p class="page-subtitle">
+          A transparent view of my daily wellness data. Aggregated and privacy-safe.
+        </p>
+        <div class="data-source">
+          <i class="fas fa-ring"></i>
+          <span>Powered by Oura Ring 4</span>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Loading health data...</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="error-container hidden">
+        <div class="error-icon"><i class="fas fa-exclamation-circle"></i></div>
+        <p class="error-message">Unable to load health data</p>
+        <button class="retry-btn" onclick="loadHealthData()">Try Again</button>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div id="metrics-container" class="metrics-grid hidden">
+        <!-- Sleep Score -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon sleep"><i class="fas fa-moon"></i></span>
+              Sleep Score
+            </span>
+            <span id="sleep-status" class="metric-status hidden">Good</span>
+          </div>
+          <div class="metric-value" id="sleep-score">--</div>
+          <div class="metric-footer">Quality of last night's rest</div>
+        </div>
+
+        <!-- Readiness -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon readiness"><i class="fas fa-battery-three-quarters"></i></span>
+              Readiness
+            </span>
+            <span id="readiness-status" class="metric-status hidden">Good</span>
+          </div>
+          <div class="metric-value" id="readiness-score">--</div>
+          <div class="metric-footer">Recovery and readiness to perform</div>
+        </div>
+
+        <!-- Resting HR -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon hr"><i class="fas fa-heartbeat"></i></span>
+              Resting HR
+            </span>
+          </div>
+          <div class="metric-value" id="resting-hr">--<span class="metric-unit">BPM</span></div>
+          <div class="metric-footer">Heart rate during sleep</div>
+        </div>
+
+        <!-- HRV -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon hrv"><i class="fas fa-wave-square"></i></span>
+              HRV
+            </span>
+          </div>
+          <div class="metric-value" id="hrv">--<span class="metric-unit">ms</span></div>
+          <div class="metric-footer">Heart rate variability (recovery indicator)</div>
+        </div>
+
+        <!-- Steps -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon steps"><i class="fas fa-shoe-prints"></i></span>
+              Steps
+            </span>
+          </div>
+          <div class="metric-value" id="steps">--</div>
+          <div class="metric-footer">Daily step count</div>
+        </div>
+
+        <!-- Active Calories -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon calories"><i class="fas fa-fire"></i></span>
+              Active Calories
+            </span>
+          </div>
+          <div class="metric-value" id="calories">--<span class="metric-unit">kcal</span></div>
+          <div class="metric-footer">Calories burned through activity</div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="last-updated">
+        <span class="update-dot"></span>
+        <span id="last-updated">Loading...</span>
+      </div>
+      <div class="privacy-note">Data updated 7× daily • Aggregated metrics only</div>
+    </footer>
+
+    <script>
+      // Oura public data endpoint
+      const DATA_URL = '/oura_public.json';
+
+      // Status thresholds for sleep/readiness scores
+      const STATUS_THRESHOLDS = {
+        sleep: { good: 80, fair: 60 },
+        readiness: { good: 80, fair: 60 },
+      };
+
+      /**
+       * Format relative time (e.g., "12 min ago")
+       * @param {string} isoDate - ISO date string
+       * @returns {string}
+       */
+      function getRelativeTime(isoDate) {
+        if (!isoDate) return 'Unknown';
+
+        const date = new Date(isoDate);
+        const now = new Date();
+        const diffMs = now - date;
+        const diffSec = Math.floor(diffMs / 1000);
+        const diffMin = Math.floor(diffSec / 60);
+        const diffHour = Math.floor(diffMin / 60);
+        const diffDay = Math.floor(diffHour / 24);
+
+        if (diffSec < 60) return 'Just now';
+        if (diffMin < 60) return `${diffMin} min ago`;
+        if (diffHour < 24) return `${diffHour} hour${diffHour > 1 ? 's' : ''} ago`;
+        if (diffDay < 7) return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
+        return date.toLocaleDateString();
+      }
+
+      /**
+       * Get status class based on score
+       * @param {number} score
+       * @param {string} type - 'sleep' or 'readiness'
+       * @returns {string}
+       */
+      function getStatusClass(score, type) {
+        const thresholds = STATUS_THRESHOLDS[type];
+        if (!thresholds) return '';
+
+        if (score >= thresholds.good) return 'good';
+        if (score >= thresholds.fair) return 'fair';
+        return 'poor';
+      }
+
+      /**
+       * Format status label
+       * @param {number} score
+       * @param {string} type
+       * @returns {string}
+       */
+      function getStatusLabel(score, type) {
+        const cls = getStatusClass(score, type);
+        if (cls === 'good') return 'Good';
+        if (cls === 'fair') return 'Fair';
+        if (cls === 'poor') return 'Pay Attention';
+        return '';
+      }
+
+      /**
+       * Update metric display
+       * @param {string} id - Element ID
+       * @param {number|null} value
+       * @param {string} suffix - Optional suffix (e.g., ' BPM')
+       */
+      function updateMetric(id, value, suffix = '') {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        if (value === null || value === undefined) {
+          el.textContent = 'No data';
+          el.classList.add('null');
+        } else {
+          el.innerHTML = `${value}${suffix}`;
+          el.classList.remove('null');
+        }
+      }
+
+      /**
+       * Update status badge
+       * @param {string} id - Status element ID
+       * @param {number|null} score
+       * @param {string} type
+       */
+      function updateStatus(id, score, type) {
+        const el = document.getElementById(id);
+        if (!el) return;
+
+        if (score === null || score === undefined) {
+          el.classList.add('hidden');
+        } else {
+          el.textContent = getStatusLabel(score, type);
+          el.className = `metric-status ${getStatusClass(score, type)}`;
+        }
+      }
+
+      /**
+       * Load health data from JSON
+       */
+      async function loadHealthData() {
+        const loadingState = document.getElementById('loading-state');
+        const errorState = document.getElementById('error-state');
+        const metricsContainer = document.getElementById('metrics-container');
+        const lastUpdated = document.getElementById('last-updated');
+
+        // Reset states
+        loadingState.classList.remove('hidden');
+        errorState.classList.add('hidden');
+        metricsContainer.classList.add('hidden');
+
+        try {
+          const response = await fetch(DATA_URL, {
+            cache: 'no-cache',
+          });
+
+          if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+          }
+
+          const data = await response.json();
+
+          // Validate data structure
+          if (!data || typeof data !== 'object') {
+            throw new Error('Invalid data structure');
+          }
+
+          // Update metrics
+          updateMetric('sleep-score', data.sleepScore);
+          updateMetric('readiness-score', data.readinessScore);
+          updateMetric('resting-hr', data.restingHrBpm, '<span class="metric-unit">BPM</span>');
+          updateMetric('hrv', data.hrvMs, '<span class="metric-unit">ms</span>');
+          updateMetric('steps', data.steps);
+          updateMetric('calories', data.activeCalories, '<span class="metric-unit">kcal</span>');
+
+          // Update status badges
+          updateStatus('sleep-status', data.sleepScore, 'sleep');
+          updateStatus('readiness-status', data.readinessScore, 'readiness');
+
+          // Update last updated time
+          if (data.lastUpdatedIso) {
+            lastUpdated.textContent = `Updated ${getRelativeTime(data.lastUpdatedIso)}`;
+          } else {
+            lastUpdated.textContent = 'Update time unknown';
+          }
+
+          // Show metrics
+          loadingState.classList.add('hidden');
+          metricsContainer.classList.remove('hidden');
+        } catch (error) {
+          console.error('Failed to load health data:', error);
+
+          loadingState.classList.add('hidden');
+          errorState.classList.remove('hidden');
+          lastUpdated.textContent = 'Failed to load';
+        }
+      }
+
+      // Load data on page load
+      document.addEventListener('DOMContentLoaded', loadHealthData);
+
+      // Refresh every 5 minutes while page is open
+      setInterval(loadHealthData, 5 * 60 * 1000);
+    </script>
+  </body>
+</html>
