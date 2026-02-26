@@ -249,6 +249,96 @@
       .metric-icon.hrv { background: rgba(34, 211, 238, 0.2); color: #67e8f9; }
       .metric-icon.steps { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
       .metric-icon.calories { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
+      .metric-icon.temp { background: rgba(251, 113, 133, 0.2); color: #fb7185; }
+
+      /* Contributors Grid (nested inside cards) */
+      .contributors-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .contributor-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .contributor-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        text-transform: capitalize;
+      }
+
+      .contributor-bar-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .contributor-bar {
+        flex: 1;
+        height: 4px;
+        background: var(--border-color);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .contributor-bar-fill {
+        height: 100%;
+        border-radius: 2px;
+        transition: width 0.5s ease;
+      }
+
+      .contributor-bar-fill.good { background: #4ade80; }
+      .contributor-bar-fill.fair { background: #fbbf24; }
+      .contributor-bar-fill.poor { background: #f87171; }
+
+      .contributor-value {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        min-width: 1.5rem;
+        text-align: right;
+      }
+
+      .contributor-value.null {
+        color: var(--text-secondary);
+      }
+
+      /* Section dividers */
+      .section-title {
+        grid-column: 1 / -1;
+        font-family: var(--font-display);
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      /* Wide cards for contributors */
+      .metric-card.wide {
+        grid-column: 1 / -1;
+      }
+
+      @media (min-width: 768px) {
+        .metric-card.wide {
+          grid-column: span 2;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .metric-card.wide {
+          grid-column: span 3;
+        }
+      }
 
       .metric-status {
         font-size: 0.75rem;
@@ -456,8 +546,8 @@
 
       <!-- Metrics Grid -->
       <div id="metrics-container" class="metrics-grid hidden">
-        <!-- Sleep Score -->
-        <div class="metric-card">
+        <!-- Sleep Score with Contributors -->
+        <div class="metric-card wide">
           <div class="metric-header">
             <span class="metric-label">
               <span class="metric-icon sleep"><i class="fas fa-moon"></i></span>
@@ -466,11 +556,13 @@
             <span id="sleep-status" class="metric-status hidden">Good</span>
           </div>
           <div class="metric-value" id="sleep-score">--</div>
-          <div class="metric-footer">Quality of last night's rest</div>
+          <div class="contributors-grid" id="sleep-contributors">
+            <!-- Sleep contributors populated by JS -->
+          </div>
         </div>
 
-        <!-- Readiness -->
-        <div class="metric-card">
+        <!-- Readiness with Contributors -->
+        <div class="metric-card wide">
           <div class="metric-header">
             <span class="metric-label">
               <span class="metric-icon readiness"><i class="fas fa-battery-three-quarters"></i></span>
@@ -479,19 +571,36 @@
             <span id="readiness-status" class="metric-status hidden">Good</span>
           </div>
           <div class="metric-value" id="readiness-score">--</div>
-          <div class="metric-footer">Recovery and readiness to perform</div>
+          <div class="contributors-grid" id="readiness-contributors">
+            <!-- Readiness contributors populated by JS -->
+          </div>
+        </div>
+
+        <!-- Activity Score -->
+        <div class="metric-card wide">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon steps"><i class="fas fa-person-walking"></i></span>
+              Activity
+            </span>
+            <span id="activity-status" class="metric-status hidden">Good</span>
+          </div>
+          <div class="metric-value" id="activity-score">--</div>
+          <div class="contributors-grid" id="activity-contributors">
+            <!-- Activity contributors populated by JS -->
+          </div>
         </div>
 
         <!-- Resting HR -->
         <div class="metric-card">
           <div class="metric-header">
             <span class="metric-label">
-              <span class="metric-icon hr"><i class="fas fa-heartbeat"></i></span>
-              Resting HR
+              <span class="metric-icon hr"><i class="fas fa-heart-pulse"></i></span>
+              Resting Heart Rate
             </span>
           </div>
-          <div class="metric-value" id="resting-hr">--<span class="metric-unit">BPM</span></div>
-          <div class="metric-footer">Heart rate during sleep</div>
+          <div class="metric-value" id="resting-hr">--<span class="metric-unit">bpm</span></div>
+          <div class="metric-footer">Lowest heart rate during sleep</div>
         </div>
 
         <!-- HRV -->
@@ -499,11 +608,23 @@
           <div class="metric-header">
             <span class="metric-label">
               <span class="metric-icon hrv"><i class="fas fa-wave-square"></i></span>
-              HRV
+              Heart Rate Variability
             </span>
           </div>
           <div class="metric-value" id="hrv">--<span class="metric-unit">ms</span></div>
-          <div class="metric-footer">Heart rate variability (recovery indicator)</div>
+          <div class="metric-footer">Recovery indicator (higher = better)</div>
+        </div>
+
+        <!-- Temperature -->
+        <div class="metric-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon temp"><i class="fas fa-temperature-half"></i></span>
+              Temperature Deviation
+            </span>
+          </div>
+          <div class="metric-value" id="temp-deviation">--<span class="metric-unit">°C</span></div>
+          <div class="metric-footer">Body temp vs baseline</div>
         </div>
 
         <!-- Steps -->
@@ -515,7 +636,7 @@
             </span>
           </div>
           <div class="metric-value" id="steps">--</div>
-          <div class="metric-footer">Daily step count</div>
+          <div class="metric-footer" id="steps-footer">Daily step count</div>
         </div>
 
         <!-- Active Calories -->
@@ -527,7 +648,7 @@
             </span>
           </div>
           <div class="metric-value" id="calories">--<span class="metric-unit">kcal</span></div>
-          <div class="metric-footer">Calories burned through activity</div>
+          <div class="metric-footer" id="calories-footer">Burned through activity</div>
         </div>
       </div>
     </main>
@@ -544,10 +665,11 @@
       // Oura public data endpoint
       const DATA_URL = '/oura_public.json';
 
-      // Status thresholds for sleep/readiness scores
+      // Status thresholds for scores
       const STATUS_THRESHOLDS = {
         sleep: { good: 80, fair: 60 },
         readiness: { good: 80, fair: 60 },
+        activity: { good: 80, fair: 60 },
       };
 
       /**
@@ -640,6 +762,64 @@
       }
 
       /**
+       * Render a contributor item with a progress bar
+       * @param {string} label - Display label
+       * @param {number|null} value - Score value (0-100)
+       * @returns {string} HTML string
+       */
+      function renderContributor(label, value) {
+        if (value === null || value === undefined) {
+          return `
+            <div class="contributor-item">
+              <span class="contributor-label">${label}</span>
+              <div class="contributor-bar-container">
+                <div class="contributor-bar"><div class="contributor-bar-fill" style="width: 0%"></div></div>
+                <span class="contributor-value null">--</span>
+              </div>
+            </div>
+          `;
+        }
+
+        const cls = getStatusClass(value, 'sleep'); // Use sleep thresholds for all
+        return `
+          <div class="contributor-item">
+            <span class="contributor-label">${label}</span>
+            <div class="contributor-bar-container">
+              <div class="contributor-bar"><div class="contributor-bar-fill ${cls}" style="width: ${value}%"></div></div>
+              <span class="contributor-value">${value}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      /**
+       * Render all contributors for a category
+       * @param {string} containerId - Element ID to populate
+       * @param {Object} contributors - Map of label -> value
+       */
+      function renderContributors(containerId, contributors) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        const html = Object.entries(contributors)
+          .map(([label, value]) => renderContributor(label, value))
+          .join('');
+
+        container.innerHTML = html;
+      }
+
+      /**
+       * Format temperature with sign
+       * @param {number|null} value
+       * @returns {string}
+       */
+      function formatTemp(value) {
+        if (value === null || value === undefined) return 'No data';
+        const sign = value > 0 ? '+' : '';
+        return `${sign}${value}°C`;
+      }
+
+      /**
        * Load health data from JSON
        */
       async function loadHealthData() {
@@ -669,17 +849,75 @@
             throw new Error('Invalid data structure');
           }
 
-          // Update metrics
+          // Update main scores
           updateMetric('sleep-score', data.sleepScore);
           updateMetric('readiness-score', data.readinessScore);
-          updateMetric('resting-hr', data.restingHrBpm, '<span class="metric-unit">BPM</span>');
+          updateMetric('activity-score', data.activityScore);
+          updateMetric('resting-hr', data.restingHrBpm, '<span class="metric-unit">bpm</span>');
           updateMetric('hrv', data.hrvMs, '<span class="metric-unit">ms</span>');
           updateMetric('steps', data.steps);
           updateMetric('calories', data.activeCalories, '<span class="metric-unit">kcal</span>');
 
+          // Update temperature with special formatting
+          const tempEl = document.getElementById('temp-deviation');
+          if (tempEl) {
+            if (data.tempDeviation !== null && data.tempDeviation !== undefined) {
+              const sign = data.tempDeviation > 0 ? '+' : '';
+              tempEl.innerHTML = `${sign}${data.tempDeviation}<span class="metric-unit">°C</span>`;
+              tempEl.classList.remove('null');
+            } else {
+              tempEl.textContent = 'No data';
+              tempEl.classList.add('null');
+            }
+          }
+
+          // Update footers with targets if available
+          if (data.steps !== null && data.metersToTarget !== null) {
+            const stepsFooter = document.getElementById('steps-footer');
+            if (stepsFooter) stepsFooter.textContent = `Target: ${data.metersToTarget}m remaining`;
+          }
+          if (data.activeCalories !== null && data.targetCalories !== null) {
+            const calFooter = document.getElementById('calories-footer');
+            if (calFooter) calFooter.textContent = `Target: ${data.targetCalories} kcal`;
+          }
+
+          // Render sleep contributors
+          renderContributors('sleep-contributors', {
+            'Deep Sleep': data.sleepDeep,
+            'REM Sleep': data.sleepRem,
+            'Efficiency': data.sleepEfficiency,
+            'Latency': data.sleepLatency,
+            'Restfulness': data.sleepRestfulness,
+            'Timing': data.sleepTiming,
+            'Total Sleep': data.sleepTotal,
+          });
+
+          // Render readiness contributors
+          renderContributors('readiness-contributors', {
+            'Activity Balance': data.readinessActivityBalance,
+            'Body Temperature': data.readinessBodyTemp,
+            'HRV Balance': data.readinessHrvBalance,
+            'Sleep Balance': data.readinessSleepBalance,
+            'Sleep Regularity': data.readinessSleepRegularity,
+            'Recovery Index': data.readinessRecoveryIndex,
+            'Resting HR': data.readinessRestingHr,
+            'Previous Night': data.readinessPreviousNight,
+          });
+
+          // Render activity contributors
+          renderContributors('activity-contributors', {
+            'Meet Targets': data.activityMeetTargets,
+            'Move Hourly': data.activityMoveHour,
+            'Stay Active': data.activityStayActive,
+            'Recovery Time': data.activityRecoveryTime,
+            'Training Freq': data.activityTrainingFreq,
+            'Training Vol': data.activityTrainingVol,
+          });
+
           // Update status badges
           updateStatus('sleep-status', data.sleepScore, 'sleep');
           updateStatus('readiness-status', data.readinessScore, 'readiness');
+          updateStatus('activity-status', data.activityScore, 'activity');
 
           // Update last updated time
           if (data.lastUpdatedIso) {
