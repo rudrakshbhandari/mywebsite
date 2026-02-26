@@ -1315,8 +1315,8 @@
         // --- Sleep Duration Breakdown (stacked bars) ---
         const hasSleepDurations = byDay.some((d) => d.totalSleepDuration != null && d.totalSleepDuration > 0);
         if (hasSleepDurations) {
-          const totalDurations = byDay.map(d => d.totalSleepDuration).filter(v => v != null && v > 0);
-          const maxDuration = Math.max(...totalDurations);
+          // Fixed max of 9 hours (32400 seconds) so bars are proportional to a full night's sleep
+          const maxDuration = 32400;
 
           html += `
             <div class="trend-card">
@@ -1331,7 +1331,7 @@
               </div>
               <div class="trend-chart-row">
                 <div class="trend-y-axis">
-                  <span>${formatDurationShort(maxDuration)}</span>
+                  <span>9h</span>
                   <span>0h</span>
                 </div>
                 <div class="trend-bars">
@@ -1340,7 +1340,7 @@
                     const deep = d.deepSleepDuration || 0;
                     const rem = d.remSleepDuration || 0;
                     const light = d.lightSleepDuration || 0;
-                    const barPct = total > 0 && maxDuration > 0 ? (total / maxDuration) * 100 : 0;
+                    const barPct = total > 0 ? (total / maxDuration) * 100 : 0;
 
                     const deepPct = total > 0 ? (deep / total) * 100 : 0;
                     const remPct = total > 0 ? (rem / total) * 100 : 0;
@@ -1373,39 +1373,36 @@
             </div>
           `;
         } else {
-          // Fallback: show sleep score bars if no duration data
+          // Fallback: show sleep score bars if no duration data (0-100 scale)
           const sleepScores = byDay.map(d => d.sleepScore).filter(v => v != null);
           if (sleepScores.length > 0) {
-            const sleepMin = Math.max(0, Math.min(...sleepScores) - 5);
-            const sleepMax = Math.min(100, Math.max(...sleepScores) + 5);
             html += renderSimpleTrendCard(byDay, {
               label: 'Sleep Score', icon: 'fa-moon', colorClass: 'sleep',
-              getValue: (d) => d.sleepScore, min: sleepMin, max: sleepMax,
+              getValue: (d) => d.sleepScore, min: 0, max: 100,
               format: (v) => (v != null ? v : '--'),
             }, formatDay);
           }
         }
 
-        // --- Readiness ---
+        // --- Readiness (0-100 scale) ---
         const readinessScores = byDay.map(d => d.readinessScore).filter(v => v != null);
         if (readinessScores.length > 0) {
-          const readinessMin = Math.max(0, Math.min(...readinessScores) - 5);
-          const readinessMax = Math.min(100, Math.max(...readinessScores) + 5);
           html += renderSimpleTrendCard(byDay, {
             label: 'Readiness', icon: 'fa-battery-three-quarters', colorClass: 'readiness',
-            getValue: (d) => d.readinessScore, min: readinessMin, max: readinessMax,
+            getValue: (d) => d.readinessScore, min: 0, max: 100,
             format: (v) => (v != null ? v : '--'),
           }, formatDay);
         }
 
-        // --- Steps ---
+        // --- Steps (0 to rounded-up max, in 2k increments) ---
         const stepsValues = byDay.map(d => d.steps).filter(v => v != null && v > 0);
         if (stepsValues.length > 0) {
-          const stepsMin = Math.max(0, Math.min(...stepsValues) - 500);
-          const stepsMax = Math.max(...stepsValues) + 500;
+          const rawMax = Math.max(...stepsValues);
+          // Round up to nearest 2000 for a clean Y-axis max
+          const stepsMax = Math.ceil(rawMax / 2000) * 2000;
           html += renderSimpleTrendCard(byDay, {
             label: 'Steps', icon: 'fa-shoe-prints', colorClass: 'steps',
-            getValue: (d) => d.steps, min: stepsMin, max: stepsMax,
+            getValue: (d) => d.steps, min: 0, max: stepsMax,
             format: (v) => (v != null ? (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v) : '--'),
             isSteps: true,
           }, formatDay);
