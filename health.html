@@ -250,6 +250,68 @@
       .metric-icon.steps { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
       .metric-icon.calories { background: rgba(245, 158, 11, 0.2); color: #fbbf24; }
       .metric-icon.temp { background: rgba(251, 113, 133, 0.2); color: #fb7185; }
+      .metric-icon.timeline { background: rgba(45, 212, 191, 0.2); color: #5eead4; }
+      .metric-icon.spo2 { background: rgba(56, 189, 248, 0.2); color: #7dd3fc; }
+      .metric-icon.workout { background: rgba(168, 85, 247, 0.2); color: #c4b5fd; }
+
+      .timeline-chart {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .timeline-svg {
+        width: 100%;
+        height: 180px;
+        display: block;
+      }
+
+      .timeline-grid-line {
+        stroke: var(--border-color);
+        stroke-width: 1;
+        opacity: 0.45;
+      }
+
+      .timeline-line {
+        fill: none;
+        stroke: #5eead4;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .timeline-fill {
+        fill: rgba(94, 234, 212, 0.14);
+      }
+
+      .timeline-stats {
+        margin-top: 0.75rem;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+
+      .timeline-stat {
+        background: rgba(15, 23, 42, 0.45);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 0.5rem 0.75rem;
+      }
+
+      .timeline-stat-label {
+        display: block;
+        color: var(--text-secondary);
+        font-size: 0.7rem;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .timeline-stat-value {
+        display: block;
+        color: var(--text-light);
+        font-size: 1rem;
+        font-weight: 600;
+      }
 
       /* Contributors Grid (nested inside cards) */
       .contributors-grid {
@@ -497,6 +559,10 @@
           font-size: 2rem;
         }
 
+        .timeline-stats {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
         footer {
           flex-direction: column;
           text-align: center;
@@ -577,7 +643,7 @@
         </div>
 
         <!-- Activity Score -->
-        <div class="metric-card wide">
+        <div class="metric-card wide" id="activity-card">
           <div class="metric-header">
             <span class="metric-label">
               <span class="metric-icon steps"><i class="fas fa-person-walking"></i></span>
@@ -591,8 +657,46 @@
           </div>
         </div>
 
+        <!-- Heart Rate Timeline -->
+        <div class="metric-card wide" id="heart-rate-timeline-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon timeline"><i class="fas fa-chart-line"></i></span>
+              Heart Rate Timeline
+            </span>
+          </div>
+          <div class="timeline-chart">
+            <svg id="heart-rate-timeline" class="timeline-svg" viewBox="0 0 1000 180" preserveAspectRatio="none">
+              <line class="timeline-grid-line" x1="0" y1="30" x2="1000" y2="30"></line>
+              <line class="timeline-grid-line" x1="0" y1="90" x2="1000" y2="90"></line>
+              <line class="timeline-grid-line" x1="0" y1="150" x2="1000" y2="150"></line>
+              <path id="heart-rate-fill" class="timeline-fill" d=""></path>
+              <path id="heart-rate-line" class="timeline-line" d=""></path>
+            </svg>
+          </div>
+          <div class="timeline-stats">
+            <div class="timeline-stat">
+              <span class="timeline-stat-label">Min</span>
+              <span class="timeline-stat-value" id="heart-rate-min">--</span>
+            </div>
+            <div class="timeline-stat">
+              <span class="timeline-stat-label">Avg</span>
+              <span class="timeline-stat-value" id="heart-rate-avg">--</span>
+            </div>
+            <div class="timeline-stat">
+              <span class="timeline-stat-label">Max</span>
+              <span class="timeline-stat-value" id="heart-rate-max">--</span>
+            </div>
+            <div class="timeline-stat">
+              <span class="timeline-stat-label">Latest</span>
+              <span class="timeline-stat-value" id="heart-rate-latest">--</span>
+            </div>
+          </div>
+          <div class="metric-footer" id="heart-rate-timeline-footer">Intraday heart rate trend</div>
+        </div>
+
         <!-- Resting HR -->
-        <div class="metric-card">
+        <div class="metric-card" id="resting-hr-card">
           <div class="metric-header">
             <span class="metric-label">
               <span class="metric-icon hr"><i class="fas fa-heart-pulse"></i></span>
@@ -604,7 +708,7 @@
         </div>
 
         <!-- HRV -->
-        <div class="metric-card">
+        <div class="metric-card" id="hrv-card">
           <div class="metric-header">
             <span class="metric-label">
               <span class="metric-icon hrv"><i class="fas fa-wave-square"></i></span>
@@ -616,7 +720,7 @@
         </div>
 
         <!-- Temperature -->
-        <div class="metric-card">
+        <div class="metric-card" id="temp-card">
           <div class="metric-header">
             <span class="metric-label">
               <span class="metric-icon temp"><i class="fas fa-temperature-half"></i></span>
@@ -628,7 +732,7 @@
         </div>
 
         <!-- Steps -->
-        <div class="metric-card">
+        <div class="metric-card" id="steps-card">
           <div class="metric-header">
             <span class="metric-label">
               <span class="metric-icon steps"><i class="fas fa-shoe-prints"></i></span>
@@ -640,7 +744,7 @@
         </div>
 
         <!-- Active Calories -->
-        <div class="metric-card">
+        <div class="metric-card" id="calories-card">
           <div class="metric-header">
             <span class="metric-label">
               <span class="metric-icon calories"><i class="fas fa-fire"></i></span>
@@ -649,6 +753,30 @@
           </div>
           <div class="metric-value" id="calories">--<span class="metric-unit">kcal</span></div>
           <div class="metric-footer" id="calories-footer">Burned through activity</div>
+        </div>
+
+        <!-- Blood Oxygen -->
+        <div class="metric-card" id="spo2-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon spo2"><i class="fas fa-lungs"></i></span>
+              SpO2
+            </span>
+          </div>
+          <div class="metric-value" id="spo2">--<span class="metric-unit">%</span></div>
+          <div class="metric-footer" id="spo2-footer">Average blood oxygen level</div>
+        </div>
+
+        <!-- Workouts -->
+        <div class="metric-card" id="workout-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon workout"><i class="fas fa-dumbbell"></i></span>
+              Workouts
+            </span>
+          </div>
+          <div class="metric-value" id="workout-count">--</div>
+          <div class="metric-footer" id="workout-footer">Sessions logged</div>
         </div>
       </div>
     </main>
@@ -809,14 +937,76 @@
       }
 
       /**
-       * Format temperature with sign
-       * @param {number|null} value
-       * @returns {string}
+       * Show or hide a metric card
+       * @param {string} cardId
+       * @param {boolean} visible
        */
-      function formatTemp(value) {
-        if (value === null || value === undefined) return 'No data';
-        const sign = value > 0 ? '+' : '';
-        return `${sign}${value}°C`;
+      function setCardVisibility(cardId, visible) {
+        const card = document.getElementById(cardId);
+        if (!card) return;
+        card.classList.toggle('hidden', !visible);
+      }
+
+      /**
+       * Render heart-rate time-series as SVG path
+       * @param {Array<{t:string,bpm:number}>} series
+       * @param {Object} data
+       */
+      function renderHeartRateTimeline(series, data) {
+        const line = document.getElementById('heart-rate-line');
+        const fill = document.getElementById('heart-rate-fill');
+        const footer = document.getElementById('heart-rate-timeline-footer');
+
+        if (!line || !fill || !Array.isArray(series) || series.length < 2) {
+          setCardVisibility('heart-rate-timeline-card', false);
+          return;
+        }
+
+        setCardVisibility('heart-rate-timeline-card', true);
+
+        const width = 1000;
+        const height = 180;
+        const top = 12;
+        const bottom = 162;
+        const bpms = series.map((point) => Number(point.bpm)).filter((value) => Number.isFinite(value));
+
+        if (bpms.length < 2) {
+          setCardVisibility('heart-rate-timeline-card', false);
+          return;
+        }
+
+        const min = Math.min(...bpms);
+        const max = Math.max(...bpms);
+        const range = Math.max(max - min, 1);
+        const points = series
+          .map((point, index) => {
+            const x = (index / (series.length - 1)) * width;
+            const y = bottom - ((Number(point.bpm) - min) / range) * (bottom - top);
+            return `${x.toFixed(2)},${y.toFixed(2)}`;
+          })
+          .join(' ');
+
+        const pointList = points.split(' ');
+        const linePath = `M ${pointList.join(' L ')}`;
+        const fillPath = `${linePath} L ${width},${height} L 0,${height} Z`;
+
+        line.setAttribute('d', linePath);
+        fill.setAttribute('d', fillPath);
+
+        const minEl = document.getElementById('heart-rate-min');
+        const avgEl = document.getElementById('heart-rate-avg');
+        const maxEl = document.getElementById('heart-rate-max');
+        const latestEl = document.getElementById('heart-rate-latest');
+        if (minEl) minEl.textContent = data.heartRateMinBpm !== null ? `${data.heartRateMinBpm} bpm` : '--';
+        if (avgEl) avgEl.textContent = data.heartRateAvgBpm !== null ? `${data.heartRateAvgBpm} bpm` : '--';
+        if (maxEl) maxEl.textContent = data.heartRateMaxBpm !== null ? `${data.heartRateMaxBpm} bpm` : '--';
+        if (latestEl)
+          latestEl.textContent = data.heartRateLatestBpm !== null ? `${data.heartRateLatestBpm} bpm` : '--';
+
+        if (footer) {
+          const sourceDay = data.heartRateSeriesDay ? `Source day: ${data.heartRateSeriesDay}` : 'Intraday trend';
+          footer.textContent = `${sourceDay} • ${series.length} points`;
+        }
       }
 
       /**
@@ -857,6 +1047,8 @@
           updateMetric('hrv', data.hrvMs, '<span class="metric-unit">ms</span>');
           updateMetric('steps', data.steps);
           updateMetric('calories', data.activeCalories, '<span class="metric-unit">kcal</span>');
+          updateMetric('spo2', data.spo2Average, '<span class="metric-unit">%</span>');
+          updateMetric('workout-count', data.workoutCount);
 
           // Update temperature with special formatting
           const tempEl = document.getElementById('temp-deviation');
@@ -879,6 +1071,27 @@
           if (data.activeCalories !== null && data.targetCalories !== null) {
             const calFooter = document.getElementById('calories-footer');
             if (calFooter) calFooter.textContent = `Target: ${data.targetCalories} kcal`;
+          }
+          const spo2Footer = document.getElementById('spo2-footer');
+          if (spo2Footer) {
+            if (data.spo2BreathingDisturbance !== null && data.spo2BreathingDisturbance !== undefined) {
+              spo2Footer.textContent = `Breathing disturbance index: ${data.spo2BreathingDisturbance}`;
+            } else {
+              spo2Footer.textContent = 'Average blood oxygen level';
+            }
+          }
+          const workoutFooter = document.getElementById('workout-footer');
+          if (workoutFooter) {
+            if (
+              data.workoutMinutes !== null &&
+              data.workoutMinutes !== undefined &&
+              data.workoutCalories !== null &&
+              data.workoutCalories !== undefined
+            ) {
+              workoutFooter.textContent = `${data.workoutMinutes} min • ${data.workoutCalories} kcal`;
+            } else {
+              workoutFooter.textContent = 'Sessions logged';
+            }
           }
 
           // Render sleep contributors
@@ -914,10 +1127,32 @@
             'Training Vol': data.activityTrainingVol,
           });
 
+          renderHeartRateTimeline(data.heartRateSeries, data);
+
           // Update status badges
           updateStatus('sleep-status', data.sleepScore, 'sleep');
           updateStatus('readiness-status', data.readinessScore, 'readiness');
           updateStatus('activity-status', data.activityScore, 'activity');
+
+          // Hide cards with no meaningful data to keep the page clean
+          const hasActivityData =
+            data.activityScore !== null ||
+            data.steps !== null ||
+            data.activeCalories !== null ||
+            (typeof data.workoutCount === 'number' && data.workoutCount > 0);
+          setCardVisibility('activity-card', hasActivityData);
+          setCardVisibility('steps-card', data.steps !== null);
+          setCardVisibility('calories-card', data.activeCalories !== null);
+          setCardVisibility('resting-hr-card', data.restingHrBpm !== null);
+          setCardVisibility('hrv-card', data.hrvMs !== null);
+          setCardVisibility(
+            'spo2-card',
+            data.spo2Average !== null || data.spo2BreathingDisturbance !== null
+          );
+          setCardVisibility(
+            'workout-card',
+            typeof data.workoutCount === 'number' && data.workoutCount > 0
+          );
 
           // Update last updated time
           if (data.lastUpdatedIso) {

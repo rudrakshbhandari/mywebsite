@@ -220,6 +220,48 @@ async function fetchActivityData(token, date) {
 }
 
 /**
+ * Fetch heart rate time-series data from Oura API
+ * @param {string} token - Access token
+ * @param {string} date - Date in YYYY-MM-DD format
+ * @returns {Promise<Array>}
+ */
+async function fetchHeartRateSeries(token, date) {
+  const url = `https://${API_BASE}/v2/usercollection/heartrate?start_date=${date}&end_date=${date}`;
+  const response = await httpsRequest(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return Array.isArray(response.data) ? response.data : [];
+}
+
+/**
+ * Fetch SpO2 data from Oura API
+ * @param {string} token - Access token
+ * @param {string} date - Date in YYYY-MM-DD format
+ * @returns {Promise<Object|null>}
+ */
+async function fetchSpo2Data(token, date) {
+  const url = `https://${API_BASE}/v2/usercollection/spo2?start_date=${date}&end_date=${date}`;
+  const response = await httpsRequest(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return response.data?.[0] || null;
+}
+
+/**
+ * Fetch workout data from Oura API
+ * @param {string} token - Access token
+ * @param {string} date - Date in YYYY-MM-DD format
+ * @returns {Promise<Array>}
+ */
+async function fetchWorkouts(token, date) {
+  const url = `https://${API_BASE}/v2/usercollection/workout?start_date=${date}&end_date=${date}`;
+  const response = await httpsRequest(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return Array.isArray(response.data) ? response.data : [];
+}
+
+/**
  * Load existing public data if available
  * @returns {Object|null}
  */
@@ -246,6 +288,60 @@ function roundOrNull(value) {
     return null;
   }
   return Math.round(Number(value));
+}
+
+/**
+ * Return first non-null / non-undefined value
+ * @param  {...any} values
+ * @returns {any}
+ */
+function firstDefined(...values) {
+  for (const value of values) {
+    if (value !== null && value !== undefined) {
+      return value;
+    }
+  }
+  return null;
+}
+
+/**
+ * Normalize heart rate record from Oura endpoint
+ * @param {Object} item
+ * @returns {{timestamp: string, bpm: number}|null}
+ */
+function normalizeHeartRatePoint(item) {
+  if (!item || typeof item !== 'object') {
+    return null;
+  }
+  const bpmRaw = firstDefined(item.bpm, item.beats_per_minute, item.heart_rate, item.hr, item.value);
+  const timestamp = firstDefined(item.timestamp, item.datetime, item.time, item.ts);
+  const bpm = Number(bpmRaw);
+  if (!timestamp || !Number.isFinite(bpm)) {
+    return null;
+  }
+  return { timestamp: String(timestamp), bpm: Math.round(bpm) };
+}
+
+/**
+ * Downsample points to max count while keeping shape
+ * @param {Array<{timestamp: string, bpm: number}>} points
+ * @param {number} maxPoints
+ * @returns {Array<{timestamp: string, bpm: number}>}
+ */
+function downsampleSeries(points, maxPoints = 96) {
+  if (!Array.isArray(points) || points.length <= maxPoints) {
+    return points;
+  }
+  const step = Math.ceil(points.length / maxPoints);
+  const sampled = [];
+  for (let i = 0; i < points.length; i += step) {
+    sampled.push(points[i]);
+  }
+  const last = points[points.length - 1];
+  if (sampled[sampled.length - 1] !== last) {
+    sampled.push(last);
+  }
+  return sampled;
 }
 
 /**
@@ -298,13 +394,13 @@ async function main() {
       }
     }
 
-    // Step 2: Determine dates to try (today first, then yesterday as fallback)
+    // Step 2: Determine dates to try (today first, then yesterday for fallback)
     const todayPT = getTodayPT();
     const yesterdayPT = getYesterdayPT();
 
-    // Step 3: Fetch today's data first
-    console.log(`Fetching data for today (${todayPT})...`);
-    let [sleepData, readinessData, activityData] = await Promise.all([
+    // Step 3: Fetch today + yesterday so missing fields can still be populated
+    console.log(`Fetching data for today (${todayPT}) and fallback (${yesterdayPT})...`);
+    const [sleepToday, readinessToday, activityToday] = await Promise.all([
       fetchSleepData(accessToken, todayPT).catch((e) => {
         console.warn('Sleep fetch failed:', e.message);
         return null;
@@ -318,35 +414,52 @@ async function main() {
         return null;
       }),
     ]);
-
-    // Check if we got any data for today
-    const hasTodayData =
-      sleepData?.score !== null && sleepData?.score !== undefined ||
-      readinessData?.score !== null && readinessData?.score !== undefined ||
-      activityData?.steps !== null && activityData?.steps !== undefined;
-
-    // If no data for today, try yesterday as fallback
-    let usingFallbackDate = false;
-    if (!hasTodayData) {
-      console.log(`No data for today, trying yesterday (${yesterdayPT})...`);
-      [sleepData, readinessData, activityData] = await Promise.all([
-        fetchSleepData(accessToken, yesterdayPT).catch(() => null),
-        fetchReadinessData(accessToken, yesterdayPT).catch(() => null),
-        fetchActivityData(accessToken, yesterdayPT).catch(() => null),
+    const [sleepYesterday, readinessYesterday, activityYesterday] = await Promise.all([
+      fetchSleepData(accessToken, yesterdayPT).catch(() => null),
+      fetchReadinessData(accessToken, yesterdayPT).catch(() => null),
+      fetchActivityData(accessToken, yesterdayPT).catch(() => null),
+    ]);
+    const [heartRateToday, heartRateYesterday, spo2Today, spo2Yesterday, workoutsToday, workoutsYesterday] =
+      await Promise.all([
+        fetchHeartRateSeries(accessToken, todayPT).catch(() => []),
+        fetchHeartRateSeries(accessToken, yesterdayPT).catch(() => []),
+        fetchSpo2Data(accessToken, todayPT).catch(() => null),
+        fetchSpo2Data(accessToken, yesterdayPT).catch(() => null),
+        fetchWorkouts(accessToken, todayPT).catch(() => []),
+        fetchWorkouts(accessToken, yesterdayPT).catch(() => []),
       ]);
-      usingFallbackDate = true;
-    }
 
     // Step 4: Determine which date we're using and build output
     const now = new Date();
+    const sleepData = sleepToday || sleepYesterday;
+    const readinessData = readinessToday || readinessYesterday;
+    const activityData = activityToday || activityYesterday;
 
-    // Use yesterday's date if we fell back to it
-    const dataDay = usingFallbackDate ? yesterdayPT : todayPT;
+    // Use today when available; otherwise fallback
+    const dataDay = sleepToday || readinessToday || activityToday ? todayPT : yesterdayPT;
 
     // Extract contributor data with safe defaults
     const sleepContributors = sleepData?.contributors || {};
     const readinessContributors = readinessData?.contributors || {};
     const activityContributors = activityData?.contributors || {};
+    const heartRateRawSeries = heartRateToday.length > 0 ? heartRateToday : heartRateYesterday;
+    const heartRateSeries = downsampleSeries(
+      heartRateRawSeries.map(normalizeHeartRatePoint).filter(Boolean),
+      96
+    );
+    const heartRateStats =
+      heartRateSeries.length > 0
+        ? {
+            min: Math.min(...heartRateSeries.map((p) => p.bpm)),
+            max: Math.max(...heartRateSeries.map((p) => p.bpm)),
+            avg: roundOrNull(
+              heartRateSeries.reduce((sum, point) => sum + point.bpm, 0) / heartRateSeries.length
+            ),
+            latest: heartRateSeries[heartRateSeries.length - 1].bpm,
+          }
+        : null;
+    const spo2Data = spo2Today || spo2Yesterday;
+    const workouts = workoutsToday.length > 0 ? workoutsToday : workoutsYesterday;
 
     const output = {
       lastUpdatedIso: now.toISOString(),
@@ -381,9 +494,28 @@ async function main() {
         : null,
 
       // Resting heart rate in BPM
-      restingHrBpm: roundOrNull(readinessData?.resting_heart_rate ?? sleepData?.heart_rate?.resting),
+      restingHrBpm: roundOrNull(
+        firstDefined(
+          readinessData?.resting_heart_rate,
+          readinessContributors.resting_heart_rate,
+          sleepData?.heart_rate?.resting
+        )
+      ),
       // HRV in milliseconds
-      hrvMs: roundOrNull(readinessData?.hrv_average_milli ?? sleepData?.average_hrv),
+      hrvMs: roundOrNull(
+        firstDefined(
+          readinessData?.hrv_average_milli,
+          readinessData?.hrv_average,
+          sleepData?.average_hrv
+        )
+      ),
+      // HR time-series and summary
+      heartRateSeriesDay: heartRateToday.length > 0 ? todayPT : heartRateYesterday.length > 0 ? yesterdayPT : null,
+      heartRateSeries: heartRateSeries.map((point) => ({ t: point.timestamp, bpm: point.bpm })),
+      heartRateMinBpm: heartRateStats?.min ?? null,
+      heartRateMaxBpm: heartRateStats?.max ?? null,
+      heartRateAvgBpm: heartRateStats?.avg ?? null,
+      heartRateLatestBpm: heartRateStats?.latest ?? null,
 
       // Activity score (0-100)
       activityScore: roundOrNull(activityData?.score),
@@ -403,6 +535,19 @@ async function main() {
       highActivityMinutes: roundOrNull(activityData?.high_activity_time),
       mediumActivityMinutes: roundOrNull(activityData?.medium_activity_time),
       lowActivityMinutes: roundOrNull(activityData?.low_activity_time),
+
+      // Additional available datapoints
+      spo2Average: roundOrNull(firstDefined(spo2Data?.average, spo2Data?.average_spo2, spo2Data?.spo2_percentage)),
+      spo2BreathingDisturbance: roundOrNull(
+        firstDefined(spo2Data?.breathing_disturbance_index, spo2Data?.breathing_disturbance)
+      ),
+      workoutCount: workouts.length,
+      workoutMinutes: roundOrNull(
+        workouts.reduce((sum, workout) => sum + Number(firstDefined(workout.duration, 0)), 0)
+      ),
+      workoutCalories: roundOrNull(
+        workouts.reduce((sum, workout) => sum + Number(firstDefined(workout.calories, 0)), 0)
+      ),
     };
 
     // Step 5: Check if we got any data (today or yesterday)
@@ -429,9 +574,9 @@ async function main() {
       process.exit(1);
     }
 
-    // Log if we're showing yesterday's data
+    // Log if fallback data was used
     if (output.day === yesterdayPT) {
-      console.log('Note: Showing yesterday\'s data (today not yet synced)');
+      console.log('Note: Showing fallback day for core metrics (today not yet synced)');
     }
 
     // Step 6: Write JSON file
@@ -468,6 +613,9 @@ async function main() {
     console.log(`Activity Score: ${output.activityScore ?? 'N/A'}`);
     console.log(`Steps: ${output.steps ?? 'N/A'}`);
     console.log(`Active Calories: ${output.activeCalories ?? 'N/A'}`);
+    console.log(`HR Timeline Points: ${output.heartRateSeries.length}`);
+    console.log(`SpO2 Average: ${output.spo2Average ?? 'N/A'}`);
+    console.log(`Workouts: ${output.workoutCount ?? 0}`);
     console.log('---------------');
 
     process.exit(0);
