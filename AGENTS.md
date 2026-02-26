@@ -40,6 +40,15 @@ When working on this codebase, follow these workflow rules:
   - `fix(contact): resolve form validation issue`
   - `style(about): increase spacing before experience section`
 
+## Proactive Automation
+
+**Run scripts yourself when possible.** If the codebase contains scripts/tools that can diagnose or fix an issue:
+
+- **Don't wait for permission** — If a diagnostic script exists (e.g., `diagnose-*.mjs`, `test-*.mjs`), run it immediately to gather information
+- **Run fix scripts** — If a script can resolve the issue (e.g., `get-oura-token.mjs` for OAuth issues), execute it rather than providing manual instructions
+- **Use available automation** — Prefer automated solutions over manual steps whenever tools are available in `scripts/` or elsewhere
+- **Handle interactive prompts** — If a script is interactive, create a non-interactive wrapper or pipe inputs when possible, rather than asking the user to run it themselves
+
 ## After Completing a Task
 
 1. **Commit** all changes with a conventional commit message.
