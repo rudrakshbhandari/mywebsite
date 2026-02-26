@@ -173,74 +173,43 @@ async function refreshAccessToken(clientId, clientSecret, refreshToken) {
  */
 function getTodayPT() {
   const now = new Date();
-  // Convert to PT (UTC-7 or UTC-8 depending on DST)
   const ptOffset = -7 * 60; // PDT offset (use -8 for PST)
   const ptTime = new Date(now.getTime() + (now.getTimezoneOffset() + ptOffset) * 60000);
   return ptTime.toISOString().split('T')[0];
 }
 
 /**
- * Get yesterday's date in YYYY-MM-DD format in PT timezone
+ * Get date N days ago in YYYY-MM-DD format in PT timezone
+ * @param {number} daysAgo
  * @returns {string}
  */
-function getYesterdayPT() {
+function getDateDaysAgoPT(daysAgo) {
   const now = new Date();
-  const ptOffset = -7 * 60; // PDT offset
+  const ptOffset = -7 * 60;
   const ptTime = new Date(now.getTime() + (now.getTimezoneOffset() + ptOffset) * 60000);
-  ptTime.setDate(ptTime.getDate() - 1);
+  ptTime.setDate(ptTime.getDate() - daysAgo);
   return ptTime.toISOString().split('T')[0];
 }
 
 /**
- * Fetch daily sleep data from Oura API
- * @param {string} token - Access token
- * @param {string} date - Date in YYYY-MM-DD format
- * @returns {Promise<Object|null>}
+ * Get date range for last 7 days (inclusive of today)
+ * @returns {{ startDate: string, endDate: string }}
  */
-async function fetchSleepData(token, date) {
-  const url = `https://${API_BASE}/v2/usercollection/daily_sleep?start_date=${date}&end_date=${date}`;
-  const response = await httpsRequest(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data?.[0] || null;
+function getLast7DaysRange() {
+  const endDate = getTodayPT();
+  const startDate = getDateDaysAgoPT(6);
+  return { startDate, endDate };
 }
 
 /**
- * Fetch daily readiness data from Oura API
+ * Fetch daily sleep data from Oura API (date range returns array)
  * @param {string} token - Access token
- * @param {string} date - Date in YYYY-MM-DD format
- * @returns {Promise<Object|null>}
- */
-async function fetchReadinessData(token, date) {
-  const url = `https://${API_BASE}/v2/usercollection/daily_readiness?start_date=${date}&end_date=${date}`;
-  const response = await httpsRequest(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data?.[0] || null;
-}
-
-/**
- * Fetch daily activity data from Oura API
- * @param {string} token - Access token
- * @param {string} date - Date in YYYY-MM-DD format
- * @returns {Promise<Object|null>}
- */
-async function fetchActivityData(token, date) {
-  const url = `https://${API_BASE}/v2/usercollection/daily_activity?start_date=${date}&end_date=${date}`;
-  const response = await httpsRequest(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return response.data?.[0] || null;
-}
-
-/**
- * Fetch heart rate time-series data from Oura API
- * @param {string} token - Access token
- * @param {string} date - Date in YYYY-MM-DD format
+ * @param {string} startDate - Start date YYYY-MM-DD
+ * @param {string} endDate - End date YYYY-MM-DD
  * @returns {Promise<Array>}
  */
-async function fetchHeartRateSeries(token, date) {
-  const url = `https://${API_BASE}/v2/usercollection/heartrate?start_date=${date}&end_date=${date}`;
+async function fetchSleepDataRange(token, startDate, endDate) {
+  const url = `https://${API_BASE}/v2/usercollection/daily_sleep?start_date=${startDate}&end_date=${endDate}`;
   const response = await httpsRequest(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -248,27 +217,74 @@ async function fetchHeartRateSeries(token, date) {
 }
 
 /**
- * Fetch SpO2 data from Oura API
+ * Fetch daily readiness data from Oura API (date range returns array)
  * @param {string} token - Access token
- * @param {string} date - Date in YYYY-MM-DD format
- * @returns {Promise<Object|null>}
+ * @param {string} startDate - Start date YYYY-MM-DD
+ * @param {string} endDate - End date YYYY-MM-DD
+ * @returns {Promise<Array>}
  */
-async function fetchSpo2Data(token, date) {
-  const url = `https://${API_BASE}/v2/usercollection/spo2?start_date=${date}&end_date=${date}`;
+async function fetchReadinessDataRange(token, startDate, endDate) {
+  const url = `https://${API_BASE}/v2/usercollection/daily_readiness?start_date=${startDate}&end_date=${endDate}`;
   const response = await httpsRequest(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
-  return response.data?.[0] || null;
+  return Array.isArray(response.data) ? response.data : [];
+}
+
+/**
+ * Fetch daily activity data from Oura API (date range returns array)
+ * @param {string} token - Access token
+ * @param {string} startDate - Start date YYYY-MM-DD
+ * @param {string} endDate - End date YYYY-MM-DD
+ * @returns {Promise<Array>}
+ */
+async function fetchActivityDataRange(token, startDate, endDate) {
+  const url = `https://${API_BASE}/v2/usercollection/daily_activity?start_date=${startDate}&end_date=${endDate}`;
+  const response = await httpsRequest(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return Array.isArray(response.data) ? response.data : [];
+}
+
+/**
+ * Fetch heart rate time-series data from Oura API
+ * @param {string} token - Access token
+ * @param {string} startDate - Start date YYYY-MM-DD
+ * @param {string} endDate - End date YYYY-MM-DD
+ * @returns {Promise<Array>}
+ */
+async function fetchHeartRateSeries(token, startDate, endDate) {
+  const url = `https://${API_BASE}/v2/usercollection/heartrate?start_date=${startDate}&end_date=${endDate}`;
+  const response = await httpsRequest(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return Array.isArray(response.data) ? response.data : [];
+}
+
+/**
+ * Fetch SpO2 data from Oura API (date range returns array of daily records)
+ * @param {string} token - Access token
+ * @param {string} startDate - Start date YYYY-MM-DD
+ * @param {string} endDate - End date YYYY-MM-DD
+ * @returns {Promise<Array>}
+ */
+async function fetchSpo2DataRange(token, startDate, endDate) {
+  const url = `https://${API_BASE}/v2/usercollection/spo2?start_date=${startDate}&end_date=${endDate}`;
+  const response = await httpsRequest(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return Array.isArray(response.data) ? response.data : [];
 }
 
 /**
  * Fetch workout data from Oura API
  * @param {string} token - Access token
- * @param {string} date - Date in YYYY-MM-DD format
+ * @param {string} startDate - Start date YYYY-MM-DD
+ * @param {string} endDate - End date YYYY-MM-DD
  * @returns {Promise<Array>}
  */
-async function fetchWorkouts(token, date) {
-  const url = `https://${API_BASE}/v2/usercollection/workout?start_date=${date}&end_date=${date}`;
+async function fetchWorkoutsRange(token, startDate, endDate) {
+  const url = `https://${API_BASE}/v2/usercollection/workout?start_date=${startDate}&end_date=${endDate}`;
   const response = await httpsRequest(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -319,7 +335,22 @@ function firstDefined(...values) {
 }
 
 /**
- * Normalize heart rate record from Oura endpoint
+ * Get date string from an Oura API record (handles various field names)
+ * @param {Object} record
+ * @returns {string|null}
+ */
+function getDateFromRecord(record) {
+  return firstDefined(
+    record.day,
+    record.date,
+    record.summary_date,
+    record.bedtime_start?.toString().split('T')[0]
+  );
+}
+
+/**
+ * Normalize heart rate record from Oura endpoint (handles various response shapes)
+ * Oura v2 may return: {bpm, timestamp}, {heart_rate, datetime}, {hr, ts}, etc.
  * @param {Object} item
  * @returns {{timestamp: string, bpm: number}|null}
  */
@@ -327,13 +358,59 @@ function normalizeHeartRatePoint(item) {
   if (!item || typeof item !== 'object') {
     return null;
   }
-  const bpmRaw = firstDefined(item.bpm, item.beats_per_minute, item.heart_rate, item.hr, item.value);
-  const timestamp = firstDefined(item.timestamp, item.datetime, item.time, item.ts);
+  const bpmRaw = firstDefined(
+    item.bpm,
+    item.beats_per_minute,
+    item.heart_rate,
+    item.hr,
+    item.value,
+    item.average_hr
+  );
+  const timestamp = firstDefined(
+    item.timestamp,
+    item.datetime,
+    item.time,
+    item.ts,
+    item.recorded_at
+  );
   const bpm = Number(bpmRaw);
-  if (!timestamp || !Number.isFinite(bpm)) {
+  if (!timestamp || !Number.isFinite(bpm) || bpm <= 0 || bpm > 250) {
     return null;
   }
   return { timestamp: String(timestamp), bpm: Math.round(bpm) };
+}
+
+/**
+ * Extract SpO2 percentage from Oura record (handles various field names)
+ * @param {Object} record
+ * @returns {number|null}
+ */
+function extractSpo2Percent(record) {
+  if (!record || typeof record !== 'object') return null;
+  const val = firstDefined(
+    record.average,
+    record.spo2_percentage,
+    record.percentage,
+    record.average_spo2,
+    record.SpO2Percentage,
+    record.spo2Percentage
+  );
+  const num = Number(val);
+  return Number.isFinite(num) && num >= 85 && num <= 100 ? Math.round(num) : null;
+}
+
+/**
+ * Convert activity time to minutes (Oura may return seconds)
+ * @param {number|null|undefined} value
+ * @returns {number|null}
+ */
+function toActivityMinutes(value) {
+  if (value === null || value === undefined) return null;
+  const n = Number(value);
+  if (!Number.isFinite(n)) return null;
+  // If > 300, likely seconds (e.g. 3600 = 1 hour)
+  const minutes = n > 300 ? Math.round(n / 60) : Math.round(n);
+  return minutes;
 }
 
 /**
@@ -408,59 +485,142 @@ async function main() {
       }
     }
 
-    // Step 2: Determine dates to try (today first, then yesterday for fallback)
-    const todayPT = getTodayPT();
-    const yesterdayPT = getYesterdayPT();
+    // Step 2: Fetch last 7 days of data
+    const { startDate, endDate } = getLast7DaysRange();
+    console.log(`Fetching last 7 days (${startDate} → ${endDate})...`);
 
-    // Step 3: Fetch today + yesterday so missing fields can still be populated
-    console.log(`Fetching data for today (${todayPT}) and fallback (${yesterdayPT})...`);
-    const [sleepToday, readinessToday, activityToday] = await Promise.all([
-      fetchSleepData(accessToken, todayPT).catch((e) => {
+    const [
+      sleepList,
+      readinessList,
+      activityList,
+      heartRateRaw,
+      spo2List,
+      workoutList,
+    ] = await Promise.all([
+      fetchSleepDataRange(accessToken, startDate, endDate).catch((e) => {
         console.warn('Sleep fetch failed:', e.message);
-        return null;
+        return [];
       }),
-      fetchReadinessData(accessToken, todayPT).catch((e) => {
+      fetchReadinessDataRange(accessToken, startDate, endDate).catch((e) => {
         console.warn('Readiness fetch failed:', e.message);
-        return null;
+        return [];
       }),
-      fetchActivityData(accessToken, todayPT).catch((e) => {
+      fetchActivityDataRange(accessToken, startDate, endDate).catch((e) => {
         console.warn('Activity fetch failed:', e.message);
-        return null;
+        return [];
       }),
+      fetchHeartRateSeries(accessToken, startDate, endDate).catch(() => []),
+      fetchSpo2DataRange(accessToken, startDate, endDate).catch(() => []),
+      fetchWorkoutsRange(accessToken, startDate, endDate).catch(() => []),
     ]);
-    const [sleepYesterday, readinessYesterday, activityYesterday] = await Promise.all([
-      fetchSleepData(accessToken, yesterdayPT).catch(() => null),
-      fetchReadinessData(accessToken, yesterdayPT).catch(() => null),
-      fetchActivityData(accessToken, yesterdayPT).catch(() => null),
-    ]);
-    const [heartRateToday, heartRateYesterday, spo2Today, spo2Yesterday, workoutsToday, workoutsYesterday] =
-      await Promise.all([
-        fetchHeartRateSeries(accessToken, todayPT).catch(() => []),
-        fetchHeartRateSeries(accessToken, yesterdayPT).catch(() => []),
-        fetchSpo2Data(accessToken, todayPT).catch(() => null),
-        fetchSpo2Data(accessToken, yesterdayPT).catch(() => null),
-        fetchWorkouts(accessToken, todayPT).catch(() => []),
-        fetchWorkouts(accessToken, yesterdayPT).catch(() => []),
-      ]);
 
-    // Step 4: Determine which date we're using and build output
-    const now = new Date();
-    const sleepData = sleepToday || sleepYesterday;
-    const readinessData = readinessToday || readinessYesterday;
-    const activityData = activityToday || activityYesterday;
+    // Build lookup maps by date
+    const sleepByDate = new Map();
+    for (const r of sleepList) {
+      const d = getDateFromRecord(r);
+      if (d) sleepByDate.set(d, r);
+    }
+    const readinessByDate = new Map();
+    for (const r of readinessList) {
+      const d = getDateFromRecord(r);
+      if (d) readinessByDate.set(d, r);
+    }
+    const activityByDate = new Map();
+    for (const r of activityList) {
+      const d = getDateFromRecord(r);
+      if (d) activityByDate.set(d, r);
+    }
+    const spo2ByDate = new Map();
+    for (const r of spo2List) {
+      const d = getDateFromRecord(r);
+      if (d) spo2ByDate.set(d, r);
+    }
+    const workoutsByDate = new Map();
+    for (const w of workoutList) {
+      const d =
+        getDateFromRecord(w) ||
+        (w.start ? String(w.start).split('T')[0] : null) ||
+        (w.start_datetime ? String(w.start_datetime).split('T')[0] : null);
+      if (d) {
+        if (!workoutsByDate.has(d)) workoutsByDate.set(d, []);
+        workoutsByDate.get(d).push(w);
+      }
+    }
 
-    // Use today when available; otherwise fallback
-    const dataDay = sleepToday || readinessToday || activityToday ? todayPT : yesterdayPT;
+    // Generate ordered list of dates (oldest → newest)
+    const allDates = [];
+    for (let i = 6; i >= 0; i--) {
+      allDates.push(getDateDaysAgoPT(i));
+    }
 
-    // Extract contributor data with safe defaults
+    // Build byDay array for 7-day display
+    const byDay = [];
+    for (const day of allDates) {
+      const sleepData = sleepByDate.get(day);
+      const readinessData = readinessByDate.get(day);
+      const activityData = activityByDate.get(day);
+      const spo2Rec = spo2ByDate.get(day);
+      const dayWorkouts = workoutsByDate.get(day) || [];
+
+      const sleepContributors = sleepData?.contributors || {};
+      const readinessContributors = readinessData?.contributors || {};
+      const activityContributors = activityData?.contributors || {};
+
+      byDay.push({
+        day,
+        sleepScore: roundOrNull(sleepData?.score),
+        readinessScore: roundOrNull(readinessData?.score),
+        activityScore: roundOrNull(activityData?.score),
+        restingHrBpm: roundOrNull(
+          firstDefined(
+            readinessData?.resting_heart_rate,
+            readinessContributors.resting_heart_rate,
+            sleepData?.heart_rate?.resting,
+            sleepData?.heart_rate?.resting_heart_rate
+          )
+        ),
+        hrvMs: roundOrNull(
+          firstDefined(
+            readinessData?.hrv_average_milli,
+            readinessData?.hrv_average,
+            sleepData?.average_hrv
+          )
+        ),
+        steps: roundOrNull(activityData?.steps),
+        activeCalories: roundOrNull(activityData?.active_calories),
+        spo2Average: roundOrNull(extractSpo2Percent(spo2Rec)),
+        workoutCount: dayWorkouts.length,
+      });
+    }
+
+    // Pick primary day: most recent with sleep or readiness
+    let dataDay = endDate;
+    for (let i = allDates.length - 1; i >= 0; i--) {
+      if (sleepByDate.has(allDates[i]) || readinessByDate.has(allDates[i])) {
+        dataDay = allDates[i];
+        break;
+      }
+    }
+
+    const sleepData = sleepByDate.get(dataDay);
+    const readinessData = readinessByDate.get(dataDay);
+    const activityData = activityByDate.get(dataDay);
+    const spo2Data = spo2ByDate.get(dataDay) || spo2List[spo2List.length - 1];
+    const workouts = workoutList.filter((w) => {
+      const d =
+        getDateFromRecord(w) ||
+        (w.start ? String(w.start).split('T')[0] : null) ||
+        (w.start_datetime ? String(w.start_datetime).split('T')[0] : null);
+      return d === dataDay;
+    });
+
     const sleepContributors = sleepData?.contributors || {};
     const readinessContributors = readinessData?.contributors || {};
     const activityContributors = activityData?.contributors || {};
-    const heartRateRawSeries = heartRateToday.length > 0 ? heartRateToday : heartRateYesterday;
-    const heartRateSeries = downsampleSeries(
-      heartRateRawSeries.map(normalizeHeartRatePoint).filter(Boolean),
-      96
-    );
+
+    // Heart rate: normalize and use most recent day with data
+    const hrNormalized = heartRateRaw.map(normalizeHeartRatePoint).filter(Boolean);
+    const heartRateSeries = downsampleSeries(hrNormalized, 96);
     const heartRateStats =
       heartRateSeries.length > 0
         ? {
@@ -472,16 +632,15 @@ async function main() {
             latest: heartRateSeries[heartRateSeries.length - 1].bpm,
           }
         : null;
-    const spo2Data = spo2Today || spo2Yesterday;
-    const workouts = workoutsToday.length > 0 ? workoutsToday : workoutsYesterday;
 
+    const now = new Date();
     const output = {
       lastUpdatedIso: now.toISOString(),
       day: dataDay,
+      byDay,
 
       // Sleep score (0-100)
       sleepScore: roundOrNull(sleepData?.score),
-      // Sleep contributors (0-100 each)
       sleepDeep: roundOrNull(sleepContributors.deep_sleep),
       sleepEfficiency: roundOrNull(sleepContributors.efficiency),
       sleepLatency: roundOrNull(sleepContributors.latency),
@@ -490,9 +649,7 @@ async function main() {
       sleepTiming: roundOrNull(sleepContributors.timing),
       sleepTotal: roundOrNull(sleepContributors.total_sleep),
 
-      // Readiness score (0-100)
       readinessScore: roundOrNull(readinessData?.score),
-      // Readiness contributors (0-100 each)
       readinessActivityBalance: roundOrNull(readinessContributors.activity_balance),
       readinessBodyTemp: roundOrNull(readinessContributors.body_temperature),
       readinessHrvBalance: roundOrNull(readinessContributors.hrv_balance),
@@ -502,20 +659,19 @@ async function main() {
       readinessRestingHr: roundOrNull(readinessContributors.resting_heart_rate),
       readinessSleepBalance: roundOrNull(readinessContributors.sleep_balance),
       readinessSleepRegularity: roundOrNull(readinessContributors.sleep_regularity),
-      // Temperature data
-      tempDeviation: readinessData?.temperature_deviation
-        ? Math.round(readinessData.temperature_deviation * 100) / 100
-        : null,
+      tempDeviation:
+        readinessData?.temperature_deviation != null
+          ? Math.round(readinessData.temperature_deviation * 100) / 100
+          : null,
 
-      // Resting heart rate in BPM
       restingHrBpm: roundOrNull(
         firstDefined(
           readinessData?.resting_heart_rate,
           readinessContributors.resting_heart_rate,
-          sleepData?.heart_rate?.resting
+          sleepData?.heart_rate?.resting,
+          sleepData?.heart_rate?.resting_heart_rate
         )
       ),
-      // HRV in milliseconds
       hrvMs: roundOrNull(
         firstDefined(
           readinessData?.hrv_average_milli,
@@ -523,74 +679,63 @@ async function main() {
           sleepData?.average_hrv
         )
       ),
-      // HR time-series and summary
-      heartRateSeriesDay: heartRateToday.length > 0 ? todayPT : heartRateYesterday.length > 0 ? yesterdayPT : null,
+      heartRateSeriesDay: heartRateSeries.length > 0 ? dataDay : null,
       heartRateSeries: heartRateSeries.map((point) => ({ t: point.timestamp, bpm: point.bpm })),
       heartRateMinBpm: heartRateStats?.min ?? null,
       heartRateMaxBpm: heartRateStats?.max ?? null,
       heartRateAvgBpm: heartRateStats?.avg ?? null,
       heartRateLatestBpm: heartRateStats?.latest ?? null,
 
-      // Activity score (0-100)
       activityScore: roundOrNull(activityData?.score),
-      // Activity contributors (0-100 each)
       activityMeetTargets: roundOrNull(activityContributors.meet_daily_targets),
       activityMoveHour: roundOrNull(activityContributors.move_every_hour),
       activityRecoveryTime: roundOrNull(activityContributors.recovery_time),
       activityStayActive: roundOrNull(activityContributors.stay_active),
       activityTrainingFreq: roundOrNull(activityContributors.training_frequency),
       activityTrainingVol: roundOrNull(activityContributors.training_volume),
-      // Activity metrics
       steps: roundOrNull(activityData?.steps),
       activeCalories: roundOrNull(activityData?.active_calories),
       totalCalories: roundOrNull(activityData?.total_calories),
       targetCalories: roundOrNull(activityData?.target_calories),
       metersToTarget: roundOrNull(activityData?.meters_to_target),
-      highActivityMinutes: roundOrNull(activityData?.high_activity_time),
-      mediumActivityMinutes: roundOrNull(activityData?.medium_activity_time),
-      lowActivityMinutes: roundOrNull(activityData?.low_activity_time),
+      highActivityMinutes: roundOrNull(toActivityMinutes(activityData?.high_activity_time)),
+      mediumActivityMinutes: roundOrNull(toActivityMinutes(activityData?.medium_activity_time)),
+      lowActivityMinutes: roundOrNull(toActivityMinutes(activityData?.low_activity_time)),
 
-      // Additional available datapoints
-      spo2Average: roundOrNull(firstDefined(spo2Data?.average, spo2Data?.average_spo2, spo2Data?.spo2_percentage)),
+      spo2Average: roundOrNull(extractSpo2Percent(spo2Data)),
       spo2BreathingDisturbance: roundOrNull(
         firstDefined(spo2Data?.breathing_disturbance_index, spo2Data?.breathing_disturbance)
       ),
       workoutCount: workouts.length,
       workoutMinutes: roundOrNull(
-        workouts.reduce((sum, workout) => sum + Number(firstDefined(workout.duration, 0)), 0)
+        workouts.reduce((sum, w) => sum + Number(firstDefined(w.duration, 0)), 0)
       ),
       workoutCalories: roundOrNull(
-        workouts.reduce((sum, workout) => sum + Number(firstDefined(workout.calories, 0)), 0)
+        workouts.reduce((sum, w) => sum + Number(firstDefined(w.calories, 0)), 0)
       ),
     };
 
-    // Step 5: Check if we got any data (today or yesterday)
+    // Step 5: Check if we got any data (from 7-day window)
     const hasAnyData =
       output.sleepScore !== null ||
       output.readinessScore !== null ||
       output.restingHrBpm !== null ||
       output.hrvMs !== null ||
       output.steps !== null ||
-      output.activeCalories !== null;
+      output.activeCalories !== null ||
+      byDay.some((d) => d.sleepScore !== null || d.readinessScore !== null || d.steps !== null);
 
     if (!hasAnyData) {
-      console.warn('Warning: No data available from Oura API for today or yesterday');
+      console.warn('Warning: No data available from Oura API for the last 7 days');
 
-      // If we have existing data, preserve it (don't overwrite with all nulls)
       if (existingData) {
         console.log('Preserving existing data from', existingData.day);
         process.exit(0);
       }
 
-      // If there's no prior JSON at all, write placeholder and exit error
       console.error('Error: No data available and no prior JSON exists');
       writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
       process.exit(1);
-    }
-
-    // Log if fallback data was used
-    if (output.day === yesterdayPT) {
-      console.log('Note: Showing fallback day for core metrics (today not yet synced)');
     }
 
     // Step 6: Write JSON file
@@ -628,6 +773,7 @@ async function main() {
     console.log(`Steps: ${output.steps ?? 'N/A'}`);
     console.log(`Active Calories: ${output.activeCalories ?? 'N/A'}`);
     console.log(`HR Timeline Points: ${output.heartRateSeries.length}`);
+    console.log(`7-Day History: ${byDay.filter((d) => d.sleepScore !== null || d.readinessScore !== null || d.steps !== null).length} days with data`);
     console.log(`SpO2 Average: ${output.spo2Average ?? 'N/A'}`);
     console.log(`Workouts: ${output.workoutCount ?? 0}`);
     console.log('---------------');
