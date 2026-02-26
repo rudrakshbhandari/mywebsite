@@ -544,6 +544,94 @@
         opacity: 0.7;
       }
 
+      /* 7-Day Trend Section */
+      .trend-section {
+        grid-column: 1 / -1;
+        margin-top: 1rem;
+      }
+
+      .trend-card {
+        background: var(--background-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      .trend-card:last-child {
+        margin-bottom: 0;
+      }
+
+      .trend-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+      }
+
+      .trend-header i {
+        color: var(--primary-color);
+      }
+
+      .trend-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+        height: 140px;
+      }
+
+      .trend-day {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 0;
+      }
+
+      .trend-bar-container {
+        flex: 1;
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        min-height: 80px;
+      }
+
+      .trend-bar {
+        width: 100%;
+        max-width: 36px;
+        min-height: 4px;
+        border-radius: 4px 4px 0 0;
+        transition: height 0.3s ease;
+      }
+
+      .trend-bar.sleep { background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%); }
+      .trend-bar.readiness { background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%); }
+      .trend-bar.steps { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); }
+
+      .trend-day-label {
+        font-size: 0.65rem;
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+        text-transform: uppercase;
+      }
+
+      .trend-day-value {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-top: 0.25rem;
+      }
+
+      .trend-day-value.null {
+        color: var(--text-secondary);
+        font-weight: 400;
+      }
+
       /* Hidden states */
       .hidden {
         display: none !important;
@@ -561,6 +649,16 @@
 
         .timeline-stats {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .trend-bars {
+          overflow-x: auto;
+          padding-bottom: 0.5rem;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        .trend-day {
+          min-width: 40px;
         }
 
         footer {
@@ -778,6 +876,19 @@
           <div class="metric-value" id="workout-count">--</div>
           <div class="metric-footer" id="workout-footer">Sessions logged</div>
         </div>
+
+        <!-- Last 7 Days Trend -->
+        <div class="metric-card wide trend-section" id="trend-section">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon timeline"><i class="fas fa-chart-bar"></i></span>
+              Last 7 Days
+            </span>
+          </div>
+          <div class="trend-cards" id="trend-cards">
+            <!-- Populated by JS -->
+          </div>
+        </div>
       </div>
     </main>
 
@@ -945,6 +1056,111 @@
         const card = document.getElementById(cardId);
         if (!card) return;
         card.classList.toggle('hidden', !visible);
+      }
+
+      /**
+       * Render 7-day trend bars
+       * @param {Array} byDay - Array of { day, sleepScore, readinessScore, steps }
+       */
+      function render7DayTrend(byDay) {
+        const container = document.getElementById('trend-cards');
+        const section = document.getElementById('trend-section');
+        if (!container || !byDay || !Array.isArray(byDay) || byDay.length === 0) {
+          if (section) section.classList.add('hidden');
+          return;
+        }
+
+        const hasAnyTrendData = byDay.some(
+          (d) =>
+            d.sleepScore != null ||
+            d.readinessScore != null ||
+            (d.steps != null && d.steps > 0)
+        );
+        if (!hasAnyTrendData) {
+          if (section) section.classList.add('hidden');
+          return;
+        }
+
+        section.classList.remove('hidden');
+
+        const maxSteps = Math.max(
+          ...byDay.map((d) => (d.steps != null ? Number(d.steps) : 0)),
+          1
+        );
+        const maxScore = 100;
+
+        const formatDay = (dateStr) => {
+          const d = new Date(dateStr + 'T12:00:00');
+          return d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' });
+        };
+
+        const trends = [
+          {
+            key: 'sleep',
+            label: 'Sleep Score',
+            icon: 'fa-moon',
+            colorClass: 'sleep',
+            getValue: (d) => d.sleepScore,
+            max: maxScore,
+            format: (v) => (v != null ? v : '--'),
+          },
+          {
+            key: 'readiness',
+            label: 'Readiness',
+            icon: 'fa-battery-three-quarters',
+            colorClass: 'readiness',
+            getValue: (d) => d.readinessScore,
+            max: maxScore,
+            format: (v) => (v != null ? v : '--'),
+          },
+          {
+            key: 'steps',
+            label: 'Steps',
+            icon: 'fa-shoe-prints',
+            colorClass: 'steps',
+            getValue: (d) => d.steps,
+            max: maxSteps,
+            format: (v) => (v != null ? (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v) : '--'),
+          },
+        ];
+
+        let html = '';
+        for (const trend of trends) {
+          const hasData = byDay.some((d) => trend.getValue(d) != null);
+          if (!hasData) continue;
+
+          html += `
+            <div class="trend-card">
+              <div class="trend-header">
+                <i class="fas ${trend.icon}"></i>
+                <span>${trend.label}</span>
+              </div>
+              <div class="trend-bars">
+                ${byDay
+                  .map((d) => {
+                    const val = trend.getValue(d);
+                    const pct = val != null && trend.max > 0 ? (val / trend.max) * 100 : 0;
+                    return `
+                      <div class="trend-day">
+                        <div class="trend-bar-container">
+                          <div
+                            class="trend-bar ${trend.colorClass}"
+                            style="height: ${Math.max(2, pct)}%"
+                            title="${trend.format(val)}"
+                          ></div>
+                        </div>
+                        <span class="trend-day-label">${formatDay(d.day)}</span>
+                        <span class="trend-day-value ${val == null ? 'null' : ''}">${trend.format(val)}</span>
+                      </div>
+                    `;
+                  })
+                  .join('')}
+              </div>
+            </div>
+          `;
+        }
+
+        container.innerHTML = html || '';
       }
 
       /**
@@ -1128,6 +1344,7 @@
           });
 
           renderHeartRateTimeline(data.heartRateSeries, data);
+          render7DayTrend(data.byDay || []);
 
           // Update status badges
           updateStatus('sleep-status', data.sleepScore, 'sleep');
