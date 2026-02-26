@@ -31,9 +31,10 @@ jobs:
 
       - name: Fetch Oura data
         env:
+          # Optional: Personal Access Token path (most reliable for personal projects)
+          OURA_ACCESS_TOKEN: ${{ secrets.OURA_ACCESS_TOKEN }}
           OURA_CLIENT_ID: ${{ secrets.OURA_CLIENT_ID }}
           OURA_CLIENT_SECRET: ${{ secrets.OURA_CLIENT_SECRET }}
-          # Read refresh token from file, fallback to secret for initial setup
           OURA_REFRESH_TOKEN: ${{ secrets.OURA_REFRESH_TOKEN }}
         run: node scripts/fetch_oura_and_write_json.mjs
 
@@ -43,7 +44,7 @@ jobs:
           if [ -f .oura_no_change ]; then
             echo "changed=false" >> $GITHUB_OUTPUT
             rm -f .oura_no_change
-          elif git diff --quiet oura_public.json .oura_token 2>/dev/null; then
+          elif git diff --quiet oura_public.json 2>/dev/null; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -54,6 +55,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add oura_public.json .oura_token 2>/dev/null || git add oura_public.json
+          git add oura_public.json
           git commit -m "feat(health): update Oura Ring metrics [$(date -u +%Y-%m-%d)]"
           git push
