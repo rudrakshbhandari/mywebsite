@@ -158,9 +158,10 @@
 
       .page-subtitle {
         color: var(--text-secondary);
-        font-size: 1rem;
-        max-width: 600px;
+        font-size: 1.0625rem;
+        max-width: 560px;
         margin: 0 auto;
+        line-height: 1.6;
       }
 
       .data-source {
@@ -168,13 +169,17 @@
         align-items: center;
         gap: 0.5rem;
         color: var(--accent-color);
-        font-size: 0.875rem;
+        font-size: 0.8125rem;
         font-weight: 500;
-        margin-top: 1rem;
+        margin-top: 1.25rem;
+        padding: 0.35rem 0.75rem;
+        background: rgba(34, 211, 238, 0.08);
+        border-radius: 9999px;
+        border: 1px solid rgba(34, 211, 238, 0.2);
       }
 
       .data-source i {
-        font-size: 1rem;
+        font-size: 0.9rem;
       }
 
       /* Metrics Grid */
@@ -258,18 +263,30 @@
         margin-top: 1rem;
         padding-top: 1rem;
         border-top: 1px solid var(--border-color);
+        position: relative;
+      }
+
+      .timeline-chart-inner {
+        position: relative;
+        width: 100%;
       }
 
       .timeline-svg {
         width: 100%;
-        height: 180px;
+        height: 220px;
         display: block;
+      }
+
+      .timeline-axis-label {
+        fill: var(--text-secondary);
+        font-size: 10px;
+        font-family: var(--font-family);
       }
 
       .timeline-grid-line {
         stroke: var(--border-color);
         stroke-width: 1;
-        opacity: 0.45;
+        opacity: 0.4;
       }
 
       .timeline-line {
@@ -282,6 +299,36 @@
 
       .timeline-fill {
         fill: rgba(94, 234, 212, 0.14);
+      }
+
+      .chart-tooltip {
+        position: fixed;
+        z-index: 100;
+        background: rgba(15, 23, 42, 0.98);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8125rem;
+        pointer-events: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .chart-tooltip.hidden {
+        display: none;
+      }
+
+      .chart-tooltip-time {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+      }
+
+      .chart-tooltip-value {
+        font-weight: 600;
+        color: #5eead4;
+      }
+
+      .hr-hover-rect {
+        cursor: crosshair;
       }
 
       .timeline-stats {
@@ -388,6 +435,14 @@
       /* Wide cards for contributors */
       .metric-card.wide {
         grid-column: 1 / -1;
+      }
+
+      .trend-section .metric-header {
+        border-bottom: none;
+      }
+
+      #trend-cards {
+        padding: 0 0.5rem 0.25rem;
       }
 
       @media (min-width: 768px) {
@@ -548,14 +603,26 @@
       .trend-section {
         grid-column: 1 / -1;
         margin-top: 1rem;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+      }
+
+      .trend-section .metric-header {
+        padding-bottom: 0.5rem;
       }
 
       .trend-card {
-        background: var(--background-card);
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius-xl);
-        padding: 1.5rem;
-        margin-bottom: 1.5rem;
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(51, 65, 85, 0.6);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1rem;
+        transition: border-color var(--transition-normal);
+      }
+
+      .trend-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
       }
 
       .trend-card:last-child {
@@ -567,7 +634,7 @@
         align-items: center;
         gap: 0.5rem;
         font-family: var(--font-display);
-        font-size: 1rem;
+        font-size: 0.9375rem;
         font-weight: 600;
         color: var(--text-primary);
         margin-bottom: 1rem;
@@ -577,11 +644,29 @@
         color: var(--primary-color);
       }
 
-      .trend-bars {
+      .trend-chart-row {
         display: flex;
         align-items: flex-end;
         gap: 0.5rem;
-        height: 140px;
+        min-height: 120px;
+      }
+
+      .trend-y-axis {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+        padding-right: 0.5rem;
+        min-width: 2rem;
+      }
+
+      .trend-bars {
+        flex: 1;
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+        min-height: 100px;
       }
 
       .trend-day {
@@ -592,36 +677,45 @@
         min-width: 0;
       }
 
-      .trend-bar-container {
+      .trend-day-bar-wrap {
         flex: 1;
         width: 100%;
         display: flex;
         align-items: flex-end;
         justify-content: center;
-        min-height: 80px;
+        min-height: 88px;
+        position: relative;
       }
 
       .trend-bar {
         width: 100%;
-        max-width: 36px;
-        min-height: 4px;
-        border-radius: 4px 4px 0 0;
-        transition: height 0.3s ease;
+        max-width: 40px;
+        min-height: 6px;
+        border-radius: 6px 6px 0 0;
+        transition: all 0.2s ease;
+        cursor: pointer;
       }
 
-      .trend-bar.sleep { background: linear-gradient(180deg, #6366f1 0%, #4f46e5 100%); }
-      .trend-bar.readiness { background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%); }
-      .trend-bar.steps { background: linear-gradient(180deg, #f59e0b 0%, #d97706 100%); }
+      .trend-bar:hover {
+        filter: brightness(1.15);
+        transform: scaleY(1.02);
+        transform-origin: bottom;
+      }
+
+      .trend-bar.sleep { background: linear-gradient(180deg, #818cf8 0%, #6366f1 100%); }
+      .trend-bar.readiness { background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%); }
+      .trend-bar.steps { background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%); }
 
       .trend-day-label {
-        font-size: 0.65rem;
+        font-size: 0.7rem;
         color: var(--text-secondary);
         margin-top: 0.5rem;
         text-transform: uppercase;
+        letter-spacing: 0.02em;
       }
 
       .trend-day-value {
-        font-size: 0.75rem;
+        font-size: 0.8125rem;
         font-weight: 600;
         color: var(--text-primary);
         margin-top: 0.25rem;
@@ -630,6 +724,10 @@
       .trend-day-value.null {
         color: var(--text-secondary);
         font-weight: 400;
+      }
+
+      .trend-day-bar-wrap[title] {
+        cursor: help;
       }
 
       /* Hidden states */
@@ -651,14 +749,26 @@
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
 
+        .trend-chart-row {
+          flex-direction: column;
+        }
+
+        .trend-y-axis {
+          flex-direction: row;
+          justify-content: flex-start;
+          gap: 1rem;
+          padding-bottom: 0.25rem;
+        }
+
         .trend-bars {
           overflow-x: auto;
           padding-bottom: 0.5rem;
           -webkit-overflow-scrolling: touch;
+          min-height: 90px;
         }
 
         .trend-day {
-          min-width: 40px;
+          min-width: 44px;
         }
 
         footer {
@@ -764,13 +874,20 @@
             </span>
           </div>
           <div class="timeline-chart">
-            <svg id="heart-rate-timeline" class="timeline-svg" viewBox="0 0 1000 180" preserveAspectRatio="none">
-              <line class="timeline-grid-line" x1="0" y1="30" x2="1000" y2="30"></line>
-              <line class="timeline-grid-line" x1="0" y1="90" x2="1000" y2="90"></line>
-              <line class="timeline-grid-line" x1="0" y1="150" x2="1000" y2="150"></line>
-              <path id="heart-rate-fill" class="timeline-fill" d=""></path>
-              <path id="heart-rate-line" class="timeline-line" d=""></path>
-            </svg>
+            <div class="timeline-chart-inner">
+              <svg id="heart-rate-timeline" class="timeline-svg" viewBox="0 0 1060 220" preserveAspectRatio="xMidYMid meet">
+                <g id="hr-axis-y"></g>
+                <g id="hr-axis-x"></g>
+                <g id="hr-grid"></g>
+                <path id="heart-rate-fill" class="timeline-fill" d=""></path>
+                <path id="heart-rate-line" class="timeline-line" d=""></path>
+                <rect id="hr-hover-area" fill="transparent" class="hr-hover-rect"></rect>
+              </svg>
+              <div id="hr-tooltip" class="chart-tooltip hidden">
+                <div class="chart-tooltip-time" id="hr-tooltip-time">--</div>
+                <div class="chart-tooltip-value" id="hr-tooltip-value">-- bpm</div>
+              </div>
+            </div>
           </div>
           <div class="timeline-stats">
             <div class="timeline-stat">
@@ -802,7 +919,7 @@
             </span>
           </div>
           <div class="metric-value" id="resting-hr">--<span class="metric-unit">bpm</span></div>
-          <div class="metric-footer">Lowest heart rate during sleep</div>
+          <div class="metric-footer" id="resting-hr-footer">Resting HR from Oura (lowest overnight)</div>
         </div>
 
         <!-- HRV -->
@@ -1124,10 +1241,18 @@
           },
         ];
 
+        const yAxisLabels = (maxVal, isSteps) =>
+          isSteps
+            ? ['0', maxVal >= 10000 ? `${(maxVal / 1000).toFixed(0)}k` : maxVal]
+            : ['0', '50', '100'];
+
         let html = '';
         for (const trend of trends) {
           const hasData = byDay.some((d) => trend.getValue(d) != null);
           if (!hasData) continue;
+
+          const isSteps = trend.key === 'steps';
+          const yLabels = yAxisLabels(trend.max, isSteps);
 
           html += `
             <div class="trend-card">
@@ -1135,26 +1260,34 @@
                 <i class="fas ${trend.icon}"></i>
                 <span>${trend.label}</span>
               </div>
-              <div class="trend-bars">
-                ${byDay
-                  .map((d) => {
-                    const val = trend.getValue(d);
-                    const pct = val != null && trend.max > 0 ? (val / trend.max) * 100 : 0;
-                    return `
-                      <div class="trend-day">
-                        <div class="trend-bar-container">
-                          <div
-                            class="trend-bar ${trend.colorClass}"
-                            style="height: ${Math.max(2, pct)}%"
-                            title="${trend.format(val)}"
-                          ></div>
+              <div class="trend-chart-row">
+                <div class="trend-y-axis">
+                  <span>${yLabels[yLabels.length - 1]}</span>
+                  ${yLabels.length > 2 ? '<span>50</span>' : ''}
+                  <span>0</span>
+                </div>
+                <div class="trend-bars">
+                  ${byDay
+                    .map((d) => {
+                      const val = trend.getValue(d);
+                      const pct = val != null && trend.max > 0 ? (val / trend.max) * 100 : 0;
+                      const displayVal = trend.format(val);
+                      const tooltipText = val != null ? `${formatDay(d.day)}: ${displayVal}${isSteps ? ' steps' : ''}` : `${formatDay(d.day)}: No data`;
+                      return `
+                        <div class="trend-day">
+                          <div class="trend-day-bar-wrap" title="${tooltipText}">
+                            <div
+                              class="trend-bar ${trend.colorClass}"
+                              style="height: ${Math.max(4, pct)}%"
+                            ></div>
+                          </div>
+                          <span class="trend-day-label">${formatDay(d.day)}</span>
+                          <span class="trend-day-value ${val == null ? 'null' : ''}">${displayVal}</span>
                         </div>
-                        <span class="trend-day-label">${formatDay(d.day)}</span>
-                        <span class="trend-day-value ${val == null ? 'null' : ''}">${trend.format(val)}</span>
-                      </div>
-                    `;
-                  })
-                  .join('')}
+                      `;
+                    })
+                    .join('')}
+                </div>
               </div>
             </div>
           `;
@@ -1164,7 +1297,18 @@
       }
 
       /**
-       * Render heart-rate time-series as SVG path
+       * Format time for tooltip (e.g. "3:15 AM")
+       * @param {string} iso
+       * @returns {string}
+       */
+      function formatTime(iso) {
+        if (!iso) return '--';
+        const d = new Date(iso);
+        return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+      }
+
+      /**
+       * Render heart-rate time-series with axes and hover tooltip
        * @param {Array<{t:string,bpm:number}>} series
        * @param {Object} data
        */
@@ -1172,6 +1316,13 @@
         const line = document.getElementById('heart-rate-line');
         const fill = document.getElementById('heart-rate-fill');
         const footer = document.getElementById('heart-rate-timeline-footer');
+        const axisY = document.getElementById('hr-axis-y');
+        const axisX = document.getElementById('hr-axis-x');
+        const gridEl = document.getElementById('hr-grid');
+        const hoverArea = document.getElementById('hr-hover-area');
+        const tooltip = document.getElementById('hr-tooltip');
+        const tooltipTime = document.getElementById('hr-tooltip-time');
+        const tooltipValue = document.getElementById('hr-tooltip-value');
 
         if (!line || !fill || !Array.isArray(series) || series.length < 2) {
           setCardVisibility('heart-rate-timeline-card', false);
@@ -1180,34 +1331,100 @@
 
         setCardVisibility('heart-rate-timeline-card', true);
 
-        const width = 1000;
-        const height = 180;
-        const top = 12;
-        const bottom = 162;
-        const bpms = series.map((point) => Number(point.bpm)).filter((value) => Number.isFinite(value));
+        const marginLeft = 55;
+        const marginRight = 15;
+        const marginTop = 15;
+        const marginBottom = 30;
+        const plotWidth = 1060 - marginLeft - marginRight;
+        const plotHeight = 220 - marginTop - marginBottom;
+        const top = marginTop;
+        const bottom = 220 - marginBottom;
 
+        const bpms = series.map((p) => Number(p.bpm)).filter((v) => Number.isFinite(v));
         if (bpms.length < 2) {
           setCardVisibility('heart-rate-timeline-card', false);
           return;
         }
 
-        const min = Math.min(...bpms);
-        const max = Math.max(...bpms);
-        const range = Math.max(max - min, 1);
-        const points = series
-          .map((point, index) => {
-            const x = (index / (series.length - 1)) * width;
-            const y = bottom - ((Number(point.bpm) - min) / range) * (bottom - top);
-            return `${x.toFixed(2)},${y.toFixed(2)}`;
-          })
-          .join(' ');
+        const minBpm = Math.min(...bpms);
+        const maxBpm = Math.max(...bpms);
+        const rangeBpm = Math.max(maxBpm - minBpm, 1);
+        const midBpm = Math.round((minBpm + maxBpm) / 2);
 
-        const pointList = points.split(' ');
-        const linePath = `M ${pointList.join(' L ')}`;
-        const fillPath = `${linePath} L ${width},${height} L 0,${height} Z`;
+        const points = series.map((point, index) => {
+          const x = marginLeft + (index / Math.max(series.length - 1, 1)) * plotWidth;
+          const y = bottom - ((Number(point.bpm) - minBpm) / rangeBpm) * (bottom - top);
+          return { x, y, ...point };
+        });
+
+        const pointList = points.map((p) => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ');
+        const linePath = `M ${pointList.split(' ').join(' L ')}`;
+        const fillPath = `${linePath} L ${marginLeft + plotWidth},${220} L ${marginLeft},${220} Z`;
 
         line.setAttribute('d', linePath);
         fill.setAttribute('d', fillPath);
+
+        axisY.innerHTML = `
+          <text x="${marginLeft - 8}" y="${bottom}" class="timeline-axis-label" text-anchor="end">${minBpm}</text>
+          <text x="${marginLeft - 8}" y="${(top + bottom) / 2}" class="timeline-axis-label" text-anchor="end">${midBpm}</text>
+          <text x="${marginLeft - 8}" y="${top}" class="timeline-axis-label" text-anchor="end">${maxBpm}</text>
+          <text x="${marginLeft - 35}" y="${(top + bottom) / 2}" class="timeline-axis-label" text-anchor="end" transform="rotate(-90, ${marginLeft - 35}, ${(top + bottom) / 2})">bpm</text>
+        `;
+
+        const t0 = series[0]?.t;
+        const tMid = series[Math.floor(series.length / 2)]?.t;
+        const t1 = series[series.length - 1]?.t;
+        axisX.innerHTML = `
+          <text x="${marginLeft}" y="${220 - 8}" class="timeline-axis-label" text-anchor="start">${formatTime(t0)}</text>
+          <text x="${marginLeft + plotWidth / 2}" y="${220 - 8}" class="timeline-axis-label" text-anchor="middle">${formatTime(tMid)}</text>
+          <text x="${marginLeft + plotWidth}" y="${220 - 8}" class="timeline-axis-label" text-anchor="end">${formatTime(t1)}</text>
+        `;
+
+        gridEl.innerHTML = `
+          <line class="timeline-grid-line" x1="${marginLeft}" y1="${top}" x2="${marginLeft + plotWidth}" y2="${top}"></line>
+          <line class="timeline-grid-line" x1="${marginLeft}" y1="${(top + bottom) / 2}" x2="${marginLeft + plotWidth}" y2="${(top + bottom) / 2}"></line>
+          <line class="timeline-grid-line" x1="${marginLeft}" y1="${bottom}" x2="${marginLeft + plotWidth}" y2="${bottom}"></line>
+        `;
+
+        hoverArea.setAttribute('x', marginLeft);
+        hoverArea.setAttribute('y', top);
+        hoverArea.setAttribute('width', plotWidth);
+        hoverArea.setAttribute('height', plotHeight);
+        hoverArea.setAttribute('cursor', 'crosshair');
+
+        hoverArea.onmousemove = (e) => {
+          const svg = document.getElementById('heart-rate-timeline');
+          const pt = svg.createSVGPoint();
+          pt.x = e.clientX;
+          pt.y = e.clientY;
+          const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+          const mouseX = svgPt.x;
+          let nearest = points[0];
+          let nearestDist = Infinity;
+          for (const p of points) {
+            const d = Math.abs(p.x - mouseX);
+            if (d < nearestDist) {
+              nearestDist = d;
+              nearest = p;
+            }
+          }
+          tooltipTime.textContent = formatTime(nearest.t);
+          tooltipValue.textContent = `${nearest.bpm} bpm`;
+          tooltip.classList.remove('hidden');
+          const offset = 14;
+          let left = e.clientX + offset;
+          let top = e.clientY + offset;
+          tooltip.style.left = `${left}px`;
+          tooltip.style.top = `${top}px`;
+          requestAnimationFrame(() => {
+            const tr = tooltip.getBoundingClientRect();
+            if (tr.right > window.innerWidth) tooltip.style.left = `${e.clientX - tr.width - offset}px`;
+            if (tr.bottom > window.innerHeight) tooltip.style.top = `${e.clientY - tr.height - offset}px`;
+          });
+        };
+        hoverArea.onmouseleave = () => {
+          tooltip.classList.add('hidden');
+        };
 
         const minEl = document.getElementById('heart-rate-min');
         const avgEl = document.getElementById('heart-rate-avg');
@@ -1221,7 +1438,7 @@
 
         if (footer) {
           const sourceDay = data.heartRateSeriesDay ? `Source day: ${data.heartRateSeriesDay}` : 'Intraday trend';
-          footer.textContent = `${sourceDay} • ${series.length} points`;
+          footer.textContent = `${sourceDay} • ${series.length} points • Hover for details`;
         }
       }
 
