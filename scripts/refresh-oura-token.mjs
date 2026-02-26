@@ -1,174 +1,86 @@
 #!/usr/bin/env node
 /**
- * Oura OAuth Token Refresher
- * Generates authorization URL and exchanges code for refresh token
+ * Refresh an existing Oura refresh token and save rotation result.
+ * Usage:
+ *   OURA_CLIENT_ID=... OURA_CLIENT_SECRET=... OURA_REFRESH_TOKEN=... node scripts/refresh-oura-token.mjs
  */
 
 import https from 'https';
-import { writeFileSync, readFileSync } from 'fs';
-import readline from 'readline';
-
-const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
-// Load credentials from .env file
-try {
-  const envContent = readFileSync('.env', 'utf-8');
-  const envVars = {};
-  envContent.split('\n').forEach(line => {
-    const [key, ...valueParts] = line.split('=');
-    if (key && valueParts.length > 0) {
-      envVars[key.trim()] = valueParts.join('=').trim();
-    }
-  });
-  process.env.OURA_CLIENT_ID = envVars.OURA_CLIENT_ID;
-  process.env.OURA_CLIENT_SECRET = envVars.OURA_CLIENT_SECRET;
-} catch (e) {
-  // Continue with existing env vars
-}
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 
 const CLIENT_ID = process.env.OURA_CLIENT_ID;
 const CLIENT_SECRET = process.env.OURA_CLIENT_SECRET;
+const ENV_REFRESH_TOKEN = process.env.OURA_REFRESH_TOKEN?.trim();
 
-if (!CLIENT_ID || !CLIENT_SECRET) {
-  console.error('Error: OURA_CLIENT_ID and OURA_CLIENT_SECRET must be set');
-  console.error('Add them to your .env file or environment variables');
+if (!CLIENT_ID || !CLIENT_SECRET || !loadRefreshToken()) {
+  console.error('Missing required credentials.');
+  console.error('Provide OURA_CLIENT_ID, OURA_CLIENT_SECRET, and OURA_REFRESH_TOKEN (or .oura_token).');
   process.exit(1);
 }
 
-// All scopes for maximum data access
-const SCOPES = ['daily', 'heartrate', 'spo2Daily', 'workout', 'personal', 'email', 'session', 'stress'];
-const REDIRECT_URI = 'http://localhost:3000/callback';
-
-// Step 1: Print authorization URL
-console.log('=== Oura Token Refresh ===\n');
-
-const authUrl = `https://cloud.ouraring.com/oauth/authorize?` +
-  `client_id=${encodeURIComponent(CLIENT_ID)}&` +
-  `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
-  `response_type=code&` +
-  `scope=${encodeURIComponent(SCOPES.join(' '))}`;
-
-console.log('STEP 1: Open this URL in your browser:\n');
-console.log(authUrl);
-console.log('\nThen:');
-console.log('1. Log in with your Oura account');
-console.log('2. Click "Allow" to authorize');
-console.log('3. You\'ll be redirected to localhost (browser will show "can\'t connect") - COPY THE URL');
-console.log('4. Paste the full redirect URL (or just the code parameter) below\n');
-
-// Step 2: Wait for code
-rl.question('Paste the redirect URL or code here: ', async (input) => {
-  // Extract code from input (full URL or just code)
-  let code = input.trim();
-  if (code.includes('?code=')) {
-    const match = code.match(/[?&]code=([^&]+)/);
-    if (match) code = match[1];
+function loadRefreshToken() {
+  if (ENV_REFRESH_TOKEN) {
+    return ENV_REFRESH_TOKEN;
   }
-  if (code.includes('&')) {
-    code = code.split('&')[0];
+  if (!existsSync('.oura_token')) {
+    return null;
   }
+  return readFileSync('.oura_token', 'utf-8').trim() || null;
+}
 
-  console.log('\nSTEP 2: Exchanging code for tokens...\n');
-
-  // Make token request
-  const postData = JSON.stringify({
-    grant_type: 'authorization_code',
-    code: code,
+async function refreshToken() {
+  const refreshTokenValue = loadRefreshToken();
+  const params = new URLSearchParams({
+    grant_type: 'refresh_token',
+    refresh_token: refreshTokenValue,
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET,
-    redirect_uri: REDIRECT_URI
   });
 
-  const options = {
-    hostname: 'api.ouraring.com',
-    path: '/oauth/token',
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Content-Length': Buffer.byteLength(postData)
-    }
-  };
+  const req = https.request(
+    'https://api.ouraring.com/oauth/token',
+    {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    },
+    (res) => {
+      let body = '';
+      res.on('data', (chunk) => {
+        body += chunk;
+      });
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(body);
+          if (res.statusCode < 200 || res.statusCode >= 300 || !parsed.access_token) {
+            console.error(`Refresh failed (${res.statusCode}):`, parsed.error_description || parsed.error || parsed.title || body);
+            process.exit(1);
+          }
 
-  const req = https.request(options, (res) => {
-    let data = '';
-    res.on('data', (chunk) => data += chunk);
-    res.on('end', () => {
-      try {
-        const response = JSON.parse(data);
-
-        if (response.error) {
-          console.error('❌ Error:', response.error);
-          console.error(response.error_description || '');
+          if (parsed.refresh_token && parsed.refresh_token !== refreshTokenValue) {
+            writeFileSync('.oura_token', parsed.refresh_token);
+            console.log('Refresh token rotated. Saved new token to .oura_token');
+          } else {
+            console.log('Refresh token did not rotate.');
+          }
+          console.log('Access token refresh succeeded.');
+        } catch {
+          console.error('Invalid response from token endpoint:', body);
           process.exit(1);
         }
+      });
+    }
+  );
 
-        console.log('✅ SUCCESS!\n');
-        console.log('=== NEW REFRESH TOKEN ===');
-        console.log(response.refresh_token);
-        console.log('=========================\n');
-
-        // Save to file
-        writeFileSync('.oura_token', response.refresh_token);
-        console.log('✅ Saved to .oura_token file\n');
-
-        // Test the token immediately
-        console.log('Testing the new token...');
-        testToken(response.access_token);
-
-      } catch (e) {
-        console.error('❌ Failed to parse response:', data);
-        process.exit(1);
-      }
-    });
-  });
-
-  req.on('error', (e) => {
-    console.error('❌ Request failed:', e.message);
+  req.on('error', (error) => {
+    console.error('Request failed:', error.message);
     process.exit(1);
   });
 
-  req.write(postData);
+  req.write(params.toString());
   req.end();
-});
-
-function testToken(accessToken) {
-  const testOptions = {
-    hostname: 'api.ouraring.com',
-    path: '/v2/usercollection/personal_info',
-    method: 'GET',
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Accept': 'application/json'
-    }
-  };
-
-  const testReq = https.request(testOptions, (res) => {
-    let data = '';
-    res.on('data', (chunk) => data += chunk);
-    res.on('end', () => {
-      if (res.statusCode === 200) {
-        console.log('✅ Token test successful! API is accessible.\n');
-        console.log('=== NEXT STEPS ===');
-        console.log('1. Copy the refresh token above');
-        console.log('2. Go to GitHub repo Settings -> Secrets and variables -> Actions');
-        console.log('3. Update OURA_REFRESH_TOKEN with the new token above');
-        console.log('4. The GitHub Actions automation will now work!\n');
-      } else {
-        console.log('⚠️ Token test returned:', res.statusCode);
-        console.log('Response:', data);
-      }
-      rl.close();
-    });
-  });
-
-  testReq.on('error', (e) => {
-    console.error('⚠️ Token test failed:', e.message);
-    rl.close();
-  });
-
-  testReq.end();
 }
+
+refreshToken();
