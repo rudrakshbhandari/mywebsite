@@ -574,7 +574,6 @@ async function main() {
         restingHrBpm: roundOrNull(
           firstDefined(
             readinessData?.resting_heart_rate,
-            readinessContributors.resting_heart_rate,
             sleepData?.heart_rate?.resting,
             sleepData?.heart_rate?.resting_heart_rate
           )
@@ -667,7 +666,6 @@ async function main() {
       restingHrBpm: roundOrNull(
         firstDefined(
           readinessData?.resting_heart_rate,
-          readinessContributors.resting_heart_rate,
           sleepData?.heart_rate?.resting,
           sleepData?.heart_rate?.resting_heart_rate
         )
