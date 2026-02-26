@@ -648,7 +648,7 @@
         display: flex;
         align-items: flex-end;
         gap: 0.5rem;
-        min-height: 120px;
+        height: 180px;
       }
 
       .trend-y-axis {
@@ -659,6 +659,7 @@
         color: var(--text-secondary);
         padding-right: 0.5rem;
         min-width: 2rem;
+        height: 100%;
       }
 
       .trend-bars {
@@ -666,7 +667,7 @@
         display: flex;
         align-items: flex-end;
         gap: 0.5rem;
-        min-height: 100px;
+        height: 100%;
       }
 
       .trend-day {
@@ -675,15 +676,15 @@
         flex-direction: column;
         align-items: center;
         min-width: 0;
+        height: 100%;
       }
 
       .trend-day-bar-wrap {
-        flex: 1;
         width: 100%;
         display: flex;
         align-items: flex-end;
         justify-content: center;
-        min-height: 88px;
+        flex: 1;
         position: relative;
       }
 
@@ -751,6 +752,7 @@
 
         .trend-chart-row {
           flex-direction: column;
+          height: auto;
         }
 
         .trend-y-axis {
@@ -758,13 +760,14 @@
           justify-content: flex-start;
           gap: 1rem;
           padding-bottom: 0.25rem;
+          height: auto;
         }
 
         .trend-bars {
           overflow-x: auto;
           padding-bottom: 0.5rem;
           -webkit-overflow-scrolling: touch;
-          min-height: 90px;
+          height: 140px;
         }
 
         .trend-day {
