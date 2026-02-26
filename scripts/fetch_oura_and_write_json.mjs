@@ -24,13 +24,16 @@ const API_BASE = 'api.ouraring.com';
 function httpsRequest(url, options = {}, body = null) {
   return new Promise((resolve, reject) => {
     const parsedUrl = new URL(url);
+    const contentType = options.headers?.['Content-Type'] || 'application/json';
+    const isFormUrlEncoded = contentType === 'application/x-www-form-urlencoded';
+
     const reqOptions = {
       hostname: parsedUrl.hostname,
       path: parsedUrl.pathname + parsedUrl.search,
       method: options.method || 'GET',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': contentType,
         ...options.headers,
       },
     };
@@ -59,7 +62,8 @@ function httpsRequest(url, options = {}, body = null) {
     });
 
     if (body) {
-      req.write(JSON.stringify(body));
+      // Send as-is if form-urlencoded string, otherwise JSON stringify
+      req.write(isFormUrlEncoded ? body : JSON.stringify(body));
     }
     req.end();
   });
@@ -73,14 +77,18 @@ function httpsRequest(url, options = {}, body = null) {
  * @returns {Promise<string>} - New access token
  */
 async function refreshAccessToken(clientId, clientSecret, refreshToken) {
-  const body = {
+  // Oura OAuth requires form-urlencoded, not JSON
+  const params = new URLSearchParams({
     grant_type: 'refresh_token',
     client_id: clientId,
     client_secret: clientSecret,
     refresh_token: refreshToken,
-  };
+  });
 
-  const response = await httpsRequest(OAUTH_ENDPOINT, { method: 'POST' }, body);
+  const response = await httpsRequest(OAUTH_ENDPOINT, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  }, params.toString());
 
   if (!response.access_token) {
     throw new Error('No access_token in OAuth response');
