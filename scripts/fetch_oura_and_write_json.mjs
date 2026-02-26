@@ -303,21 +303,66 @@ async function main() {
     // Use yesterday's date if we fell back to it
     const dataDay = usingFallbackDate ? yesterdayPT : todayPT;
 
+    // Extract contributor data with safe defaults
+    const sleepContributors = sleepData?.contributors || {};
+    const readinessContributors = readinessData?.contributors || {};
+    const activityContributors = activityData?.contributors || {};
+
     const output = {
       lastUpdatedIso: now.toISOString(),
       day: dataDay,
+
       // Sleep score (0-100)
       sleepScore: roundOrNull(sleepData?.score),
+      // Sleep contributors (0-100 each)
+      sleepDeep: roundOrNull(sleepContributors.deep_sleep),
+      sleepEfficiency: roundOrNull(sleepContributors.efficiency),
+      sleepLatency: roundOrNull(sleepContributors.latency),
+      sleepRem: roundOrNull(sleepContributors.rem_sleep),
+      sleepRestfulness: roundOrNull(sleepContributors.restfulness),
+      sleepTiming: roundOrNull(sleepContributors.timing),
+      sleepTotal: roundOrNull(sleepContributors.total_sleep),
+
       // Readiness score (0-100)
       readinessScore: roundOrNull(readinessData?.score),
+      // Readiness contributors (0-100 each)
+      readinessActivityBalance: roundOrNull(readinessContributors.activity_balance),
+      readinessBodyTemp: roundOrNull(readinessContributors.body_temperature),
+      readinessHrvBalance: roundOrNull(readinessContributors.hrv_balance),
+      readinessPreviousDay: roundOrNull(readinessContributors.previous_day_activity),
+      readinessPreviousNight: roundOrNull(readinessContributors.previous_night),
+      readinessRecoveryIndex: roundOrNull(readinessContributors.recovery_index),
+      readinessRestingHr: roundOrNull(readinessContributors.resting_heart_rate),
+      readinessSleepBalance: roundOrNull(readinessContributors.sleep_balance),
+      readinessSleepRegularity: roundOrNull(readinessContributors.sleep_regularity),
+      // Temperature data
+      tempDeviation: readinessData?.temperature_deviation
+        ? Math.round(readinessData.temperature_deviation * 100) / 100
+        : null,
+
       // Resting heart rate in BPM
       restingHrBpm: roundOrNull(readinessData?.resting_heart_rate ?? sleepData?.heart_rate?.resting),
       // HRV in milliseconds
       hrvMs: roundOrNull(readinessData?.hrv_average_milli ?? sleepData?.average_hrv),
-      // Steps count
+
+      // Activity score (0-100)
+      activityScore: roundOrNull(activityData?.score),
+      // Activity contributors (0-100 each)
+      activityMeetTargets: roundOrNull(activityContributors.meet_daily_targets),
+      activityMoveHour: roundOrNull(activityContributors.move_every_hour),
+      activityRecoveryTime: roundOrNull(activityContributors.recovery_time),
+      activityStayActive: roundOrNull(activityContributors.stay_active),
+      activityTrainingFreq: roundOrNull(activityContributors.training_frequency),
+      activityTrainingVol: roundOrNull(activityContributors.training_volume),
+      // Activity metrics
       steps: roundOrNull(activityData?.steps),
-      // Active calories burned
       activeCalories: roundOrNull(activityData?.active_calories),
+      totalCalories: roundOrNull(activityData?.total_calories),
+      targetCalories: roundOrNull(activityData?.target_calories),
+      metersToTarget: roundOrNull(activityData?.meters_to_target),
+      highActivityMinutes: roundOrNull(activityData?.high_activity_time),
+      mediumActivityMinutes: roundOrNull(activityData?.medium_activity_time),
+      lowActivityMinutes: roundOrNull(activityData?.low_activity_time),
     };
 
     // Step 5: Check if we got any data (today or yesterday)
@@ -375,9 +420,12 @@ async function main() {
     console.log('\n--- Summary ---');
     console.log(`Day: ${output.day}`);
     console.log(`Sleep Score: ${output.sleepScore ?? 'N/A'}`);
+    console.log(`  Contributors - Deep: ${output.sleepDeep ?? 'N/A'}, REM: ${output.sleepRem ?? 'N/A'}, Efficiency: ${output.sleepEfficiency ?? 'N/A'}, Latency: ${output.sleepLatency ?? 'N/A'}`);
     console.log(`Readiness Score: ${output.readinessScore ?? 'N/A'}`);
+    console.log(`  Contributors - Activity Balance: ${output.readinessActivityBalance ?? 'N/A'}, Body Temp: ${output.readinessBodyTemp ?? 'N/A'}, HRV Balance: ${output.readinessHrvBalance ?? 'N/A'}`);
     console.log(`Resting HR: ${output.restingHrBpm ?? 'N/A'} BPM`);
     console.log(`HRV: ${output.hrvMs ?? 'N/A'} ms`);
+    console.log(`Activity Score: ${output.activityScore ?? 'N/A'}`);
     console.log(`Steps: ${output.steps ?? 'N/A'}`);
     console.log(`Active Calories: ${output.activeCalories ?? 'N/A'}`);
     console.log('---------------');
