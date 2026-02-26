@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Oura Token Helper - Portfolio Health Setup</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      color: #f1f5f9;
+    }
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 1rem;
+      padding: 2rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+    .subtitle {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      margin-bottom: 2rem;
+    }
+    .step {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: #0f172a;
+      border-radius: 0.75rem;
+      border: 1px solid #334155;
+    }
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: #6366f1;
+      color: white;
+      border-radius: 50%;
+      font-weight: 600;
+      font-size: 0.875rem;
+      margin-bottom: 1rem;
+    }
+    .step h2 {
+      font-size: 1.125rem;
+      margin-bottom: 1rem;
+      color: #fff;
+      display: inline-block;
+      margin-left: 0.75rem;
+    }
+    label {
+      display: block;
+      font-size: 0.875rem;
+      color: #94a3b8;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    input[type="text"], input[type="password"] {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 0.5rem;
+      color: #f1f5f9;
+      font-size: 0.875rem;
+      font-family: monospace;
+      margin-bottom: 1rem;
+    }
+    input[type="text"]:focus, input[type="password"]:focus {
+      outline: none;
+      border-color: #6366f1;
+    }
+    input::placeholder {
+      color: #64748b;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-decoration: none;
+    }
+    .btn:hover {
+      background: #4f46e5;
+      transform: translateY(-1px);
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .btn-secondary {
+      background: #334155;
+    }
+    .btn-secondary:hover {
+      background: #475569;
+    }
+    .hidden {
+      display: none !important;
+    }
+    .code-display {
+      background: #0f172a;
+      border: 1px solid #334155;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      font-family: monospace;
+      font-size: 0.875rem;
+      color: #22d3ee;
+      word-break: break-all;
+      margin-top: 1rem;
+    }
+    .success {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: rgba(34, 197, 94, 0.3);
+      color: #4ade80;
+    }
+    .error {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: rgba(239, 68, 68, 0.3);
+      color: #f87171;
+    }
+    .instructions {
+      background: rgba(99, 102, 241, 0.1);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      border-radius: 0.5rem;
+      padding: 1rem;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: #c7d2fe;
+    }
+    .instructions ol {
+      margin-left: 1.25rem;
+      margin-top: 0.5rem;
+    }
+    .instructions li {
+      margin-bottom: 0.5rem;
+    }
+    .token-box {
+      background: #0f172a;
+      border: 2px solid #22d3ee;
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+    .token-box h3 {
+      color: #22d3ee;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
+    }
+    .token-value {
+      font-family: monospace;
+      font-size: 1rem;
+      color: #f1f5f9;
+      word-break: break-all;
+      background: #1e293b;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .copy-btn {
+      background: #22d3ee;
+      color: #0f172a;
+    }
+    .copy-btn:hover {
+      background: #06b6d4;
+    }
+    .divider {
+      height: 1px;
+      background: #334155;
+      margin: 1.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔗 Oura Token Helper</h1>
+    <p class="subtitle">Get your refresh token for the Portfolio Health integration</p>
+
+    <!-- Step 1: Configure -->
+    <div class="step" id="step1">
+      <span class="step-number">1</span>
+      <h2>Enter Your App Credentials</h2>
+      <p style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 1rem;">
+        Find these on your Oura app page at <a href="https://cloud.ouraring.com/oauth/applications" target="_blank" style="color: #6366f1;">cloud.ouraring.com/oauth/applications</a>
+      </p>
+      
+      <label for="clientId">Client ID</label>
+      <input type="text" id="clientId" placeholder="e.g., ABCD1234EFGH5678">
+      
+      <label for="clientSecret">Client Secret</label>
+      <input type="password" id="clientSecret" placeholder="Paste your client secret here">
+      
+      <button class="btn" onclick="generateAuthLink()">
+        <span>🚀</span> Generate Auth Link
+      </button>
+    </div>
+
+    <!-- Step 2: Authorize -->
+    <div class="step hidden" id="step2">
+      <span class="step-number">2</span>
+      <h2>Authorize with Oura</h2>
+      
+      <div class="instructions">
+        <strong>Instructions:</strong>
+        <ol>
+          <li>Click the button below to open Oura</li>
+          <li>Log in to your Oura account (if not already)</li>
+          <li>Click "Allow" to authorize the app</li>
+          <li>You'll be redirected to localhost (will show an error — that's OK!)</li>
+          <li><strong>Copy the "code" parameter</strong> from the URL bar</li>
+        </ol>
+      </div>
+      
+      <a id="authLink" href="#" target="_blank" class="btn" style="margin-top: 1rem;">
+        <span>🔐</span> Open Oura Authorization
+      </a>
+      
+      <div class="divider"></div>
+      
+      <label for="authCode">Paste the code from the URL here:</label>
+      <input type="text" id="authCode" placeholder="e.g., TRUQR7C6PRIYDRXMCQLAMW4V5LFFZVFO">
+      
+      <button class="btn" onclick="exchangeCode()">
+        <span>🎫</span> Exchange for Refresh Token
+      </button>
+      
+      <div id="exchangeStatus" class="code-display hidden"></div>
+    </div>
+
+    <!-- Step 3: Token Result -->
+    <div class="step hidden" id="step3">
+      <span class="step-number">3</span>
+      <h2>Your Refresh Token</h2>
+      <p style="color: #94a3b8; font-size: 0.875rem; margin-bottom: 1rem;">
+        This token never expires. Save it securely — you'll add it to GitHub Secrets.
+      </p>
+      
+      <div class="token-box">
+        <h3>⚡ Refresh Token (Save This!)</h3>
+        <div class="token-value" id="refreshToken"></div>
+        <button class="btn copy-btn" onclick="copyToken()">
+          <span>📋</span> Copy to Clipboard
+        </button>
+      </div>
+      
+      <div class="instructions" style="margin-top: 1.5rem;">
+        <strong>Next Step:</strong> Add this token to your GitHub repository secrets as <code style="background: #0f172a; padding: 0.25rem 0.5rem; border-radius: 0.25rem;">OURA_REFRESH_TOKEN</code>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const REDIRECT_URI = 'http://localhost:3000/callback';
+    
+    function generateAuthLink() {
+      const clientId = document.getElementById('clientId').value.trim();
+      
+      if (!clientId) {
+        alert('Please enter your Client ID');
+        return;
+      }
+      
+      // Build the authorization URL
+      const authUrl = `https://cloud.ouraring.com/oauth/authorize?` +
+        `response_type=code&` +
+        `client_id=${encodeURIComponent(clientId)}&` +
+        `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
+        `scope=${encodeURIComponent('daily personal email')}&` +
+        `state=portfolio_setup_${Date.now()}`;
+      
+      // Show step 2 and set the link
+      document.getElementById('step2').classList.remove('hidden');
+      document.getElementById('authLink').href = authUrl;
+      
+      // Scroll to step 2
+      document.getElementById('step2').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    async function exchangeCode() {
+      const clientId = document.getElementById('clientId').value.trim();
+      const clientSecret = document.getElementById('clientSecret').value.trim();
+      const code = document.getElementById('authCode').value.trim();
+      
+      if (!clientSecret) {
+        alert('Please enter your Client Secret');
+        return;
+      }
+      
+      if (!code) {
+        alert('Please paste the authorization code');
+        return;
+      }
+      
+      const statusEl = document.getElementById('exchangeStatus');
+      statusEl.classList.remove('hidden', 'success', 'error');
+      statusEl.textContent = 'Exchanging code for token...';
+      
+      try {
+        const response = await fetch('https://api.ouraring.com/oauth/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({
+            grant_type: 'authorization_code',
+            client_id: clientId,
+            client_secret: clientSecret,
+            code: code,
+            redirect_uri: REDIRECT_URI
+          })
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.error_description || data.error || `HTTP ${response.status}`);
+        }
+        
+        if (!data.refresh_token) {
+          throw new Error('No refresh token in response');
+        }
+        
+        // Show the refresh token
+        document.getElementById('refreshToken').textContent = data.refresh_token;
+        document.getElementById('step3').classList.remove('hidden');
+        
+        statusEl.classList.add('success');
+        statusEl.innerHTML = '✅ Success! Your refresh token is ready below.';
+        
+        // Scroll to step 3
+        document.getElementById('step3').scrollIntoView({ behavior: 'smooth' });
+        
+      } catch (error) {
+        statusEl.classList.add('error');
+        statusEl.innerHTML = `❌ Error: ${error.message}`;
+        console.error('Token exchange failed:', error);
+      }
+    }
+    
+    function copyToken() {
+      const token = document.getElementById('refreshToken').textContent;
+      navigator.clipboard.writeText(token).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<span>✅</span> Copied!';
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
