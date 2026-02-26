@@ -38,6 +38,32 @@ jobs:
           OURA_REFRESH_TOKEN: ${{ secrets.OURA_REFRESH_TOKEN }}
         run: node scripts/fetch_oura_and_write_json.mjs
 
+      - name: Rotate refresh token secret (OAuth path)
+        env:
+          OURA_ACCESS_TOKEN: ${{ secrets.OURA_ACCESS_TOKEN }}
+          GH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN }}
+        run: |
+          if [ -n "$OURA_ACCESS_TOKEN" ]; then
+            echo "Using OURA_ACCESS_TOKEN path; refresh token rotation skipped."
+            exit 0
+          fi
+
+          if [ ! -f .oura_rotated_token ]; then
+            echo "No refresh token rotation detected."
+            exit 0
+          fi
+
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Refresh token rotated but OURA_SECRET_UPDATE_TOKEN is missing."
+            echo "::error::Set OURA_SECRET_UPDATE_TOKEN so workflow can auto-update OURA_REFRESH_TOKEN."
+            exit 1
+          fi
+
+          NEW_REFRESH_TOKEN="$(tr -d '\n' < .oura_rotated_token)"
+          gh secret set OURA_REFRESH_TOKEN --body "$NEW_REFRESH_TOKEN"
+          rm -f .oura_rotated_token
+          echo "Updated OURA_REFRESH_TOKEN secret automatically."
+
       - name: Check if files changed
         id: check_changes
         run: |
