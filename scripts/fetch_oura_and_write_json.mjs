@@ -144,6 +144,18 @@ function getTodayPT() {
 }
 
 /**
+ * Get yesterday's date in YYYY-MM-DD format in PT timezone
+ * @returns {string}
+ */
+function getYesterdayPT() {
+  const now = new Date();
+  const ptOffset = -7 * 60; // PDT offset
+  const ptTime = new Date(now.getTime() + (now.getTimezoneOffset() + ptOffset) * 60000);
+  ptTime.setDate(ptTime.getDate() - 1);
+  return ptTime.toISOString().split('T')[0];
+}
+
+/**
  * Fetch daily sleep data from Oura API
  * @param {string} token - Access token
  * @param {string} date - Date in YYYY-MM-DD format
@@ -246,12 +258,13 @@ async function main() {
       saveRefreshToken(newRefreshToken);
     }
 
-    // Step 2: Determine date to fetch (today in PT)
+    // Step 2: Determine dates to try (today first, then yesterday as fallback)
     const todayPT = getTodayPT();
-    console.log(`Fetching data for date: ${todayPT}`);
+    const yesterdayPT = getYesterdayPT();
 
-    // Step 3: Fetch all data types in parallel
-    const [sleepData, readinessData, activityData] = await Promise.all([
+    // Step 3: Fetch today's data first
+    console.log(`Fetching data for today (${todayPT})...`);
+    let [sleepData, readinessData, activityData] = await Promise.all([
       fetchSleepData(accessToken, todayPT).catch((e) => {
         console.warn('Sleep fetch failed:', e.message);
         return null;
@@ -266,11 +279,33 @@ async function main() {
       }),
     ]);
 
-    // Step 4: Build output data
+    // Check if we got any data for today
+    const hasTodayData =
+      sleepData?.score !== null && sleepData?.score !== undefined ||
+      readinessData?.score !== null && readinessData?.score !== undefined ||
+      activityData?.steps !== null && activityData?.steps !== undefined;
+
+    // If no data for today, try yesterday as fallback
+    let usingFallbackDate = false;
+    if (!hasTodayData) {
+      console.log(`No data for today, trying yesterday (${yesterdayPT})...`);
+      [sleepData, readinessData, activityData] = await Promise.all([
+        fetchSleepData(accessToken, yesterdayPT).catch(() => null),
+        fetchReadinessData(accessToken, yesterdayPT).catch(() => null),
+        fetchActivityData(accessToken, yesterdayPT).catch(() => null),
+      ]);
+      usingFallbackDate = true;
+    }
+
+    // Step 4: Determine which date we're using and build output
     const now = new Date();
+
+    // Use yesterday's date if we fell back to it
+    const dataDay = usingFallbackDate ? yesterdayPT : todayPT;
+
     const output = {
       lastUpdatedIso: now.toISOString(),
-      day: todayPT,
+      day: dataDay,
       // Sleep score (0-100)
       sleepScore: roundOrNull(sleepData?.score),
       // Readiness score (0-100)
@@ -285,7 +320,7 @@ async function main() {
       activeCalories: roundOrNull(activityData?.active_calories),
     };
 
-    // Step 5: Check if we got any data
+    // Step 5: Check if we got any data (today or yesterday)
     const hasAnyData =
       output.sleepScore !== null ||
       output.readinessScore !== null ||
@@ -295,21 +330,23 @@ async function main() {
       output.activeCalories !== null;
 
     if (!hasAnyData) {
-      console.warn('Warning: No data available from Oura API for today');
+      console.warn('Warning: No data available from Oura API for today or yesterday');
 
       // If we have existing data, preserve it (don't overwrite with all nulls)
-      if (existingData && existingData.day === todayPT) {
-        console.log('Preserving existing data for today');
+      if (existingData) {
+        console.log('Preserving existing data from', existingData.day);
         process.exit(0);
       }
 
-      // If this is a new day with no data yet, write the placeholder
-      // but exit with error only if there's no prior JSON at all
-      if (!existingData) {
-        console.error('Error: No data available and no prior JSON exists');
-        writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
-        process.exit(1);
-      }
+      // If there's no prior JSON at all, write placeholder and exit error
+      console.error('Error: No data available and no prior JSON exists');
+      writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
+      process.exit(1);
+    }
+
+    // Log if we're showing yesterday's data
+    if (output.day === yesterdayPT) {
+      console.log('Note: Showing yesterday\'s data (today not yet synced)');
     }
 
     // Step 6: Write JSON file
@@ -319,7 +356,11 @@ async function main() {
     // Step 7: Check if data actually changed (for CI commit decision)
     if (existingData) {
       const existingJson = JSON.stringify(existingData, null, 2);
-      if (jsonContent === existingJson) {
+      // Compare data content (excluding lastUpdatedIso which changes every run)
+      const existingDataOnly = { ...existingData, lastUpdatedIso: undefined };
+      const newDataOnly = { ...output, lastUpdatedIso: undefined };
+
+      if (JSON.stringify(existingDataOnly) === JSON.stringify(newDataOnly)) {
         console.log('No changes detected in data');
         // Write a marker file for the workflow to check
         writeFileSync(resolve(process.cwd(), '.oura_no_change'), '');
