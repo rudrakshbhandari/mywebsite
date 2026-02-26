@@ -14,13 +14,19 @@ const OUTPUT_PATH = resolve(process.cwd(), 'oura_public.json');
 const TOKEN_PATH = resolve(process.cwd(), '.oura_token');
 const OAUTH_ENDPOINT = 'https://api.ouraring.com/oauth/token';
 const API_BASE = 'api.ouraring.com';
+const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
 
 /**
  * Load refresh token from file or env
  * @returns {string|null}
  */
 function loadRefreshToken() {
-  // Priority: 1. File, 2. Env var
+  // Priority: 1. Env var, 2. File
+  const envToken = process.env.OURA_REFRESH_TOKEN?.trim();
+  if (envToken) {
+    return envToken;
+  }
+
   if (existsSync(TOKEN_PATH)) {
     try {
       const token = readFileSync(TOKEN_PATH, 'utf-8').trim();
@@ -29,7 +35,16 @@ function loadRefreshToken() {
       console.warn('Could not read token file:', e.message);
     }
   }
-  return process.env.OURA_REFRESH_TOKEN || null;
+  return null;
+}
+
+/**
+ * Load direct access token from env if provided
+ * @returns {string|null}
+ */
+function loadDirectAccessToken() {
+  const accessToken = process.env.OURA_ACCESS_TOKEN?.trim();
+  return accessToken || null;
 }
 
 /**
@@ -78,7 +93,14 @@ function httpsRequest(url, options = {}, body = null) {
           if (res.statusCode >= 200 && res.statusCode < 300) {
             resolve(parsed);
           } else {
-            reject(new Error(`HTTP ${res.statusCode}: ${parsed.message || data}`));
+            const apiMessage =
+              parsed.error_description ||
+              parsed.detail ||
+              parsed.title ||
+              parsed.error ||
+              parsed.message ||
+              data;
+            reject(new Error(`HTTP ${res.statusCode}: ${apiMessage}`));
           }
         } catch (e) {
           reject(new Error(`Invalid JSON response: ${data}`));
@@ -232,13 +254,16 @@ function roundOrNull(value) {
 async function main() {
   const clientId = process.env.OURA_CLIENT_ID;
   const clientSecret = process.env.OURA_CLIENT_SECRET;
+  const directAccessToken = loadDirectAccessToken();
   const refreshToken = loadRefreshToken();
 
   // Validate environment variables
-  if (!clientId || !clientSecret || !refreshToken) {
+  if (!directAccessToken && (!clientId || !clientSecret || !refreshToken)) {
     console.error('Error: Missing required credentials');
-    console.error('Required: OURA_CLIENT_ID, OURA_CLIENT_SECRET');
-    console.error('And either: .oura_token file or OURA_REFRESH_TOKEN env var');
+    console.error('Either set OURA_ACCESS_TOKEN directly, OR provide:');
+    console.error('- OURA_CLIENT_ID');
+    console.error('- OURA_CLIENT_SECRET');
+    console.error('- OURA_REFRESH_TOKEN (or local .oura_token file)');
     process.exit(1);
   }
 
@@ -248,14 +273,29 @@ async function main() {
   const existingData = loadExistingData();
 
   try {
-    // Step 1: Refresh access token
-    console.log('Refreshing OAuth token...');
-    const { accessToken, newRefreshToken } = await refreshAccessToken(clientId, clientSecret, refreshToken);
-    console.log('Token refreshed successfully');
+    // Step 1: Resolve access token
+    let accessToken;
+    if (directAccessToken) {
+      accessToken = directAccessToken;
+      console.log('Using direct OURA_ACCESS_TOKEN from environment');
+    } else {
+      console.log('Refreshing OAuth token...');
+      const { accessToken: refreshedAccessToken, newRefreshToken } = await refreshAccessToken(
+        clientId,
+        clientSecret,
+        refreshToken
+      );
+      accessToken = refreshedAccessToken;
+      console.log('Token refreshed successfully');
 
-    // Save new refresh token if provided (Oura rotates tokens)
-    if (newRefreshToken && newRefreshToken !== refreshToken) {
-      saveRefreshToken(newRefreshToken);
+      // Save new refresh token locally when it rotates; never write secrets in CI.
+      if (newRefreshToken && newRefreshToken !== refreshToken) {
+        if (IS_GITHUB_ACTIONS) {
+          console.warn('Refresh token rotated in CI. Update OURA_REFRESH_TOKEN secret to prevent future failures.');
+        } else {
+          saveRefreshToken(newRefreshToken);
+        }
+      }
     }
 
     // Step 2: Determine dates to try (today first, then yesterday as fallback)

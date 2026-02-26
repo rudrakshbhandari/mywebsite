@@ -5,10 +5,12 @@
  */
 
 import https from 'https';
+import { writeFileSync } from 'fs';
 
 const CLIENT_ID = process.env.OURA_CLIENT_ID;
 const CLIENT_SECRET = process.env.OURA_CLIENT_SECRET;
 const REFRESH_TOKEN = process.env.OURA_REFRESH_TOKEN;
+const TOKEN_PATH = '.oura_token';
 
 console.log('Testing Oura credentials...\n');
 
@@ -58,6 +60,18 @@ const req = https.request({
       if (parsed.access_token) {
         console.log('\n✅ SUCCESS! Credentials are valid.');
         console.log('   Access token received.');
+
+        // Oura rotates refresh tokens on successful refresh.
+        if (parsed.refresh_token && parsed.refresh_token !== REFRESH_TOKEN) {
+          try {
+            writeFileSync(TOKEN_PATH, parsed.refresh_token);
+            console.log(`\n🔄 Refresh token rotated and saved to ${TOKEN_PATH}`);
+            console.log('   Update OURA_REFRESH_TOKEN (shell/GitHub secret) with this new token.');
+          } catch (e) {
+            console.log('\n⚠️ Refresh token rotated, but failed to save .oura_token:', e.message);
+          }
+        }
+
         console.log('\n📋 These credentials will work in GitHub Actions.');
       } else if (parsed.error) {
         console.log(`\n❌ OAuth Error: ${parsed.error}`);
