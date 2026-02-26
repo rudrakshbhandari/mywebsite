@@ -61,9 +61,60 @@ npm run format:check  # Check formatting
 npm run format:html   # Format HTML files only
 ```
 
-### Git Workflow
+## Git Workflow Requirements
 
-All commits follow conventional commit format for clear history and automated changelog generation.
+### Hard rule: never commit directly to main
+
+**Agents must never commit directly to `main`.** All changes go through feature branches and pull requests.
+
+Required flow for any code change:
+
+1. **Create a feature branch with a name that matches the task** (e.g. `rudrakshbhandari/grant-admin-script` for grant-admin work, not `rudrakshbhandari/some-other-task`). Branch name must describe the work.
+2. Make changes and commit on the branch
+3. **Push the branch** to origin
+4. **Open a PR** targeting `main`
+5. Inform user: `Branch pushed. PR: <url>`
+
+Do not skip the branch. Do not push to `main` from the agent. **Do not commit to an existing branch if the branch name does not match the current task**—create a new appropriately named branch instead.
+
+---
+
+### Hard rule: always commit and push immediately after edits
+
+**Do not leave uncommitted changes.** After making any code or doc edits, agents must commit and push in the **same response**—without waiting for the user to ask. Treat this as automatic; the user should never have to say "commit" or "push" to get changes persisted to the branch.
+
+Pre-edit gate (must run before any file edit command):
+
+1. Run `git rev-parse --abbrev-ref HEAD`.
+2. If branch is `main`, STOP and create a task branch first: `git checkout -b rudrakshbhandari/<task>`.
+3. If branch name does not match the task, STOP and create the correct branch.
+4. Only then edit files.
+
+If an agent edits files while on `main`, it must immediately:
+
+1. Create the correct task branch.
+2. Keep the edits (do not discard user work).
+3. Commit, push, and open a PR in the same response.
+4. Explicitly report the mistake and the corrective action taken.
+
+Process (execute as soon as edits are done):
+
+1. Ensure you are on a branch whose name matches the task. If not, create one: `git checkout -b rudrakshbhandari/<task>` (from `main` or the correct base).
+2. `git status` / `git diff`
+3. `git add <changed-files>` (exclude build artifacts, coverage dirs, `.env`)
+4. `git commit -m "type: description"`
+5. `git push origin <branch>`
+6. Open PR (or inform user if PR already exists)
+
+**After any code change on a branch, always commit** using conventional commits.
+
+Conventional examples:
+
+- `feat: add Google sign-in with @ucsd.edu validation`
+- `fix: correct order total calculation with tip`
+- `refactor: extract order form to separate component`
+- `docs: update Firebase setup guide`
+- `chore: update dependencies`
 
 ## 📋 TODO / Future Improvements
 
