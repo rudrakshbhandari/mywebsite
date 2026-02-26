@@ -1200,11 +1200,17 @@
 
         section.classList.remove('hidden');
 
-        const maxSteps = Math.max(
-          ...byDay.map((d) => (d.steps != null ? Number(d.steps) : 0)),
-          1
-        );
-        const maxScore = 100;
+        // Calculate dynamic ranges for each metric type
+        const sleepScores = byDay.map(d => d.sleepScore).filter(v => v != null);
+        const readinessScores = byDay.map(d => d.readinessScore).filter(v => v != null);
+        const stepsValues = byDay.map(d => d.steps).filter(v => v != null && v > 0);
+
+        const sleepMin = sleepScores.length > 0 ? Math.min(...sleepScores) : 0;
+        const sleepMax = sleepScores.length > 0 ? Math.max(...sleepScores) : 100;
+        const readinessMin = readinessScores.length > 0 ? Math.min(...readinessScores) : 0;
+        const readinessMax = readinessScores.length > 0 ? Math.max(...readinessScores) : 100;
+        const stepsMin = stepsValues.length > 0 ? Math.min(...stepsValues) : 0;
+        const stepsMax = stepsValues.length > 0 ? Math.max(...stepsValues) : 10000;
 
         const formatDay = (dateStr) => {
           const d = new Date(dateStr + 'T12:00:00');
@@ -1218,7 +1224,8 @@
             icon: 'fa-moon',
             colorClass: 'sleep',
             getValue: (d) => d.sleepScore,
-            max: maxScore,
+            min: Math.max(0, sleepMin - 5), // Add padding, but don't go below 0
+            max: Math.min(100, sleepMax + 5), // Add padding, but don't exceed 100
             format: (v) => (v != null ? v : '--'),
           },
           {
@@ -1227,7 +1234,8 @@
             icon: 'fa-battery-three-quarters',
             colorClass: 'readiness',
             getValue: (d) => d.readinessScore,
-            max: maxScore,
+            min: Math.max(0, readinessMin - 5),
+            max: Math.min(100, readinessMax + 5),
             format: (v) => (v != null ? v : '--'),
           },
           {
@@ -1236,15 +1244,16 @@
             icon: 'fa-shoe-prints',
             colorClass: 'steps',
             getValue: (d) => d.steps,
-            max: maxSteps,
+            min: Math.max(0, stepsMin - 500),
+            max: stepsMax + 500,
             format: (v) => (v != null ? (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v) : '--'),
           },
         ];
 
-        const yAxisLabels = (maxVal, isSteps) =>
+        const yAxisLabels = (min, max, isSteps) =>
           isSteps
-            ? ['0', maxVal >= 10000 ? `${(maxVal / 1000).toFixed(0)}k` : maxVal]
-            : ['0', '50', '100'];
+            ? [`${(min / 1000).toFixed(1)}k`, `${(max / 1000).toFixed(1)}k`]
+            : [Math.round(min), Math.round(max)];
 
         let html = '';
         for (const trend of trends) {
@@ -1252,7 +1261,7 @@
           if (!hasData) continue;
 
           const isSteps = trend.key === 'steps';
-          const yLabels = yAxisLabels(trend.max, isSteps);
+          const yLabels = yAxisLabels(trend.min, trend.max, isSteps);
 
           html += `
             <div class="trend-card">
@@ -1262,15 +1271,18 @@
               </div>
               <div class="trend-chart-row">
                 <div class="trend-y-axis">
-                  <span>${yLabels[yLabels.length - 1]}</span>
-                  ${yLabels.length > 2 ? '<span>50</span>' : ''}
-                  <span>0</span>
+                  <span>${yLabels[1]}</span>
+                  <span>${yLabels[0]}</span>
                 </div>
                 <div class="trend-bars">
                   ${byDay
                     .map((d) => {
                       const val = trend.getValue(d);
-                      const pct = val != null && trend.max > 0 ? (val / trend.max) * 100 : 0;
+                      // Calculate percentage within the dynamic range
+                      const range = trend.max - trend.min;
+                      const pct = val != null && range > 0
+                        ? ((val - trend.min) / range) * 100
+                        : 0;
                       const displayVal = trend.format(val);
                       const tooltipText = val != null ? `${formatDay(d.day)}: ${displayVal}${isSteps ? ' steps' : ''}` : `${formatDay(d.day)}: No data`;
                       return `
