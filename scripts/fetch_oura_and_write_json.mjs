@@ -144,6 +144,18 @@ function getTodayPT() {
 }
 
 /**
+ * Get yesterday's date in YYYY-MM-DD format in PT timezone
+ * @returns {string}
+ */
+function getYesterdayPT() {
+  const now = new Date();
+  const ptOffset = -7 * 60; // PDT offset
+  const ptTime = new Date(now.getTime() + (now.getTimezoneOffset() + ptOffset) * 60000);
+  ptTime.setDate(ptTime.getDate() - 1);
+  return ptTime.toISOString().split('T')[0];
+}
+
+/**
  * Fetch daily sleep data from Oura API
  * @param {string} token - Access token
  * @param {string} date - Date in YYYY-MM-DD format
@@ -246,12 +258,13 @@ async function main() {
       saveRefreshToken(newRefreshToken);
     }
 
-    // Step 2: Determine date to fetch (today in PT)
+    // Step 2: Determine dates to try (today first, then yesterday as fallback)
     const todayPT = getTodayPT();
-    console.log(`Fetching data for date: ${todayPT}`);
+    const yesterdayPT = getYesterdayPT();
 
-    // Step 3: Fetch all data types in parallel
-    const [sleepData, readinessData, activityData] = await Promise.all([
+    // Step 3: Fetch today's data first
+    console.log(`Fetching data for today (${todayPT})...`);
+    let [sleepData, readinessData, activityData] = await Promise.all([
       fetchSleepData(accessToken, todayPT).catch((e) => {
         console.warn('Sleep fetch failed:', e.message);
         return null;
@@ -266,26 +279,93 @@ async function main() {
       }),
     ]);
 
-    // Step 4: Build output data
+    // Check if we got any data for today
+    const hasTodayData =
+      sleepData?.score !== null && sleepData?.score !== undefined ||
+      readinessData?.score !== null && readinessData?.score !== undefined ||
+      activityData?.steps !== null && activityData?.steps !== undefined;
+
+    // If no data for today, try yesterday as fallback
+    let usingFallbackDate = false;
+    if (!hasTodayData) {
+      console.log(`No data for today, trying yesterday (${yesterdayPT})...`);
+      [sleepData, readinessData, activityData] = await Promise.all([
+        fetchSleepData(accessToken, yesterdayPT).catch(() => null),
+        fetchReadinessData(accessToken, yesterdayPT).catch(() => null),
+        fetchActivityData(accessToken, yesterdayPT).catch(() => null),
+      ]);
+      usingFallbackDate = true;
+    }
+
+    // Step 4: Determine which date we're using and build output
     const now = new Date();
+
+    // Use yesterday's date if we fell back to it
+    const dataDay = usingFallbackDate ? yesterdayPT : todayPT;
+
+    // Extract contributor data with safe defaults
+    const sleepContributors = sleepData?.contributors || {};
+    const readinessContributors = readinessData?.contributors || {};
+    const activityContributors = activityData?.contributors || {};
+
     const output = {
       lastUpdatedIso: now.toISOString(),
-      day: todayPT,
+      day: dataDay,
+
       // Sleep score (0-100)
       sleepScore: roundOrNull(sleepData?.score),
+      // Sleep contributors (0-100 each)
+      sleepDeep: roundOrNull(sleepContributors.deep_sleep),
+      sleepEfficiency: roundOrNull(sleepContributors.efficiency),
+      sleepLatency: roundOrNull(sleepContributors.latency),
+      sleepRem: roundOrNull(sleepContributors.rem_sleep),
+      sleepRestfulness: roundOrNull(sleepContributors.restfulness),
+      sleepTiming: roundOrNull(sleepContributors.timing),
+      sleepTotal: roundOrNull(sleepContributors.total_sleep),
+
       // Readiness score (0-100)
       readinessScore: roundOrNull(readinessData?.score),
+      // Readiness contributors (0-100 each)
+      readinessActivityBalance: roundOrNull(readinessContributors.activity_balance),
+      readinessBodyTemp: roundOrNull(readinessContributors.body_temperature),
+      readinessHrvBalance: roundOrNull(readinessContributors.hrv_balance),
+      readinessPreviousDay: roundOrNull(readinessContributors.previous_day_activity),
+      readinessPreviousNight: roundOrNull(readinessContributors.previous_night),
+      readinessRecoveryIndex: roundOrNull(readinessContributors.recovery_index),
+      readinessRestingHr: roundOrNull(readinessContributors.resting_heart_rate),
+      readinessSleepBalance: roundOrNull(readinessContributors.sleep_balance),
+      readinessSleepRegularity: roundOrNull(readinessContributors.sleep_regularity),
+      // Temperature data
+      tempDeviation: readinessData?.temperature_deviation
+        ? Math.round(readinessData.temperature_deviation * 100) / 100
+        : null,
+
       // Resting heart rate in BPM
       restingHrBpm: roundOrNull(readinessData?.resting_heart_rate ?? sleepData?.heart_rate?.resting),
       // HRV in milliseconds
       hrvMs: roundOrNull(readinessData?.hrv_average_milli ?? sleepData?.average_hrv),
-      // Steps count
+
+      // Activity score (0-100)
+      activityScore: roundOrNull(activityData?.score),
+      // Activity contributors (0-100 each)
+      activityMeetTargets: roundOrNull(activityContributors.meet_daily_targets),
+      activityMoveHour: roundOrNull(activityContributors.move_every_hour),
+      activityRecoveryTime: roundOrNull(activityContributors.recovery_time),
+      activityStayActive: roundOrNull(activityContributors.stay_active),
+      activityTrainingFreq: roundOrNull(activityContributors.training_frequency),
+      activityTrainingVol: roundOrNull(activityContributors.training_volume),
+      // Activity metrics
       steps: roundOrNull(activityData?.steps),
-      // Active calories burned
       activeCalories: roundOrNull(activityData?.active_calories),
+      totalCalories: roundOrNull(activityData?.total_calories),
+      targetCalories: roundOrNull(activityData?.target_calories),
+      metersToTarget: roundOrNull(activityData?.meters_to_target),
+      highActivityMinutes: roundOrNull(activityData?.high_activity_time),
+      mediumActivityMinutes: roundOrNull(activityData?.medium_activity_time),
+      lowActivityMinutes: roundOrNull(activityData?.low_activity_time),
     };
 
-    // Step 5: Check if we got any data
+    // Step 5: Check if we got any data (today or yesterday)
     const hasAnyData =
       output.sleepScore !== null ||
       output.readinessScore !== null ||
@@ -295,21 +375,23 @@ async function main() {
       output.activeCalories !== null;
 
     if (!hasAnyData) {
-      console.warn('Warning: No data available from Oura API for today');
+      console.warn('Warning: No data available from Oura API for today or yesterday');
 
       // If we have existing data, preserve it (don't overwrite with all nulls)
-      if (existingData && existingData.day === todayPT) {
-        console.log('Preserving existing data for today');
+      if (existingData) {
+        console.log('Preserving existing data from', existingData.day);
         process.exit(0);
       }
 
-      // If this is a new day with no data yet, write the placeholder
-      // but exit with error only if there's no prior JSON at all
-      if (!existingData) {
-        console.error('Error: No data available and no prior JSON exists');
-        writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
-        process.exit(1);
-      }
+      // If there's no prior JSON at all, write placeholder and exit error
+      console.error('Error: No data available and no prior JSON exists');
+      writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2));
+      process.exit(1);
+    }
+
+    // Log if we're showing yesterday's data
+    if (output.day === yesterdayPT) {
+      console.log('Note: Showing yesterday\'s data (today not yet synced)');
     }
 
     // Step 6: Write JSON file
@@ -319,7 +401,11 @@ async function main() {
     // Step 7: Check if data actually changed (for CI commit decision)
     if (existingData) {
       const existingJson = JSON.stringify(existingData, null, 2);
-      if (jsonContent === existingJson) {
+      // Compare data content (excluding lastUpdatedIso which changes every run)
+      const existingDataOnly = { ...existingData, lastUpdatedIso: undefined };
+      const newDataOnly = { ...output, lastUpdatedIso: undefined };
+
+      if (JSON.stringify(existingDataOnly) === JSON.stringify(newDataOnly)) {
         console.log('No changes detected in data');
         // Write a marker file for the workflow to check
         writeFileSync(resolve(process.cwd(), '.oura_no_change'), '');
@@ -334,9 +420,12 @@ async function main() {
     console.log('\n--- Summary ---');
     console.log(`Day: ${output.day}`);
     console.log(`Sleep Score: ${output.sleepScore ?? 'N/A'}`);
+    console.log(`  Contributors - Deep: ${output.sleepDeep ?? 'N/A'}, REM: ${output.sleepRem ?? 'N/A'}, Efficiency: ${output.sleepEfficiency ?? 'N/A'}, Latency: ${output.sleepLatency ?? 'N/A'}`);
     console.log(`Readiness Score: ${output.readinessScore ?? 'N/A'}`);
+    console.log(`  Contributors - Activity Balance: ${output.readinessActivityBalance ?? 'N/A'}, Body Temp: ${output.readinessBodyTemp ?? 'N/A'}, HRV Balance: ${output.readinessHrvBalance ?? 'N/A'}`);
     console.log(`Resting HR: ${output.restingHrBpm ?? 'N/A'} BPM`);
     console.log(`HRV: ${output.hrvMs ?? 'N/A'} ms`);
+    console.log(`Activity Score: ${output.activityScore ?? 'N/A'}`);
     console.log(`Steps: ${output.steps ?? 'N/A'}`);
     console.log(`Active Calories: ${output.activeCalories ?? 'N/A'}`);
     console.log('---------------');
