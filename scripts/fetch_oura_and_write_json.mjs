@@ -12,6 +12,7 @@ import https from 'https';
 // Configuration
 const OUTPUT_PATH = resolve(process.cwd(), 'oura_public.json');
 const TOKEN_PATH = resolve(process.cwd(), '.oura_token');
+const ROTATED_TOKEN_PATH = resolve(process.cwd(), '.oura_rotated_token');
 const OAUTH_ENDPOINT = 'https://api.ouraring.com/oauth/token';
 const API_BASE = 'api.ouraring.com';
 const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
@@ -57,6 +58,19 @@ function saveRefreshToken(token) {
     console.log('Refresh token saved to file');
   } catch (e) {
     console.warn('Could not save token file:', e.message);
+  }
+}
+
+/**
+ * Save rotated refresh token for workflow secret update step in CI
+ * @param {string} token
+ */
+function saveRotatedTokenForWorkflow(token) {
+  try {
+    writeFileSync(ROTATED_TOKEN_PATH, token);
+    console.log('Refresh token rotation recorded for workflow secret update');
+  } catch (e) {
+    console.warn('Could not save rotated token file:', e.message);
   }
 }
 
@@ -291,7 +305,7 @@ async function main() {
       // Save new refresh token locally when it rotates; never write secrets in CI.
       if (newRefreshToken && newRefreshToken !== refreshToken) {
         if (IS_GITHUB_ACTIONS) {
-          console.warn('Refresh token rotated in CI. Update OURA_REFRESH_TOKEN secret to prevent future failures.');
+          saveRotatedTokenForWorkflow(newRefreshToken);
         } else {
           saveRefreshToken(newRefreshToken);
         }
