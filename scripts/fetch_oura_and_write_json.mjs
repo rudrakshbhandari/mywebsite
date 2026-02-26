@@ -277,6 +277,21 @@ async function fetchSpo2DataRange(token, startDate, endDate) {
 }
 
 /**
+ * Fetch period-level sleep data (durations, bedtime, stages) from Oura API
+ * @param {string} token - Access token
+ * @param {string} startDate - Start date YYYY-MM-DD
+ * @param {string} endDate - End date YYYY-MM-DD
+ * @returns {Promise<Array>}
+ */
+async function fetchSleepPeriodsRange(token, startDate, endDate) {
+  const url = `https://${API_BASE}/v2/usercollection/sleep?start_date=${startDate}&end_date=${endDate}`;
+  const response = await httpsRequest(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  return Array.isArray(response.data) ? response.data : [];
+}
+
+/**
  * Fetch workout data from Oura API
  * @param {string} token - Access token
  * @param {string} startDate - Start date YYYY-MM-DD
@@ -496,6 +511,7 @@ async function main() {
       heartRateRaw,
       spo2List,
       workoutList,
+      sleepPeriodList,
     ] = await Promise.all([
       fetchSleepDataRange(accessToken, startDate, endDate).catch((e) => {
         console.warn('Sleep fetch failed:', e.message);
@@ -512,6 +528,10 @@ async function main() {
       fetchHeartRateSeries(accessToken, startDate, endDate).catch(() => []),
       fetchSpo2DataRange(accessToken, startDate, endDate).catch(() => []),
       fetchWorkoutsRange(accessToken, startDate, endDate).catch(() => []),
+      fetchSleepPeriodsRange(accessToken, startDate, endDate).catch((e) => {
+        console.warn('Sleep periods fetch failed:', e.message);
+        return [];
+      }),
     ]);
 
     // Build lookup maps by date
@@ -546,6 +566,19 @@ async function main() {
         workoutsByDate.get(d).push(w);
       }
     }
+    // Sleep periods: pick the "long_sleep" type per day (primary sleep session)
+    const sleepPeriodByDate = new Map();
+    for (const sp of sleepPeriodList) {
+      const d = getDateFromRecord(sp);
+      if (!d) continue;
+      const existing = sleepPeriodByDate.get(d);
+      const isLong = sp.type === 'long_sleep';
+      const existingIsLong = existing?.type === 'long_sleep';
+      if (!existing || (isLong && !existingIsLong) ||
+          (isLong === existingIsLong && (sp.total_sleep_duration || 0) > (existing.total_sleep_duration || 0))) {
+        sleepPeriodByDate.set(d, sp);
+      }
+    }
 
     // Generate ordered list of dates (oldest → newest)
     const allDates = [];
@@ -561,6 +594,7 @@ async function main() {
       const activityData = activityByDate.get(day);
       const spo2Rec = spo2ByDate.get(day);
       const dayWorkouts = workoutsByDate.get(day) || [];
+      const sleepPeriod = sleepPeriodByDate.get(day);
 
       const sleepContributors = sleepData?.contributors || {};
       const readinessContributors = readinessData?.contributors || {};
@@ -589,6 +623,14 @@ async function main() {
         activeCalories: roundOrNull(activityData?.active_calories),
         spo2Average: roundOrNull(extractSpo2Percent(spo2Rec)),
         workoutCount: dayWorkouts.length,
+        // Sleep duration fields (in seconds from Oura API)
+        totalSleepDuration: roundOrNull(sleepPeriod?.total_sleep_duration),
+        deepSleepDuration: roundOrNull(sleepPeriod?.deep_sleep_duration),
+        remSleepDuration: roundOrNull(sleepPeriod?.rem_sleep_duration),
+        lightSleepDuration: roundOrNull(sleepPeriod?.light_sleep_duration),
+        sleepEfficiency: roundOrNull(sleepPeriod?.efficiency),
+        bedtimeStart: sleepPeriod?.bedtime_start || null,
+        bedtimeEnd: sleepPeriod?.bedtime_end || null,
       });
     }
 

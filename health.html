@@ -331,6 +331,20 @@
         cursor: crosshair;
       }
 
+      .hr-tracking-line {
+        stroke: rgba(94, 234, 212, 0.5);
+        stroke-width: 1;
+        stroke-dasharray: 4 3;
+        pointer-events: none;
+      }
+
+      .hr-tracking-dot {
+        fill: #5eead4;
+        stroke: var(--background-dark);
+        stroke-width: 2;
+        pointer-events: none;
+      }
+
       .timeline-stats {
         margin-top: 0.75rem;
         display: grid;
@@ -731,6 +745,67 @@
         cursor: help;
       }
 
+      /* Sleep duration stacked bars */
+      .sleep-stacked-bar {
+        width: 100%;
+        max-width: 40px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 6px 6px 0 0;
+        overflow: hidden;
+        min-height: 6px;
+        cursor: pointer;
+        transition: filter 0.2s ease;
+      }
+
+      .sleep-stacked-bar:hover {
+        filter: brightness(1.15);
+      }
+
+      .sleep-segment {
+        width: 100%;
+        transition: height 0.3s ease;
+      }
+
+      .sleep-segment.deep { background: #6366f1; }
+      .sleep-segment.rem { background: #818cf8; }
+      .sleep-segment.light { background: #a5b4fc; }
+
+      .sleep-legend {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .sleep-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+      }
+
+      .sleep-legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
+      .sleep-legend-dot.deep { background: #6366f1; }
+      .sleep-legend-dot.rem { background: #818cf8; }
+      .sleep-legend-dot.light { background: #a5b4fc; }
+
+      .sleep-detail-label {
+        font-size: 0.65rem;
+        color: var(--text-secondary);
+        margin-top: 0.125rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
       /* Hidden states */
       .hidden {
         display: none !important;
@@ -884,6 +959,8 @@
                 <g id="hr-grid"></g>
                 <path id="heart-rate-fill" class="timeline-fill" d=""></path>
                 <path id="heart-rate-line" class="timeline-line" d=""></path>
+                <line id="hr-tracking-line" class="hr-tracking-line" x1="0" y1="0" x2="0" y2="0" style="display:none"></line>
+                <circle id="hr-tracking-dot" class="hr-tracking-dot" cx="0" cy="0" r="5" style="display:none"></circle>
                 <rect id="hr-hover-area" fill="transparent" class="hr-hover-rect"></rect>
               </svg>
               <div id="hr-tooltip" class="chart-tooltip hidden">
@@ -1179,8 +1256,33 @@
       }
 
       /**
-       * Render 7-day trend bars
-       * @param {Array} byDay - Array of { day, sleepScore, readinessScore, steps }
+       * Format seconds to "Xh Ym" display
+       * @param {number|null} seconds
+       * @returns {string}
+       */
+      function formatDuration(seconds) {
+        if (seconds == null || seconds <= 0) return '--';
+        const hours = Math.floor(seconds / 3600);
+        const mins = Math.round((seconds % 3600) / 60);
+        if (hours === 0) return `${mins}m`;
+        return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+      }
+
+      /**
+       * Format seconds to short "X.Yh" display for compact labels
+       * @param {number|null} seconds
+       * @returns {string}
+       */
+      function formatDurationShort(seconds) {
+        if (seconds == null || seconds <= 0) return '--';
+        const hours = seconds / 3600;
+        if (hours < 1) return `${Math.round(seconds / 60)}m`;
+        return `${hours.toFixed(1)}h`;
+      }
+
+      /**
+       * Render 7-day trend bars with enhanced sleep duration breakdown
+       * @param {Array} byDay - Array of day data objects
        */
       function render7DayTrend(byDay) {
         const container = document.getElementById('trend-cards');
@@ -1203,112 +1305,156 @@
 
         section.classList.remove('hidden');
 
-        // Calculate dynamic ranges for each metric type
-        const sleepScores = byDay.map(d => d.sleepScore).filter(v => v != null);
-        const readinessScores = byDay.map(d => d.readinessScore).filter(v => v != null);
-        const stepsValues = byDay.map(d => d.steps).filter(v => v != null && v > 0);
-
-        const sleepMin = sleepScores.length > 0 ? Math.min(...sleepScores) : 0;
-        const sleepMax = sleepScores.length > 0 ? Math.max(...sleepScores) : 100;
-        const readinessMin = readinessScores.length > 0 ? Math.min(...readinessScores) : 0;
-        const readinessMax = readinessScores.length > 0 ? Math.max(...readinessScores) : 100;
-        const stepsMin = stepsValues.length > 0 ? Math.min(...stepsValues) : 0;
-        const stepsMax = stepsValues.length > 0 ? Math.max(...stepsValues) : 10000;
-
         const formatDay = (dateStr) => {
           const d = new Date(dateStr + 'T12:00:00');
           return d.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' });
         };
 
-        const trends = [
-          {
-            key: 'sleep',
-            label: 'Sleep Score',
-            icon: 'fa-moon',
-            colorClass: 'sleep',
-            getValue: (d) => d.sleepScore,
-            min: Math.max(0, sleepMin - 5), // Add padding, but don't go below 0
-            max: Math.min(100, sleepMax + 5), // Add padding, but don't exceed 100
-            format: (v) => (v != null ? v : '--'),
-          },
-          {
-            key: 'readiness',
-            label: 'Readiness',
-            icon: 'fa-battery-three-quarters',
-            colorClass: 'readiness',
-            getValue: (d) => d.readinessScore,
-            min: Math.max(0, readinessMin - 5),
-            max: Math.min(100, readinessMax + 5),
-            format: (v) => (v != null ? v : '--'),
-          },
-          {
-            key: 'steps',
-            label: 'Steps',
-            icon: 'fa-shoe-prints',
-            colorClass: 'steps',
-            getValue: (d) => d.steps,
-            min: Math.max(0, stepsMin - 500),
-            max: stepsMax + 500,
-            format: (v) => (v != null ? (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v) : '--'),
-          },
-        ];
-
-        const yAxisLabels = (min, max, isSteps) =>
-          isSteps
-            ? [`${(min / 1000).toFixed(1)}k`, `${(max / 1000).toFixed(1)}k`]
-            : [Math.round(min), Math.round(max)];
-
         let html = '';
-        for (const trend of trends) {
-          const hasData = byDay.some((d) => trend.getValue(d) != null);
-          if (!hasData) continue;
 
-          const isSteps = trend.key === 'steps';
-          const yLabels = yAxisLabels(trend.min, trend.max, isSteps);
+        // --- Sleep Duration Breakdown (stacked bars) ---
+        const hasSleepDurations = byDay.some((d) => d.totalSleepDuration != null && d.totalSleepDuration > 0);
+        if (hasSleepDurations) {
+          const totalDurations = byDay.map(d => d.totalSleepDuration).filter(v => v != null && v > 0);
+          const maxDuration = Math.max(...totalDurations);
 
           html += `
             <div class="trend-card">
               <div class="trend-header">
-                <i class="fas ${trend.icon}"></i>
-                <span>${trend.label}</span>
+                <i class="fas fa-moon"></i>
+                <span>Sleep Duration</span>
+              </div>
+              <div class="sleep-legend">
+                <div class="sleep-legend-item"><span class="sleep-legend-dot deep"></span>Deep</div>
+                <div class="sleep-legend-item"><span class="sleep-legend-dot rem"></span>REM</div>
+                <div class="sleep-legend-item"><span class="sleep-legend-dot light"></span>Light</div>
               </div>
               <div class="trend-chart-row">
                 <div class="trend-y-axis">
-                  <span>${yLabels[1]}</span>
-                  <span>${yLabels[0]}</span>
+                  <span>${formatDurationShort(maxDuration)}</span>
+                  <span>0h</span>
                 </div>
                 <div class="trend-bars">
-                  ${byDay
-                    .map((d) => {
-                      const val = trend.getValue(d);
-                      // Calculate percentage within the dynamic range
-                      const range = trend.max - trend.min;
-                      const pct = val != null && range > 0
-                        ? ((val - trend.min) / range) * 100
-                        : 0;
-                      const displayVal = trend.format(val);
-                      const tooltipText = val != null ? `${formatDay(d.day)}: ${displayVal}${isSteps ? ' steps' : ''}` : `${formatDay(d.day)}: No data`;
-                      return `
-                        <div class="trend-day">
-                          <div class="trend-day-bar-wrap" title="${tooltipText}">
-                            <div
-                              class="trend-bar ${trend.colorClass}"
-                              style="height: ${Math.max(4, pct)}%"
-                            ></div>
-                          </div>
-                          <span class="trend-day-label">${formatDay(d.day)}</span>
-                          <span class="trend-day-value ${val == null ? 'null' : ''}">${displayVal}</span>
+                  ${byDay.map((d) => {
+                    const total = d.totalSleepDuration || 0;
+                    const deep = d.deepSleepDuration || 0;
+                    const rem = d.remSleepDuration || 0;
+                    const light = d.lightSleepDuration || 0;
+                    const barPct = total > 0 && maxDuration > 0 ? (total / maxDuration) * 100 : 0;
+
+                    const deepPct = total > 0 ? (deep / total) * 100 : 0;
+                    const remPct = total > 0 ? (rem / total) * 100 : 0;
+                    const lightPct = total > 0 ? (light / total) * 100 : 0;
+
+                    const scoreLabel = d.sleepScore != null ? ` • Score: ${d.sleepScore}` : '';
+                    const tooltipText = total > 0
+                      ? `${formatDay(d.day)}: ${formatDuration(total)}${scoreLabel}\nDeep: ${formatDuration(deep)} • REM: ${formatDuration(rem)} • Light: ${formatDuration(light)}`
+                      : `${formatDay(d.day)}: No data`;
+
+                    return `
+                      <div class="trend-day">
+                        <div class="trend-day-bar-wrap" title="${tooltipText}">
+                          ${total > 0 ? `
+                            <div class="sleep-stacked-bar" style="height: ${Math.max(4, barPct)}%">
+                              <div class="sleep-segment deep" style="height: ${deepPct}%"></div>
+                              <div class="sleep-segment rem" style="height: ${remPct}%"></div>
+                              <div class="sleep-segment light" style="height: ${lightPct}%"></div>
+                            </div>
+                          ` : `<div class="trend-bar sleep" style="height: 4%"></div>`}
                         </div>
-                      `;
-                    })
-                    .join('')}
+                        <span class="trend-day-label">${formatDay(d.day)}</span>
+                        <span class="trend-day-value ${total === 0 ? 'null' : ''}">${total > 0 ? formatDurationShort(total) : '--'}</span>
+                        ${d.sleepScore != null ? `<span class="sleep-detail-label">${d.sleepScore}/100</span>` : ''}
+                      </div>
+                    `;
+                  }).join('')}
                 </div>
               </div>
             </div>
           `;
+        } else {
+          // Fallback: show sleep score bars if no duration data
+          const sleepScores = byDay.map(d => d.sleepScore).filter(v => v != null);
+          if (sleepScores.length > 0) {
+            const sleepMin = Math.max(0, Math.min(...sleepScores) - 5);
+            const sleepMax = Math.min(100, Math.max(...sleepScores) + 5);
+            html += renderSimpleTrendCard(byDay, {
+              label: 'Sleep Score', icon: 'fa-moon', colorClass: 'sleep',
+              getValue: (d) => d.sleepScore, min: sleepMin, max: sleepMax,
+              format: (v) => (v != null ? v : '--'),
+            }, formatDay);
+          }
+        }
+
+        // --- Readiness ---
+        const readinessScores = byDay.map(d => d.readinessScore).filter(v => v != null);
+        if (readinessScores.length > 0) {
+          const readinessMin = Math.max(0, Math.min(...readinessScores) - 5);
+          const readinessMax = Math.min(100, Math.max(...readinessScores) + 5);
+          html += renderSimpleTrendCard(byDay, {
+            label: 'Readiness', icon: 'fa-battery-three-quarters', colorClass: 'readiness',
+            getValue: (d) => d.readinessScore, min: readinessMin, max: readinessMax,
+            format: (v) => (v != null ? v : '--'),
+          }, formatDay);
+        }
+
+        // --- Steps ---
+        const stepsValues = byDay.map(d => d.steps).filter(v => v != null && v > 0);
+        if (stepsValues.length > 0) {
+          const stepsMin = Math.max(0, Math.min(...stepsValues) - 500);
+          const stepsMax = Math.max(...stepsValues) + 500;
+          html += renderSimpleTrendCard(byDay, {
+            label: 'Steps', icon: 'fa-shoe-prints', colorClass: 'steps',
+            getValue: (d) => d.steps, min: stepsMin, max: stepsMax,
+            format: (v) => (v != null ? (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v) : '--'),
+            isSteps: true,
+          }, formatDay);
         }
 
         container.innerHTML = html || '';
+      }
+
+      /**
+       * Render a simple bar-chart trend card (readiness, steps, etc.)
+       */
+      function renderSimpleTrendCard(byDay, config, formatDay) {
+        const yLabels = config.isSteps
+          ? [`${(config.min / 1000).toFixed(1)}k`, `${(config.max / 1000).toFixed(1)}k`]
+          : [Math.round(config.min), Math.round(config.max)];
+
+        return `
+          <div class="trend-card">
+            <div class="trend-header">
+              <i class="fas ${config.icon}"></i>
+              <span>${config.label}</span>
+            </div>
+            <div class="trend-chart-row">
+              <div class="trend-y-axis">
+                <span>${yLabels[1]}</span>
+                <span>${yLabels[0]}</span>
+              </div>
+              <div class="trend-bars">
+                ${byDay.map((d) => {
+                  const val = config.getValue(d);
+                  const range = config.max - config.min;
+                  const pct = val != null && range > 0 ? ((val - config.min) / range) * 100 : 0;
+                  const displayVal = config.format(val);
+                  const suffix = config.isSteps ? ' steps' : '';
+                  const tooltipText = val != null ? `${formatDay(d.day)}: ${displayVal}${suffix}` : `${formatDay(d.day)}: No data`;
+                  return `
+                    <div class="trend-day">
+                      <div class="trend-day-bar-wrap" title="${tooltipText}">
+                        <div class="trend-bar ${config.colorClass}" style="height: ${Math.max(4, pct)}%"></div>
+                      </div>
+                      <span class="trend-day-label">${formatDay(d.day)}</span>
+                      <span class="trend-day-value ${val == null ? 'null' : ''}">${displayVal}</span>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+          </div>
+        `;
       }
 
       /**
@@ -1338,6 +1484,8 @@
         const tooltip = document.getElementById('hr-tooltip');
         const tooltipTime = document.getElementById('hr-tooltip-time');
         const tooltipValue = document.getElementById('hr-tooltip-value');
+        const trackingLine = document.getElementById('hr-tracking-line');
+        const trackingDot = document.getElementById('hr-tracking-dot');
 
         if (!line || !fill || !Array.isArray(series) || series.length < 2) {
           setCardVisibility('heart-rate-timeline-card', false);
@@ -1386,14 +1534,20 @@
           <text x="${marginLeft - 35}" y="${(top + bottom) / 2}" class="timeline-axis-label" text-anchor="end" transform="rotate(-90, ${marginLeft - 35}, ${(top + bottom) / 2})">bpm</text>
         `;
 
-        const t0 = series[0]?.t;
-        const tMid = series[Math.floor(series.length / 2)]?.t;
-        const t1 = series[series.length - 1]?.t;
-        axisX.innerHTML = `
-          <text x="${marginLeft}" y="${220 - 8}" class="timeline-axis-label" text-anchor="start">${formatTime(t0)}</text>
-          <text x="${marginLeft + plotWidth / 2}" y="${220 - 8}" class="timeline-axis-label" text-anchor="middle">${formatTime(tMid)}</text>
-          <text x="${marginLeft + plotWidth}" y="${220 - 8}" class="timeline-axis-label" text-anchor="end">${formatTime(t1)}</text>
-        `;
+        // Generate evenly-spaced x-axis labels based on time range
+        const timeStart = new Date(series[0].t).getTime();
+        const timeEnd = new Date(series[series.length - 1].t).getTime();
+        const timeRange = timeEnd - timeStart;
+        const labelCount = Math.min(7, Math.max(4, Math.floor(plotWidth / 130)));
+        let xAxisHtml = '';
+        for (let i = 0; i < labelCount; i++) {
+          const frac = i / (labelCount - 1);
+          const xPos = marginLeft + frac * plotWidth;
+          const timeAtPos = new Date(timeStart + frac * timeRange);
+          const anchor = i === 0 ? 'start' : i === labelCount - 1 ? 'end' : 'middle';
+          xAxisHtml += `<text x="${xPos}" y="${220 - 8}" class="timeline-axis-label" text-anchor="${anchor}">${formatTime(timeAtPos.toISOString())}</text>`;
+        }
+        axisX.innerHTML = xAxisHtml;
 
         gridEl.innerHTML = `
           <line class="timeline-grid-line" x1="${marginLeft}" y1="${top}" x2="${marginLeft + plotWidth}" y2="${top}"></line>
@@ -1407,11 +1561,11 @@
         hoverArea.setAttribute('height', plotHeight);
         hoverArea.setAttribute('cursor', 'crosshair');
 
-        hoverArea.onmousemove = (e) => {
+        function findNearestAndUpdate(clientX, clientY) {
           const svg = document.getElementById('heart-rate-timeline');
           const pt = svg.createSVGPoint();
-          pt.x = e.clientX;
-          pt.y = e.clientY;
+          pt.x = clientX;
+          pt.y = clientY;
           const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
           const mouseX = svgPt.x;
           let nearest = points[0];
@@ -1423,23 +1577,46 @@
               nearest = p;
             }
           }
+
+          // Update tracking line and dot
+          trackingLine.setAttribute('x1', nearest.x);
+          trackingLine.setAttribute('y1', top);
+          trackingLine.setAttribute('x2', nearest.x);
+          trackingLine.setAttribute('y2', bottom);
+          trackingLine.style.display = '';
+          trackingDot.setAttribute('cx', nearest.x);
+          trackingDot.setAttribute('cy', nearest.y);
+          trackingDot.style.display = '';
+
           tooltipTime.textContent = formatTime(nearest.t);
           tooltipValue.textContent = `${nearest.bpm} bpm`;
           tooltip.classList.remove('hidden');
           const offset = 14;
-          let left = e.clientX + offset;
-          let top = e.clientY + offset;
-          tooltip.style.left = `${left}px`;
-          tooltip.style.top = `${top}px`;
+          tooltip.style.left = `${clientX + offset}px`;
+          tooltip.style.top = `${clientY + offset}px`;
           requestAnimationFrame(() => {
             const tr = tooltip.getBoundingClientRect();
-            if (tr.right > window.innerWidth) tooltip.style.left = `${e.clientX - tr.width - offset}px`;
-            if (tr.bottom > window.innerHeight) tooltip.style.top = `${e.clientY - tr.height - offset}px`;
+            if (tr.right > window.innerWidth) tooltip.style.left = `${clientX - tr.width - offset}px`;
+            if (tr.bottom > window.innerHeight) tooltip.style.top = `${clientY - tr.height - offset}px`;
           });
-        };
-        hoverArea.onmouseleave = () => {
+        }
+
+        function hideTracking() {
           tooltip.classList.add('hidden');
+          trackingLine.style.display = 'none';
+          trackingDot.style.display = 'none';
+        }
+
+        hoverArea.onmousemove = (e) => findNearestAndUpdate(e.clientX, e.clientY);
+        hoverArea.onmouseleave = hideTracking;
+
+        // Touch support for mobile
+        hoverArea.ontouchmove = (e) => {
+          e.preventDefault();
+          const touch = e.touches[0];
+          findNearestAndUpdate(touch.clientX, touch.clientY);
         };
+        hoverArea.ontouchend = hideTracking;
 
         const minEl = document.getElementById('heart-rate-min');
         const avgEl = document.getElementById('heart-rate-avg');
