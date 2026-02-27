@@ -16,6 +16,7 @@ const ROTATED_TOKEN_PATH = resolve(process.cwd(), '.oura_rotated_token');
 const OAUTH_ENDPOINT = 'https://api.ouraring.com/oauth/token';
 const API_BASE = 'api.ouraring.com';
 const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
+const PT_TIME_ZONE = 'America/Los_Angeles';
 
 /**
  * Load refresh token from file or env
@@ -92,15 +93,15 @@ function httpsRequest(url, options = {}, body = null) {
       path: parsedUrl.pathname + parsedUrl.search,
       method: options.method || 'GET',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': contentType,
         ...options.headers,
       },
     };
 
-    const req = https.request(reqOptions, (res) => {
+    const req = https.request(reqOptions, res => {
       let data = '';
-      res.on('data', (chunk) => (data += chunk));
+      res.on('data', chunk => (data += chunk));
       res.on('end', () => {
         try {
           const parsed = JSON.parse(data);
@@ -108,12 +109,7 @@ function httpsRequest(url, options = {}, body = null) {
             resolve(parsed);
           } else {
             const apiMessage =
-              parsed.error_description ||
-              parsed.detail ||
-              parsed.title ||
-              parsed.error ||
-              parsed.message ||
-              data;
+              parsed.error_description || parsed.detail || parsed.title || parsed.error || parsed.message || data;
             reject(new Error(`HTTP ${res.statusCode}: ${apiMessage}`));
           }
         } catch (e) {
@@ -152,10 +148,14 @@ async function refreshAccessToken(clientId, clientSecret, refreshToken) {
     refresh_token: refreshToken,
   });
 
-  const response = await httpsRequest(OAUTH_ENDPOINT, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  }, params.toString());
+  const response = await httpsRequest(
+    OAUTH_ENDPOINT,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+    params.toString()
+  );
 
   if (!response.access_token) {
     throw new Error('No access_token in OAuth response');
@@ -163,7 +163,38 @@ async function refreshAccessToken(clientId, clientSecret, refreshToken) {
 
   return {
     accessToken: response.access_token,
-    newRefreshToken: response.refresh_token // Oura may rotate refresh tokens
+    newRefreshToken: response.refresh_token, // Oura may rotate refresh tokens
+  };
+}
+
+/**
+ * Format date parts to YYYY-MM-DD
+ * @param {number} year
+ * @param {number} month
+ * @param {number} day
+ * @returns {string}
+ */
+function formatYmd(year, month, day) {
+  return `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+/**
+ * Get PT calendar date parts for a given instant
+ * @param {Date} date
+ * @returns {{year: number, month: number, day: number}}
+ */
+function getPtDateParts(date) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: PT_TIME_ZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const getPart = type => Number(parts.find(part => part.type === type)?.value);
+  return {
+    year: getPart('year'),
+    month: getPart('month'),
+    day: getPart('day'),
   };
 }
 
@@ -172,10 +203,8 @@ async function refreshAccessToken(clientId, clientSecret, refreshToken) {
  * @returns {string}
  */
 function getTodayPT() {
-  const now = new Date();
-  const ptOffset = -7 * 60; // PDT offset (use -8 for PST)
-  const ptTime = new Date(now.getTime() + (now.getTimezoneOffset() + ptOffset) * 60000);
-  return ptTime.toISOString().split('T')[0];
+  const { year, month, day } = getPtDateParts(new Date());
+  return formatYmd(year, month, day);
 }
 
 /**
@@ -184,11 +213,10 @@ function getTodayPT() {
  * @returns {string}
  */
 function getDateDaysAgoPT(daysAgo) {
-  const now = new Date();
-  const ptOffset = -7 * 60;
-  const ptTime = new Date(now.getTime() + (now.getTimezoneOffset() + ptOffset) * 60000);
-  ptTime.setDate(ptTime.getDate() - daysAgo);
-  return ptTime.toISOString().split('T')[0];
+  const { year, month, day } = getPtDateParts(new Date());
+  const utcPtDate = new Date(Date.UTC(year, month - 1, day));
+  utcPtDate.setUTCDate(utcPtDate.getUTCDate() - daysAgo);
+  return formatYmd(utcPtDate.getUTCFullYear(), utcPtDate.getUTCMonth() + 1, utcPtDate.getUTCDate());
 }
 
 /**
@@ -355,12 +383,7 @@ function firstDefined(...values) {
  * @returns {string|null}
  */
 function getDateFromRecord(record) {
-  return firstDefined(
-    record.day,
-    record.date,
-    record.summary_date,
-    record.bedtime_start?.toString().split('T')[0]
-  );
+  return firstDefined(record.day, record.date, record.summary_date, record.bedtime_start?.toString().split('T')[0]);
 }
 
 /**
@@ -389,21 +412,8 @@ function normalizeHeartRatePoint(item) {
   if (!item || typeof item !== 'object') {
     return null;
   }
-  const bpmRaw = firstDefined(
-    item.bpm,
-    item.beats_per_minute,
-    item.heart_rate,
-    item.hr,
-    item.value,
-    item.average_hr
-  );
-  const timestamp = firstDefined(
-    item.timestamp,
-    item.datetime,
-    item.time,
-    item.ts,
-    item.recorded_at
-  );
+  const bpmRaw = firstDefined(item.bpm, item.beats_per_minute, item.heart_rate, item.hr, item.value, item.average_hr);
+  const timestamp = firstDefined(item.timestamp, item.datetime, item.time, item.ts, item.recorded_at);
   const bpm = Number(bpmRaw);
   if (!timestamp || !Number.isFinite(bpm) || bpm <= 0 || bpm > 250) {
     return null;
@@ -520,35 +530,28 @@ async function main() {
     const { startDate, endDate } = getLast7DaysRange();
     console.log(`Fetching last 7 days (${startDate} → ${endDate})...`);
 
-    const [
-      sleepList,
-      readinessList,
-      activityList,
-      heartRateRaw,
-      spo2List,
-      workoutList,
-      sleepPeriodList,
-    ] = await Promise.all([
-      fetchSleepDataRange(accessToken, startDate, endDate).catch((e) => {
-        console.warn('Sleep fetch failed:', e.message);
-        return [];
-      }),
-      fetchReadinessDataRange(accessToken, startDate, endDate).catch((e) => {
-        console.warn('Readiness fetch failed:', e.message);
-        return [];
-      }),
-      fetchActivityDataRange(accessToken, startDate, endDate).catch((e) => {
-        console.warn('Activity fetch failed:', e.message);
-        return [];
-      }),
-      fetchHeartRateSeries(accessToken, startDate, endDate).catch(() => []),
-      fetchSpo2DataRange(accessToken, startDate, endDate).catch(() => []),
-      fetchWorkoutsRange(accessToken, startDate, endDate).catch(() => []),
-      fetchSleepPeriodsRange(accessToken, startDate, endDate).catch((e) => {
-        console.warn('Sleep periods fetch failed:', e.message);
-        return [];
-      }),
-    ]);
+    const [sleepList, readinessList, activityList, heartRateRaw, spo2List, workoutList, sleepPeriodList] =
+      await Promise.all([
+        fetchSleepDataRange(accessToken, startDate, endDate).catch(e => {
+          console.warn('Sleep fetch failed:', e.message);
+          return [];
+        }),
+        fetchReadinessDataRange(accessToken, startDate, endDate).catch(e => {
+          console.warn('Readiness fetch failed:', e.message);
+          return [];
+        }),
+        fetchActivityDataRange(accessToken, startDate, endDate).catch(e => {
+          console.warn('Activity fetch failed:', e.message);
+          return [];
+        }),
+        fetchHeartRateSeries(accessToken, startDate, endDate).catch(() => []),
+        fetchSpo2DataRange(accessToken, startDate, endDate).catch(() => []),
+        fetchWorkoutsRange(accessToken, startDate, endDate).catch(() => []),
+        fetchSleepPeriodsRange(accessToken, startDate, endDate).catch(e => {
+          console.warn('Sleep periods fetch failed:', e.message);
+          return [];
+        }),
+      ]);
 
     // Build lookup maps by date
     const sleepByDate = new Map();
@@ -591,8 +594,11 @@ async function main() {
       const existing = sleepPeriodByDate.get(d);
       const isLong = sp.type === 'long_sleep';
       const existingIsLong = existing?.type === 'long_sleep';
-      if (!existing || (isLong && !existingIsLong) ||
-          (isLong === existingIsLong && (sp.total_sleep_duration || 0) > (existing.total_sleep_duration || 0))) {
+      if (
+        !existing ||
+        (isLong && !existingIsLong) ||
+        (isLong === existingIsLong && (sp.total_sleep_duration || 0) > (existing.total_sleep_duration || 0))
+      ) {
         sleepPeriodByDate.set(d, sp);
       }
     }
@@ -630,11 +636,7 @@ async function main() {
           )
         ),
         hrvMs: roundOrNull(
-          firstDefined(
-            readinessData?.hrv_average_milli,
-            readinessData?.hrv_average,
-            sleepData?.average_hrv
-          )
+          firstDefined(readinessData?.hrv_average_milli, readinessData?.hrv_average, sleepData?.average_hrv)
         ),
         steps: roundOrNull(activityData?.steps),
         activeCalories: roundOrNull(activityData?.active_calories),
@@ -664,7 +666,7 @@ async function main() {
     const readinessData = readinessByDate.get(dataDay);
     const activityData = activityByDate.get(dataDay);
     const spo2Data = spo2ByDate.get(dataDay) || spo2List[spo2List.length - 1];
-    const workouts = workoutList.filter((w) => {
+    const workouts = workoutList.filter(w => {
       const d =
         getDateFromRecord(w) ||
         (w.start ? String(w.start).split('T')[0] : null) ||
@@ -682,11 +684,9 @@ async function main() {
     const heartRateStats =
       heartRateSeries.length > 0
         ? {
-            min: Math.min(...heartRateSeries.map((p) => p.bpm)),
-            max: Math.max(...heartRateSeries.map((p) => p.bpm)),
-            avg: roundOrNull(
-              heartRateSeries.reduce((sum, point) => sum + point.bpm, 0) / heartRateSeries.length
-            ),
+            min: Math.min(...heartRateSeries.map(p => p.bpm)),
+            max: Math.max(...heartRateSeries.map(p => p.bpm)),
+            avg: roundOrNull(heartRateSeries.reduce((sum, point) => sum + point.bpm, 0) / heartRateSeries.length),
             latest: heartRateSeries[heartRateSeries.length - 1].bpm,
           }
         : null;
@@ -730,14 +730,10 @@ async function main() {
         )
       ),
       hrvMs: roundOrNull(
-        firstDefined(
-          readinessData?.hrv_average_milli,
-          readinessData?.hrv_average,
-          sleepData?.average_hrv
-        )
+        firstDefined(readinessData?.hrv_average_milli, readinessData?.hrv_average, sleepData?.average_hrv)
       ),
       heartRateSeriesDay: heartRateSeries.length > 0 ? dataDay : null,
-      heartRateSeries: heartRateSeries.map((point) => ({ t: point.timestamp, bpm: point.bpm })),
+      heartRateSeries: heartRateSeries.map(point => ({ t: point.timestamp, bpm: point.bpm })),
       heartRateMinBpm: heartRateStats?.min ?? null,
       heartRateMaxBpm: heartRateStats?.max ?? null,
       heartRateAvgBpm: heartRateStats?.avg ?? null,
@@ -764,12 +760,8 @@ async function main() {
         firstDefined(spo2Data?.breathing_disturbance_index, spo2Data?.breathing_disturbance)
       ),
       workoutCount: workouts.length,
-      workoutMinutes: roundOrNull(
-        workouts.reduce((sum, w) => sum + Number(firstDefined(w.duration, 0)), 0)
-      ),
-      workoutCalories: roundOrNull(
-        workouts.reduce((sum, w) => sum + Number(firstDefined(w.calories, 0)), 0)
-      ),
+      workoutMinutes: roundOrNull(workouts.reduce((sum, w) => sum + Number(firstDefined(w.duration, 0)), 0)),
+      workoutCalories: roundOrNull(workouts.reduce((sum, w) => sum + Number(firstDefined(w.calories, 0)), 0)),
     };
 
     // Step 5: Check if we got any data (from 7-day window)
@@ -780,7 +772,7 @@ async function main() {
       output.hrvMs !== null ||
       output.steps !== null ||
       output.activeCalories !== null ||
-      byDay.some((d) => d.sleepScore !== null || d.readinessScore !== null || d.steps !== null);
+      byDay.some(d => d.sleepScore !== null || d.readinessScore !== null || d.steps !== null);
 
     if (!hasAnyData) {
       console.warn('Warning: No data available from Oura API for the last 7 days');
@@ -821,16 +813,22 @@ async function main() {
     console.log('\n--- Summary ---');
     console.log(`Day: ${output.day}`);
     console.log(`Sleep Score: ${output.sleepScore ?? 'N/A'}`);
-    console.log(`  Contributors - Deep: ${output.sleepDeep ?? 'N/A'}, REM: ${output.sleepRem ?? 'N/A'}, Efficiency: ${output.sleepEfficiency ?? 'N/A'}, Latency: ${output.sleepLatency ?? 'N/A'}`);
+    console.log(
+      `  Contributors - Deep: ${output.sleepDeep ?? 'N/A'}, REM: ${output.sleepRem ?? 'N/A'}, Efficiency: ${output.sleepEfficiency ?? 'N/A'}, Latency: ${output.sleepLatency ?? 'N/A'}`
+    );
     console.log(`Readiness Score: ${output.readinessScore ?? 'N/A'}`);
-    console.log(`  Contributors - Activity Balance: ${output.readinessActivityBalance ?? 'N/A'}, Body Temp: ${output.readinessBodyTemp ?? 'N/A'}, HRV Balance: ${output.readinessHrvBalance ?? 'N/A'}`);
+    console.log(
+      `  Contributors - Activity Balance: ${output.readinessActivityBalance ?? 'N/A'}, Body Temp: ${output.readinessBodyTemp ?? 'N/A'}, HRV Balance: ${output.readinessHrvBalance ?? 'N/A'}`
+    );
     console.log(`Resting HR: ${output.restingHrBpm ?? 'N/A'} BPM`);
     console.log(`HRV: ${output.hrvMs ?? 'N/A'} ms`);
     console.log(`Activity Score: ${output.activityScore ?? 'N/A'}`);
     console.log(`Steps: ${output.steps ?? 'N/A'}`);
     console.log(`Active Calories: ${output.activeCalories ?? 'N/A'}`);
     console.log(`HR Timeline Points: ${output.heartRateSeries.length}`);
-    console.log(`7-Day History: ${byDay.filter((d) => d.sleepScore !== null || d.readinessScore !== null || d.steps !== null).length} days with data`);
+    console.log(
+      `7-Day History: ${byDay.filter(d => d.sleepScore !== null || d.readinessScore !== null || d.steps !== null).length} days with data`
+    );
     console.log(`SpO2 Average: ${output.spo2Average ?? 'N/A'}`);
     console.log(`Workouts: ${output.workoutCount ?? 0}`);
     console.log('---------------');

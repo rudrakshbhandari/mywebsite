@@ -9,6 +9,7 @@ import { resolve } from 'path';
 import https from 'https';
 
 const TOKEN_PATH = resolve(process.cwd(), '.oura_token');
+const PT_TIME_ZONE = 'America/Los_Angeles';
 
 function loadRefreshToken() {
   if (existsSync(TOKEN_PATH)) {
@@ -22,26 +23,29 @@ function loadRefreshToken() {
 function httpsRequest(url, options = {}, body = null) {
   return new Promise((resolve, reject) => {
     const parsedUrl = new URL(url);
-    const req = https.request({
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      method: options.method || 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        ...options.headers,
+    const req = https.request(
+      {
+        hostname: parsedUrl.hostname,
+        path: parsedUrl.pathname + parsedUrl.search,
+        method: options.method || 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          ...options.headers,
+        },
       },
-    }, (res) => {
-      let data = '';
-      res.on('data', (chunk) => (data += chunk));
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(new Error(`Invalid JSON: ${data.substring(0, 200)}`));
-        }
-      });
-    });
+      res => {
+        let data = '';
+        res.on('data', chunk => (data += chunk));
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            reject(new Error(`Invalid JSON: ${data.substring(0, 200)}`));
+          }
+        });
+      }
+    );
     req.on('error', reject);
     req.setTimeout(30000, () => {
       req.destroy();
@@ -60,10 +64,14 @@ async function refreshAccessToken(clientId, clientSecret, refreshToken) {
     refresh_token: refreshToken,
   });
 
-  const response = await httpsRequest('https://api.ouraring.com/oauth/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  }, params.toString());
+  const response = await httpsRequest(
+    'https://api.ouraring.com/oauth/token',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+    params.toString()
+  );
 
   return response.access_token;
 }
@@ -75,10 +83,10 @@ async function fetchEndpoint(token, endpoint, date = null) {
   } else {
     url += '?limit=1'; // Just get latest
   }
-  
+
   try {
     const response = await httpsRequest(url, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
     return { success: true, data: response.data, error: null };
   } catch (e) {
@@ -98,6 +106,25 @@ function printSection(title, emoji) {
   console.log('='.repeat(70));
 }
 
+function formatYmd(year, month, day) {
+  return `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+function getPtDateParts(date) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: PT_TIME_ZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const getPart = type => Number(parts.find(part => part.type === type)?.value);
+  return {
+    year: getPart('year'),
+    month: getPart('month'),
+    day: getPart('day'),
+  };
+}
+
 async function main() {
   const clientId = process.env.OURA_CLIENT_ID;
   const clientSecret = process.env.OURA_CLIENT_SECRET;
@@ -113,11 +140,11 @@ async function main() {
   console.log('✅ Connected to Oura API\n');
 
   // Get dates
-  const now = new Date();
-  const ptOffset = -7 * 60;
-  const ptTime = new Date(now.getTime() + (now.getTimezoneOffset() + ptOffset) * 60000);
-  const todayPT = ptTime.toISOString().split('T')[0];
-  const yesterdayPT = new Date(ptTime.getTime() - 86400000).toISOString().split('T')[0];
+  const { year, month, day } = getPtDateParts(new Date());
+  const utcPtDate = new Date(Date.UTC(year, month - 1, day));
+  const todayPT = formatYmd(utcPtDate.getUTCFullYear(), utcPtDate.getUTCMonth() + 1, utcPtDate.getUTCDate());
+  utcPtDate.setUTCDate(utcPtDate.getUTCDate() - 1);
+  const yesterdayPT = formatYmd(utcPtDate.getUTCFullYear(), utcPtDate.getUTCMonth() + 1, utcPtDate.getUTCDate());
 
   console.log(`📅 Today (PT): ${todayPT}`);
   console.log(`📅 Yesterday (PT): ${yesterdayPT}\n`);
@@ -244,7 +271,7 @@ async function main() {
   if (sleep.success) console.log('  ✓ Sleep score, duration, stages, efficiency');
   if (readiness.success) console.log('  ✓ Readiness score, resting HR, HRV');
   if (activity.success) console.log('  ✓ Steps, calories, activity score');
-  
+
   console.log('\nTime-Series Data (Gen 3 only):');
   if (hrSeries.success && hrSeries.data?.length > 0) {
     console.log('  ✓ Heart rate (minute-by-minute) - CAN MAKE TIME SERIES CHART!');
@@ -257,10 +284,10 @@ async function main() {
   if (spo2.success) {
     console.log('  ✓ Blood oxygen (SpO2)');
   }
-  
+
   console.log('\nEvents:');
   if (workouts.success) console.log('  ✓ Workouts detected');
-  
+
   console.log('\n' + '='.repeat(70));
   console.log('💡 RECOMMENDATION:');
   console.log('   For time-series HR chart: Simple SVG/CSS visualization');
