@@ -6,7 +6,9 @@
   "scripts": {
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "format:html": "prettier --write *.html"
+    "format:html": "prettier --write *.html",
+    "check:syntax": "sh -c 'for f in js/*.js scripts/*.mjs *.mjs; do node --check \"$f\"; done'",
+    "ci:check": "npm run format:check && npm run check:syntax"
   },
   "keywords": [
     "portfolio",
