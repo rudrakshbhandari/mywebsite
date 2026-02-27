@@ -53,11 +53,7 @@ function initTerminalIntro() {
           ease: 'power2.inOut',
           onComplete: () => {
             terminalIntro.style.display = 'none';
-            gsap.fromTo(
-              heroReveal,
-              { opacity: 0, y: 40 },
-              { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }
-            );
+            gsap.fromTo(heroReveal, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
           },
         });
       }, 600);
@@ -169,7 +165,7 @@ function initParallax() {
     start: 'top top',
     end: 'bottom top',
     scrub: 1,
-    onUpdate: (self) => {
+    onUpdate: self => {
       const progress = self.progress;
       gsap.set(heroImage, { y: progress * 80 });
     },
@@ -182,7 +178,7 @@ function initParallax() {
 function initMagneticButtons() {
   const buttons = document.querySelectorAll('.magnetic-btn');
 
-  buttons.forEach((btn) => {
+  buttons.forEach(btn => {
     btn.addEventListener('mousemove', function (e) {
       const rect = btn.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
@@ -223,7 +219,7 @@ function initCustomCursor() {
   let cursorX = 0;
   let cursorY = 0;
 
-  document.addEventListener('mousemove', (e) => {
+  document.addEventListener('mousemove', e => {
     mouseX = e.clientX;
     mouseY = e.clientY;
   });
@@ -244,7 +240,7 @@ function initCustomCursor() {
 
   // Hover states
   const hoverTargets = document.querySelectorAll('a, button, .project-card');
-  hoverTargets.forEach((el) => {
+  hoverTargets.forEach(el => {
     el.addEventListener('mouseenter', () => {
       cursor.classList.add('cursor-hover');
       cursorDot.classList.add('cursor-hover');
@@ -292,7 +288,7 @@ function initParticleBackground() {
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    particles.forEach((p) => {
+    particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
       if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
@@ -306,7 +302,7 @@ function initParticleBackground() {
 
     // Draw connections
     particles.forEach((p1, i) => {
-      particles.slice(i + 1).forEach((p2) => {
+      particles.slice(i + 1).forEach(p2 => {
         const dx = p1.x - p2.x;
         const dy = p1.y - p2.y;
         const dist = Math.sqrt(dx * dx + dy * dy);
@@ -335,8 +331,8 @@ function initParticleBackground() {
 function initProjectCardTilt() {
   const tiltElements = document.querySelectorAll('[data-tilt], .project-card');
 
-  tiltElements.forEach((el) => {
-    el.addEventListener('mousemove', (e) => {
+  tiltElements.forEach(el => {
+    el.addEventListener('mousemove', e => {
       const rect = el.getBoundingClientRect();
       const x = (e.clientX - rect.left) / rect.width - 0.5;
       const y = (e.clientY - rect.top) / rect.height - 0.5;

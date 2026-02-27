@@ -42,11 +42,9 @@ function buildAuthorizationUrl(clientId) {
 function openBrowser(url) {
   const platform = process.platform;
   const cmd =
-    platform === 'darwin' ? `open "${url}"` :
-    platform === 'win32' ? `start "" "${url}"` :
-    `xdg-open "${url}"`;
+    platform === 'darwin' ? `open "${url}"` : platform === 'win32' ? `start "" "${url}"` : `xdg-open "${url}"`;
   return import('child_process').then(({ exec }) => {
-    exec(cmd, (error) => {
+    exec(cmd, error => {
       if (error) {
         console.log('Could not auto-open browser. Open this URL manually:');
         console.log(url);
@@ -92,7 +90,7 @@ function startCallbackServer() {
       console.log(`Listening for OAuth callback on ${REDIRECT_URI}`);
     });
 
-    server.on('error', (error) => reject(error));
+    server.on('error', error => reject(error));
   });
 }
 
@@ -111,13 +109,13 @@ function exchangeCodeForTokens(clientId, clientSecret, code) {
       {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
+          Accept: 'application/json',
           'Content-Type': 'application/x-www-form-urlencoded',
         },
       },
-      (res) => {
+      res => {
         let body = '';
-        res.on('data', (chunk) => {
+        res.on('data', chunk => {
           body += chunk;
         });
         res.on('end', () => {
@@ -158,7 +156,7 @@ async function main() {
   console.log('Update your GitHub Action secret OURA_REFRESH_TOKEN with this value.');
 }
 
-main().catch((error) => {
+main().catch(error => {
   console.error(error.message);
   process.exit(1);
 });

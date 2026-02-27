@@ -8,6 +8,7 @@ import { resolve } from 'path';
 import https from 'https';
 
 const TOKEN_PATH = resolve(process.cwd(), '.oura_token');
+const PT_TIME_ZONE = 'America/Los_Angeles';
 
 function loadRefreshToken() {
   if (existsSync(TOKEN_PATH)) {
@@ -21,26 +22,29 @@ function loadRefreshToken() {
 function httpsRequest(url, options = {}, body = null) {
   return new Promise((resolve, reject) => {
     const parsedUrl = new URL(url);
-    const req = https.request({
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      method: options.method || 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        ...options.headers,
+    const req = https.request(
+      {
+        hostname: parsedUrl.hostname,
+        path: parsedUrl.pathname + parsedUrl.search,
+        method: options.method || 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          ...options.headers,
+        },
       },
-    }, (res) => {
-      let data = '';
-      res.on('data', (chunk) => (data += chunk));
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(new Error(`Invalid JSON: ${data}`));
-        }
-      });
-    });
+      res => {
+        let data = '';
+        res.on('data', chunk => (data += chunk));
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            reject(new Error(`Invalid JSON: ${data}`));
+          }
+        });
+      }
+    );
     req.on('error', reject);
     if (body) req.write(body);
     req.end();
@@ -55,10 +59,14 @@ async function refreshAccessToken(clientId, clientSecret, refreshToken) {
     refresh_token: refreshToken,
   });
 
-  const response = await httpsRequest('https://api.ouraring.com/oauth/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  }, params.toString());
+  const response = await httpsRequest(
+    'https://api.ouraring.com/oauth/token',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+    params.toString()
+  );
 
   return response.access_token;
 }
@@ -67,13 +75,32 @@ async function fetchEndpoint(token, endpoint, date) {
   const url = `https://api.ouraring.com/v2/usercollection/${endpoint}?start_date=${date}&end_date=${date}`;
   try {
     const response = await httpsRequest(url, {
-      headers: { Authorization: `Bearer ${token}` }
+      headers: { Authorization: `Bearer ${token}` },
     });
     return response.data?.[0] || null;
   } catch (e) {
     console.error(`  Error fetching ${endpoint}: ${e.message}`);
     return null;
   }
+}
+
+function formatYmd(year, month, day) {
+  return `${String(year).padStart(4, '0')}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+}
+
+function getPtDateParts(date) {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: PT_TIME_ZONE,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(date);
+  const getPart = type => Number(parts.find(part => part.type === type)?.value);
+  return {
+    year: getPart('year'),
+    month: getPart('month'),
+    day: getPart('day'),
+  };
 }
 
 async function main() {
@@ -91,10 +118,9 @@ async function main() {
   console.log('✅ Got access token\n');
 
   // Get today's date in PT
-  const now = new Date();
-  const ptOffset = -7 * 60;
-  const ptTime = new Date(now.getTime() + (now.getTimezoneOffset() + ptOffset) * 60000);
-  const todayPT = ptTime.toISOString().split('T')[0];
+  const { year, month, day } = getPtDateParts(new Date());
+  const utcPtDate = new Date(Date.UTC(year, month - 1, day));
+  const todayPT = formatYmd(utcPtDate.getUTCFullYear(), utcPtDate.getUTCMonth() + 1, utcPtDate.getUTCDate());
 
   console.log(`Fetching data for: ${todayPT}\n`);
   console.log('='.repeat(60));
@@ -135,7 +161,8 @@ async function main() {
   }
 
   // Check previous day (in case today's data isn't ready)
-  const yesterdayPT = new Date(ptTime.getTime() - 86400000).toISOString().split('T')[0];
+  utcPtDate.setUTCDate(utcPtDate.getUTCDate() - 1);
+  const yesterdayPT = formatYmd(utcPtDate.getUTCFullYear(), utcPtDate.getUTCMonth() + 1, utcPtDate.getUTCDate());
   console.log(`\n\nFetching YESTERDAY (${yesterdayPT}) for comparison:\n`);
 
   const sleep2 = await fetchEndpoint(accessToken, 'daily_sleep', yesterdayPT);
@@ -143,7 +170,12 @@ async function main() {
   const activity2 = await fetchEndpoint(accessToken, 'daily_activity', yesterdayPT);
 
   console.log('Sleep:', sleep2 ? { score: sleep2.score, hrv: sleep2.average_hrv } : 'No data');
-  console.log('Readiness:', readiness2 ? { score: readiness2.score, hr: readiness2.resting_heart_rate, hrv: readiness2.hrv_average_milli } : 'No data');
+  console.log(
+    'Readiness:',
+    readiness2
+      ? { score: readiness2.score, hr: readiness2.resting_heart_rate, hrv: readiness2.hrv_average_milli }
+      : 'No data'
+  );
   console.log('Activity:', activity2 ? { steps: activity2.steps, calories: activity2.active_calories } : 'No data');
 }
 
