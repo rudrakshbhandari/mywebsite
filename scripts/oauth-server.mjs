@@ -25,18 +25,18 @@ console.log('=== Oura OAuth Auto-Capture ===\n');
 // Create local server to capture callback
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, `http://localhost:${PORT}`);
-  
+
   if (url.pathname === '/callback') {
     const code = url.searchParams.get('code');
     const error = url.searchParams.get('error');
-    
+
     if (error) {
       console.log('❌ OAuth error:', error);
       res.end('Error: ' + error);
       server.close();
       return;
     }
-    
+
     if (code) {
       console.log('✅ Got authorization code!\n');
       res.end('<h1>Success!</h1><p>You can close this tab.</p>');
@@ -45,17 +45,18 @@ const server = http.createServer((req, res) => {
       return;
     }
   }
-  
+
   res.end('Waiting for OAuth callback...');
 });
 
 server.listen(PORT, () => {
-  const authUrl = `https://cloud.ouraring.com/oauth/authorize?` +
+  const authUrl =
+    `https://cloud.ouraring.com/oauth/authorize?` +
     `client_id=${encodeURIComponent(CLIENT_ID)}&` +
     `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
     `response_type=code&` +
     `scope=${encodeURIComponent(SCOPES)}`;
-  
+
   console.log('Server running on http://localhost:3000');
   console.log('\n👉 Open this URL in your browser:\n');
   console.log(authUrl);
@@ -64,13 +65,13 @@ server.listen(PORT, () => {
 
 function exchangeCode(code) {
   console.log('Exchanging code for tokens...\n');
-  
+
   const params = new URLSearchParams({
     grant_type: 'authorization_code',
     code: code,
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET,
-    redirect_uri: REDIRECT_URI
+    redirect_uri: REDIRECT_URI,
   });
 
   const options = {
@@ -79,19 +80,19 @@ function exchangeCode(code) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Accept': 'application/json'
-    }
+      Accept: 'application/json',
+    },
   };
 
-  const req = https.request(options, (res) => {
+  const req = https.request(options, res => {
     let data = '';
-    res.on('data', (chunk) => data += chunk);
+    res.on('data', chunk => (data += chunk));
     res.on('end', () => {
       console.log('Status:', res.statusCode);
-      
+
       try {
         const response = JSON.parse(data);
-        
+
         if (response.error || !response.refresh_token) {
           console.error('\n❌ Error:', response.error || 'No token');
           if (response.error_description) console.error('Details:', response.error_description);
@@ -102,12 +103,11 @@ function exchangeCode(code) {
         console.log('=== REFRESH TOKEN ===');
         console.log(response.refresh_token);
         console.log('=====================\n');
-        
+
         writeFileSync('.oura_token', response.refresh_token);
         console.log('✅ Saved to .oura_token\n');
         console.log('NEXT: Update GitHub Secret OURA_REFRESH_TOKEN');
         console.log('At: https://github.com/rudrakshbhandari/mywebsite/settings/secrets/actions');
-        
       } catch (e) {
         console.error('\n❌ Parse error:', e.message);
         console.log('Raw:', data);
@@ -115,7 +115,7 @@ function exchangeCode(code) {
     });
   });
 
-  req.on('error', (e) => {
+  req.on('error', e => {
     console.error('Request error:', e.message);
   });
 
