@@ -879,6 +879,91 @@
         text-overflow: ellipsis;
       }
 
+      /* Section header with info tooltip */
+      .section-header-with-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .info-icon {
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: rgba(148, 163, 184, 0.2);
+        color: var(--text-secondary);
+        font-size: 10px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: help;
+        transition: all 0.2s ease;
+      }
+
+      .info-icon:hover {
+        background: rgba(148, 163, 184, 0.4);
+        color: var(--text-primary);
+      }
+
+      /* Sleep segment tooltip on hover */
+      .sleep-stacked-bar:hover .sleep-segment {
+        filter: brightness(1.2);
+      }
+
+      .sleep-bar-tooltip {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(15, 23, 42, 0.98);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 0.5rem 0.625rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        pointer-events: none;
+        z-index: 100;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+        margin-bottom: 6px;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+      }
+
+      .trend-day-bar-wrap:hover .sleep-bar-tooltip {
+        opacity: 1;
+      }
+
+      .sleep-bar-tooltip-row {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        margin-bottom: 0.15rem;
+      }
+
+      .sleep-bar-tooltip-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .sleep-bar-tooltip-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 1px;
+      }
+
+      .sleep-bar-tooltip-dot.deep { background: #6366f1; }
+      .sleep-bar-tooltip-dot.rem { background: #818cf8; }
+      .sleep-bar-tooltip-dot.light { background: #a5b4fc; }
+
+      .sleep-bar-tooltip-label {
+        color: var(--text-secondary);
+        min-width: 2.5rem;
+      }
+
+      .sleep-bar-tooltip-value {
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
       /* Hidden states */
       .hidden {
         display: none !important;
@@ -1399,11 +1484,14 @@
           // Fixed max of 9 hours (32400 seconds) so bars are proportional to a full night's sleep
           const maxDuration = 32400;
 
+          const sleepInfoTooltip = "Sleep stages: Deep (restorative), REM (mental recovery), Light (light rest). Total includes all stages plus awake time.";
+
           html += `
             <div class="trend-card">
-              <div class="trend-header">
+              <div class="trend-header section-header-with-info">
                 <i class="fas fa-moon"></i>
                 <span>Sleep Duration</span>
+                <span class="info-icon" title="${sleepInfoTooltip}">i</span>
               </div>
               <div class="sleep-legend">
                 <div class="sleep-legend-item"><span class="sleep-legend-dot deep"></span>Deep</div>
@@ -1429,14 +1517,35 @@
                       const lightPct = total > 0 ? (light / total) * 100 : 0;
 
                       const scoreLabel = d.sleepScore != null ? ` • Score: ${d.sleepScore}` : '';
-                      const tooltipText =
-                        total > 0
-                          ? `${formatDay(d.day)}: ${formatDuration(total)}${scoreLabel}\nDeep: ${formatDuration(deep)} • REM: ${formatDuration(rem)} • Light: ${formatDuration(light)}`
+                      const mainTooltip = total > 0
+                          ? `${formatDay(d.day)}: ${formatDuration(total)}${scoreLabel}`
                           : `${formatDay(d.day)}: No data`;
+
+                      // Build hover tooltip with breakdown
+                      const hoverTooltip = total > 0 ? `
+                        <div class="sleep-bar-tooltip">
+                          <div class="sleep-bar-tooltip-row">
+                            <span class="sleep-bar-tooltip-dot deep"></span>
+                            <span class="sleep-bar-tooltip-label">Deep:</span>
+                            <span class="sleep-bar-tooltip-value">${formatDuration(deep)}</span>
+                          </div>
+                          <div class="sleep-bar-tooltip-row">
+                            <span class="sleep-bar-tooltip-dot rem"></span>
+                            <span class="sleep-bar-tooltip-label">REM:</span>
+                            <span class="sleep-bar-tooltip-value">${formatDuration(rem)}</span>
+                          </div>
+                          <div class="sleep-bar-tooltip-row">
+                            <span class="sleep-bar-tooltip-dot light"></span>
+                            <span class="sleep-bar-tooltip-label">Light:</span>
+                            <span class="sleep-bar-tooltip-value">${formatDuration(light)}</span>
+                          </div>
+                        </div>
+                      ` : '';
 
                       return `
                       <div class="trend-day">
-                        <div class="trend-day-bar-wrap" title="${tooltipText}">
+                        <div class="trend-day-bar-wrap" title="${mainTooltip}">
+                          ${hoverTooltip}
                           ${
                             total > 0
                               ? `
@@ -1483,6 +1592,7 @@
         // --- Readiness (0-100 scale) ---
         const readinessScores = byDay.map(d => d.readinessScore).filter(v => v != null);
         if (readinessScores.length > 0) {
+          const readinessInfo = "Readiness score based on: sleep quality, HRV, resting HR, body temperature, recovery index, and activity balance. Higher = better recovery.";
           html += renderSimpleTrendCard(
             byDay,
             {
@@ -1493,6 +1603,7 @@
               min: 0,
               max: 100,
               format: v => (v != null ? v : '--'),
+              infoTooltip: readinessInfo,
             },
             formatDay
           );
@@ -1504,6 +1615,7 @@
           const rawMax = Math.max(...stepsValues);
           // Round up to nearest 2000 for a clean Y-axis max
           const stepsMax = Math.ceil(rawMax / 2000) * 2000;
+          const stepsInfo = "Total steps walked throughout the day. Includes all activity: walking, running, workouts, and daily movement.";
           html += renderSimpleTrendCard(
             byDay,
             {
@@ -1515,6 +1627,7 @@
               max: stepsMax,
               format: v => (v != null ? (v >= 1000 ? (v / 1000).toFixed(1) + 'k' : v) : '--'),
               isSteps: true,
+              infoTooltip: stepsInfo,
             },
             formatDay
           );
@@ -1531,11 +1644,16 @@
           ? [`${(config.min / 1000).toFixed(1)}k`, `${(config.max / 1000).toFixed(1)}k`]
           : [Math.round(config.min), Math.round(config.max)];
 
+        const infoIcon = config.infoTooltip
+          ? `<span class="info-icon" title="${config.infoTooltip}">i</span>`
+          : '';
+
         return `
           <div class="trend-card">
-            <div class="trend-header">
+            <div class="trend-header section-header-with-info">
               <i class="fas ${config.icon}"></i>
               <span>${config.label}</span>
+              ${infoIcon}
             </div>
             <div class="trend-chart-row">
               <div class="trend-y-axis">
@@ -1711,16 +1829,17 @@
           tooltipValue.textContent = `${nearest.bpm} bpm`;
           tooltip.classList.remove('hidden');
 
-          // Position tooltip near the tracking dot (above by default, below if near top)
-          const tooltipOffset = 12;
-          const tr = tooltip.getBoundingClientRect();
-          let left = dotScreen.x - tr.width / 2;
-          let topPos = dotScreen.y - tr.height - tooltipOffset;
+          // Position tooltip - fixed size estimate to avoid measuring before render
+          const tooltipWidth = 90;
+          const tooltipHeight = 42;
+          const tooltipOffset = 10;
+          let left = dotScreen.x - tooltipWidth / 2;
+          let topPos = dotScreen.y - tooltipHeight - tooltipOffset - 10;
 
           // Keep tooltip within viewport bounds
           if (left < 8) left = 8;
-          if (left + tr.width > window.innerWidth - 8) left = window.innerWidth - tr.width - 8;
-          if (topPos < 8) topPos = dotScreen.y + tooltipOffset + 10; // Show below if too close to top
+          if (left + tooltipWidth > window.innerWidth - 8) left = window.innerWidth - tooltipWidth - 8;
+          if (topPos < 8) topPos = dotScreen.y + 15; // Show below if too close to top
 
           tooltip.style.left = `${left}px`;
           tooltip.style.top = `${topPos}px`;
