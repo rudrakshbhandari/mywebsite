@@ -6,7 +6,9 @@ import https from 'https';
 const TOKEN_PATH = resolve(process.cwd(), '.oura_token');
 function loadToken() {
   if (existsSync(TOKEN_PATH)) {
-    try { return readFileSync(TOKEN_PATH, 'utf-8').trim(); } catch (e) {}
+    try {
+      return readFileSync(TOKEN_PATH, 'utf-8').trim();
+    } catch (e) {}
   }
   return process.env.OURA_REFRESH_TOKEN;
 }
@@ -14,25 +16,34 @@ function loadToken() {
 function httpsRequest(url, options = {}, body = null) {
   return new Promise((resolve, reject) => {
     const parsedUrl = new URL(url);
-    const req = https.request({
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      method: options.method || 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/x-www-form-urlencoded',
-        ...options.headers,
+    const req = https.request(
+      {
+        hostname: parsedUrl.hostname,
+        path: parsedUrl.pathname + parsedUrl.search,
+        method: options.method || 'GET',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/x-www-form-urlencoded',
+          ...options.headers,
+        },
       },
-    }, (res) => {
-      let data = '';
-      res.on('data', (chunk) => (data += chunk));
-      res.on('end', () => {
-        try { resolve(JSON.parse(data)); } 
-        catch (e) { reject(new Error(`Invalid JSON: ${data.substring(0, 200)}`)); }
-      });
-    });
+      res => {
+        let data = '';
+        res.on('data', chunk => (data += chunk));
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(data));
+          } catch (e) {
+            reject(new Error(`Invalid JSON: ${data.substring(0, 200)}`));
+          }
+        });
+      }
+    );
     req.on('error', reject);
-    req.setTimeout(30000, () => { req.destroy(); reject(new Error('Timeout')); });
+    req.setTimeout(30000, () => {
+      req.destroy();
+      reject(new Error('Timeout'));
+    });
     if (body) req.write(body);
     req.end();
   });
@@ -55,10 +66,14 @@ async function main() {
     refresh_token: refreshToken,
   });
 
-  const auth = await httpsRequest('https://api.ouraring.com/oauth/token', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-  }, params.toString());
+  const auth = await httpsRequest(
+    'https://api.ouraring.com/oauth/token',
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+    params.toString()
+  );
 
   const token = auth.access_token;
   console.log('✅ Connected to Oura API\\n');
@@ -79,7 +94,7 @@ async function main() {
   for (const { name, endpoint, emoji } of endpoints) {
     console.log(`${emoji} ${name}`);
     console.log('-'.repeat(50));
-    
+
     try {
       let url = 'https://api.ouraring.com/v2/usercollection/' + endpoint;
       if (endpoint !== 'personal_info') {
@@ -87,11 +102,11 @@ async function main() {
       } else {
         url += '?limit=1';
       }
-      
+
       const response = await httpsRequest(url, {
-        headers: { Authorization: 'Bearer ' + token }
+        headers: { Authorization: 'Bearer ' + token },
       });
-      
+
       if (response.data && (Array.isArray(response.data) ? response.data.length > 0 : response.data)) {
         const data = Array.isArray(response.data) ? response.data[0] : response.data;
         console.log('✅ AVAILABLE');
