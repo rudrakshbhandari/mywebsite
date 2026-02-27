@@ -31,9 +31,12 @@ A modern, responsive portfolio showcasing my projects, experience, and skills as
 │   ├── main.js         # Core functionality
 │   ├── animations.js   # Scroll and interaction animations
 │   ├── config.js       # Configuration settings
+│   ├── health.js       # Health dashboard logic
+│   ├── analytics.js    # Event tracking hooks
 │   └── speed-insights.js
 ├── img/                # Favicons, profile photos, project images
 ├── scripts/            # Utility scripts
+├── CHANGELOG.md        # Release notes and change history
 ├── vercel.json         # Deployment configuration
 └── package.json        # Development dependencies
 ```
@@ -47,9 +50,18 @@ npm install
 # Format code
 npm run format
 
+# Run CI-equivalent checks
+npm run ci:check
+
 # Serve locally (any static server)
 npx serve .
 ```
+
+## Release Cadence
+
+- Update `CHANGELOG.md` for every merged feature/fix.
+- Batch non-urgent updates into weekly releases.
+- Ship urgent bug/security fixes immediately with a dated changelog entry.
 
 ## Sections
 
@@ -58,6 +70,7 @@ npx serve .
 - **Currently** - What I'm working on now
 - **Experience** - Professional timeline
 - **Projects** - Technical projects with live demos
+- **Case Studies** - Deep dives on impact and engineering decisions
 - **Skills** - Technologies and tools
 - **Contact** - Email and social links
 

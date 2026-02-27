@@ -39,7 +39,7 @@
     <title>Rudraksh Bhandari | Portfolio</title>
 
     <!-- Preload Critical Resources -->
-    <link rel="preload" as="image" href="/img/Rudraksh-8.jpeg" fetchpriority="high" />
+    <link rel="preload" as="image" href="/img/Rudraksh-8-900.jpg" fetchpriority="high" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
@@ -100,6 +100,7 @@
             <a href="#currently" class="nav-link">Currently</a>
             <a href="#experience" class="nav-link">Experience</a>
             <a href="#projects" class="nav-link">Projects</a>
+            <a href="#case-studies" class="nav-link">Case Studies</a>
             <a href="/health" class="nav-link">Health</a>
             <a href="#skills" class="nav-link">Skills</a>
             <a href="#contact" class="nav-link">Contact</a>
@@ -145,7 +146,17 @@
         <div class="hero-container hero-reveal">
           <div class="hero-content">
             <div class="hero-image" data-tilt>
-              <img src="img/Rudraksh-8.jpeg" alt="Rudraksh Bhandari" class="profile-img" width="300" height="300" />
+              <img
+                src="img/Rudraksh-8-600.jpg"
+                srcset="img/Rudraksh-8-600.jpg 600w, img/Rudraksh-8-900.jpg 900w"
+                sizes="(max-width: 768px) 220px, 300px"
+                alt="Rudraksh Bhandari"
+                class="profile-img"
+                width="300"
+                height="300"
+                fetchpriority="high"
+                decoding="async"
+              />
             </div>
             <div class="hero-text">
               <h1 class="hero-title">Hi, I'm <span class="highlight">Rudraksh Bhandari</span></h1>
@@ -277,7 +288,9 @@
             </div>
             <div class="about-image">
               <img
-                src="img/Rudraksh-7.JPG"
+                src="img/Rudraksh-7-600.jpg"
+                srcset="img/Rudraksh-7-600.jpg 600w, img/Rudraksh-7-900.jpg 900w"
+                sizes="(max-width: 900px) 80vw, 420px"
                 alt="Rudraksh Bhandari"
                 class="about-img"
                 loading="lazy"
@@ -600,6 +613,59 @@
       </section>
 
       <!-- Skills Section -->
+      <section id="case-studies" class="case-studies">
+        <div class="container">
+          <div class="section-header reveal-el">
+            <h2 class="section-title">Case Studies</h2>
+            <p class="section-subtitle">How I approach high-impact product and engineering problems</p>
+          </div>
+          <div class="case-studies-grid">
+            <article class="case-study-card reveal-el">
+              <p class="case-study-kicker">AWS Hyperplane</p>
+              <h3 class="case-study-title">Reducing On-Call Operational Load</h3>
+              <p class="case-study-summary">
+                Built a CLI command generator and backend tooling that removed repeated manual incident-response steps
+                and improved operator response latency.
+              </p>
+              <ul class="case-study-points">
+                <li>Paired with operators and senior engineers to map the highest-friction workflows.</li>
+                <li>Designed UI + backend flow for reliable command generation and validation.</li>
+                <li>Result: manual effort reduced by approximately 75% for recurring on-call tasks.</li>
+              </ul>
+            </article>
+
+            <article class="case-study-card reveal-el">
+              <p class="case-study-kicker">NomNom</p>
+              <h3 class="case-study-title">Building a Two-Sided Campus Delivery System</h3>
+              <p class="case-study-summary">
+                Designed student and courier app workflows, transaction-safe order handling, and UCSD-only guardrails
+                for secure campus operations.
+              </p>
+              <ul class="case-study-points">
+                <li>Implemented end-to-end order lifecycle and Firestore transaction protections.</li>
+                <li>Integrated OTP delivery, Stripe payments, and real-time ETA updates.</li>
+                <li>Shipped a production-ready flow balancing reliability and speed for student users.</li>
+              </ul>
+            </article>
+
+            <article class="case-study-card reveal-el">
+              <p class="case-study-kicker">Personal Systems</p>
+              <h3 class="case-study-title">Publishing a Live Health Metrics Dashboard</h3>
+              <p class="case-study-summary">
+                Created an automated Oura ingestion pipeline and front-end dashboard with trend visualizations to make
+                daily recovery and activity signals transparent.
+              </p>
+              <ul class="case-study-points">
+                <li>Automated hourly data refresh and secret rotation handling in GitHub Actions.</li>
+                <li>Normalized API responses into a stable public JSON schema.</li>
+                <li>Delivered an accessible UI with trend charts and contributor-level breakdowns.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- Skills Section -->
       <section id="skills" class="skills">
         <div class="container">
           <div class="section-header reveal-el">
@@ -792,6 +858,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <!-- JavaScript -->
     <script src="js/config.js"></script>
+    <script src="js/analytics.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/speed-insights.js"></script>
