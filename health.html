@@ -347,6 +347,11 @@
         display: none;
       }
 
+      .trend-tooltip {
+        max-width: 240px;
+        line-height: 1.4;
+      }
+
       .chart-tooltip-time {
         color: var(--text-secondary);
         font-size: 0.75rem;
@@ -799,7 +804,7 @@
         font-weight: 400;
       }
 
-      .trend-day-bar-wrap[title] {
+      .trend-day-bar-wrap[data-tooltip] {
         cursor: help;
       }
 
@@ -1166,6 +1171,7 @@
           <div class="trend-cards" id="trend-cards">
             <!-- Populated by JS -->
           </div>
+          <div id="trend-tooltip" class="chart-tooltip trend-tooltip hidden" aria-hidden="true"></div>
         </div>
       </div>
     </main>
@@ -1210,6 +1216,20 @@
         if (diffHour < 24) return `${diffHour} hour${diffHour > 1 ? 's' : ''} ago`;
         if (diffDay < 7) return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
         return date.toLocaleDateString();
+      }
+
+      /**
+       * Escape string for use in HTML data attributes
+       * @param {string} s
+       * @returns {string}
+       */
+      function escapeAttr(s) {
+        if (!s) return '';
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/"/g, '&quot;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;');
       }
 
       /**
@@ -1433,7 +1453,7 @@
 
                       return `
                       <div class="trend-day">
-                        <div class="trend-day-bar-wrap" title="${tooltipText}">
+                        <div class="trend-day-bar-wrap" data-tooltip="${escapeAttr(tooltipText)}">
                           ${
                             total > 0
                               ? `
@@ -1554,7 +1574,7 @@
                       val != null ? `${formatDay(d.day)}: ${displayVal}${suffix}` : `${formatDay(d.day)}: No data`;
                     return `
                     <div class="trend-day">
-                      <div class="trend-day-bar-wrap" title="${tooltipText}">
+                      <div class="trend-day-bar-wrap" data-tooltip="${escapeAttr(tooltipText)}">
                         <div class="trend-bar ${config.colorClass}" style="height: ${Math.max(4, pct)}%"></div>
                       </div>
                       <span class="trend-day-label">${formatDay(d.day)}</span>
@@ -1700,16 +1720,26 @@
           trackingDot.setAttribute('cy', nearest.y);
           trackingDot.style.display = '';
 
+          // Position tooltip near the crosshair (nearest point), not the mouse
           tooltipTime.textContent = formatTime(nearest.t);
           tooltipValue.textContent = `${nearest.bpm} bpm`;
           tooltip.classList.remove('hidden');
-          const offset = 14;
-          tooltip.style.left = `${clientX + offset}px`;
-          tooltip.style.top = `${clientY + offset}px`;
+          pt.x = nearest.x;
+          pt.y = nearest.y;
+          const screenPt = pt.matrixTransform(svg.getScreenCTM());
+          const offset = 12;
+          tooltip.style.left = `${screenPt.x + offset}px`;
+          tooltip.style.top = `${screenPt.y}px`;
           requestAnimationFrame(() => {
             const tr = tooltip.getBoundingClientRect();
-            if (tr.right > window.innerWidth) tooltip.style.left = `${clientX - tr.width - offset}px`;
-            if (tr.bottom > window.innerHeight) tooltip.style.top = `${clientY - tr.height - offset}px`;
+            let left = screenPt.x + offset;
+            let top = screenPt.y - tr.height / 2;
+            if (left + tr.width > window.innerWidth - 8) left = screenPt.x - tr.width - offset;
+            else if (left < 8) left = 8;
+            if (top < 8) top = 8;
+            if (top + tr.height > window.innerHeight - 8) top = window.innerHeight - tr.height - 8;
+            tooltip.style.left = `${left}px`;
+            tooltip.style.top = `${top}px`;
           });
         }
 
@@ -1906,6 +1936,44 @@
 
       // Load data on page load
       document.addEventListener('DOMContentLoaded', loadHealthData);
+
+      // Trend tooltip: instant show on hover (replaces native title delay)
+      (function initTrendTooltip() {
+        const section = document.getElementById('trend-section');
+        const tooltip = document.getElementById('trend-tooltip');
+        if (!section || !tooltip) return;
+        section.addEventListener('mouseover', (e) => {
+          const wrap = e.target.closest('.trend-day-bar-wrap[data-tooltip]');
+          if (wrap) {
+            const text = wrap.getAttribute('data-tooltip');
+            if (text) {
+              tooltip.innerHTML = text.replace(/\n/g, '<br>');
+              tooltip.classList.remove('hidden');
+              tooltip.setAttribute('aria-hidden', 'false');
+              const rect = wrap.getBoundingClientRect();
+              const offset = 8;
+              tooltip.style.left = `${rect.left + rect.width / 2 - 60}px`;
+              tooltip.style.top = `${rect.top - 50}px`;
+              requestAnimationFrame(() => {
+                const tr = tooltip.getBoundingClientRect();
+                left -= tr.width / 2;
+                top -= tr.height;
+                if (left < 8) left = 8;
+                if (left + tr.width > window.innerWidth - 8) left = window.innerWidth - tr.width - 8;
+                if (top < 8) top = rect.bottom + offset;
+                tooltip.style.left = `${left}px`;
+                tooltip.style.top = `${top}px`;
+              });
+            }
+          }
+        });
+        section.addEventListener('mouseout', (e) => {
+          if (!e.relatedTarget?.closest?.('.trend-day-bar-wrap[data-tooltip]') && !e.relatedTarget?.closest?.('#trend-tooltip')) {
+            tooltip.classList.add('hidden');
+            tooltip.setAttribute('aria-hidden', 'true');
+          }
+        });
+      })();
 
       // Refresh every 5 minutes while page is open
       setInterval(loadHealthData, 5 * 60 * 1000);
