@@ -12,7 +12,7 @@ The health page (`/health`) displays selected daily metrics from your Oura Ring 
 - Steps
 - Active Calories
 
-Data is fetched 7× daily via GitHub Actions and stored as a public JSON file. No database required.
+Data is fetched hourly via GitHub Actions and stored as a public JSON file. No database required.
 
 ---
 
@@ -215,7 +215,7 @@ To test the GitHub Actions workflow immediately:
 
 ### Rate limiting
 - Oura API has generous limits (1000 requests/day)
-- Current schedule uses 7 requests/day, well within limits
+- Current schedule uses ~24 runs/day × ~9 API calls ≈ 216 requests/day, well within limits
 
 ---
 
@@ -230,13 +230,12 @@ To test the GitHub Actions workflow immediately:
 
 ### Cost Optimization
 - ✅ Zero-cost: No database, no paid infrastructure
-- ✅ GitHub Actions: Uses ~7 seconds per run × 7 runs/day = ~2100 seconds/month
-  - Well within the 2000 free minutes/month for private repos
+- ✅ GitHub Actions: ~7 seconds per run × 24 runs/day ≈ 168 sec/day (free for public repos)
 - ✅ Vercel Hobby tier: Static site, no function invocations
 
 ### Data Freshness
-- Updates run at: 3:30am, 7:30am, 10:30am, 1:30pm, 4:30pm, 7:30pm, 10:30pm PT
-- Cron uses UTC: `30 14,17,20,23,2,5,10 * * *`
+- Updates run hourly at :30 past each hour (UTC)
+- Cron: `30 * * * *`
 - Client auto-refreshes every 5 minutes while page is open
 
 ---
