@@ -364,6 +364,22 @@ function getDateFromRecord(record) {
 }
 
 /**
+ * Get date for sleep period - use wake date (bedtime_end) so it aligns with
+ * daily_sleep summary_date. Sleep from Tue night→Wed morning belongs to Wed.
+ * @param {Object} period - Sleep period from Oura usercollection/sleep
+ * @returns {string|null}
+ */
+function getDateFromSleepPeriod(period) {
+  return firstDefined(
+    period.day,
+    period.date,
+    period.summary_date,
+    period.bedtime_end?.toString().split('T')[0],
+    period.bedtime_start?.toString().split('T')[0]
+  );
+}
+
+/**
  * Normalize heart rate record from Oura endpoint (handles various response shapes)
  * Oura v2 may return: {bpm, timestamp}, {heart_rate, datetime}, {hr, ts}, etc.
  * @param {Object} item
@@ -566,10 +582,11 @@ async function main() {
         workoutsByDate.get(d).push(w);
       }
     }
-    // Sleep periods: pick the "long_sleep" type per day (primary sleep session)
+    // Sleep periods: pick the "long_sleep" type per day (primary sleep session).
+    // Use wake date (bedtime_end) so "last night's sleep" appears under today's column.
     const sleepPeriodByDate = new Map();
     for (const sp of sleepPeriodList) {
-      const d = getDateFromRecord(sp);
+      const d = getDateFromSleepPeriod(sp);
       if (!d) continue;
       const existing = sleepPeriodByDate.get(d);
       const isLong = sp.type === 'long_sleep';
