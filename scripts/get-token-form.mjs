@@ -21,7 +21,8 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
 
 console.log('=== Oura OAuth Token Generator (Form URL-Encoded) ===\n');
 
-const authUrl = `https://cloud.ouraring.com/oauth/authorize?` +
+const authUrl =
+  `https://cloud.ouraring.com/oauth/authorize?` +
   `client_id=${encodeURIComponent(CLIENT_ID)}&` +
   `redirect_uri=${encodeURIComponent(REDIRECT_URI)}&` +
   `response_type=code&` +
@@ -35,7 +36,7 @@ console.log('2. Click "Allow"');
 console.log('3. Copy the FULL redirect URL immediately');
 console.log('4. Paste it below\n');
 
-rl.question('Redirect URL: ', (url) => {
+rl.question('Redirect URL: ', url => {
   // Extract code
   const match = url.match(/[?&]code=([^&]+)/);
   if (!match) {
@@ -53,7 +54,7 @@ rl.question('Redirect URL: ', (url) => {
     code: code,
     client_id: CLIENT_ID,
     client_secret: CLIENT_SECRET,
-    redirect_uri: REDIRECT_URI
+    redirect_uri: REDIRECT_URI,
   });
 
   const options = {
@@ -62,20 +63,20 @@ rl.question('Redirect URL: ', (url) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Accept': 'application/json'
-    }
+      Accept: 'application/json',
+    },
   };
 
-  const req = https.request(options, (res) => {
+  const req = https.request(options, res => {
     let data = '';
-    res.on('data', (chunk) => data += chunk);
+    res.on('data', chunk => (data += chunk));
     res.on('end', () => {
       console.log('HTTP Status:', res.statusCode);
       console.log('Response:', data, '\n');
-      
+
       try {
         const response = JSON.parse(data);
-        
+
         if (response.error || !response.refresh_token) {
           console.error('❌ Error:', response.error || 'No refresh_token in response');
           if (response.error_description) console.error('Description:', response.error_description);
@@ -87,12 +88,11 @@ rl.question('Redirect URL: ', (url) => {
         console.log('=== REFRESH TOKEN ===');
         console.log(response.refresh_token);
         console.log('=====================\n');
-        
+
         writeFileSync('.oura_token', response.refresh_token);
         console.log('✅ Saved to .oura_token\n');
         console.log('NEXT: Update GitHub Secret OURA_REFRESH_TOKEN with the token above');
         console.log('URL: https://github.com/rudrakshbhandari/mywebsite/settings/secrets/actions');
-        
       } catch (e) {
         console.error('❌ Parse error:', e.message);
       }
@@ -100,7 +100,7 @@ rl.question('Redirect URL: ', (url) => {
     });
   });
 
-  req.on('error', (e) => {
+  req.on('error', e => {
     console.error('❌ Request error:', e.message);
     rl.close();
   });

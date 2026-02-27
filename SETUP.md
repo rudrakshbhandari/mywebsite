@@ -5,6 +5,7 @@ This guide walks you through setting up the Oura Ring health metrics integration
 ## Overview
 
 The health page (`/health`) displays selected daily metrics from your Oura Ring 4:
+
 - Sleep Score
 - Readiness Score
 - Resting Heart Rate
@@ -128,13 +129,14 @@ rl.question('Paste the code here: ', (code) => {
 
 In your repository, add these secrets (Settings → Secrets and variables → Actions):
 
-| Secret Name | Value |
-|-------------|-------|
-| `OURA_CLIENT_ID` | Your Oura app's Client ID |
+| Secret Name          | Value                         |
+| -------------------- | ----------------------------- |
+| `OURA_CLIENT_ID`     | Your Oura app's Client ID     |
 | `OURA_CLIENT_SECRET` | Your Oura app's Client Secret |
 | `OURA_REFRESH_TOKEN` | The refresh token from Step 2 |
 
 **Security notes:**
+
 - Secrets are never exposed in logs or to the client
 - The refresh token allows the workflow to get short-lived access tokens automatically
 - If compromised, revoke the token in the Oura developer portal
@@ -163,6 +165,7 @@ cat oura_public.json
 ## Step 5: Deploy
 
 1. Push the branch to GitHub:
+
    ```bash
    git add .
    git commit -m "feat(health): add Oura Ring metrics page"
@@ -199,21 +202,25 @@ To test the GitHub Actions workflow immediately:
 ## Troubleshooting
 
 ### Workflow fails with "Invalid refresh token"
+
 - The refresh token may have been revoked
 - Re-run the OAuth flow (Step 2) to get a new token
 - Update the `OURA_REFRESH_TOKEN` secret
 
 ### "No data" showing on health page
+
 - Normal for the first day — data appears after your first night's sleep with the ring
 - Check the Oura app to confirm data exists for today
 - Verify the workflow ran successfully (Actions tab)
 
 ### Data is stale / not updating
+
 - Check the Actions tab for recent runs
 - Look for "No changes detected" in the logs (means no new data from Oura)
 - Confirm your ring is syncing with the Oura app
 
 ### Rate limiting
+
 - Oura API has generous limits (1000 requests/day)
 - Current schedule uses ~24 runs/day × ~9 API calls ≈ 216 requests/day, well within limits
 
@@ -222,6 +229,7 @@ To test the GitHub Actions workflow immediately:
 ## Architecture Notes
 
 ### Privacy & Security
+
 - ✅ Only aggregated daily scores are published
 - ✅ No minute-by-minute heart rate, sleep stages, or location data
 - ✅ All metrics are rounded to integers
@@ -229,11 +237,13 @@ To test the GitHub Actions workflow immediately:
 - ✅ Secrets stored in GitHub Secrets (never in code)
 
 ### Cost Optimization
+
 - ✅ Zero-cost: No database, no paid infrastructure
 - ✅ GitHub Actions: ~7 seconds per run × 24 runs/day ≈ 168 sec/day (free for public repos)
 - ✅ Vercel Hobby tier: Static site, no function invocations
 
 ### Data Freshness
+
 - Updates run hourly at :30 past each hour (UTC)
 - Cron: `30 * * * *`
 - Client auto-refreshes every 5 minutes while page is open
@@ -242,13 +252,13 @@ To test the GitHub Actions workflow immediately:
 
 ## File Reference
 
-| File | Purpose |
-|------|---------|
-| `health.html` | Public health metrics page |
-| `oura_public.json` | Public data file (auto-generated) |
-| `scripts/fetch_oura_and_write_json.mjs` | Data fetcher script |
-| `.github/workflows/oura-update.yml` | GitHub Actions schedule |
-| `SETUP.md` | This file |
+| File                                    | Purpose                           |
+| --------------------------------------- | --------------------------------- |
+| `health.html`                           | Public health metrics page        |
+| `oura_public.json`                      | Public data file (auto-generated) |
+| `scripts/fetch_oura_and_write_json.mjs` | Data fetcher script               |
+| `.github/workflows/oura-update.yml`     | GitHub Actions schedule           |
+| `SETUP.md`                              | This file                         |
 
 ---
 
