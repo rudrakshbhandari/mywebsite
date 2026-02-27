@@ -57,6 +57,33 @@ npm run ci:check
 npx serve .
 ```
 
+## Analytics
+
+### Tracked Events
+
+The site emits the following events through `js/analytics.js`:
+
+- `portfolio_page_view`
+- `health_page_view`
+- `resume_click`
+- `contact_email_click`
+- `social_click` (includes `network` payload)
+- `health_nav_click`
+
+### Where to View Data
+
+- Vercel dashboard → Project → **Analytics** for visitor/page-view metrics and routes.
+- Vercel dashboard → Project → **Speed Insights** for performance telemetry.
+
+### Validation Checklist
+
+1. Open the production site in an incognito window.
+2. Open DevTools → Network and confirm:
+   - `/_vercel/insights/script.js` returns `200`
+   - `/_vercel/speed-insights/script.js` returns `200`
+3. Trigger a few actions (open `/health`, click résumé, click social links).
+4. Wait 1-2 minutes and refresh the Vercel Analytics dashboard.
+
 ## Release Cadence
 
 - Update `CHANGELOG.md` for every merged feature/fix.
