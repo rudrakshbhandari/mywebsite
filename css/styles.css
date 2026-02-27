@@ -80,7 +80,10 @@ html {
   border: 2px solid var(--accent-color);
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s, border-color 0.2s;
+  transition:
+    width 0.2s,
+    height 0.2s,
+    border-color 0.2s;
   box-shadow: 0 0 15px var(--accent-glow);
 }
 .custom-cursor.cursor-hover {
@@ -324,8 +327,12 @@ button:focus-visible {
 }
 
 @keyframes gradientShift {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(-2%, -2%) scale(1.05); }
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    transform: translate(-2%, -2%) scale(1.05);
+  }
 }
 
 /* Phase 4: Particle canvas */
@@ -368,9 +375,15 @@ button:focus-visible {
   border-radius: 50%;
   background: #64748b;
 }
-.terminal-dot:nth-child(1) { background: #ef4444; }
-.terminal-dot:nth-child(2) { background: #f59e0b; }
-.terminal-dot:nth-child(3) { background: #22c55e; }
+.terminal-dot:nth-child(1) {
+  background: #ef4444;
+}
+.terminal-dot:nth-child(2) {
+  background: #f59e0b;
+}
+.terminal-dot:nth-child(3) {
+  background: #22c55e;
+}
 .terminal-title {
   margin-left: 12px;
   font-family: var(--font-display);
@@ -395,7 +408,9 @@ button:focus-visible {
   color: var(--accent-color);
 }
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
 
 .hero-container {
@@ -425,12 +440,16 @@ button:focus-visible {
   border-radius: var(--radius-full);
   overflow: hidden;
   border: 4px solid var(--background-card);
-  box-shadow: var(--shadow-large), 0 0 40px var(--primary-glow);
+  box-shadow:
+    var(--shadow-large),
+    0 0 40px var(--primary-glow);
   transform-style: preserve-3d;
   transition: box-shadow var(--transition-normal);
 }
 .hero-image:hover {
-  box-shadow: var(--shadow-large), 0 0 60px var(--primary-glow);
+  box-shadow:
+    var(--shadow-large),
+    0 0 60px var(--primary-glow);
 }
 
 .profile-img {
@@ -652,10 +671,18 @@ button:focus-visible {
   line-height: 1.7;
   overflow-x: auto;
 }
-.code-keyword { color: #ff7b72; }
-.code-var { color: #79c0ff; }
-.code-prop { color: #7ee787; }
-.code-string { color: #a5d6ff; }
+.code-keyword {
+  color: #ff7b72;
+}
+.code-var {
+  color: #79c0ff;
+}
+.code-prop {
+  color: #7ee787;
+}
+.code-string {
+  color: #a5d6ff;
+}
 
 /* Experience Section */
 .experience {
@@ -916,7 +943,9 @@ button:focus-visible {
 
 .project-card:hover {
   border-color: var(--primary-color);
-  box-shadow: var(--shadow-large), 0 0 40px var(--primary-glow);
+  box-shadow:
+    var(--shadow-large),
+    0 0 40px var(--primary-glow);
   transform: translateY(-8px);
 }
 

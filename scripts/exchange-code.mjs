@@ -29,7 +29,7 @@ const postData = JSON.stringify({
   code: CODE,
   client_id: CLIENT_ID,
   client_secret: CLIENT_SECRET,
-  redirect_uri: REDIRECT_URI
+  redirect_uri: REDIRECT_URI,
 });
 
 const options = {
@@ -38,18 +38,18 @@ const options = {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Content-Length': Buffer.byteLength(postData)
-  }
+    Accept: 'application/json',
+    'Content-Length': Buffer.byteLength(postData),
+  },
 };
 
-const req = https.request(options, (res) => {
+const req = https.request(options, res => {
   let data = '';
-  res.on('data', (chunk) => data += chunk);
+  res.on('data', chunk => (data += chunk));
   res.on('end', () => {
     console.log('Response status:', res.statusCode);
     console.log('Response:', data.substring(0, 500));
-    
+
     try {
       const response = JSON.parse(data);
 
@@ -70,7 +70,6 @@ const req = https.request(options, (res) => {
 
       // Test the token
       testToken(response.access_token, response.refresh_token);
-
     } catch (e) {
       console.error('\n❌ Failed to parse response:', e.message);
       process.exit(1);
@@ -78,7 +77,7 @@ const req = https.request(options, (res) => {
   });
 });
 
-req.on('error', (e) => {
+req.on('error', e => {
   console.error('❌ Request failed:', e.message);
   process.exit(1);
 });
@@ -92,14 +91,14 @@ function testToken(accessToken, refreshToken) {
     path: '/v2/usercollection/daily_sleep?start_date=2026-02-25&end_date=2026-02-25',
     method: 'GET',
     headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Accept': 'application/json'
-    }
+      Authorization: `Bearer ${accessToken}`,
+      Accept: 'application/json',
+    },
   };
 
-  const testReq = https.request(testOptions, (res) => {
+  const testReq = https.request(testOptions, res => {
     let data = '';
-    res.on('data', (chunk) => data += chunk);
+    res.on('data', chunk => (data += chunk));
     res.on('end', () => {
       console.log('Token test (sleep endpoint):', res.statusCode);
       if (res.statusCode === 200) {
@@ -118,7 +117,7 @@ function testToken(accessToken, refreshToken) {
     });
   });
 
-  testReq.on('error', (e) => {
+  testReq.on('error', e => {
     console.error('Token test failed:', e.message);
   });
 

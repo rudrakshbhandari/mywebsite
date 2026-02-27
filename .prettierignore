@@ -5,6 +5,7 @@ vendor/
 # Build outputs
 dist/
 build/
+.playwright-cli/
 
 # Generated files
 *.min.js

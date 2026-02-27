@@ -1225,11 +1225,7 @@
        */
       function escapeAttr(s) {
         if (!s) return '';
-        return String(s)
-          .replace(/&/g, '&amp;')
-          .replace(/"/g, '&quot;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
+        return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
       }
 
       /**
@@ -1265,9 +1261,9 @@
        * Update metric display
        * @param {string} id - Element ID
        * @param {number|null} value
-       * @param {string} suffix - Optional suffix (e.g., ' BPM')
+       * @param {string} unit - Optional unit label (e.g., 'bpm')
        */
-      function updateMetric(id, value, suffix = '') {
+      function updateMetric(id, value, unit = '') {
         const el = document.getElementById(id);
         if (!el) return;
 
@@ -1275,7 +1271,13 @@
           el.textContent = 'No data';
           el.classList.add('null');
         } else {
-          el.innerHTML = `${value}${suffix}`;
+          el.textContent = `${value}`;
+          if (unit) {
+            const unitEl = document.createElement('span');
+            unitEl.className = 'metric-unit';
+            unitEl.textContent = unit;
+            el.appendChild(unitEl);
+          }
           el.classList.remove('null');
         }
       }
@@ -1650,7 +1652,7 @@
         const timeStart = new Date(series[0].t).getTime();
         const timeEnd = new Date(series[series.length - 1].t).getTime();
         const timeRange = Math.max(timeEnd - timeStart, 1);
-        const points = series.map((point) => {
+        const points = series.map(point => {
           const t = new Date(point.t).getTime();
           const frac = (t - timeStart) / timeRange;
           const x = marginLeft + frac * plotWidth;
@@ -1811,11 +1813,11 @@
           updateMetric('sleep-score', data.sleepScore);
           updateMetric('readiness-score', data.readinessScore);
           updateMetric('activity-score', data.activityScore);
-          updateMetric('resting-hr', data.restingHrBpm, '<span class="metric-unit">bpm</span>');
-          updateMetric('hrv', data.hrvMs, '<span class="metric-unit">ms</span>');
+          updateMetric('resting-hr', data.restingHrBpm, 'bpm');
+          updateMetric('hrv', data.hrvMs, 'ms');
           updateMetric('steps', data.steps);
-          updateMetric('calories', data.activeCalories, '<span class="metric-unit">kcal</span>');
-          updateMetric('spo2', data.spo2Average, '<span class="metric-unit">%</span>');
+          updateMetric('calories', data.activeCalories, 'kcal');
+          updateMetric('spo2', data.spo2Average, '%');
           updateMetric('workout-count', data.workoutCount);
 
           // Update temperature with special formatting
@@ -1823,7 +1825,11 @@
           if (tempEl) {
             if (data.tempDeviation !== null && data.tempDeviation !== undefined) {
               const sign = data.tempDeviation > 0 ? '+' : '';
-              tempEl.innerHTML = `${sign}${data.tempDeviation}<span class="metric-unit">°C</span>`;
+              tempEl.textContent = `${sign}${data.tempDeviation}`;
+              const unitEl = document.createElement('span');
+              unitEl.className = 'metric-unit';
+              unitEl.textContent = '°C';
+              tempEl.appendChild(unitEl);
               tempEl.classList.remove('null');
             } else {
               tempEl.textContent = 'No data';
@@ -1944,12 +1950,19 @@
         const section = document.getElementById('trend-section');
         const tooltip = document.getElementById('trend-tooltip');
         if (!section || !tooltip) return;
-        section.addEventListener('mouseover', (e) => {
+        section.addEventListener('mouseover', e => {
           const wrap = e.target.closest('.trend-day-bar-wrap[data-tooltip]');
           if (wrap) {
             const text = wrap.getAttribute('data-tooltip');
             if (text) {
-              tooltip.innerHTML = text.replace(/\n/g, '<br>');
+              tooltip.textContent = '';
+              const lines = text.split('\n');
+              lines.forEach((line, index) => {
+                if (index > 0) {
+                  tooltip.appendChild(document.createElement('br'));
+                }
+                tooltip.appendChild(document.createTextNode(line));
+              });
               tooltip.classList.remove('hidden');
               tooltip.setAttribute('aria-hidden', 'false');
               const rect = wrap.getBoundingClientRect();
@@ -1970,8 +1983,11 @@
             }
           }
         });
-        section.addEventListener('mouseout', (e) => {
-          if (!e.relatedTarget?.closest?.('.trend-day-bar-wrap[data-tooltip]') && !e.relatedTarget?.closest?.('#trend-tooltip')) {
+        section.addEventListener('mouseout', e => {
+          if (
+            !e.relatedTarget?.closest?.('.trend-day-bar-wrap[data-tooltip]') &&
+            !e.relatedTarget?.closest?.('#trend-tooltip')
+          ) {
             tooltip.classList.add('hidden');
             tooltip.setAttribute('aria-hidden', 'true');
           }
