@@ -2,8 +2,8 @@ name: Oura Health Data Update
 
 on:
   schedule:
-    # Hourly (at :30 past each hour UTC)
-    - cron: '30 * * * *'
+    # Every 15 minutes
+    - cron: '*/15 * * * *'
   workflow_dispatch: # Allow manual trigger
 
 concurrency:
