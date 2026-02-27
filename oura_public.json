@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-02-27T09:03:23.612Z",
+  "lastUpdatedIso": "2026-02-27T10:02:34.964Z",
   "day": "2026-02-26",
   "byDay": [
     {
@@ -159,10 +159,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-02-26",
   "heartRateSeries": [
-    {
-      "t": "2026-02-26T09:06:44.000Z",
-      "bpm": 65
-    },
     {
       "t": "2026-02-26T10:06:44.000Z",
       "bpm": 66
@@ -522,18 +518,18 @@
   ],
   "heartRateMinBpm": 64,
   "heartRateMaxBpm": 128,
-  "heartRateAvgBpm": 91,
+  "heartRateAvgBpm": 92,
   "heartRateLatestBpm": 85,
   "activityScore": 86,
   "activityMeetTargets": 60,
   "activityMoveHour": 100,
   "activityRecoveryTime": 100,
-  "activityStayActive": 74,
+  "activityStayActive": 77,
   "activityTrainingFreq": 100,
   "activityTrainingVol": 99,
   "steps": 6241,
   "activeCalories": 330,
-  "totalCalories": 2142,
+  "totalCalories": 2143,
   "targetCalories": 500,
   "metersToTarget": 3900,
   "highActivityMinutes": 0,
