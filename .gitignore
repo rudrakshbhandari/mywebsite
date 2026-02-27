@@ -28,3 +28,4 @@ Thumbs.db
 npm-debug.log*
 
 .vercel
+.playwright-cli/
