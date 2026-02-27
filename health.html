@@ -1646,8 +1646,14 @@
         const rangeBpm = Math.max(maxBpm - minBpm, 1);
         const midBpm = Math.round((minBpm + maxBpm) / 2);
 
-        const points = series.map((point, index) => {
-          const x = marginLeft + (index / Math.max(series.length - 1, 1)) * plotWidth;
+        // Position points by actual timestamp so they align with the time-based x-axis
+        const timeStart = new Date(series[0].t).getTime();
+        const timeEnd = new Date(series[series.length - 1].t).getTime();
+        const timeRange = Math.max(timeEnd - timeStart, 1);
+        const points = series.map((point) => {
+          const t = new Date(point.t).getTime();
+          const frac = (t - timeStart) / timeRange;
+          const x = marginLeft + frac * plotWidth;
           const y = bottom - ((Number(point.bpm) - minBpm) / rangeBpm) * (bottom - top);
           return { x, y, ...point };
         });
@@ -1667,9 +1673,6 @@
         `;
 
         // Generate evenly-spaced x-axis labels based on time range
-        const timeStart = new Date(series[0].t).getTime();
-        const timeEnd = new Date(series[series.length - 1].t).getTime();
-        const timeRange = timeEnd - timeStart;
         const labelCount = Math.min(7, Math.max(4, Math.floor(plotWidth / 130)));
         let xAxisHtml = '';
         for (let i = 0; i < labelCount; i++) {
@@ -1720,24 +1723,23 @@
           trackingDot.setAttribute('cy', nearest.y);
           trackingDot.style.display = '';
 
-          // Position tooltip near the crosshair (nearest point), not the mouse
+          // Position tooltip near cursor for better UX (follows mouse, shows nearest point data)
           tooltipTime.textContent = formatTime(nearest.t);
           tooltipValue.textContent = `${nearest.bpm} bpm`;
           tooltip.classList.remove('hidden');
-          pt.x = nearest.x;
-          pt.y = nearest.y;
-          const screenPt = pt.matrixTransform(svg.getScreenCTM());
-          const offset = 12;
-          tooltip.style.left = `${screenPt.x + offset}px`;
-          tooltip.style.top = `${screenPt.y}px`;
+          const offsetX = 14;
+          const offsetY = -8;
+          let left = clientX + offsetX;
+          let top = clientY + offsetY;
+          tooltip.style.left = `${left}px`;
+          tooltip.style.top = `${top}px`;
           requestAnimationFrame(() => {
             const tr = tooltip.getBoundingClientRect();
-            let left = screenPt.x + offset;
-            let top = screenPt.y - tr.height / 2;
-            if (left + tr.width > window.innerWidth - 8) left = screenPt.x - tr.width - offset;
+            // Keep tooltip near cursor; flip sides if it would go off-screen
+            if (left + tr.width > window.innerWidth - 8) left = clientX - tr.width - offsetX;
             else if (left < 8) left = 8;
             if (top < 8) top = 8;
-            if (top + tr.height > window.innerHeight - 8) top = window.innerHeight - tr.height - 8;
+            else if (top + tr.height > window.innerHeight - 8) top = clientY - tr.height - offsetY;
             tooltip.style.left = `${left}px`;
             tooltip.style.top = `${top}px`;
           });
@@ -1952,12 +1954,13 @@
               tooltip.setAttribute('aria-hidden', 'false');
               const rect = wrap.getBoundingClientRect();
               const offset = 8;
-              tooltip.style.left = `${rect.left + rect.width / 2 - 60}px`;
-              tooltip.style.top = `${rect.top - 50}px`;
+              // Place tooltip centered above the hovered bar; measure after first paint
+              tooltip.style.left = `${rect.left + rect.width / 2}px`;
+              tooltip.style.top = `${rect.top}px`;
               requestAnimationFrame(() => {
                 const tr = tooltip.getBoundingClientRect();
-                left -= tr.width / 2;
-                top -= tr.height;
+                let left = rect.left + rect.width / 2 - tr.width / 2;
+                let top = rect.top - tr.height - offset;
                 if (left < 8) left = 8;
                 if (left + tr.width > window.innerWidth - 8) left = window.innerWidth - tr.width - 8;
                 if (top < 8) top = rect.bottom + offset;
