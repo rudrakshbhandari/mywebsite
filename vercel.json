@@ -34,8 +34,5 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }]
     }
   ],
-  "routes": [
-    { "src": "/health", "dest": "/health.html" },
-    { "src": "/(.*)", "dest": "/$1" }
-  ]
+  "rewrites": [{ "source": "/health", "destination": "/health.html" }]
 }
