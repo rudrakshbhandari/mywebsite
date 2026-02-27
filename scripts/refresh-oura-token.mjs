@@ -42,20 +42,23 @@ async function refreshToken() {
     {
       method: 'POST',
       headers: {
-        'Accept': 'application/json',
+        Accept: 'application/json',
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     },
-    (res) => {
+    res => {
       let body = '';
-      res.on('data', (chunk) => {
+      res.on('data', chunk => {
         body += chunk;
       });
       res.on('end', () => {
         try {
           const parsed = JSON.parse(body);
           if (res.statusCode < 200 || res.statusCode >= 300 || !parsed.access_token) {
-            console.error(`Refresh failed (${res.statusCode}):`, parsed.error_description || parsed.error || parsed.title || body);
+            console.error(
+              `Refresh failed (${res.statusCode}):`,
+              parsed.error_description || parsed.error || parsed.title || body
+            );
             process.exit(1);
           }
 
@@ -74,7 +77,7 @@ async function refreshToken() {
     }
   );
 
-  req.on('error', (error) => {
+  req.on('error', error => {
     console.error('Request failed:', error.message);
     process.exit(1);
   });
