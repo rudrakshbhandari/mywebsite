@@ -1060,6 +1060,65 @@ button:focus-visible {
   border: 1px solid var(--border-color);
 }
 
+/* Case Studies Section */
+.case-studies {
+  padding: var(--spacing-4xl) 0;
+  background: var(--background-gray);
+}
+
+.case-studies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--spacing-xl);
+}
+
+.case-study-card {
+  background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-xl);
+  transition: var(--transition-normal);
+}
+
+.case-study-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--accent-color);
+  box-shadow: 0 0 28px var(--accent-glow);
+}
+
+.case-study-kicker {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.case-study-title {
+  font-size: var(--font-size-xl);
+  line-height: 1.3;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-light);
+}
+
+.case-study-summary {
+  color: var(--text-secondary);
+  margin-bottom: var(--spacing-md);
+  line-height: 1.65;
+}
+
+.case-study-points {
+  margin-left: 1.1rem;
+  color: var(--text-secondary);
+  display: grid;
+  gap: var(--spacing-sm);
+}
+
+.case-study-points li::marker {
+  color: var(--primary-color);
+}
+
 /* Skills Section */
 .skills {
   padding: var(--spacing-4xl) 0;
@@ -1318,6 +1377,10 @@ button:focus-visible {
   }
 
   .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .case-studies-grid {
     grid-template-columns: 1fr;
   }
 
