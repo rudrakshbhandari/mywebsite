@@ -215,6 +215,10 @@ body {
   transition: var(--transition-fast);
 }
 
+.nav-logo {
+  margin-left: calc(-1 * var(--spacing-sm));
+}
+
 .nav-logo a:hover {
   color: var(--primary-color);
 }
