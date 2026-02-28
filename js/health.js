@@ -539,13 +539,32 @@ function renderHeartRateTimeline(series, data) {
   hoverArea.setAttribute('width', plotWidth);
   hoverArea.setAttribute('height', plotHeight);
   hoverArea.setAttribute('cursor', 'crosshair');
+  hoverArea.style.pointerEvents = 'all';
+
+  function getSvgCoords(clientX, clientY) {
+    const svg = document.getElementById('heart-rate-timeline');
+    if (!svg) return null;
+
+    const ctm = svg.getScreenCTM();
+    if (ctm) {
+      const pt = svg.createSVGPoint();
+      pt.x = clientX;
+      pt.y = clientY;
+      return pt.matrixTransform(ctm.inverse());
+    }
+
+    const rect = svg.getBoundingClientRect();
+    if (!rect.width || !rect.height) return null;
+    return {
+      x: ((clientX - rect.left) / rect.width) * 1060,
+      y: ((clientY - rect.top) / rect.height) * 220,
+    };
+  }
 
   function findNearestAndUpdate(clientX, clientY) {
-    const svg = document.getElementById('heart-rate-timeline');
-    const pt = svg.createSVGPoint();
-    pt.x = clientX;
-    pt.y = clientY;
-    const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+    const svgPt = getSvgCoords(clientX, clientY);
+    if (!svgPt) return;
+    if (svgPt.x < marginLeft || svgPt.x > marginLeft + plotWidth || svgPt.y < top || svgPt.y > bottom) return;
     const mouseX = svgPt.x;
     let nearest = points[0];
     let nearestDist = Infinity;
@@ -595,16 +614,19 @@ function renderHeartRateTimeline(series, data) {
     trackingDot.style.display = 'none';
   }
 
-  hoverArea.onmousemove = e => findNearestAndUpdate(e.clientX, e.clientY);
-  hoverArea.onmouseleave = hideTracking;
+  const svgEl = document.getElementById('heart-rate-timeline');
+  if (svgEl) {
+    svgEl.onmousemove = e => findNearestAndUpdate(e.clientX, e.clientY);
+    svgEl.onmouseleave = hideTracking;
 
-  // Touch support for mobile
-  hoverArea.ontouchmove = e => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    findNearestAndUpdate(touch.clientX, touch.clientY);
-  };
-  hoverArea.ontouchend = hideTracking;
+    // Touch support for mobile
+    svgEl.ontouchmove = e => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      findNearestAndUpdate(touch.clientX, touch.clientY);
+    };
+    svgEl.ontouchend = hideTracking;
+  }
 
   const minEl = document.getElementById('heart-rate-min');
   const avgEl = document.getElementById('heart-rate-avg');
