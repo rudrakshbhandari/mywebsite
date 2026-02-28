@@ -7,6 +7,8 @@ const STATUS_THRESHOLDS = {
   readiness: { good: 80, fair: 60 },
   activity: { good: 80, fair: 60 },
 };
+const MIN_HEARTBEAT_BPM = 45;
+const MAX_HEARTBEAT_BPM = 160;
 
 /**
  * Format relative time (e.g., "12 min ago")
@@ -169,6 +171,33 @@ function setCardVisibility(cardId, visible) {
   const card = document.getElementById(cardId);
   if (!card) return;
   card.classList.toggle('hidden', !visible);
+}
+
+/**
+ * Update heartbeat indicator speed and label from latest HR
+ * @param {number|null} latestBpm
+ */
+function updateHeartbeatIndicator(latestBpm) {
+  const indicator = document.getElementById('heartbeat-indicator');
+  const textEl = document.getElementById('heartbeat-text');
+  if (!indicator || !textEl) return;
+
+  if (latestBpm === null || latestBpm === undefined || !Number.isFinite(Number(latestBpm))) {
+    indicator.classList.add('heartbeat-paused');
+    indicator.style.setProperty('--heartbeat-duration', '1s');
+    indicator.setAttribute('aria-label', 'Current heart rate unavailable');
+    textEl.textContent = '-- bpm';
+    return;
+  }
+
+  const bpm = Math.round(Number(latestBpm));
+  const clampedBpm = Math.max(MIN_HEARTBEAT_BPM, Math.min(MAX_HEARTBEAT_BPM, bpm));
+  const durationSeconds = 60 / clampedBpm;
+
+  indicator.classList.remove('heartbeat-paused');
+  indicator.style.setProperty('--heartbeat-duration', `${durationSeconds.toFixed(3)}s`);
+  indicator.setAttribute('aria-label', `Current heart rate ${bpm} beats per minute`);
+  textEl.textContent = `${bpm} bpm`;
 }
 
 /**
@@ -715,6 +744,7 @@ async function loadHealthData() {
     });
 
     renderHeartRateTimeline(data.heartRateSeries, data);
+    updateHeartbeatIndicator(data.heartRateLatestBpm);
     render7DayTrend(data.byDay || []);
 
     // Update status badges
@@ -748,6 +778,7 @@ async function loadHealthData() {
     metricsContainer.classList.remove('hidden');
   } catch (error) {
     console.error('Failed to load health data:', error);
+    updateHeartbeatIndicator(null);
 
     loadingState.classList.add('hidden');
     errorState.classList.remove('hidden');
