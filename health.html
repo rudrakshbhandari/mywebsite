@@ -289,6 +289,55 @@
         color: #c4b5fd;
       }
 
+      .heartbeat-indicator {
+        --heartbeat-duration: 1s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.25rem 0.55rem;
+        border: 1px solid rgba(248, 113, 113, 0.35);
+        border-radius: 9999px;
+        background: rgba(127, 29, 29, 0.18);
+      }
+
+      .heartbeat-dot {
+        width: 0.65rem;
+        height: 0.65rem;
+        border-radius: 50%;
+        background: #f87171;
+        box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4);
+        animation: heartbeat var(--heartbeat-duration) ease-in-out infinite;
+      }
+
+      .heartbeat-text {
+        color: #fecaca;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .heartbeat-indicator.heartbeat-paused .heartbeat-dot {
+        animation: none;
+        opacity: 0.65;
+      }
+
+      @keyframes heartbeat {
+        0%,
+        45%,
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.35);
+        }
+        12% {
+          transform: scale(1.18);
+          box-shadow: 0 0 0 6px rgba(248, 113, 113, 0.15);
+        }
+        24% {
+          transform: scale(1.04);
+          box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.15);
+        }
+      }
+
       .timeline-chart {
         margin-top: 1rem;
         padding-top: 1rem;
@@ -886,6 +935,12 @@
         display: none !important;
       }
 
+      @media (prefers-reduced-motion: reduce) {
+        .heartbeat-dot {
+          animation: none;
+        }
+      }
+
       /* Responsive */
       @media (max-width: 768px) {
         .metrics-grid {
@@ -1082,6 +1137,14 @@
             <span class="metric-label">
               <span class="metric-icon hr"><i class="fas fa-heart-pulse"></i></span>
               Resting Heart Rate
+            </span>
+            <span
+              class="heartbeat-indicator heartbeat-paused"
+              id="heartbeat-indicator"
+              aria-label="Current heart rate unavailable"
+            >
+              <span class="heartbeat-dot" aria-hidden="true"></span>
+              <span class="heartbeat-text" id="heartbeat-text">-- bpm</span>
             </span>
           </div>
           <div class="metric-value" id="resting-hr">--<span class="metric-unit">bpm</span></div>

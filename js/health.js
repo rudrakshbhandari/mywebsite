@@ -7,6 +7,8 @@ const STATUS_THRESHOLDS = {
   readiness: { good: 80, fair: 60 },
   activity: { good: 80, fair: 60 },
 };
+const MIN_HEARTBEAT_BPM = 45;
+const MAX_HEARTBEAT_BPM = 160;
 
 /**
  * Format relative time (e.g., "12 min ago")
@@ -169,6 +171,33 @@ function setCardVisibility(cardId, visible) {
   const card = document.getElementById(cardId);
   if (!card) return;
   card.classList.toggle('hidden', !visible);
+}
+
+/**
+ * Update heartbeat indicator speed and label from latest HR
+ * @param {number|null} latestBpm
+ */
+function updateHeartbeatIndicator(latestBpm) {
+  const indicator = document.getElementById('heartbeat-indicator');
+  const textEl = document.getElementById('heartbeat-text');
+  if (!indicator || !textEl) return;
+
+  if (latestBpm === null || latestBpm === undefined || !Number.isFinite(Number(latestBpm))) {
+    indicator.classList.add('heartbeat-paused');
+    indicator.style.setProperty('--heartbeat-duration', '1s');
+    indicator.setAttribute('aria-label', 'Current heart rate unavailable');
+    textEl.textContent = '-- bpm';
+    return;
+  }
+
+  const bpm = Math.round(Number(latestBpm));
+  const clampedBpm = Math.max(MIN_HEARTBEAT_BPM, Math.min(MAX_HEARTBEAT_BPM, bpm));
+  const durationSeconds = 60 / clampedBpm;
+
+  indicator.classList.remove('heartbeat-paused');
+  indicator.style.setProperty('--heartbeat-duration', `${durationSeconds.toFixed(3)}s`);
+  indicator.setAttribute('aria-label', `Current heart rate ${bpm} beats per minute`);
+  textEl.textContent = `${bpm} bpm`;
 }
 
 /**
@@ -510,13 +539,32 @@ function renderHeartRateTimeline(series, data) {
   hoverArea.setAttribute('width', plotWidth);
   hoverArea.setAttribute('height', plotHeight);
   hoverArea.setAttribute('cursor', 'crosshair');
+  hoverArea.style.pointerEvents = 'all';
+
+  function getSvgCoords(clientX, clientY) {
+    const svg = document.getElementById('heart-rate-timeline');
+    if (!svg) return null;
+
+    const ctm = svg.getScreenCTM();
+    if (ctm) {
+      const pt = svg.createSVGPoint();
+      pt.x = clientX;
+      pt.y = clientY;
+      return pt.matrixTransform(ctm.inverse());
+    }
+
+    const rect = svg.getBoundingClientRect();
+    if (!rect.width || !rect.height) return null;
+    return {
+      x: ((clientX - rect.left) / rect.width) * 1060,
+      y: ((clientY - rect.top) / rect.height) * 220,
+    };
+  }
 
   function findNearestAndUpdate(clientX, clientY) {
-    const svg = document.getElementById('heart-rate-timeline');
-    const pt = svg.createSVGPoint();
-    pt.x = clientX;
-    pt.y = clientY;
-    const svgPt = pt.matrixTransform(svg.getScreenCTM().inverse());
+    const svgPt = getSvgCoords(clientX, clientY);
+    if (!svgPt) return;
+    if (svgPt.x < marginLeft || svgPt.x > marginLeft + plotWidth || svgPt.y < top || svgPt.y > bottom) return;
     const mouseX = svgPt.x;
     let nearest = points[0];
     let nearestDist = Infinity;
@@ -566,16 +614,19 @@ function renderHeartRateTimeline(series, data) {
     trackingDot.style.display = 'none';
   }
 
-  hoverArea.onmousemove = e => findNearestAndUpdate(e.clientX, e.clientY);
-  hoverArea.onmouseleave = hideTracking;
+  const svgEl = document.getElementById('heart-rate-timeline');
+  if (svgEl) {
+    svgEl.onmousemove = e => findNearestAndUpdate(e.clientX, e.clientY);
+    svgEl.onmouseleave = hideTracking;
 
-  // Touch support for mobile
-  hoverArea.ontouchmove = e => {
-    e.preventDefault();
-    const touch = e.touches[0];
-    findNearestAndUpdate(touch.clientX, touch.clientY);
-  };
-  hoverArea.ontouchend = hideTracking;
+    // Touch support for mobile
+    svgEl.ontouchmove = e => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      findNearestAndUpdate(touch.clientX, touch.clientY);
+    };
+    svgEl.ontouchend = hideTracking;
+  }
 
   const minEl = document.getElementById('heart-rate-min');
   const avgEl = document.getElementById('heart-rate-avg');
@@ -715,6 +766,7 @@ async function loadHealthData() {
     });
 
     renderHeartRateTimeline(data.heartRateSeries, data);
+    updateHeartbeatIndicator(data.heartRateLatestBpm);
     render7DayTrend(data.byDay || []);
 
     // Update status badges
@@ -748,6 +800,7 @@ async function loadHealthData() {
     metricsContainer.classList.remove('hidden');
   } catch (error) {
     console.error('Failed to load health data:', error);
+    updateHeartbeatIndicator(null);
 
     loadingState.classList.add('hidden');
     errorState.classList.remove('hidden');
