@@ -13,7 +13,7 @@ The health page (`/health`) displays selected daily metrics from your Oura Ring 
 - Steps
 - Active Calories
 
-Data is fetched hourly via GitHub Actions and stored as a public JSON file. No database required.
+Data is fetched every 15 minutes via GitHub Actions and stored as a public JSON file. No database required.
 
 ---
 
@@ -33,9 +33,19 @@ Data is fetched hourly via GitHub Actions and stored as a public JSON file. No d
 
 ## Step 2: Obtain OAuth Refresh Token
 
-Oura uses OAuth 2.0. You need a refresh token that never expires (until revoked).
+Oura uses OAuth 2.0. You need a refresh token (long-lived, but can be rotated or revoked).
 
-### Option A: Quick CLI Method (Recommended)
+### Option A: Repository Script (Recommended)
+
+Use the built-in helper script:
+
+```bash
+node scripts/get-oura-token.mjs
+```
+
+The script prints the authorization URL, prompts for the returned `code`, and outputs your refresh token.
+
+### Option B: Quick CLI Method
 
 Create a temporary Node.js script to get your refresh token:
 
@@ -100,7 +110,7 @@ rl.question('Paste the code here: ', (code) => {
 });
 ```
 
-### Option B: Manual Browser Flow
+### Option C: Manual Browser Flow
 
 1. Visit (replace `YOUR_CLIENT_ID`):
    ```
@@ -129,11 +139,13 @@ rl.question('Paste the code here: ', (code) => {
 
 In your repository, add these secrets (Settings → Secrets and variables → Actions):
 
-| Secret Name          | Value                         |
-| -------------------- | ----------------------------- |
-| `OURA_CLIENT_ID`     | Your Oura app's Client ID     |
-| `OURA_CLIENT_SECRET` | Your Oura app's Client Secret |
-| `OURA_REFRESH_TOKEN` | The refresh token from Step 2 |
+| Secret Name                | Value                                                         |
+| -------------------------- | ------------------------------------------------------------- |
+| `OURA_ACCESS_TOKEN`        | Optional long-lived access token                              |
+| `OURA_CLIENT_ID`           | Your Oura app's Client ID                                     |
+| `OURA_CLIENT_SECRET`       | Your Oura app's Client Secret                                 |
+| `OURA_REFRESH_TOKEN`       | The refresh token from Step 2                                 |
+| `OURA_SECRET_UPDATE_TOKEN` | Optional token to auto-rotate `OURA_REFRESH_TOKEN` in Actions |
 
 **Security notes:**
 
@@ -222,7 +234,7 @@ To test the GitHub Actions workflow immediately:
 ### Rate limiting
 
 - Oura API has generous limits (1000 requests/day)
-- Current schedule uses ~24 runs/day × ~9 API calls ≈ 216 requests/day, well within limits
+- Current schedule uses ~96 runs/day × ~9 API calls ≈ 864 requests/day, still within limits
 
 ---
 
@@ -231,21 +243,21 @@ To test the GitHub Actions workflow immediately:
 ### Privacy & Security
 
 - ✅ Only aggregated daily scores are published
-- ✅ No minute-by-minute heart rate, sleep stages, or location data
+- ✅ No raw minute-level heart rate, sleep stages, or location data
 - ✅ All metrics are rounded to integers
-- ✅ No raw timeseries data exposed
+- ✅ A downsampled intraday heart-rate series (`heartRateSeries`) is published for charting
 - ✅ Secrets stored in GitHub Secrets (never in code)
 
 ### Cost Optimization
 
 - ✅ Zero-cost: No database, no paid infrastructure
-- ✅ GitHub Actions: ~7 seconds per run × 24 runs/day ≈ 168 sec/day (free for public repos)
+- ✅ GitHub Actions: ~7 seconds per run × 96 runs/day ≈ 672 sec/day (free for public repos)
 - ✅ Vercel Hobby tier: Static site, no function invocations
 
 ### Data Freshness
 
-- Updates run hourly at :30 past each hour (UTC)
-- Cron: `30 * * * *`
+- Updates run every 15 minutes (UTC)
+- Cron: `*/15 * * * *`
 - Client auto-refreshes every 5 minutes while page is open
 
 ---
