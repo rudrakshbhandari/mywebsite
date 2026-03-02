@@ -6,9 +6,9 @@ The format is based on Keep a Changelog and this project uses date-based release
 
 ## [Unreleased]
 
-### Added
+### Changed
 
-- Placeholder section for upcoming release notes.
+- Updated documentation to match the current health pipeline behavior (15-minute workflow cadence, exposed downsampled heart-rate series, and token/secret guidance).
 
 ## [2026-02-27]
 
