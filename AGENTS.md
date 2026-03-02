@@ -16,6 +16,9 @@ When working on this codebase, follow these workflow rules:
 
 - **Always create a feature branch** before making changes. Do not work directly on `main`.
 - **Changes get their own branch** — When modifying **any file**, create a **new branch from `main`** that matches the change (e.g., `docs/agents-content-guidelines`, `feat/dark-mode`). Do **not** commit to whatever feature branch the user is currently on. Push the new branch and **create a PR** — do not assume "just push" means push to the current branch.
+- **Each distinct feature gets its own branch** — If an open PR already exists for a feature (e.g., `feat/sapphix-portfolio-project`), do NOT add new unrelated features to that same branch. Create a **separate branch from `main`** for each new feature, even if the user is asking for something "also" or "too". For example:
+  - Adding Project A → branch: `feat/project-a`
+  - User later asks "also add Project B" → branch: `feat/project-b` (separate, not added to `feat/project-a`)
 - **Name branches appropriately** based on the task:
   - `feat/short-description` — new features (e.g., `feat/dark-mode-toggle`)
   - `fix/short-description` — bug fixes (e.g., `fix/navbar-mobile-menu`)
