@@ -84,6 +84,12 @@ The site emits the following events through `js/analytics.js`:
 3. Trigger a few actions (open `/health`, click résumé, click social links).
 4. Wait 1-2 minutes and refresh the Vercel Analytics dashboard.
 
+## Health Data Pipeline
+
+- Health data is written to `oura_public.json` by `.github/workflows/oura-update.yml`.
+- The workflow runs every 15 minutes (`*/15 * * * *`) and commits only when data changes.
+- Public data includes daily aggregates plus a downsampled intraday heart-rate series for charting on `/health`.
+
 ## Release Cadence
 
 - Update `CHANGELOG.md` for every merged feature/fix.
