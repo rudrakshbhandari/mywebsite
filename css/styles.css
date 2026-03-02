@@ -197,9 +197,9 @@ body {
 }
 
 .nav-container {
-  max-width: 1200px;
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 0 var(--spacing-lg);
+  padding: 0 var(--spacing-xl);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -216,7 +216,8 @@ body {
 }
 
 .nav-logo {
-  margin-left: calc(-1 * var(--spacing-sm));
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 .nav-logo a:hover {
@@ -225,7 +226,8 @@ body {
 
 .nav-menu {
   display: flex;
-  gap: var(--spacing-xl);
+  gap: var(--spacing-lg);
+  white-space: nowrap;
 }
 
 .nav-link {
