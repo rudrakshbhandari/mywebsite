@@ -766,7 +766,7 @@ async function loadHealthData() {
     });
 
     renderHeartRateTimeline(data.heartRateSeries, data);
-    updateHeartbeatIndicator(data.heartRateLatestBpm);
+    updateHeartbeatIndicator(data.heartRateLatestBpm ?? data.restingHrBpm);
     render7DayTrend(data.byDay || []);
 
     // Update status badges
