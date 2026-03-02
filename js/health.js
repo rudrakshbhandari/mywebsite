@@ -639,7 +639,7 @@ function renderHeartRateTimeline(series, data) {
 
   if (footer) {
     const sourceDay = data.heartRateSeriesDay ? `Source day: ${data.heartRateSeriesDay}` : 'Intraday trend';
-    footer.textContent = `${sourceDay} • ${series.length} points • Hover for details`;
+    footer.textContent = `${sourceDay} • ${series.length} points`;
   }
 }
 
@@ -766,7 +766,7 @@ async function loadHealthData() {
     });
 
     renderHeartRateTimeline(data.heartRateSeries, data);
-    updateHeartbeatIndicator(data.heartRateLatestBpm);
+    updateHeartbeatIndicator(data.heartRateLatestBpm ?? data.restingHrBpm);
     render7DayTrend(data.byDay || []);
 
     // Update status badges
