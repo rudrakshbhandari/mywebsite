@@ -217,6 +217,7 @@ body {
 
 .nav-logo {
   margin-left: calc(-1 * var(--spacing-sm));
+  margin-right: var(--spacing-xl);
 }
 
 .nav-logo a:hover {
