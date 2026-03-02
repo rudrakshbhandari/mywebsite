@@ -1026,6 +1026,15 @@ button:focus-visible {
   box-shadow: 0 0 30px var(--accent-glow);
 }
 
+.project-link.project-coming-soon {
+  cursor: default;
+  pointer-events: none;
+}
+
+.project-link.project-coming-soon:hover {
+  transform: none;
+}
+
 .project-content {
   padding: var(--spacing-xl);
 }
