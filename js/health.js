@@ -462,6 +462,8 @@ function renderHeartRateTimeline(series, data) {
   const tooltipValue = document.getElementById('hr-tooltip-value');
   const trackingLine = document.getElementById('hr-tracking-line');
   const trackingDot = document.getElementById('hr-tracking-dot');
+  const labelBpm = document.getElementById('hr-label-bpm');
+  const labelTime = document.getElementById('hr-label-time');
 
   if (!line || !fill || !Array.isArray(series) || series.length < 2) {
     setCardVisibility('heart-rate-timeline-card', false);
@@ -586,8 +588,30 @@ function renderHeartRateTimeline(series, data) {
     trackingDot.setAttribute('cy', nearest.y);
     trackingDot.style.display = '';
 
-    tooltipTime.textContent = formatTime(nearest.t);
-    tooltipValue.textContent = `${nearest.bpm} bpm`;
+    // Inline BPM label near the dot — offset left or right to stay within plot
+    const bpmText = `${nearest.bpm} bpm`;
+    labelBpm.textContent = bpmText;
+    const bpmLabelOffset = 10;
+    const bpmAboveDot = nearest.y - bpmLabelOffset;
+    const bpmY = bpmAboveDot < top + 12 ? nearest.y + bpmLabelOffset + 12 : bpmAboveDot;
+    const bpmAnchor = nearest.x > marginLeft + plotWidth - 80 ? 'end' : 'start';
+    const bpmX = bpmAnchor === 'end' ? nearest.x - bpmLabelOffset : nearest.x + bpmLabelOffset;
+    labelBpm.setAttribute('x', bpmX);
+    labelBpm.setAttribute('y', bpmY);
+    labelBpm.setAttribute('text-anchor', bpmAnchor);
+    labelBpm.style.display = '';
+
+    // Inline time label at the bottom of the tracking line
+    const timeText = formatTime(nearest.t);
+    labelTime.textContent = timeText;
+    const timeAnchor = nearest.x < marginLeft + 50 ? 'start' : nearest.x > marginLeft + plotWidth - 50 ? 'end' : 'middle';
+    labelTime.setAttribute('x', nearest.x);
+    labelTime.setAttribute('y', bottom + 14);
+    labelTime.setAttribute('text-anchor', timeAnchor);
+    labelTime.style.display = '';
+
+    tooltipTime.textContent = timeText;
+    tooltipValue.textContent = bpmText;
     tooltip.classList.remove('hidden');
     const offsetX = 14;
     const offsetY = -8;
@@ -610,6 +634,8 @@ function renderHeartRateTimeline(series, data) {
     tooltip.classList.add('hidden');
     trackingLine.style.display = 'none';
     trackingDot.style.display = 'none';
+    labelBpm.style.display = 'none';
+    labelTime.style.display = 'none';
   }
 
   const svgEl = document.getElementById('heart-rate-timeline');
