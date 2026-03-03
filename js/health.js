@@ -586,25 +586,23 @@ function renderHeartRateTimeline(series, data) {
     trackingDot.setAttribute('cy', nearest.y);
     trackingDot.style.display = '';
 
-    // Position tooltip near cursor for better UX (follows mouse, shows nearest point data)
     tooltipTime.textContent = formatTime(nearest.t);
     tooltipValue.textContent = `${nearest.bpm} bpm`;
     tooltip.classList.remove('hidden');
     const offsetX = 14;
     const offsetY = -8;
-    let left = clientX + offsetX;
-    let top = clientY + offsetY;
-    tooltip.style.left = `${left}px`;
-    tooltip.style.top = `${top}px`;
+    let tipLeft = clientX + offsetX;
+    let tipTop = clientY + offsetY;
+    tooltip.style.left = `${tipLeft}px`;
+    tooltip.style.top = `${tipTop}px`;
     requestAnimationFrame(() => {
       const tr = tooltip.getBoundingClientRect();
-      // Keep tooltip near cursor; flip sides if it would go off-screen
-      if (left + tr.width > window.innerWidth - 8) left = clientX - tr.width - offsetX;
-      else if (left < 8) left = 8;
-      if (top < 8) top = 8;
-      else if (top + tr.height > window.innerHeight - 8) top = clientY - tr.height - offsetY;
-      tooltip.style.left = `${left}px`;
-      tooltip.style.top = `${top}px`;
+      if (tipLeft + tr.width > window.innerWidth - 8) tipLeft = clientX - tr.width - offsetX;
+      else if (tipLeft < 8) tipLeft = 8;
+      if (tipTop < 8) tipTop = 8;
+      else if (tipTop + tr.height > window.innerHeight - 8) tipTop = clientY - tr.height - offsetY;
+      tooltip.style.left = `${tipLeft}px`;
+      tooltip.style.top = `${tipTop}px`;
     });
   }
 
