@@ -457,9 +457,6 @@ function renderHeartRateTimeline(series, data) {
   const axisX = document.getElementById('hr-axis-x');
   const gridEl = document.getElementById('hr-grid');
   const hoverArea = document.getElementById('hr-hover-area');
-  const tooltip = document.getElementById('hr-tooltip');
-  const tooltipTime = document.getElementById('hr-tooltip-time');
-  const tooltipValue = document.getElementById('hr-tooltip-value');
   const trackingLine = document.getElementById('hr-tracking-line');
   const trackingDot = document.getElementById('hr-tracking-dot');
   const labelBpm = document.getElementById('hr-label-bpm');
@@ -610,29 +607,9 @@ function renderHeartRateTimeline(series, data) {
     labelTime.setAttribute('y', bottom + 14);
     labelTime.setAttribute('text-anchor', timeAnchor);
     labelTime.style.display = '';
-
-    tooltipTime.textContent = timeText;
-    tooltipValue.textContent = bpmText;
-    tooltip.classList.remove('hidden');
-    const offsetX = 14;
-    const offsetY = -8;
-    let tipLeft = clientX + offsetX;
-    let tipTop = clientY + offsetY;
-    tooltip.style.left = `${tipLeft}px`;
-    tooltip.style.top = `${tipTop}px`;
-    requestAnimationFrame(() => {
-      const tr = tooltip.getBoundingClientRect();
-      if (tipLeft + tr.width > window.innerWidth - 8) tipLeft = clientX - tr.width - offsetX;
-      else if (tipLeft < 8) tipLeft = 8;
-      if (tipTop < 8) tipTop = 8;
-      else if (tipTop + tr.height > window.innerHeight - 8) tipTop = clientY - tr.height - offsetY;
-      tooltip.style.left = `${tipLeft}px`;
-      tooltip.style.top = `${tipTop}px`;
-    });
   }
 
   function hideTracking() {
-    tooltip.classList.add('hidden');
     trackingLine.style.display = 'none';
     trackingDot.style.display = 'none';
     labelBpm.style.display = 'none';
