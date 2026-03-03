@@ -604,7 +604,8 @@ function renderHeartRateTimeline(series, data) {
     // Inline time label at the bottom of the tracking line
     const timeText = formatTime(nearest.t);
     labelTime.textContent = timeText;
-    const timeAnchor = nearest.x < marginLeft + 50 ? 'start' : nearest.x > marginLeft + plotWidth - 50 ? 'end' : 'middle';
+    const timeAnchor =
+      nearest.x < marginLeft + 50 ? 'start' : nearest.x > marginLeft + plotWidth - 50 ? 'end' : 'middle';
     labelTime.setAttribute('x', nearest.x);
     labelTime.setAttribute('y', bottom + 14);
     labelTime.setAttribute('text-anchor', timeAnchor);
