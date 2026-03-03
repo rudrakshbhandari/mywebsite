@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-03-03T23:01:44.364Z",
+  "lastUpdatedIso": "2026-03-03T23:36:37.339Z",
   "day": "2026-03-03",
   "byDay": [
     {
@@ -159,30 +159,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-03-03",
   "heartRateSeries": [
-    {
-      "t": "2026-03-02T23:04:48.000Z",
-      "bpm": 91
-    },
-    {
-      "t": "2026-03-02T23:17:07.000Z",
-      "bpm": 96
-    },
-    {
-      "t": "2026-03-02T23:22:40.700Z",
-      "bpm": 87
-    },
-    {
-      "t": "2026-03-02T23:23:30.700Z",
-      "bpm": 86
-    },
-    {
-      "t": "2026-03-02T23:24:20.700Z",
-      "bpm": 83
-    },
-    {
-      "t": "2026-03-02T23:25:10.700Z",
-      "bpm": 83
-    },
     {
       "t": "2026-03-02T23:38:03.000Z",
       "bpm": 82
@@ -546,7 +522,7 @@
   ],
   "heartRateMinBpm": 61,
   "heartRateMaxBpm": 173,
-  "heartRateAvgBpm": 108,
+  "heartRateAvgBpm": 109,
   "heartRateLatestBpm": 71,
   "activityScore": null,
   "activityMeetTargets": null,
