@@ -87,7 +87,7 @@ The site emits the following events through `js/analytics.js`:
 ## Health Data Pipeline
 
 - Health data is written to `oura_public.json` by `.github/workflows/oura-update.yml`.
-- The workflow runs every 15 minutes (`*/15 * * * *`) and commits only when data changes.
+- The workflow runs every 5 minutes (`*/5 * * * *`) and commits only when data changes.
 - Public data includes daily aggregates plus a downsampled intraday heart-rate series for charting on `/health`.
 
 ## Release Cadence
