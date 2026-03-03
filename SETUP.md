@@ -13,7 +13,7 @@ The health page (`/health`) displays selected daily metrics from your Oura Ring 
 - Steps
 - Active Calories
 
-Data is fetched every 15 minutes via GitHub Actions and stored as a public JSON file. No database required.
+Data is fetched every 5 minutes via GitHub Actions and stored as a public JSON file. No database required.
 
 ---
 
@@ -256,8 +256,8 @@ To test the GitHub Actions workflow immediately:
 
 ### Data Freshness
 
-- Updates run every 15 minutes (UTC)
-- Cron: `*/15 * * * *`
+- Updates run every 5 minutes (UTC)
+- Cron: `*/5 * * * *`
 - Client auto-refreshes every 5 minutes while page is open
 
 ---
