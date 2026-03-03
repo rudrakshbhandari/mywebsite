@@ -431,6 +431,23 @@
         pointer-events: none;
       }
 
+      .hr-inline-label {
+        font-family: var(--font-family);
+        font-size: 11px;
+        font-weight: 600;
+        pointer-events: none;
+      }
+
+      .hr-label-bpm {
+        fill: #5eead4;
+      }
+
+      .hr-label-time {
+        fill: var(--text-secondary);
+        font-size: 10px;
+        font-weight: 500;
+      }
+
       .timeline-stats {
         margin-top: 0.75rem;
         display: grid;
@@ -1104,6 +1121,8 @@
                   style="display: none"
                 ></line>
                 <circle id="hr-tracking-dot" class="hr-tracking-dot" cx="0" cy="0" r="5" style="display: none"></circle>
+                <text id="hr-label-bpm" class="hr-inline-label hr-label-bpm" x="0" y="0" style="display: none"></text>
+                <text id="hr-label-time" class="hr-inline-label hr-label-time" x="0" y="0" style="display: none"></text>
                 <rect id="hr-hover-area" fill="transparent" class="hr-hover-rect"></rect>
               </svg>
               <div id="hr-tooltip" class="chart-tooltip hidden">

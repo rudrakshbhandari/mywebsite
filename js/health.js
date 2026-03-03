@@ -462,6 +462,8 @@ function renderHeartRateTimeline(series, data) {
   const tooltipValue = document.getElementById('hr-tooltip-value');
   const trackingLine = document.getElementById('hr-tracking-line');
   const trackingDot = document.getElementById('hr-tracking-dot');
+  const labelBpm = document.getElementById('hr-label-bpm');
+  const labelTime = document.getElementById('hr-label-time');
 
   if (!line || !fill || !Array.isArray(series) || series.length < 2) {
     setCardVisibility('heart-rate-timeline-card', false);
@@ -586,25 +588,46 @@ function renderHeartRateTimeline(series, data) {
     trackingDot.setAttribute('cy', nearest.y);
     trackingDot.style.display = '';
 
-    // Position tooltip near cursor for better UX (follows mouse, shows nearest point data)
-    tooltipTime.textContent = formatTime(nearest.t);
-    tooltipValue.textContent = `${nearest.bpm} bpm`;
+    // Inline BPM label near the dot — offset left or right to stay within plot
+    const bpmText = `${nearest.bpm} bpm`;
+    labelBpm.textContent = bpmText;
+    const bpmLabelOffset = 10;
+    const bpmAboveDot = nearest.y - bpmLabelOffset;
+    const bpmY = bpmAboveDot < top + 12 ? nearest.y + bpmLabelOffset + 12 : bpmAboveDot;
+    const bpmAnchor = nearest.x > marginLeft + plotWidth - 80 ? 'end' : 'start';
+    const bpmX = bpmAnchor === 'end' ? nearest.x - bpmLabelOffset : nearest.x + bpmLabelOffset;
+    labelBpm.setAttribute('x', bpmX);
+    labelBpm.setAttribute('y', bpmY);
+    labelBpm.setAttribute('text-anchor', bpmAnchor);
+    labelBpm.style.display = '';
+
+    // Inline time label at the bottom of the tracking line
+    const timeText = formatTime(nearest.t);
+    labelTime.textContent = timeText;
+    const timeAnchor =
+      nearest.x < marginLeft + 50 ? 'start' : nearest.x > marginLeft + plotWidth - 50 ? 'end' : 'middle';
+    labelTime.setAttribute('x', nearest.x);
+    labelTime.setAttribute('y', bottom + 14);
+    labelTime.setAttribute('text-anchor', timeAnchor);
+    labelTime.style.display = '';
+
+    tooltipTime.textContent = timeText;
+    tooltipValue.textContent = bpmText;
     tooltip.classList.remove('hidden');
     const offsetX = 14;
     const offsetY = -8;
-    let left = clientX + offsetX;
-    let top = clientY + offsetY;
-    tooltip.style.left = `${left}px`;
-    tooltip.style.top = `${top}px`;
+    let tipLeft = clientX + offsetX;
+    let tipTop = clientY + offsetY;
+    tooltip.style.left = `${tipLeft}px`;
+    tooltip.style.top = `${tipTop}px`;
     requestAnimationFrame(() => {
       const tr = tooltip.getBoundingClientRect();
-      // Keep tooltip near cursor; flip sides if it would go off-screen
-      if (left + tr.width > window.innerWidth - 8) left = clientX - tr.width - offsetX;
-      else if (left < 8) left = 8;
-      if (top < 8) top = 8;
-      else if (top + tr.height > window.innerHeight - 8) top = clientY - tr.height - offsetY;
-      tooltip.style.left = `${left}px`;
-      tooltip.style.top = `${top}px`;
+      if (tipLeft + tr.width > window.innerWidth - 8) tipLeft = clientX - tr.width - offsetX;
+      else if (tipLeft < 8) tipLeft = 8;
+      if (tipTop < 8) tipTop = 8;
+      else if (tipTop + tr.height > window.innerHeight - 8) tipTop = clientY - tr.height - offsetY;
+      tooltip.style.left = `${tipLeft}px`;
+      tooltip.style.top = `${tipTop}px`;
     });
   }
 
@@ -612,6 +635,8 @@ function renderHeartRateTimeline(series, data) {
     tooltip.classList.add('hidden');
     trackingLine.style.display = 'none';
     trackingDot.style.display = 'none';
+    labelBpm.style.display = 'none';
+    labelTime.style.display = 'none';
   }
 
   const svgEl = document.getElementById('heart-rate-timeline');
