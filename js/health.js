@@ -637,7 +637,17 @@ function renderHeartRateTimeline(series, data) {
   if (minEl) minEl.textContent = data.heartRateMinBpm !== null ? `${data.heartRateMinBpm} bpm` : '--';
   if (avgEl) avgEl.textContent = data.heartRateAvgBpm !== null ? `${data.heartRateAvgBpm} bpm` : '--';
   if (maxEl) maxEl.textContent = data.heartRateMaxBpm !== null ? `${data.heartRateMaxBpm} bpm` : '--';
-  if (latestEl) latestEl.textContent = data.heartRateLatestBpm !== null ? `${data.heartRateLatestBpm} bpm` : '--';
+  if (latestEl) {
+    const latestBpm = data.heartRateLatestBpm;
+    const latestTime =
+      data.heartRateLatestTimestamp ||
+      (Array.isArray(series) && series.length > 0 ? series[series.length - 1]?.t : null);
+    if (latestBpm !== null) {
+      latestEl.textContent = latestTime ? `${latestBpm} bpm (${formatTime(latestTime)})` : `${latestBpm} bpm`;
+    } else {
+      latestEl.textContent = '--';
+    }
+  }
 
   if (footer) {
     const sourceDay = data.heartRateSeriesDay ? `Source day: ${data.heartRateSeriesDay}` : 'Intraday trend';
