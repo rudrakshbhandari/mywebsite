@@ -681,13 +681,15 @@ async function main() {
     // Heart rate: normalize and use most recent day with data
     const hrNormalized = heartRateRaw.map(normalizeHeartRatePoint).filter(Boolean);
     const heartRateSeries = downsampleSeries(hrNormalized, 96);
+    const lastHrPoint = heartRateSeries.length > 0 ? heartRateSeries[heartRateSeries.length - 1] : null;
     const heartRateStats =
       heartRateSeries.length > 0
         ? {
             min: Math.min(...heartRateSeries.map(p => p.bpm)),
             max: Math.max(...heartRateSeries.map(p => p.bpm)),
             avg: roundOrNull(heartRateSeries.reduce((sum, point) => sum + point.bpm, 0) / heartRateSeries.length),
-            latest: heartRateSeries[heartRateSeries.length - 1].bpm,
+            latest: lastHrPoint.bpm,
+            latestTimestamp: lastHrPoint.timestamp || null,
           }
         : null;
 
@@ -738,6 +740,7 @@ async function main() {
       heartRateMaxBpm: heartRateStats?.max ?? null,
       heartRateAvgBpm: heartRateStats?.avg ?? null,
       heartRateLatestBpm: heartRateStats?.latest ?? null,
+      heartRateLatestTimestamp: heartRateStats?.latestTimestamp ?? null,
 
       activityScore: roundOrNull(activityData?.score),
       activityMeetTargets: roundOrNull(activityContributors.meet_daily_targets),
