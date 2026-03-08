@@ -9,6 +9,7 @@ The format is based on Keep a Changelog and this project uses date-based release
 ### Changed
 
 - Updated documentation to match the current health pipeline behavior (15-minute workflow cadence, exposed downsampled heart-rate series, and token/secret guidance).
+- Replaced Vercel hosting/analytics hooks with GitHub Pages deployment scaffolding plus Cloudflare and GA4 configuration.
 
 ## [2026-02-27]
 

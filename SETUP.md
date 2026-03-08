@@ -186,7 +186,7 @@ cat oura_public.json
 
 2. Create a Pull Request to `main`
 
-3. Merge the PR — Vercel will auto-deploy
+3. Merge the PR — GitHub Pages will auto-deploy via the Pages workflow
 
 ---
 
@@ -252,7 +252,7 @@ To test the GitHub Actions workflow immediately:
 
 - ✅ Zero-cost: No database, no paid infrastructure
 - ✅ GitHub Actions: ~7 seconds per run × 96 runs/day ≈ 672 sec/day (free for public repos)
-- ✅ Vercel Hobby tier: Static site, no function invocations
+- ✅ GitHub Pages + Cloudflare free tier: Static site, no paid infrastructure
 
 ### Data Freshness
 
@@ -266,7 +266,7 @@ To test the GitHub Actions workflow immediately:
 
 | File                                    | Purpose                           |
 | --------------------------------------- | --------------------------------- |
-| `health.html`                           | Public health metrics page        |
+| `health/index.html`                     | Public health metrics page        |
 | `oura_public.json`                      | Public data file (auto-generated) |
 | `scripts/fetch_oura_and_write_json.mjs` | Data fetcher script               |
 | `.github/workflows/oura-update.yml`     | GitHub Actions schedule           |
@@ -279,4 +279,5 @@ To test the GitHub Actions workflow immediately:
 - [Oura API Documentation](https://cloud.ouraring.com/docs/)
 - [Oura OAuth Guide](https://cloud.ouraring.com/docs/authentication)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
-- [Vercel Documentation](https://vercel.com/docs)
+- [GitHub Pages Documentation](https://docs.github.com/en/pages)
+- [Cloudflare Web Analytics](https://developers.cloudflare.com/web-analytics/)
