@@ -245,7 +245,8 @@ To test the GitHub Actions workflow immediately:
 - ✅ Only aggregated daily scores are published
 - ✅ No raw minute-level heart rate, sleep stages, or location data
 - ✅ All metrics are rounded to integers
-- ✅ A downsampled intraday heart-rate series (`heartRateSeries`) is published for charting
+- ✅ Exact sleep start/end timestamps are excluded from the public JSON
+- ✅ A downsampled intraday heart-rate series is published for visualization
 - ✅ Secrets stored in GitHub Secrets (never in code)
 
 ### Cost Optimization
