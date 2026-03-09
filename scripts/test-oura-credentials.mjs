@@ -29,7 +29,7 @@ if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN) {
 console.log('✅ All environment variables present');
 console.log(`  Client ID: ${CLIENT_ID.substring(0, 8)}...`);
 console.log(`  Client Secret: ${CLIENT_SECRET.substring(0, 8)}...`);
-console.log(`  Refresh Token: ${REFRESH_TOKEN.substring(0, 20)}...\n`);
+console.log('  Refresh Token: [present]\n');
 
 // Test OAuth token refresh
 const params = new URLSearchParams({
@@ -59,7 +59,6 @@ const req = https.request(
 
       try {
         const parsed = JSON.parse(data);
-        console.log('Response:', JSON.stringify(parsed, null, 2));
 
         if (parsed.access_token) {
           console.log('\n✅ SUCCESS! Credentials are valid.');
