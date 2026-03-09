@@ -38,7 +38,8 @@ A modern, responsive portfolio showcasing my projects, experience, and skills as
 │   ├── health.js       # Health dashboard logic
 │   └── analytics.js    # Analytics bootstrapping + event tracking hooks
 ├── img/                # Favicons, profile photos, project images
-├── scripts/            # Utility scripts
+├── scripts/            # Oura and repository utility scripts
+├── docs/               # Setup and deployment notes
 ├── CHANGELOG.md        # Release notes and change history
 ├── CNAME               # Custom domain for GitHub Pages
 └── package.json        # Development dependencies
@@ -55,6 +56,9 @@ npm run format
 
 # Run CI-equivalent checks
 npm run ci:check
+
+# Oura OAuth helper
+npm run oura:token
 
 # Serve locally (any static server)
 npx serve .
