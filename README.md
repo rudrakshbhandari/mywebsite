@@ -19,7 +19,9 @@ A modern, responsive portfolio showcasing my projects, experience, and skills as
 - **JavaScript** - Vanilla JS for interactions and scroll animations
 - **Font Awesome** - Icons for social links and UI elements
 - **Google Fonts** - Space Grotesk and Inter for typography
-- **Vercel** - Hosting with Speed Insights monitoring
+- **GitHub Pages** - Static hosting and deployment
+- **Cloudflare** - DNS, analytics, headers, caching, and `/health` rewrite
+- **Google Analytics 4** - Event attribution and traffic source analysis
 
 ## Project Structure
 
@@ -27,17 +29,18 @@ A modern, responsive portfolio showcasing my projects, experience, and skills as
 ├── index.html          # Main HTML file
 ├── css/
 │   └── styles.css      # Custom CSS with animations
+├── health/
+│   └── index.html      # Health metrics page
 ├── js/
 │   ├── main.js         # Core functionality
 │   ├── animations.js   # Scroll and interaction animations
-│   ├── config.js       # Configuration settings
+│   ├── config.js       # Analytics provider configuration
 │   ├── health.js       # Health dashboard logic
-│   ├── analytics.js    # Event tracking hooks
-│   └── speed-insights.js
+│   └── analytics.js    # Analytics bootstrapping + event tracking hooks
 ├── img/                # Favicons, profile photos, project images
 ├── scripts/            # Utility scripts
 ├── CHANGELOG.md        # Release notes and change history
-├── vercel.json         # Deployment configuration
+├── CNAME               # Custom domain for GitHub Pages
 └── package.json        # Development dependencies
 ```
 
@@ -59,6 +62,8 @@ npx serve .
 
 ## Analytics
 
+Set `window.SITE_CONFIG.ga4MeasurementId` in [`js/config.js`](/Users/rudrakshbhandari/.codex/worktrees/9f8a/mywebsite/js/config.js) before enabling GA4 event tracking. Cloudflare Web Analytics is enabled from the Cloudflare dashboard for the proxied zone.
+
 ### Tracked Events
 
 The site emits the following events through `js/analytics.js`:
@@ -72,23 +77,23 @@ The site emits the following events through `js/analytics.js`:
 
 ### Where to View Data
 
-- Vercel dashboard → Project → **Analytics** for visitor/page-view metrics and routes.
-- Vercel dashboard → Project → **Speed Insights** for performance telemetry.
+- Cloudflare dashboard → **Web Analytics** for page traffic and performance telemetry.
+- Google Analytics → **Reports** / **Realtime** / **Engagement** for custom events and acquisition.
 
 ### Validation Checklist
 
 1. Open the production site in an incognito window.
 2. Open DevTools → Network and confirm:
-   - `/_vercel/insights/script.js` returns `200`
-   - `/_vercel/speed-insights/script.js` returns `200`
+   - `https://www.googletagmanager.com/gtag/js?id=...` returns `200`
 3. Trigger a few actions (open `/health`, click résumé, click social links).
-4. Wait 1-2 minutes and refresh the Vercel Analytics dashboard.
+4. Wait 1-2 minutes and refresh the Cloudflare and GA4 dashboards.
 
 ## Health Data Pipeline
 
 - Health data is written to `oura_public.json` by `.github/workflows/oura-update.yml`.
 - The workflow runs every 5 minutes (`*/5 * * * *`) and commits only when data changes.
 - Public data includes daily aggregates plus a downsampled intraday heart-rate series for charting on `/health`.
+- GitHub Pages deploys from `.github/workflows/pages.yml`.
 
 ## Release Cadence
 
