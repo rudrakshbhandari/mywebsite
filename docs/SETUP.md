@@ -40,10 +40,10 @@ Oura uses OAuth 2.0. You need a refresh token (long-lived, but can be rotated or
 Use the built-in helper script:
 
 ```bash
-node scripts/get-oura-token.mjs
+npm run oura:token
 ```
 
-The script prints the authorization URL, prompts for the returned `code`, and outputs your refresh token.
+The script opens the browser flow, listens for the OAuth callback locally, and saves the refresh token to `.oura_token`.
 
 ### Option B: Quick CLI Method
 
