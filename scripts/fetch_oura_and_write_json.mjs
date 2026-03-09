@@ -455,28 +455,6 @@ function toActivityMinutes(value) {
 }
 
 /**
- * Downsample points to max count while keeping shape
- * @param {Array<{timestamp: string, bpm: number}>} points
- * @param {number} maxPoints
- * @returns {Array<{timestamp: string, bpm: number}>}
- */
-function downsampleSeries(points, maxPoints = 96) {
-  if (!Array.isArray(points) || points.length <= maxPoints) {
-    return points;
-  }
-  const step = Math.ceil(points.length / maxPoints);
-  const sampled = [];
-  for (let i = 0; i < points.length; i += step) {
-    sampled.push(points[i]);
-  }
-  const last = points[points.length - 1];
-  if (sampled[sampled.length - 1] !== last) {
-    sampled.push(last);
-  }
-  return sampled;
-}
-
-/**
  * Main execution
  */
 async function main() {
@@ -648,8 +626,6 @@ async function main() {
         remSleepDuration: roundOrNull(sleepPeriod?.rem_sleep_duration),
         lightSleepDuration: roundOrNull(sleepPeriod?.light_sleep_duration),
         sleepEfficiency: roundOrNull(sleepPeriod?.efficiency),
-        bedtimeStart: sleepPeriod?.bedtime_start || null,
-        bedtimeEnd: sleepPeriod?.bedtime_end || null,
       });
     }
 
@@ -678,16 +654,15 @@ async function main() {
     const readinessContributors = readinessData?.contributors || {};
     const activityContributors = activityData?.contributors || {};
 
-    // Heart rate: normalize and use most recent day with data
+    // Heart rate: keep only coarse summary stats in the public JSON.
     const hrNormalized = heartRateRaw.map(normalizeHeartRatePoint).filter(Boolean);
-    const heartRateSeries = downsampleSeries(hrNormalized, 96);
     const heartRateStats =
-      heartRateSeries.length > 0
+      hrNormalized.length > 0
         ? {
-            min: Math.min(...heartRateSeries.map(p => p.bpm)),
-            max: Math.max(...heartRateSeries.map(p => p.bpm)),
-            avg: roundOrNull(heartRateSeries.reduce((sum, point) => sum + point.bpm, 0) / heartRateSeries.length),
-            latest: heartRateSeries[heartRateSeries.length - 1].bpm,
+            min: Math.min(...hrNormalized.map(p => p.bpm)),
+            max: Math.max(...hrNormalized.map(p => p.bpm)),
+            avg: roundOrNull(hrNormalized.reduce((sum, point) => sum + point.bpm, 0) / hrNormalized.length),
+            latest: hrNormalized[hrNormalized.length - 1].bpm,
           }
         : null;
 
@@ -732,8 +707,6 @@ async function main() {
       hrvMs: roundOrNull(
         firstDefined(readinessData?.hrv_average_milli, readinessData?.hrv_average, sleepData?.average_hrv)
       ),
-      heartRateSeriesDay: heartRateSeries.length > 0 ? dataDay : null,
-      heartRateSeries: heartRateSeries.map(point => ({ t: point.timestamp, bpm: point.bpm })),
       heartRateMinBpm: heartRateStats?.min ?? null,
       heartRateMaxBpm: heartRateStats?.max ?? null,
       heartRateAvgBpm: heartRateStats?.avg ?? null,
@@ -825,7 +798,6 @@ async function main() {
     console.log(`Activity Score: ${output.activityScore ?? 'N/A'}`);
     console.log(`Steps: ${output.steps ?? 'N/A'}`);
     console.log(`Active Calories: ${output.activeCalories ?? 'N/A'}`);
-    console.log(`HR Timeline Points: ${output.heartRateSeries.length}`);
     console.log(
       `7-Day History: ${byDay.filter(d => d.sleepScore !== null || d.readinessScore !== null || d.steps !== null).length} days with data`
     );
