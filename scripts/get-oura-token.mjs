@@ -7,13 +7,14 @@
 
 import https from 'https';
 import http from 'http';
+import crypto from 'crypto';
 import { writeFileSync } from 'fs';
 
 const PORT = 3000;
 const REDIRECT_URI = `http://localhost:${PORT}/callback`;
 const OAUTH_AUTHORIZE_ENDPOINT = 'https://cloud.ouraring.com/oauth/authorize';
 const OAUTH_TOKEN_ENDPOINT = 'https://api.ouraring.com/oauth/token';
-const SCOPES = ['daily', 'heartrate', 'spo2Daily', 'workout', 'personal', 'email', 'session', 'stress'];
+const SCOPES = ['daily', 'heartrate', 'spo2Daily', 'workout'];
 
 function ensureCredentials() {
   const clientId = process.env.OURA_CLIENT_ID?.trim();
@@ -28,13 +29,17 @@ function ensureCredentials() {
   return { clientId, clientSecret };
 }
 
-function buildAuthorizationUrl(clientId) {
+function createStateToken() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+function buildAuthorizationUrl(clientId, state) {
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: clientId,
     redirect_uri: REDIRECT_URI,
     scope: SCOPES.join(' '),
-    state: `oura_${Date.now()}`,
+    state,
   });
   return `${OAUTH_AUTHORIZE_ENDPOINT}?${params.toString()}`;
 }
@@ -53,7 +58,7 @@ function openBrowser(url) {
   });
 }
 
-function startCallbackServer() {
+function startCallbackServer(expectedState) {
   return new Promise((resolve, reject) => {
     const server = http.createServer((req, res) => {
       const url = new URL(req.url, `http://localhost:${PORT}`);
@@ -65,12 +70,21 @@ function startCallbackServer() {
 
       const code = url.searchParams.get('code');
       const error = url.searchParams.get('error');
+      const receivedState = url.searchParams.get('state');
 
       if (error) {
         res.writeHead(200, { 'Content-Type': 'text/plain' });
         res.end(`Authorization failed: ${error}`);
         server.close();
         reject(new Error(`OAuth authorize error: ${error}`));
+        return;
+      }
+
+      if (!receivedState || receivedState !== expectedState) {
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end('Invalid state parameter');
+        server.close();
+        reject(new Error('OAuth callback state mismatch.'));
         return;
       }
 
@@ -86,7 +100,7 @@ function startCallbackServer() {
       resolve(code);
     });
 
-    server.listen(PORT, () => {
+    server.listen(PORT, '127.0.0.1', () => {
       console.log(`Listening for OAuth callback on ${REDIRECT_URI}`);
     });
 
@@ -142,13 +156,14 @@ function exchangeCodeForTokens(clientId, clientSecret, code) {
 
 async function main() {
   const { clientId, clientSecret } = ensureCredentials();
-  const authUrl = buildAuthorizationUrl(clientId);
+  const state = createStateToken();
+  const authUrl = buildAuthorizationUrl(clientId, state);
 
   console.log('Open authorization URL and approve access:');
   console.log(authUrl);
   await openBrowser(authUrl);
 
-  const code = await startCallbackServer();
+  const code = await startCallbackServer(state);
   const tokens = await exchangeCodeForTokens(clientId, clientSecret, code);
 
   writeFileSync('.oura_token', tokens.refresh_token);

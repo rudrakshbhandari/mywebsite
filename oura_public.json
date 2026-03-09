@@ -17,9 +17,7 @@
       "deepSleepDuration": 7350,
       "remSleepDuration": 8700,
       "lightSleepDuration": 17220,
-      "sleepEfficiency": 86,
-      "bedtimeStart": "2026-03-02T00:43:29.000-08:00",
-      "bedtimeEnd": "2026-03-02T11:27:28.000-08:00"
+      "sleepEfficiency": 86
     },
     {
       "day": "2026-03-03",
@@ -36,9 +34,7 @@
       "deepSleepDuration": 7440,
       "remSleepDuration": 7560,
       "lightSleepDuration": 14610,
-      "sleepEfficiency": 85,
-      "bedtimeStart": "2026-03-03T00:17:00.000-08:00",
-      "bedtimeEnd": "2026-03-03T09:56:29.000-08:00"
+      "sleepEfficiency": 85
     },
     {
       "day": "2026-03-04",
@@ -55,9 +51,7 @@
       "deepSleepDuration": 4320,
       "remSleepDuration": 1560,
       "lightSleepDuration": 3930,
-      "sleepEfficiency": 67,
-      "bedtimeStart": "2026-03-04T05:09:00.000-08:00",
-      "bedtimeEnd": "2026-03-04T09:13:27.000-08:00"
+      "sleepEfficiency": 67
     },
     {
       "day": "2026-03-05",
@@ -74,9 +68,7 @@
       "deepSleepDuration": 8970,
       "remSleepDuration": 9720,
       "lightSleepDuration": 17280,
-      "sleepEfficiency": 95,
-      "bedtimeStart": "2026-03-04T23:24:00.000-08:00",
-      "bedtimeEnd": "2026-03-05T09:55:42.000-08:00"
+      "sleepEfficiency": 95
     },
     {
       "day": "2026-03-06",
@@ -93,9 +85,7 @@
       "deepSleepDuration": 5220,
       "remSleepDuration": 3750,
       "lightSleepDuration": 11490,
-      "sleepEfficiency": 89,
-      "bedtimeStart": "2026-03-05T23:34:01.000-08:00",
-      "bedtimeEnd": "2026-03-06T05:58:54.000-08:00"
+      "sleepEfficiency": 89
     },
     {
       "day": "2026-03-07",
@@ -112,9 +102,7 @@
       "deepSleepDuration": 9180,
       "remSleepDuration": 8460,
       "lightSleepDuration": 14460,
-      "sleepEfficiency": 87,
-      "bedtimeStart": "2026-03-07T00:16:02.000-08:00",
-      "bedtimeEnd": "2026-03-07T10:32:21.000-08:00"
+      "sleepEfficiency": 87
     },
     {
       "day": "2026-03-08",
@@ -131,9 +119,7 @@
       "deepSleepDuration": null,
       "remSleepDuration": null,
       "lightSleepDuration": null,
-      "sleepEfficiency": null,
-      "bedtimeStart": null,
-      "bedtimeEnd": null
+      "sleepEfficiency": null
     }
   ],
   "sleepScore": 94,
