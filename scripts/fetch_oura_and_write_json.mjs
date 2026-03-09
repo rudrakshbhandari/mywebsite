@@ -648,8 +648,6 @@ async function main() {
         remSleepDuration: roundOrNull(sleepPeriod?.rem_sleep_duration),
         lightSleepDuration: roundOrNull(sleepPeriod?.light_sleep_duration),
         sleepEfficiency: roundOrNull(sleepPeriod?.efficiency),
-        bedtimeStart: sleepPeriod?.bedtime_start || null,
-        bedtimeEnd: sleepPeriod?.bedtime_end || null,
       });
     }
 
@@ -678,7 +676,7 @@ async function main() {
     const readinessContributors = readinessData?.contributors || {};
     const activityContributors = activityData?.contributors || {};
 
-    // Heart rate: normalize and use most recent day with data
+    // Heart rate: retain a downsampled time series for the public visualization.
     const hrNormalized = heartRateRaw.map(normalizeHeartRatePoint).filter(Boolean);
     const heartRateSeries = downsampleSeries(hrNormalized, 96);
     const heartRateStats =

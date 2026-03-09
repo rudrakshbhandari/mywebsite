@@ -52,6 +52,7 @@ b7a1710 feat(content): restore Amazon return and 2x SDE updates (#75)  ← MERGE
 - Each Oura commit has the previous commit (including `b7a1710`) as parent, so the content from the merge is retained
 
 **Verification:** `git show origin/main:index.html` includes:
+
 - "Returning to AWS Hyperplane Summer 2026"
 - "2x Software Development Engineer Intern"
 - Updated currently card
@@ -133,10 +134,10 @@ So the live site is serving content from an older state than `main`.
 
 ## 6. Summary
 
-| Claim                              | Finding                                                                 |
-|------------------------------------|-------------------------------------------------------------------------|
-| "Oura update reverted content"     | Incorrect – Oura only changes `oura_public.json`                         |
-| "Oura changed navbar"              | Incorrect – Oura never touches navbar or other HTML/CSS                 |
-| "Production shows old content"      | Confirmed – live site does not match current `main`                      |
-| Root cause                         | Deployment/cache; production likely on an older deployment or cached     |
-| Repo state                         | `main` has Amazon return + 2x SDE content as expected                    |
+| Claim                          | Finding                                                              |
+| ------------------------------ | -------------------------------------------------------------------- |
+| "Oura update reverted content" | Incorrect – Oura only changes `oura_public.json`                     |
+| "Oura changed navbar"          | Incorrect – Oura never touches navbar or other HTML/CSS              |
+| "Production shows old content" | Confirmed – live site does not match current `main`                  |
+| Root cause                     | Deployment/cache; production likely on an older deployment or cached |
+| Repo state                     | `main` has Amazon return + 2x SDE content as expected                |
