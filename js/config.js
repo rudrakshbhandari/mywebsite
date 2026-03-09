@@ -6,6 +6,5 @@ const IS_DEV_MODE = false;
 
 // Populate these values before enabling production analytics providers.
 window.SITE_CONFIG = Object.freeze({
-  ga4MeasurementId: '',
-  cloudflareAnalyticsToken: '',
+  ga4MeasurementId: 'G-KJDJKDNYNG',
 });

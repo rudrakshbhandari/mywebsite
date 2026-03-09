@@ -1,5 +1,4 @@
 // Lightweight analytics wrapper. No provider lock-in:
-// - Cloudflare Web Analytics (pageview + RUM via beacon script)
 // - Plausible (`window.plausible`)
 // - Google Analytics (`window.gtag`)
 (function () {
@@ -31,17 +30,6 @@
     return script;
   }
 
-  function bootstrapCloudflareAnalytics() {
-    const token = siteConfig.cloudflareAnalyticsToken;
-    if (!token) return;
-
-    appendScriptIfMissing('https://static.cloudflareinsights.com/beacon.min.js', {
-      attributes: {
-        'data-cf-beacon': JSON.stringify({ token }),
-      },
-    });
-  }
-
   function bootstrapGa4() {
     const measurementId = siteConfig.ga4MeasurementId;
     if (!measurementId) return;
@@ -64,7 +52,6 @@
     });
   }
 
-  bootstrapCloudflareAnalytics();
   bootstrapGa4();
 
   function toPayload(extra) {

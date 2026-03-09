@@ -11,9 +11,10 @@
 Set the production values in [`js/config.js`](js/config.js):
 
 - `ga4MeasurementId`: your GA4 Measurement ID (`G-...`)
-- `cloudflareAnalyticsToken`: your Cloudflare Web Analytics token
 
-If either value is blank, that provider stays disabled.
+If the value is blank, GA4 stays disabled.
+
+Cloudflare Web Analytics should be enabled from the Cloudflare dashboard for the proxied zone. No site token is needed in the page code for this setup.
 
 ## Cloudflare DNS and Rules
 
