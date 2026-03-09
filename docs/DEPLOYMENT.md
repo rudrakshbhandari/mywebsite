@@ -3,12 +3,12 @@
 ## GitHub Pages
 
 1. In GitHub repository settings, set **Pages** to use **GitHub Actions**.
-2. Keep [`CNAME`](CNAME) committed so the custom domain stays attached to the Pages deployment.
+2. Keep [`CNAME`](../CNAME) committed so the custom domain stays attached to the Pages deployment.
 3. Production deploys run from `.github/workflows/pages.yml` whenever `main` changes.
 
 ## Analytics Configuration
 
-Set the production values in [`js/config.js`](js/config.js):
+Set the production values in [`js/config.js`](../js/config.js):
 
 - `ga4MeasurementId`: your GA4 Measurement ID (`G-...`)
 
