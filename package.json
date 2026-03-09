@@ -7,8 +7,10 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "format:html": "prettier --write *.html",
-    "check:syntax": "sh -c 'for f in js/*.js scripts/*.mjs *.mjs; do node --check \"$f\"; done'",
-    "ci:check": "npm run format:check && npm run check:syntax"
+    "check:syntax": "sh -c 'set -- js/*.js scripts/*.mjs *.mjs; for f in \"$@\"; do [ -e \"$f\" ] || continue; node --check \"$f\"; done'",
+    "ci:check": "npm run format:check && npm run check:syntax",
+    "oura:token": "node scripts/get-oura-token.mjs",
+    "oura:diagnose": "node scripts/diagnose-oura-api.mjs"
   },
   "keywords": [
     "portfolio",

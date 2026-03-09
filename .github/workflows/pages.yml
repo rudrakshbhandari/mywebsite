@@ -39,11 +39,10 @@ jobs:
             --exclude '.github' \
             --exclude 'node_modules' \
             --exclude 'scripts' \
+            --exclude 'docs' \
             --exclude 'AGENTS.md' \
             --exclude 'README.md' \
-            --exclude 'SETUP.md' \
             --exclude 'CHANGELOG.md' \
-            --exclude 'DEPLOYMENT.md' \
             --exclude '.env.example' \
             --exclude 'package.json' \
             --exclude 'package-lock.json' \
