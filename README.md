@@ -62,7 +62,7 @@ npx serve .
 
 ## Analytics
 
-Set `window.SITE_CONFIG.ga4MeasurementId` and `window.SITE_CONFIG.cloudflareAnalyticsToken` in [`js/config.js`](/Users/rudrakshbhandari/.codex/worktrees/9f8a/mywebsite/js/config.js) before enabling production analytics.
+Set `window.SITE_CONFIG.ga4MeasurementId` in [`js/config.js`](/Users/rudrakshbhandari/.codex/worktrees/9f8a/mywebsite/js/config.js) before enabling GA4 event tracking. Cloudflare Web Analytics is enabled from the Cloudflare dashboard for the proxied zone.
 
 ### Tracked Events
 
@@ -84,7 +84,6 @@ The site emits the following events through `js/analytics.js`:
 
 1. Open the production site in an incognito window.
 2. Open DevTools → Network and confirm:
-   - `https://static.cloudflareinsights.com/beacon.min.js` returns `200`
    - `https://www.googletagmanager.com/gtag/js?id=...` returns `200`
 3. Trigger a few actions (open `/health`, click résumé, click social links).
 4. Wait 1-2 minutes and refresh the Cloudflare and GA4 dashboards.
