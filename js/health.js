@@ -204,39 +204,32 @@ function updateHeartbeatIndicator(latestBpm) {
 }
 
 /**
- * Build a stylized ECG-like path across the stage width
- * @param {number[]} amplitudes
+ * Build a normalized HR trend path across the stage width
+ * @param {number[]} values
+ * @param {number} minValue
+ * @param {number} maxValue
  * @param {number} offsetX
  * @returns {string}
  */
-function buildHeartbeatWavePath(amplitudes, offsetX = 0) {
-  if (!Array.isArray(amplitudes) || amplitudes.length === 0) {
+function buildHeartbeatTrendPath(values, minValue, maxValue, offsetX = 0) {
+  if (!Array.isArray(values) || values.length === 0) {
     return `M ${offsetX} ${HEARTBEAT_STAGE_BASELINE} L ${offsetX + HEARTBEAT_STAGE_WIDTH} ${HEARTBEAT_STAGE_BASELINE}`;
   }
 
-  const beatWidth = HEARTBEAT_STAGE_WIDTH / amplitudes.length;
-  const commands = [`M ${offsetX} ${HEARTBEAT_STAGE_BASELINE}`];
+  const range = Math.max(1, maxValue - minValue);
+  const topPadding = 34;
+  const bottomPadding = 34;
+  const usableHeight = HEARTBEAT_STAGE_HEIGHT - topPadding - bottomPadding;
 
-  amplitudes.forEach((amplitude, index) => {
-    const startX = offsetX + index * beatWidth;
-    const peak = Math.max(18, Math.min(52, amplitude));
-    const pWave = Math.max(4, peak * 0.18);
-    const tWave = Math.max(7, peak * 0.34);
-    const qDip = Math.max(5, peak * 0.24);
-    const sDip = Math.max(11, peak * 0.52);
-
-    commands.push(`L ${startX + beatWidth * 0.12} ${HEARTBEAT_STAGE_BASELINE}`);
-    commands.push(`L ${startX + beatWidth * 0.2} ${HEARTBEAT_STAGE_BASELINE - pWave}`);
-    commands.push(`L ${startX + beatWidth * 0.28} ${HEARTBEAT_STAGE_BASELINE}`);
-    commands.push(`L ${startX + beatWidth * 0.4} ${HEARTBEAT_STAGE_BASELINE + qDip}`);
-    commands.push(`L ${startX + beatWidth * 0.48} ${HEARTBEAT_STAGE_BASELINE - peak}`);
-    commands.push(`L ${startX + beatWidth * 0.56} ${HEARTBEAT_STAGE_BASELINE + sDip}`);
-    commands.push(`L ${startX + beatWidth * 0.7} ${HEARTBEAT_STAGE_BASELINE - tWave}`);
-    commands.push(`L ${startX + beatWidth * 0.88} ${HEARTBEAT_STAGE_BASELINE}`);
-    commands.push(`L ${startX + beatWidth} ${HEARTBEAT_STAGE_BASELINE}`);
-  });
-
-  return commands.join(' ');
+  return values
+    .map((value, index) => {
+      const frac = values.length === 1 ? 0.5 : index / (values.length - 1);
+      const x = offsetX + frac * HEARTBEAT_STAGE_WIDTH;
+      const normalized = (value - minValue) / range;
+      const y = HEARTBEAT_STAGE_HEIGHT - bottomPadding - normalized * usableHeight;
+      return `${index === 0 ? 'M' : 'L'} ${x.toFixed(2)} ${y.toFixed(2)}`;
+    })
+    .join(' ');
 }
 
 /**
@@ -255,6 +248,8 @@ function renderHeartbeatStage(series, data) {
   const variationEl = document.getElementById('heartbeat-variation');
   const windowEl = document.getElementById('heartbeat-window');
   const ageEl = document.getElementById('heartbeat-age');
+  const sourceChip = document.getElementById('heartbeat-source-chip');
+  const noteEl = document.getElementById('heartbeat-stage-note');
 
   if (!stage || !stream || !primaryA || !primaryB || !secondaryA || !secondaryB) return;
 
@@ -265,54 +260,65 @@ function renderHeartbeatStage(series, data) {
   const latestBpm = Number(data?.heartRateLatestBpm ?? latestPoint?.bpm);
 
   if (!Number.isFinite(latestBpm) || finiteSeries.length === 0) {
-    const flatline = buildHeartbeatWavePath([18, 18, 18, 18, 18, 18, 18, 18], 0);
-    const flatlineRepeat = buildHeartbeatWavePath([18, 18, 18, 18, 18, 18, 18, 18], HEARTBEAT_STAGE_WIDTH);
+    const flatline = buildHeartbeatTrendPath([0, 0], 0, 1, 0);
+    const flatlineRepeat = buildHeartbeatTrendPath([0, 0], 0, 1, HEARTBEAT_STAGE_WIDTH);
     primaryA.setAttribute('d', flatline);
     primaryB.setAttribute('d', flatlineRepeat);
     secondaryA.setAttribute('d', flatline);
     secondaryB.setAttribute('d', flatlineRepeat);
     stage.classList.add('heartbeat-stage-paused');
+    stage.style.setProperty('--heartbeat-beat-duration', '1s');
     stage.style.setProperty('--heartbeat-visual-duration', '6s');
     cadenceEl.textContent = '-- bpm';
     variationEl.textContent = '-- bpm';
     windowEl.textContent = '-- points';
     ageEl.textContent = 'Waiting for data';
+    if (sourceChip) {
+      sourceChip.textContent = 'Latest HR sample';
+      sourceChip.classList.remove('stale');
+    }
+    if (noteEl) {
+      noteEl.textContent =
+        'Heart cadence uses the latest HR sample. The line shows recent sampled HR values, not an ECG trace.';
+    }
     return;
   }
 
-  const recentPoints = finiteSeries.slice(-8);
+  const recentPoints = finiteSeries.slice(-24);
   const bpms = recentPoints.map(point => Number(point.bpm));
   const minBpm = Math.min(...bpms);
   const maxBpm = Math.max(...bpms);
-  const range = Math.max(1, maxBpm - minBpm);
-  const amplitudes = recentPoints.map((point, index) => {
-    const bpm = Number(point.bpm);
-    const previous = index > 0 ? Number(recentPoints[index - 1].bpm) : bpm;
-    const normalized = (bpm - minBpm) / range;
-    const deltaBoost = Math.min(10, Math.abs(bpm - previous) * 1.4);
-    return 22 + normalized * 20 + deltaBoost;
-  });
+  const offsetBpms = bpms.map((bpm, index) => bpm + (index % 2 === 0 ? 1.2 : -1.2));
 
-  while (amplitudes.length < 8) amplitudes.push(amplitudes[amplitudes.length - 1] || 24);
-
-  const secondaryAmplitudes = amplitudes.map((value, index) => Math.max(16, value * 0.72 + (index % 2 === 0 ? 4 : -2)));
-
-  primaryA.setAttribute('d', buildHeartbeatWavePath(amplitudes, 0));
-  primaryB.setAttribute('d', buildHeartbeatWavePath(amplitudes, HEARTBEAT_STAGE_WIDTH));
-  secondaryA.setAttribute('d', buildHeartbeatWavePath(secondaryAmplitudes, 0));
-  secondaryB.setAttribute('d', buildHeartbeatWavePath(secondaryAmplitudes, HEARTBEAT_STAGE_WIDTH));
+  primaryA.setAttribute('d', buildHeartbeatTrendPath(bpms, minBpm, maxBpm, 0));
+  primaryB.setAttribute('d', buildHeartbeatTrendPath(bpms, minBpm, maxBpm, HEARTBEAT_STAGE_WIDTH));
+  secondaryA.setAttribute('d', buildHeartbeatTrendPath(offsetBpms, minBpm - 2, maxBpm + 2, 0));
+  secondaryB.setAttribute('d', buildHeartbeatTrendPath(offsetBpms, minBpm - 2, maxBpm + 2, HEARTBEAT_STAGE_WIDTH));
 
   const clampedBpm = Math.max(MIN_HEARTBEAT_BPM, Math.min(MAX_HEARTBEAT_BPM, Math.round(latestBpm)));
-  const visualDuration = Math.max(3.2, Math.min(7.5, 480 / clampedBpm));
+  const beatDuration = 60 / clampedBpm;
+  const latestTimeMs = latestPoint?.t ? new Date(latestPoint.t).getTime() : null;
+  const sampleAgeMs = Number.isFinite(latestTimeMs) ? Date.now() - latestTimeMs : null;
+  const sampleAgeMinutes = Number.isFinite(sampleAgeMs) ? Math.max(0, Math.round(sampleAgeMs / 60000)) : null;
 
-  stream.setAttribute('transform', `translate(0 ${(HEARTBEAT_STAGE_HEIGHT - 170) / 2})`);
-  stage.style.setProperty('--heartbeat-visual-duration', `${visualDuration.toFixed(2)}s`);
+  stage.style.setProperty('--heartbeat-beat-duration', `${beatDuration.toFixed(3)}s`);
+  stage.style.setProperty('--heartbeat-visual-duration', `${Math.max(5, beatDuration * 10).toFixed(2)}s`);
   stage.classList.remove('heartbeat-stage-paused');
 
   cadenceEl.textContent = `${Math.round(latestBpm)} bpm`;
   variationEl.textContent = `${Math.round(maxBpm - minBpm)} bpm`;
   windowEl.textContent = `${recentPoints.length} points`;
   ageEl.textContent = latestPoint?.t ? `Latest ${getRelativeTime(latestPoint.t)}` : 'Recent sample loaded';
+  if (sourceChip) {
+    const isStale = sampleAgeMinutes !== null && sampleAgeMinutes > 15;
+    sourceChip.textContent = isStale ? 'Historical HR sample' : 'Latest HR sample';
+    sourceChip.classList.toggle('stale', isStale);
+  }
+  if (noteEl) {
+    const windowStart = recentPoints[0]?.t ? formatTime(recentPoints[0].t) : '--';
+    const windowEnd = latestPoint?.t ? formatTime(latestPoint.t) : '--';
+    noteEl.textContent = `Heart cadence matches the latest sampled HR of ${Math.round(latestBpm)} bpm. The line plots ${recentPoints.length} recent Oura HR samples from ${windowStart} to ${windowEnd}, not ECG beat data.`;
+  }
 }
 
 /**
