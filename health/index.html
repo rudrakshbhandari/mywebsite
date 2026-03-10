@@ -388,13 +388,13 @@
         0%,
         45%,
         100% {
-          transform: scale(1);
+          transform: translate(-50%, -50%) scale(1);
         }
         12% {
-          transform: scale(1.18);
+          transform: translate(-50%, -50%) scale(1.18);
         }
         24% {
-          transform: scale(1.04);
+          transform: translate(-50%, -50%) scale(1.04);
         }
       }
 
@@ -418,6 +418,7 @@
       }
 
       .heartbeat-stage {
+        --heartbeat-beat-duration: 1s;
         --heartbeat-visual-duration: 6s;
         position: relative;
         overflow: hidden;
@@ -514,6 +515,17 @@
         border: 1px solid rgba(148, 163, 184, 0.18);
       }
 
+      .heartbeat-live-chip.stale {
+        color: #fde68a;
+        background: rgba(120, 53, 15, 0.28);
+        border-color: rgba(245, 158, 11, 0.24);
+      }
+
+      .heartbeat-live-chip.stale::before {
+        background: #f59e0b;
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.45);
+      }
+
       .heartbeat-stage-visual {
         position: relative;
         min-height: 170px;
@@ -531,7 +543,7 @@
         transform: translate(-50%, -50%);
         filter: blur(6px);
         opacity: 0.85;
-        animation: heartbeatAura calc(var(--heartbeat-visual-duration) * 0.5) ease-in-out infinite;
+        animation: heartbeatAura var(--heartbeat-beat-duration) ease-in-out infinite;
         pointer-events: none;
       }
 
@@ -559,14 +571,15 @@
           0 0 0 1px rgba(255, 255, 255, 0.04),
           0 0 34px rgba(248, 113, 113, 0.34);
         transform: translate(-50%, -50%);
+        animation: heartbeatOrb var(--heartbeat-beat-duration) ease-in-out infinite;
       }
 
       .heartbeat-orb i {
         color: white;
         font-size: 1.35rem;
-        animation: heartbeatOrb calc(var(--heartbeat-visual-duration) * 0.5) ease-in-out infinite;
       }
 
+      .heartbeat-stage-paused .heartbeat-orb,
       .heartbeat-stage-paused .heartbeat-orb i {
         animation: none;
       }
@@ -592,26 +605,21 @@
 
       .heartbeat-wave-trace {
         fill: none;
-        stroke: #fb7185;
-        stroke-width: 3;
+        stroke: #fca5a5;
+        stroke-width: 2.5;
         stroke-linecap: round;
         stroke-linejoin: round;
-        filter: drop-shadow(0 0 10px rgba(251, 113, 133, 0.45));
+        filter: drop-shadow(0 0 6px rgba(252, 165, 165, 0.22));
       }
 
       .heartbeat-wave-trace.secondary {
-        stroke: rgba(251, 113, 133, 0.35);
-        stroke-width: 2.25;
-        filter: blur(1px);
+        stroke: rgba(252, 165, 165, 0.16);
+        stroke-width: 2;
+        filter: none;
       }
 
       .heartbeat-wave-stream {
-        animation: heartbeatStream var(--heartbeat-visual-duration) linear infinite;
-        will-change: transform;
-      }
-
-      .heartbeat-stage-paused .heartbeat-wave-stream {
-        animation: none;
+        transition: opacity 0.2s ease;
       }
 
       .heartbeat-stage-stats {
@@ -645,6 +653,15 @@
         color: var(--text-light);
         font-size: 1.05rem;
         font-weight: 600;
+      }
+
+      .heartbeat-stage-note {
+        position: relative;
+        z-index: 2;
+        margin-top: 0.75rem;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        line-height: 1.5;
       }
 
       .timeline-chart-inner {
@@ -1417,10 +1434,10 @@
               <div class="heartbeat-stage-header">
                 <div class="heartbeat-stage-title">
                   <i class="fas fa-heart-pulse" aria-hidden="true"></i>
-                  <span>Live pulse render</span>
+                  <span>Latest HR pulse</span>
                 </div>
                 <div class="heartbeat-stage-meta">
-                  <span class="heartbeat-live-chip">Near real-time</span>
+                  <span class="heartbeat-live-chip" id="heartbeat-source-chip">Latest HR sample</span>
                   <span class="heartbeat-age-chip" id="heartbeat-age">Waiting for data</span>
                 </div>
               </div>
@@ -1463,13 +1480,16 @@
                   <span class="heartbeat-stage-stat-value" id="heartbeat-cadence">-- bpm</span>
                 </div>
                 <div class="heartbeat-stage-stat">
-                  <span class="heartbeat-stage-stat-label">Variation</span>
+                  <span class="heartbeat-stage-stat-label">Recent Range</span>
                   <span class="heartbeat-stage-stat-value" id="heartbeat-variation">-- bpm</span>
                 </div>
                 <div class="heartbeat-stage-stat">
-                  <span class="heartbeat-stage-stat-label">Window</span>
+                  <span class="heartbeat-stage-stat-label">Samples</span>
                   <span class="heartbeat-stage-stat-value" id="heartbeat-window">-- points</span>
                 </div>
+              </div>
+              <div class="heartbeat-stage-note" id="heartbeat-stage-note">
+                Heart cadence uses the latest HR sample. The line shows recent sampled HR values, not an ECG trace.
               </div>
             </div>
             <div class="timeline-chart-inner">
