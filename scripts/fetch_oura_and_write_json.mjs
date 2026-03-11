@@ -16,6 +16,7 @@ const ROTATED_TOKEN_PATH = resolve(process.cwd(), '.oura_rotated_token');
 const OAUTH_ENDPOINT = 'https://api.ouraring.com/oauth/token';
 const API_BASE = 'api.ouraring.com';
 const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
+const SHOULD_FAIL_ON_API_ERROR = IS_GITHUB_ACTIONS || process.env.OURA_FAIL_ON_API_ERROR === 'true';
 const PT_TIME_ZONE = 'America/Los_Angeles';
 
 /**
@@ -835,11 +836,15 @@ async function main() {
   } catch (error) {
     console.error('Error:', error.message);
 
-    // If API fails but we have existing data, don't exit error
-    // This prevents CI failures for temporary API issues
-    if (existingData) {
+    // Local runs can preserve the last good snapshot, but CI must fail loudly so
+    // stale production data does not look healthy in the Actions UI.
+    if (existingData && !SHOULD_FAIL_ON_API_ERROR) {
       console.log('API error occurred, but existing data preserved');
       process.exit(0);
+    }
+
+    if (existingData) {
+      console.error(`Existing data remains at ${existingData.lastUpdatedIso || existingData.day || 'unknown time'}`);
     }
 
     process.exit(1);
