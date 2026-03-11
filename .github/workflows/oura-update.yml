@@ -38,7 +38,29 @@ jobs:
           OURA_REFRESH_TOKEN: ${{ secrets.OURA_REFRESH_TOKEN }}
         run: node scripts/fetch_oura_and_write_json.mjs
 
+      - name: Check if files changed
+        id: check_changes
+        run: |
+          if [ -f .oura_no_change ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            rm -f .oura_no_change
+          elif git diff --quiet oura_public.json 2>/dev/null; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push if changed
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add oura_public.json
+          git commit -m "feat(health): update Oura Ring metrics [$(date -u +%Y-%m-%d)]"
+          git push
+
       - name: Rotate refresh token secret (OAuth path)
+        if: always()
         env:
           OURA_ACCESS_TOKEN: ${{ secrets.OURA_ACCESS_TOKEN }}
           GH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN }}
@@ -60,27 +82,18 @@ jobs:
           fi
 
           NEW_REFRESH_TOKEN="$(tr -d '\n' < .oura_rotated_token)"
-          gh secret set OURA_REFRESH_TOKEN --body "$NEW_REFRESH_TOKEN"
-          rm -f .oura_rotated_token
-          echo "Updated OURA_REFRESH_TOKEN secret automatically."
 
-      - name: Check if files changed
-        id: check_changes
-        run: |
-          if [ -f .oura_no_change ]; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-            rm -f .oura_no_change
-          elif git diff --quiet oura_public.json 2>/dev/null; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
+          for attempt in 1 2 3; do
+            if gh secret set OURA_REFRESH_TOKEN --body "$NEW_REFRESH_TOKEN"; then
+              rm -f .oura_rotated_token
+              echo "Updated OURA_REFRESH_TOKEN secret automatically."
+              exit 0
+            fi
 
-      - name: Commit and push if changed
-        if: steps.check_changes.outputs.changed == 'true'
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add oura_public.json
-          git commit -m "feat(health): update Oura Ring metrics [$(date -u +%Y-%m-%d)]"
-          git push
+            if [ "$attempt" -lt 3 ]; then
+              sleep $((attempt * 5))
+            fi
+          done
+
+          echo "::error::Failed to update OURA_REFRESH_TOKEN after 3 attempts."
+          exit 1
