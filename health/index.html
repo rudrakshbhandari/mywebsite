@@ -173,6 +173,21 @@
         line-height: 1.6;
       }
 
+      .page-subtitle a {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(34, 211, 238, 0.4);
+        transition:
+          color var(--transition-normal),
+          border-color var(--transition-normal);
+      }
+
+      .page-subtitle a:hover {
+        color: var(--text-light);
+        border-bottom-color: var(--accent-color);
+      }
+
       .data-source {
         display: inline-flex;
         align-items: center;
@@ -1338,7 +1353,9 @@
       <div class="page-header">
         <h1 class="page-title">Health Metrics</h1>
         <p class="page-subtitle">
-          A transparent view of my daily wellness data. Inspired by Bryan Johnson's
+          A transparent view of my daily wellness data.
+          <br />
+          Inspired by Bryan Johnson's
           <a
             href="https://blueprint.bryanjohnson.com/blogs/news/bryan-johnsons-protocol"
             target="_blank"
