@@ -37,6 +37,46 @@ function getRelativeTime(isoDate) {
 }
 
 /**
+ * Get elapsed minutes from an ISO date
+ * @param {string} isoDate
+ * @returns {number|null}
+ */
+function getElapsedMinutes(isoDate) {
+  if (!isoDate) return null;
+
+  const timestamp = new Date(isoDate).getTime();
+  if (!Number.isFinite(timestamp)) return null;
+
+  return Math.max(0, Math.floor((Date.now() - timestamp) / 60000));
+}
+
+/**
+ * Describe how fresh the latest HR sample really is
+ * @param {string|null} isoDate
+ * @returns {{label: string, stale: boolean}}
+ */
+function getHeartRateFreshness(isoDate) {
+  const elapsedMinutes = getElapsedMinutes(isoDate);
+  if (elapsedMinutes === null) {
+    return { label: 'Sample timing unknown', stale: true };
+  }
+
+  if (elapsedMinutes <= 90) {
+    return { label: 'Near real-time', stale: false };
+  }
+
+  if (elapsedMinutes <= 360) {
+    return { label: 'Recent samples', stale: false };
+  }
+
+  if (elapsedMinutes < 1440) {
+    return { label: 'Delayed samples', stale: true };
+  }
+
+  return { label: 'Historical samples', stale: true };
+}
+
+/**
  * Escape string for use in HTML data attributes
  * @param {string} s
  * @returns {string}
@@ -255,6 +295,7 @@ function renderHeartbeatStage(series, data) {
   const variationEl = document.getElementById('heartbeat-variation');
   const windowEl = document.getElementById('heartbeat-window');
   const ageEl = document.getElementById('heartbeat-age');
+  const freshnessEl = document.getElementById('heartbeat-freshness');
 
   if (!stage || !stream || !primaryA || !primaryB || !secondaryA || !secondaryB) return;
 
@@ -276,6 +317,10 @@ function renderHeartbeatStage(series, data) {
     cadenceEl.textContent = '-- bpm';
     variationEl.textContent = '-- bpm';
     windowEl.textContent = '-- points';
+    if (freshnessEl) {
+      freshnessEl.textContent = 'Awaiting samples';
+      freshnessEl.classList.add('is-stale');
+    }
     ageEl.textContent = 'Waiting for data';
     return;
   }
@@ -312,7 +357,12 @@ function renderHeartbeatStage(series, data) {
   cadenceEl.textContent = `${Math.round(latestBpm)} bpm`;
   variationEl.textContent = `${Math.round(maxBpm - minBpm)} bpm`;
   windowEl.textContent = `${recentPoints.length} points`;
-  ageEl.textContent = latestPoint?.t ? `Latest ${getRelativeTime(latestPoint.t)}` : 'Recent sample loaded';
+  if (freshnessEl) {
+    const freshness = getHeartRateFreshness(latestPoint?.t || null);
+    freshnessEl.textContent = freshness.label;
+    freshnessEl.classList.toggle('is-stale', freshness.stale);
+  }
+  ageEl.textContent = latestPoint?.t ? `Latest sample ${getRelativeTime(latestPoint.t)}` : 'Recent sample loaded';
 }
 
 /**
