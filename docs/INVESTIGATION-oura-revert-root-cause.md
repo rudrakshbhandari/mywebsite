@@ -3,6 +3,8 @@
 **Date:** 2026-03-08  
 **Issue:** Amazon return content and navbar changes appear "reverted" after Oura Ring autoscheduled health commits. Production (rudrakshbhandari.com) shows older content than expected.
 
+> Historical note: this investigation predates the GitHub Pages migration. Current production runs through GitHub Pages behind Cloudflare, so the Vercel-specific sections below are retained only as historical context and no longer describe the active deploy path.
+
 ---
 
 ## Executive Summary
