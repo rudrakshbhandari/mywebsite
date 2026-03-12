@@ -12,6 +12,8 @@ const MAX_HEARTBEAT_BPM = 160;
 const HEARTBEAT_STAGE_WIDTH = 1200;
 const HEARTBEAT_STAGE_HEIGHT = 170;
 const HEARTBEAT_STAGE_BASELINE = 85;
+const HEARTBEAT_STAGE_MIN_POINTS = 16;
+const HEARTBEAT_STAGE_MAX_POINTS = 48;
 
 /**
  * Format relative time (e.g., "12 min ago")
@@ -325,7 +327,11 @@ function renderHeartbeatStage(series, data) {
     return;
   }
 
-  const recentPoints = finiteSeries.slice(-8);
+  const desiredPointCount = Math.max(
+    HEARTBEAT_STAGE_MIN_POINTS,
+    Math.min(HEARTBEAT_STAGE_MAX_POINTS, finiteSeries.length)
+  );
+  const recentPoints = finiteSeries.slice(-desiredPointCount);
   const bpms = recentPoints.map(point => Number(point.bpm));
   const minBpm = Math.min(...bpms);
   const maxBpm = Math.max(...bpms);
@@ -338,7 +344,9 @@ function renderHeartbeatStage(series, data) {
     return 22 + normalized * 20 + deltaBoost;
   });
 
-  while (amplitudes.length < 8) amplitudes.push(amplitudes[amplitudes.length - 1] || 24);
+  while (amplitudes.length < HEARTBEAT_STAGE_MIN_POINTS) {
+    amplitudes.push(amplitudes[amplitudes.length - 1] || 24);
+  }
 
   const secondaryAmplitudes = amplitudes.map((value, index) => Math.max(16, value * 0.72 + (index % 2 === 0 ? 4 : -2)));
 
@@ -348,7 +356,8 @@ function renderHeartbeatStage(series, data) {
   secondaryB.setAttribute('d', buildHeartbeatWavePath(secondaryAmplitudes, HEARTBEAT_STAGE_WIDTH));
 
   const clampedBpm = Math.max(MIN_HEARTBEAT_BPM, Math.min(MAX_HEARTBEAT_BPM, Math.round(latestBpm)));
-  const visualDuration = Math.max(3.2, Math.min(7.5, 480 / clampedBpm));
+  const pointDensityFactor = recentPoints.length / HEARTBEAT_STAGE_MIN_POINTS;
+  const visualDuration = Math.max(5.5, Math.min(18, (480 / clampedBpm) * pointDensityFactor));
 
   stream.setAttribute('transform', `translate(0 ${(HEARTBEAT_STAGE_HEIGHT - 170) / 2})`);
   stage.style.setProperty('--heartbeat-visual-duration', `${visualDuration.toFixed(2)}s`);
