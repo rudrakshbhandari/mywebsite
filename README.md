@@ -47,6 +47,8 @@ A modern, responsive portfolio showcasing my projects, experience, and skills as
 └── package.json        # Development dependencies
 ```
 
+For repository organization rules beyond the quick tree, see [docs/REPO_STRUCTURE.md](/Users/rudrakshbhandari/Developer/mywebsite/docs/REPO_STRUCTURE.md).
+
 ## Local Development
 
 ```bash
