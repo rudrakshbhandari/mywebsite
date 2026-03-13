@@ -97,9 +97,14 @@
     bindClickTracking('a[href^="mailto:"]', 'contact_email_click');
     bindClickTracking('.social-link', 'social_click', el => ({ network: el.getAttribute('title') || 'unknown' }));
     bindClickTracking('a[href="/health"], a[href="/health/"], a[href="health/"]', 'health_nav_click');
+    bindClickTracking('a[href="/notes"], a[href="/notes/"], a[href="notes/"]', 'notes_nav_click');
 
     if (window.location.pathname === '/' || window.location.pathname === '/index.html') {
       emit('portfolio_page_view');
+    }
+
+    if (window.location.pathname === '/notes' || window.location.pathname === '/notes/') {
+      emit('notes_page_view');
     }
   });
 })();
