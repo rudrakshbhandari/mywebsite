@@ -31,6 +31,8 @@ A modern, responsive portfolio showcasing my projects, experience, and skills as
 │   └── styles.css      # Custom CSS with animations
 ├── health/
 │   └── index.html      # Health metrics page
+├── notes/
+│   └── index.html      # Personal notes landing page
 ├── js/
 │   ├── main.js         # Core functionality
 │   ├── animations.js   # Scroll and interaction animations
@@ -74,10 +76,12 @@ The site emits the following events through `js/analytics.js`:
 
 - `portfolio_page_view`
 - `health_page_view`
+- `notes_page_view`
 - `resume_click`
 - `contact_email_click`
 - `social_click` (includes `network` payload)
 - `health_nav_click`
+- `notes_nav_click`
 
 ### Where to View Data
 
@@ -113,6 +117,7 @@ The site emits the following events through `js/analytics.js`:
 - **Experience** - Professional timeline
 - **Projects** - Technical projects with live demos
 - **Case Studies** - Deep dives on impact and engineering decisions
+- **Notes** - Personal writing on tech, AI, life, and other ideas
 - **Skills** - Technologies and tools
 - **Contact** - Email and social links
 
