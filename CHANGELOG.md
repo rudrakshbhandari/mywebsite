@@ -6,6 +6,10 @@ The format is based on Keep a Changelog and this project uses date-based release
 
 ## [Unreleased]
 
+### Added
+
+- Separate `/notes/` page for personal writing, linked from the main navigation.
+
 ### Changed
 
 - Updated documentation to match the current health pipeline behavior (15-minute workflow cadence, exposed downsampled heart-rate series, and token/secret guidance).
