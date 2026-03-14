@@ -67,6 +67,7 @@ jobs:
             --exclude '.env.example' \
             --exclude 'package.json' \
             --exclude 'package-lock.json' \
+            --exclude 'workers' \
             ./ _site/
 
       - name: Build notes data

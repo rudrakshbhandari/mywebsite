@@ -1,0 +1,16 @@
+# Cloudflare Worker config for Decap CMS GitHub OAuth proxy.
+# See workers/README.md for setup instructions.
+
+compatibility_date = "2025-01-01"
+main = "src/index.ts"
+
+name = "decap-proxy"
+
+# Custom domain: decap.rudrakshbhandari.com
+# Uncomment after adding the DNS record in Cloudflare:
+# route = { pattern = "decap.rudrakshbhandari.com", zone_name = "rudrakshbhandari.com", custom_domain = true }
+# workers_dev = false
+
+# Set to "1" if the content repo is private
+[vars]
+GITHUB_REPO_PRIVATE = "0"
