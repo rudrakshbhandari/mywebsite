@@ -12,6 +12,12 @@ interface Env {
   GITHUB_REPO_PRIVATE?: string;
 }
 
+/** Headers to prevent browsers from caching OAuth responses (avoids stale 404s). */
+const NO_CACHE_HEADERS: Record<string, string> = {
+  'Cache-Control': 'no-store, no-cache, must-revalidate',
+  Pragma: 'no-cache',
+};
+
 function randomHex(bytes: number): string {
   const buf = new Uint8Array(bytes);
   crypto.getRandomValues(buf);
@@ -38,14 +44,14 @@ const handleAuth = async (url: URL, env: Env) => {
       `OAuth secrets not configured. Run from the repo root:\n\n  cd workers/decap-proxy\n  npx wrangler secret put GITHUB_OAUTH_ID\n  npx wrangler secret put GITHUB_OAUTH_SECRET\n\nThen retry logging in.`,
       {
         status: 500,
-        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+        headers: { 'Content-Type': 'text/plain; charset=utf-8', ...NO_CACHE_HEADERS },
       }
     );
   }
 
   const provider = url.searchParams.get('provider');
   if (provider !== 'github') {
-    return new Response('Invalid provider', { status: 400 });
+    return new Response('Invalid provider', { status: 400, headers: NO_CACHE_HEADERS });
   }
 
   const repoIsPrivate = env.GITHUB_REPO_PRIVATE != undefined && env.GITHUB_REPO_PRIVATE !== '0';
@@ -59,7 +65,7 @@ const handleAuth = async (url: URL, env: Env) => {
   });
 
   return new Response(null, {
-    headers: { location: authorizationUri },
+    headers: { location: authorizationUri, ...NO_CACHE_HEADERS },
     status: 301,
   });
 };
@@ -84,19 +90,19 @@ const callbackScriptResponse = (status: string, token: string) => {
   </script>
 </body>
 </html>`,
-    { headers: { 'Content-Type': 'text/html' } }
+    { headers: { 'Content-Type': 'text/html', ...NO_CACHE_HEADERS } }
   );
 };
 
 const handleCallback = async (url: URL, env: Env) => {
   const provider = url.searchParams.get('provider');
   if (provider !== 'github') {
-    return new Response('Invalid provider', { status: 400 });
+    return new Response('Invalid provider', { status: 400, headers: NO_CACHE_HEADERS });
   }
 
   const code = url.searchParams.get('code');
   if (!code) {
-    return new Response('Missing code', { status: 400 });
+    return new Response('Missing code', { status: 400, headers: NO_CACHE_HEADERS });
   }
 
   const oauth2 = createOAuth(env);
@@ -116,6 +122,6 @@ export default {
     if (url.pathname === '/callback') {
       return handleCallback(url, env);
     }
-    return new Response('Hello 👋');
+    return new Response('Hello 👋', { headers: NO_CACHE_HEADERS });
   },
 };
