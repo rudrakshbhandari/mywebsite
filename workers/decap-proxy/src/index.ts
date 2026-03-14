@@ -111,7 +111,11 @@ const handleCallback = async (url: URL, env: Env) => {
   const allowed = env.ALLOWED_GITHUB_USERS?.trim();
   if (allowed) {
     const res = await fetch('https://api.github.com/user', {
-      headers: { Authorization: `Bearer ${accessToken}` },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        Accept: 'application/vnd.github.v3+json',
+        'User-Agent': 'decap-proxy-rudrakshbhandari',
+      },
     });
     if (!res.ok) {
       return new Response('Failed to verify user', { status: 502 });
