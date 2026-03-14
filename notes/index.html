@@ -48,37 +48,29 @@
 
     <style>
       :root {
-        --primary-color: #6366f1;
-        --primary-dark: #4f46e5;
-        --primary-glow: rgba(99, 102, 241, 0.35);
-        --accent-color: #f97316;
-        --accent-glow: rgba(249, 115, 22, 0.22);
-        --text-primary: #f8fafc;
-        --text-secondary: #cbd5e1;
-        --text-muted: #94a3b8;
-        --background-light: #111827;
-        --background-dark: #020617;
-        --background-card: rgba(15, 23, 42, 0.88);
-        --border-color: rgba(148, 163, 184, 0.18);
-        --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        --font-display: 'Space Grotesk', var(--font-family);
-        --radius-lg: 0.75rem;
-        --radius-xl: 1rem;
-        --transition-normal: 0.25s ease;
+        --primary: #6366f1;
+        --accent: #f97316;
+        --text: #f8fafc;
+        --muted: #cbd5e1;
+        --soft: #94a3b8;
+        --bg: #020617;
+        --bg-card: rgba(15, 23, 42, 0.86);
+        --border: rgba(148, 163, 184, 0.16);
+        --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        --font-display: 'Space Grotesk', var(--font-body);
       }
 
       * {
-        margin: 0;
-        padding: 0;
         box-sizing: border-box;
       }
 
       body {
-        font-family: var(--font-family);
-        color: var(--text-primary);
+        margin: 0;
+        color: var(--text);
+        font-family: var(--font-body);
         background:
-          radial-gradient(circle at top left, rgba(249, 115, 22, 0.18), transparent 30%),
-          radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.22), transparent 32%),
+          radial-gradient(circle at top left, rgba(249, 115, 22, 0.18), transparent 24%),
+          radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.22), transparent 30%),
           linear-gradient(180deg, #0f172a 0%, #020617 100%);
         min-height: 100vh;
       }
@@ -91,14 +83,14 @@
         position: sticky;
         top: 0;
         z-index: 1000;
-        background: rgba(2, 6, 23, 0.72);
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        border-bottom: 1px solid var(--border-color);
+        background: rgba(2, 6, 23, 0.72);
+        border-bottom: 1px solid var(--border);
       }
 
-      .nav-container {
-        max-width: 1120px;
+      .nav {
+        max-width: 1180px;
         margin: 0 auto;
         padding: 1rem 1.5rem;
         display: flex;
@@ -108,292 +100,385 @@
       }
 
       .nav-logo {
-        font-family: var(--font-display);
-        font-size: 1.1rem;
-        font-weight: 600;
         text-decoration: none;
+        font-family: var(--font-display);
+        font-weight: 600;
         letter-spacing: -0.02em;
       }
 
       .nav-back {
+        text-decoration: none;
+        color: var(--soft);
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        text-decoration: none;
-        color: var(--text-muted);
-        font-size: 0.95rem;
-        transition: color var(--transition-normal);
-      }
-
-      .nav-back:hover {
-        color: var(--text-primary);
       }
 
       main {
-        max-width: 1120px;
+        max-width: 1180px;
         margin: 0 auto;
-        padding: 4.5rem 1.5rem 5rem;
+        padding: 4rem 1.5rem 5rem;
       }
 
       .hero {
-        margin-bottom: 2.5rem;
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 1.25rem;
+        align-items: start;
       }
 
       .eyebrow {
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
-        margin-bottom: 1rem;
-        padding: 0.45rem 0.85rem;
-        border: 1px solid rgba(249, 115, 22, 0.28);
-        border-radius: 9999px;
-        background: rgba(249, 115, 22, 0.08);
+        padding: 0.45rem 0.8rem;
+        border-radius: 999px;
+        border: 1px solid rgba(249, 115, 22, 0.24);
+        background: rgba(249, 115, 22, 0.09);
         color: #fdba74;
-        font-size: 0.85rem;
+        font-size: 0.82rem;
         font-weight: 600;
       }
 
-      .page-title {
-        max-width: 780px;
+      h1 {
+        margin: 1rem 0 0;
         font-family: var(--font-display);
-        font-size: clamp(2.6rem, 8vw, 5rem);
-        line-height: 0.95;
-        letter-spacing: -0.05em;
+        font-size: clamp(2.8rem, 8vw, 5.4rem);
+        line-height: 0.92;
+        letter-spacing: -0.06em;
       }
 
-      .page-subtitle {
-        max-width: 700px;
-        margin-top: 1.25rem;
-        color: var(--text-secondary);
-        font-size: 1.1rem;
-        line-height: 1.75;
+      .hero-copy {
+        max-width: 60ch;
+        margin-top: 1.2rem;
+        color: var(--muted);
+        line-height: 1.85;
+        font-size: 1.04rem;
       }
 
-      .topics {
+      .chip-row {
         display: flex;
         flex-wrap: wrap;
-        gap: 0.75rem;
-        margin-top: 1.5rem;
+        gap: 0.7rem;
+        margin-top: 1.4rem;
       }
 
-      .topic-chip {
+      .chip {
         padding: 0.5rem 0.85rem;
-        border-radius: 9999px;
-        border: 1px solid rgba(148, 163, 184, 0.2);
-        background: rgba(15, 23, 42, 0.55);
-        color: var(--text-secondary);
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: rgba(15, 23, 42, 0.54);
+        color: var(--muted);
         font-size: 0.9rem;
       }
 
-      .layout {
-        display: grid;
-        grid-template-columns: 1.25fr 0.95fr;
-        gap: 1.5rem;
-        margin-top: 2rem;
+      .panel,
+      .reader,
+      .sidebar {
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        background: var(--bg-card);
+        box-shadow: 0 24px 80px -40px rgba(0, 0, 0, 0.6);
       }
 
-      .card {
-        position: relative;
-        overflow: hidden;
+      .featured {
         padding: 1.5rem;
-        border: 1px solid var(--border-color);
-        border-radius: var(--radius-xl);
-        background: var(--background-card);
-        box-shadow: 0 20px 60px -32px rgba(0, 0, 0, 0.45);
       }
 
-      .card::before {
-        content: '';
-        position: absolute;
-        inset: 0 auto auto 0;
-        width: 100%;
-        height: 1px;
-        background: linear-gradient(90deg, rgba(99, 102, 241, 0.55), rgba(249, 115, 22, 0.45), transparent);
-      }
-
-      .card h2,
-      .card h3 {
-        font-family: var(--font-display);
-        letter-spacing: -0.03em;
-      }
-
-      .card h2 {
-        font-size: 1.4rem;
-        margin-bottom: 0.85rem;
-      }
-
-      .card h3 {
-        font-size: 1.05rem;
-        margin-bottom: 0.65rem;
-      }
-
-      .card p,
-      .card li {
-        color: var(--text-secondary);
-        line-height: 1.75;
-      }
-
-      .card ul {
-        list-style: none;
-        display: grid;
-        gap: 0.85rem;
-      }
-
-      .card li {
-        display: flex;
-        gap: 0.75rem;
-      }
-
-      .card li i {
-        margin-top: 0.35rem;
+      .featured-label {
         color: #fdba74;
-      }
-
-      .section-title {
-        margin: 2.75rem 0 1rem;
-        font-family: var(--font-display);
-        font-size: 1.6rem;
-        letter-spacing: -0.03em;
-      }
-
-      .grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 1rem;
-      }
-
-      .note-card {
-        min-height: 220px;
-      }
-
-      .note-card .label {
-        display: inline-block;
-        margin-bottom: 0.75rem;
-        color: #fdba74;
-        font-size: 0.78rem;
-        font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.08em;
+        font-size: 0.76rem;
+        font-weight: 700;
       }
 
-      .note-card p {
-        margin-bottom: 1rem;
+      .featured h2 {
+        margin: 0.8rem 0 0.75rem;
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        letter-spacing: -0.04em;
       }
 
-      .status {
-        color: var(--text-muted);
-        font-size: 0.9rem;
+      .featured p {
+        color: var(--muted);
+        line-height: 1.8;
       }
 
-      footer {
-        margin-top: 3rem;
-        color: var(--text-muted);
+      .featured-meta {
+        display: flex;
+        gap: 0.9rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        color: var(--soft);
+        font-size: 0.92rem;
+      }
+
+      .featured-button {
+        margin-top: 1.25rem;
+        border: 0;
+        border-radius: 999px;
+        padding: 0.8rem 1.1rem;
+        background: linear-gradient(135deg, var(--accent), var(--primary));
+        color: white;
+        font: inherit;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .meta-strip {
+        margin: 1rem 0 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        color: var(--soft);
+      }
+
+      .portal-tip {
+        color: var(--muted);
         font-size: 0.95rem;
       }
 
-      @media (max-width: 900px) {
-        .layout,
-        .grid {
+      .notes-layout {
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr);
+        gap: 1.25rem;
+      }
+
+      .sidebar {
+        padding: 1rem;
+      }
+
+      .sidebar-title {
+        margin: 0 0 0.75rem;
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+      }
+
+      .sidebar-empty,
+      .note-placeholder {
+        color: var(--muted);
+        line-height: 1.8;
+      }
+
+      .notes-list {
+        display: grid;
+        gap: 0.7rem;
+      }
+
+      .note-list-item {
+        width: 100%;
+        text-align: left;
+        padding: 1rem;
+        border-radius: 18px;
+        border: 1px solid transparent;
+        background: rgba(15, 23, 42, 0.7);
+        color: inherit;
+        cursor: pointer;
+        transition:
+          transform 0.2s ease,
+          border-color 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .note-list-item:hover,
+      .note-list-item.is-active {
+        transform: translateY(-1px);
+        border-color: rgba(99, 102, 241, 0.34);
+        background: rgba(30, 41, 59, 0.84);
+      }
+
+      .note-list-date,
+      .note-list-summary {
+        display: block;
+      }
+
+      .note-list-date {
+        color: #fdba74;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .note-list-title {
+        display: block;
+        margin: 0.45rem 0;
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      .note-list-summary {
+        color: var(--muted);
+        line-height: 1.65;
+        font-size: 0.92rem;
+      }
+
+      .reader {
+        padding: 1.5rem;
+      }
+
+      .note-article-meta,
+      .note-tag-row {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .note-article-meta {
+        color: #fdba74;
+        font-size: 0.86rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .note-article h2 {
+        margin: 1rem 0 0;
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: -0.05em;
+      }
+
+      .note-article-summary {
+        margin: 0.95rem 0 1rem;
+        color: var(--muted);
+        font-size: 1.05rem;
+        line-height: 1.85;
+      }
+
+      .note-tag {
+        padding: 0.4rem 0.7rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: rgba(15, 23, 42, 0.62);
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .note-article-body {
+        margin-top: 1.4rem;
+        color: var(--text);
+        line-height: 1.95;
+      }
+
+      .note-article-body p,
+      .note-article-body ul,
+      .note-article-body ol,
+      .note-article-body blockquote {
+        margin: 0 0 1.2rem;
+      }
+
+      .note-article-body h3,
+      .note-article-body h4 {
+        margin: 2rem 0 0.8rem;
+        font-family: var(--font-display);
+        letter-spacing: -0.03em;
+      }
+
+      .note-article-body a {
+        color: #fdba74;
+      }
+
+      .note-article-body code {
+        padding: 0.15rem 0.35rem;
+        border-radius: 6px;
+        background: rgba(15, 23, 42, 0.82);
+      }
+
+      .note-article-body pre {
+        overflow-x: auto;
+        padding: 1rem;
+        border-radius: 18px;
+        background: rgba(15, 23, 42, 0.92);
+      }
+
+      @media (max-width: 960px) {
+        .hero,
+        .notes-layout {
           grid-template-columns: 1fr;
         }
       }
 
       @media (max-width: 640px) {
+        .nav,
         main {
-          padding-top: 3rem;
+          padding-left: 1rem;
+          padding-right: 1rem;
         }
 
-        .page-subtitle {
-          font-size: 1rem;
+        .meta-strip {
+          flex-direction: column;
+          align-items: flex-start;
         }
 
-        .card {
-          padding: 1.25rem;
+        .reader,
+        .sidebar,
+        .featured {
+          padding: 1.1rem;
         }
       }
     </style>
   </head>
   <body>
     <header>
-      <div class="nav-container">
-        <a href="/" class="nav-logo">Rudraksh Bhandari</a>
-        <a href="/" class="nav-back"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
-      </div>
+      <nav class="nav" aria-label="Notes navigation">
+        <a class="nav-logo" href="/">Rudraksh Bhandari</a>
+        <a class="nav-back" href="/"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
+      </nav>
     </header>
 
     <main>
       <section class="hero" aria-labelledby="notes-title">
-        <div class="eyebrow"><i class="fas fa-pencil-alt" aria-hidden="true"></i> Personal writing</div>
-        <h1 class="page-title" id="notes-title">Notes</h1>
-        <p class="page-subtitle">
-          Thoughts on tech, AI, life, philosophy, politics, and whatever else I can't stop thinking about.
-        </p>
-        <div class="topics" aria-label="Topics">
-          <span class="topic-chip">Tech</span>
-          <span class="topic-chip">AI</span>
-          <span class="topic-chip">Life</span>
-          <span class="topic-chip">Philosophy</span>
-          <span class="topic-chip">Politics</span>
-        </div>
-      </section>
-
-      <section class="layout" aria-label="Notes overview">
-        <article class="card">
-          <h2>Why notes, not a blog</h2>
-          <p>
-            This page is for ideas that are still alive. Some will be short. Some will turn into essays. Some will stay
-            as fragments because that is the honest shape of the thought.
+        <div>
+          <div class="eyebrow"><i class="fas fa-pencil-alt" aria-hidden="true"></i> Personal writing</div>
+          <h1 id="notes-title">Notes</h1>
+          <p class="hero-copy">
+            Thoughts on tech, AI, life, philosophy, politics, and whatever else I can't stop thinking about.
           </p>
-        </article>
+          <div class="chip-row" aria-label="Topics">
+            <span class="chip">Tech</span>
+            <span class="chip">AI</span>
+            <span class="chip">Life</span>
+            <span class="chip">Philosophy</span>
+            <span class="chip">Politics</span>
+          </div>
+        </div>
 
-        <aside class="card">
-          <h2>Working rules</h2>
-          <ul>
-            <li><i class="fas fa-check" aria-hidden="true"></i><span>Short by default.</span></li>
-            <li>
-              <i class="fas fa-check" aria-hidden="true"></i><span>Personal, not polished into LinkedIn voice.</span>
-            </li>
-            <li>
-              <i class="fas fa-check" aria-hidden="true"></i
-              ><span>Mixed topics, because real interests bleed into each other.</span>
-            </li>
-          </ul>
+        <aside class="panel featured" id="featured-note">
+          <div class="featured-label">Featured note</div>
+          <h2>Loading...</h2>
+          <p>Pulling in the latest published note.</p>
         </aside>
       </section>
 
-      <section aria-labelledby="structure-title">
-        <h2 class="section-title" id="structure-title">What will live here</h2>
-        <div class="grid">
-          <article class="card note-card">
-            <span class="label">Short notes</span>
-            <h3>Fast observations and unfinished arguments</h3>
-            <p>Quick thoughts worth writing down before they disappear or get over-edited into something less true.</p>
-            <p class="status">Format: brief reflections, fragments, questions</p>
-          </article>
+      <div class="meta-strip">
+        <div id="notes-count">0 published notes</div>
+        <div class="portal-tip">
+          New entries are published through the private writing portal and appear here automatically.
+        </div>
+      </div>
 
-          <article class="card note-card">
-            <span class="label">Essays</span>
-            <h3>Longer pieces when an idea needs more room</h3>
-            <p>
-              For topics that need structure, examples, and the extra honesty that only shows up after sitting with
-              them.
-            </p>
-            <p class="status">Format: occasional longer writing</p>
-          </article>
+      <section class="notes-layout" aria-label="Published notes">
+        <aside class="sidebar">
+          <h2 class="sidebar-title">Library</h2>
+          <div id="notes-empty" class="sidebar-empty" hidden>No notes have been published yet.</div>
+          <div id="notes-list" class="notes-list"></div>
+        </aside>
 
-          <article class="card note-card">
-            <span class="label">Now</span>
-            <h3>Whatever is currently taking over my brain</h3>
-            <p>A running snapshot of what I am building, reading, arguing with, or trying to understand better.</p>
-            <p class="status">Format: active interests and obsessions</p>
-          </article>
+        <div class="reader" id="note-detail">
+          <div class="note-placeholder">
+            <h2>Loading notes...</h2>
+            <p>Fetching the latest published writing.</p>
+          </div>
         </div>
       </section>
-
-      <footer>The page is live now. The writing comes next.</footer>
     </main>
 
     <script src="/js/config.js"></script>
     <script src="/js/analytics.js"></script>
+    <script src="/js/notes.js"></script>
   </body>
 </html>
