@@ -14,7 +14,7 @@ logo_url: /img/android-chrome-192x192.png
 media_folder: 'img/uploads'
 public_folder: '/img/uploads'
 
-publish_mode: simple
+publish_mode: editorial_workflow
 
 collections:
   - name: 'notes'
