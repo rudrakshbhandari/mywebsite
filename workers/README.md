@@ -57,6 +57,25 @@ backend:
   auth_endpoint: /auth
 ```
 
+## Custom Domain DNS
+
+If you get `DNS_PROBE_FINISHED_NXDOMAIN` when opening `decap.rudrakshbhandari.com`, the DNS record is missing. Add it via one of these methods:
+
+**Option A: Script (recommended)**
+
+```bash
+# Create a token at https://dash.cloudflare.com/profile/api-tokens
+# Use template "Edit zone DNS" with Zone:DNS:Edit for rudrakshbhandari.com
+export CLOUDFLARE_API_TOKEN=your_token
+node scripts/add-decap-dns.mjs
+```
+
+**Option B: Dashboard**
+
+1. Cloudflare Dashboard → **rudrakshbhandari.com** → **DNS** → **Records**
+2. **Add record**: Type `CNAME`, Name `decap`, Target `rudrakshbhandari.com`, Proxy status **Proxied** (orange cloud)
+3. Save
+
 ## Local Development
 
 For local writing, use `npm run notes:admin` in the repo root. That runs the local proxy and bypasses this Worker.
