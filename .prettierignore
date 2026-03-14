@@ -12,6 +12,7 @@ build/
 *.min.css
 *.min.map
 oura_public.json
+notes/notes-data.json
 
 # Package files
 package-lock.json
