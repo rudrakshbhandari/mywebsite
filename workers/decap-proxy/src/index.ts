@@ -117,7 +117,7 @@ const handleCallback = async (url: URL, env: Env) => {
       return new Response('Failed to verify user', { status: 502 });
     }
     const user = (await res.json()) as { login: string };
-    const allowlist = allowed.split(',').map((u) => u.trim().toLowerCase());
+    const allowlist = allowed.split(',').map(u => u.trim().toLowerCase());
     if (!allowlist.includes((user.login || '').toLowerCase())) {
       return new Response(
         `<!DOCTYPE html><html><head><title>Access denied</title></head><body><p>Access denied. Only the site owner can use this CMS.</p></body></html>`,
