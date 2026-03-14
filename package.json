@@ -7,6 +7,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "format:html": "prettier --write *.html",
+    "notes:build": "node scripts/build-notes.mjs",
+    "notes:admin": "decap-server",
     "check:syntax": "sh -c 'set -- js/*.js scripts/*.mjs *.mjs; for f in \"$@\"; do [ -e \"$f\" ] || continue; node --check \"$f\"; done'",
     "ci:check": "npm run format:check && npm run check:syntax",
     "oura:token": "node scripts/get-oura-token.mjs",
@@ -22,6 +24,9 @@
   "author": "Rudraksh Bhandari",
   "license": "MIT",
   "devDependencies": {
+    "decap-server": "^3.2.0",
+    "gray-matter": "^4.0.3",
+    "marked": "^15.0.12",
     "prettier": "^3.0.0"
   }
 }

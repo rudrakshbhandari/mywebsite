@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Notes Admin | Rudraksh Bhandari</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #020617;
+        --bg-soft: rgba(15, 23, 42, 0.86);
+        --border: rgba(148, 163, 184, 0.18);
+        --text: #f8fafc;
+        --muted: #cbd5e1;
+        --accent: #f97316;
+        --accent-2: #6366f1;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(249, 115, 22, 0.18), transparent 24%),
+          radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.22), transparent 30%),
+          linear-gradient(180deg, #0f172a 0%, #020617 100%);
+      }
+
+      .shell {
+        position: fixed;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        padding: 1.5rem;
+        pointer-events: none;
+      }
+
+      .panel {
+        width: min(720px, 100%);
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        border-radius: 24px;
+        background: var(--bg-soft);
+        box-shadow: 0 24px 80px -40px rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        padding: 0.45rem 0.8rem;
+        border-radius: 999px;
+        background: rgba(249, 115, 22, 0.1);
+        border: 1px solid rgba(249, 115, 22, 0.22);
+        color: #fdba74;
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      h1 {
+        margin: 1rem 0 0.75rem;
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: clamp(2rem, 7vw, 3.8rem);
+        letter-spacing: -0.05em;
+      }
+
+      p {
+        margin: 0;
+        max-width: 58ch;
+        color: var(--muted);
+        line-height: 1.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell" aria-hidden="true">
+      <div class="panel">
+        <div class="eyebrow">Private writing portal</div>
+        <h1>Notes Admin</h1>
+        <p>
+          Draft new notes, save edits, and publish directly into the repository. Published entries are deployed to the
+          public notes page automatically.
+        </p>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/decap-cms@^3.8.3/dist/decap-cms.js"></script>
+  </body>
+</html>
