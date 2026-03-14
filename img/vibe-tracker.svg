@@ -1,0 +1,17 @@
+<svg width="600" height="400" viewBox="0 0 600 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="400" rx="24" fill="#0F172A"/>
+  <rect x="32" y="32" width="536" height="336" rx="20" fill="#111827"/>
+  <rect x="64" y="72" width="188" height="24" rx="12" fill="#22C55E" fill-opacity="0.18"/>
+  <rect x="64" y="116" width="120" height="12" rx="6" fill="#334155"/>
+  <rect x="64" y="140" width="88" height="12" rx="6" fill="#334155"/>
+  <rect x="64" y="196" width="472" height="108" rx="16" fill="#0F172A"/>
+  <path d="M96 271L156 228L213 244L280 176L342 205L408 142L504 170" stroke="#22C55E" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="156" cy="228" r="8" fill="#22C55E"/>
+  <circle cx="280" cy="176" r="8" fill="#22C55E"/>
+  <circle cx="408" cy="142" r="8" fill="#22C55E"/>
+  <rect x="64" y="324" width="136" height="20" rx="10" fill="#38BDF8" fill-opacity="0.18"/>
+  <rect x="214" y="324" width="116" height="20" rx="10" fill="#A78BFA" fill-opacity="0.18"/>
+  <rect x="344" y="324" width="152" height="20" rx="10" fill="#F59E0B" fill-opacity="0.18"/>
+  <text x="64" y="98" fill="#E5E7EB" font-family="Arial, sans-serif" font-size="28" font-weight="700">Vibe Tracker</text>
+  <text x="64" y="170" fill="#94A3B8" font-family="Arial, sans-serif" font-size="20">GitHub productivity analytics</text>
+</svg>
