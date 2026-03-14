@@ -7,9 +7,8 @@ main = "src/index.ts"
 name = "decap-proxy"
 
 # Custom domain: decap.rudrakshbhandari.com
-# Uncomment after adding the DNS record in Cloudflare:
-# route = { pattern = "decap.rudrakshbhandari.com", zone_name = "rudrakshbhandari.com", custom_domain = true }
-# workers_dev = false
+route = { pattern = "decap.rudrakshbhandari.com", zone_name = "rudrakshbhandari.com", custom_domain = true }
+workers_dev = false
 
 # Set to "1" if the content repo is private
 [vars]
