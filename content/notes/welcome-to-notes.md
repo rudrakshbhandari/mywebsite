@@ -7,7 +7,7 @@ tags:
   - Writing
   - Personal
 summary: Notes is where ideas can stay unfinished, opinionated, and alive instead of pretending to be polished blog posts.
-featured: true
+featured: false
 published: true
 ---
 
