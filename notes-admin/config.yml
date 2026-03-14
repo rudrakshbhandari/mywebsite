@@ -2,6 +2,8 @@ backend:
   name: github
   repo: rudrakshbhandari/mywebsite
   branch: main
+  base_url: https://decap.rudrakshbhandari.com
+  auth_endpoint: /auth
 
 local_backend: true
 
