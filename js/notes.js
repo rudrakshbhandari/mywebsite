@@ -34,13 +34,14 @@
 
   function renderFeatured(notes) {
     if (!featuredEl) return;
-    const featured = notes.find(note => note.featured) || notes[0];
+    const featured = notes.find(note => note.featured);
 
     if (!featured) {
-      featuredEl.innerHTML = '<p>No notes yet.</p>';
+      featuredEl.style.display = 'none';
       return;
     }
 
+    featuredEl.style.display = '';
     featuredEl.innerHTML = `
       <div class="featured-label">Featured note</div>
       <h2>${featured.title}</h2>
