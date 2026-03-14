@@ -31,13 +31,20 @@ A modern, responsive portfolio showcasing my projects, experience, and skills as
 │   └── styles.css      # Custom CSS with animations
 ├── health/
 │   └── index.html      # Health metrics page
+├── content/
+│   └── notes/          # Markdown source for published notes
 ├── notes/
-│   └── index.html      # Personal notes landing page
+│   ├── index.html      # Public notes reader
+│   └── notes-data.json # Generated notes payload for the reader
+├── notes-admin/
+│   ├── index.html      # Private writing portal shell
+│   └── config.yml      # Decap CMS configuration
 ├── js/
 │   ├── main.js         # Core functionality
 │   ├── animations.js   # Scroll and interaction animations
 │   ├── config.js       # Analytics provider configuration
 │   ├── health.js       # Health dashboard logic
+│   ├── notes.js        # Notes reader UI logic
 │   └── analytics.js    # Analytics bootstrapping + event tracking hooks
 ├── img/                # Favicons, profile photos, project images
 ├── scripts/            # Oura and repository utility scripts
@@ -57,6 +64,12 @@ npm install
 
 # Format code
 npm run format
+
+# Build public notes data from Markdown content
+npm run notes:build
+
+# Run the local notes admin proxy
+npm run notes:admin
 
 # Run CI-equivalent checks
 npm run ci:check
@@ -89,6 +102,13 @@ The site emits the following events through `js/analytics.js`:
 
 - Cloudflare dashboard → **Web Analytics** for page traffic and performance telemetry.
 - Google Analytics → **Reports** / **Realtime** / **Engagement** for custom events and acquisition.
+
+## Notes Portal
+
+- Public notes are rendered from Markdown files in `content/notes/`.
+- The private writing portal lives at `/notes-admin/` and is configured with Decap CMS.
+- GitHub Pages builds `notes/notes-data.json` during deploy so published notes show up on `/notes/` automatically.
+- Setup details are documented in [`docs/NOTES_PORTAL_SETUP.md`](/Users/rudrakshbhandari/Developer/mywebsite/docs/NOTES_PORTAL_SETUP.md).
 
 ### Validation Checklist
 
