@@ -81,6 +81,54 @@
         color: var(--muted);
         line-height: 1.8;
       }
+
+      /* Decap CMS login screen overrides */
+      .nc-root,
+      [class*='nc-'] {
+        --nc-primary: var(--accent);
+        --nc-secondary: var(--accent-2);
+        --nc-bg: var(--bg-soft);
+        --nc-border: var(--border);
+        --nc-text: var(--text);
+        --nc-muted: var(--muted);
+      }
+
+      .nc-root a,
+      [class*='nc-'] a {
+        color: var(--accent) !important;
+      }
+
+      .nc-root [class*='Button'] button,
+      .nc-root [class*='button'] button,
+      .nc-root button[type='button'],
+      [class*='nc-'] button {
+        background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 0.75rem 1.5rem !important;
+        font-weight: 600 !important;
+        font-family: var(--font-display, 'Space Grotesk', sans-serif) !important;
+        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease !important;
+      }
+
+      .nc-root button:hover,
+      [class*='nc-'] button:hover {
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45) !important;
+      }
+
+      .nc-root [class*='Card'],
+      [class*='nc-'] [class*='card'] {
+        background: var(--bg-soft) !important;
+        border: 1px solid var(--border) !important;
+        border-radius: 16px !important;
+        backdrop-filter: blur(14px) !important;
+        box-shadow: 0 24px 80px -40px rgba(0, 0, 0, 0.6) !important;
+      }
     </style>
   </head>
   <body>
