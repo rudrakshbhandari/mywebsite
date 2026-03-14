@@ -109,9 +109,7 @@
       return;
     }
 
-    const summaryBlock = note.hasExplicitSummary
-      ? `<p class="note-article-summary">${note.summary}</p>`
-      : '';
+    const summaryBlock = note.hasExplicitSummary ? `<p class="note-article-summary">${note.summary}</p>` : '';
 
     detailEl.innerHTML = `
       <article class="note-article">
