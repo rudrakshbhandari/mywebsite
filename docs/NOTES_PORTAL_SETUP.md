@@ -9,6 +9,15 @@ This repository now includes a private writing portal at `/notes-admin/` powered
 3. GitHub Pages workflow builds `notes/notes-data.json` during deploy
 4. The public `notes/index.html` page fetches that data and renders the updated note automatically
 
+## Drafts and Publishing
+
+The notes admin uses **editorial workflow**. You can:
+
+- **Save draft** — Saves to a separate branch and creates a pull request. Your work is persisted but not live on the site.
+- **Publish** — Merges the draft into `main`. The note appears in `notes-data.json` and on the public `/notes/` page (if `published: true`).
+
+Use "Save draft" for work-in-progress; use "Publish" when the note is ready to go live.
+
 ## Local Writing Setup
 
 For local development, Decap CMS supports a local proxy backend.
