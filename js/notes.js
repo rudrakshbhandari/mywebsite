@@ -109,6 +109,10 @@
       return;
     }
 
+    const summaryBlock = note.hasExplicitSummary
+      ? `<p class="note-article-summary">${note.summary}</p>`
+      : '';
+
     detailEl.innerHTML = `
       <article class="note-article">
         <div class="note-article-meta">
@@ -116,7 +120,7 @@
           <span>${note.readingTimeMinutes} min read</span>
         </div>
         <h2>${note.title}</h2>
-        <p class="note-article-summary">${note.summary}</p>
+        ${summaryBlock}
         <div class="note-tag-row">
           ${note.tags.map(tag => `<span class="note-tag">${tag}</span>`).join('')}
         </div>
