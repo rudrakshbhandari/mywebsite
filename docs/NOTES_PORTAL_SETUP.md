@@ -37,18 +37,20 @@ For local development, Decap CMS supports a local proxy backend.
 
 ## Production Auth Setup
 
-Decap's GitHub backend requires an authentication provider in production.
+Decap's GitHub backend requires an authentication provider in production. This repo uses **decap-proxy** (a Cloudflare Worker) for GitHub OAuth.
 
-The config is already set to write to `rudrakshbhandari/mywebsite` on `main`, but you still need to provide a GitHub auth flow for `/notes-admin/`. Per the Decap docs, common options are:
+### Quick Start
 
-- Netlify Identity + Git Gateway
-- An external OAuth endpoint for the GitHub backend
-- A self-hosted bridge for Decap CMS authentication
+1. Create a [GitHub OAuth App](https://github.com/settings/applications/new) with callback `https://decap.rudrakshbhandari.com/callback` (or your Worker URL + `/callback`).
+2. Deploy the OAuth proxy: see [`workers/README.md`](../workers/README.md).
+3. Set `base_url` in `notes-admin/config.yml` to your proxy URL (default: `https://decap.rudrakshbhandari.com`).
 
-Official references:
+For an options comparison, see [`docs/NOTES_PORTAL_AUTH_OPTIONS.md`](NOTES_PORTAL_AUTH_OPTIONS.md).
 
-- https://decapcms.org/docs/github-backend/
-- https://decapcms.org/docs/working-with-a-local-git-repository/
+### References
+
+- [Decap GitHub backend](https://decapcms.org/docs/github-backend/)
+- [External OAuth clients](https://decapcms.org/docs/external-oauth-clients/)
 
 ## Content Model
 
