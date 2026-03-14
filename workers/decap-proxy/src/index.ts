@@ -10,6 +10,8 @@ interface Env {
   GITHUB_OAUTH_ID: string;
   GITHUB_OAUTH_SECRET: string;
   GITHUB_REPO_PRIVATE?: string;
+  /** Comma-separated GitHub usernames allowed to log in. Empty = allow all. */
+  ALLOWED_GITHUB_USERS?: string;
 }
 
 function randomHex(bytes: number): string {
@@ -104,6 +106,26 @@ const handleCallback = async (url: URL, env: Env) => {
     code,
     redirect_uri: `https://${url.hostname}/callback?provider=github`,
   });
+
+  // Enforce allowlist: only specified GitHub users get a token.
+  const allowed = env.ALLOWED_GITHUB_USERS?.trim();
+  if (allowed) {
+    const res = await fetch('https://api.github.com/user', {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (!res.ok) {
+      return new Response('Failed to verify user', { status: 502 });
+    }
+    const user = (await res.json()) as { login: string };
+    const allowlist = allowed.split(',').map((u) => u.trim().toLowerCase());
+    if (!allowlist.includes((user.login || '').toLowerCase())) {
+      return new Response(
+        `<!DOCTYPE html><html><head><title>Access denied</title></head><body><p>Access denied. Only the site owner can use this CMS.</p></body></html>`,
+        { status: 403, headers: { 'Content-Type': 'text/html' } }
+      );
+    }
+  }
+
   return callbackScriptResponse('success', accessToken);
 };
 
