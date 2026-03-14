@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-03-13T23:30:23.251Z",
+  "generatedAt": "2026-03-14T20:49:58.860Z",
   "notes": [
+    {
+      "slug": "optimizing-life",
+      "title": "Approaching Life",
+      "date": "2026-03-14",
+      "summary": "Does everyone else also treat their life like an optimization problem? Or are some of us just wired like this (not sure if it&#39;s a good thing lol). If the only constant is the p",
+      "hasExplicitSummary": false,
+      "tags": [
+        "Life"
+      ],
+      "featured": false,
+      "published": true,
+      "html": "<p>Does everyone else also treat their life like an optimization problem? Or are some of us just wired like this (not sure if it&#39;s a good thing lol).</p>\n<p>If the only constant is the passage of time, shouldn&#39;t everything we do be centered around it?</p>\n",
+      "readingTimeMinutes": 1
+    },
     {
       "slug": "welcome-to-notes",
       "title": "Welcome to Notes",
       "date": "2026-03-13",
       "summary": "Notes is where ideas can stay unfinished, opinionated, and alive instead of pretending to be polished blog posts.",
-      "tags": ["Notes", "Writing", "Personal"],
-      "featured": true,
+      "hasExplicitSummary": true,
+      "tags": [
+        "Notes",
+        "Writing",
+        "Personal"
+      ],
+      "featured": false,
       "published": true,
       "html": "<p>I wanted a place on this site that felt more like a working notebook than a polished publication.</p>\n<p>Some thoughts will stay short. Some will become essays. Some will start in tech and end up somewhere closer to life, philosophy, or politics.</p>\n<p>The point is not to force every idea into a clean thesis. The point is to have a place where I can think in public without flattening everything into &quot;content.&quot;</p>\n",
       "readingTimeMinutes": 1
