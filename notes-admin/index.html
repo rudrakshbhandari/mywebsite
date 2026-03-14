@@ -8,18 +8,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
       :root {
-        --bg: #020617;
-        --bg-soft: rgba(15, 23, 42, 0.86);
-        --border: rgba(148, 163, 184, 0.18);
-        --text: #f8fafc;
-        --muted: #cbd5e1;
-        --accent: #f97316;
-        --accent-2: #6366f1;
+        --nc-primary: #f97316;
+        --nc-primary-hover: #ea580c;
+        --nc-bg: #0f172a;
+        --nc-bg-elevated: #1e293b;
+        --nc-bg-input: #1e293b;
+        --nc-border: #334155;
+        --nc-text: #f8fafc;
+        --nc-text-secondary: #94a3b8;
+        --nc-text-muted: #64748b;
       }
 
       * {
@@ -30,119 +32,103 @@
         margin: 0;
         min-height: 100vh;
         font-family: 'Inter', sans-serif;
-        color: var(--text);
-        background:
-          radial-gradient(circle at top left, rgba(249, 115, 22, 0.18), transparent 24%),
-          radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.22), transparent 30%),
-          linear-gradient(180deg, #0f172a 0%, #020617 100%);
+        color: var(--nc-text);
+        background: #0f172a;
       }
 
-      .shell {
-        position: fixed;
-        inset: 0;
-        display: grid;
-        place-items: center;
-        padding: 1.5rem;
-        pointer-events: none;
-      }
-
-      .panel {
-        width: min(720px, 100%);
-        padding: 1.5rem;
-        border: 1px solid var(--border);
-        border-radius: 24px;
-        background: var(--bg-soft);
-        box-shadow: 0 24px 80px -40px rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(14px);
-        -webkit-backdrop-filter: blur(14px);
-      }
-
-      .eyebrow {
-        display: inline-flex;
-        padding: 0.45rem 0.8rem;
-        border-radius: 999px;
-        background: rgba(249, 115, 22, 0.1);
-        border: 1px solid rgba(249, 115, 22, 0.22);
-        color: #fdba74;
-        font-size: 0.82rem;
-        font-weight: 600;
-      }
-
-      h1 {
-        margin: 1rem 0 0.75rem;
-        font-family: 'Space Grotesk', sans-serif;
-        font-size: clamp(2rem, 7vw, 3.8rem);
-        letter-spacing: -0.05em;
-      }
-
-      p {
-        margin: 0;
-        max-width: 58ch;
-        color: var(--muted);
-        line-height: 1.8;
-      }
-
-      /* Decap CMS login screen overrides */
+      /* Decap CMS: improve contrast and consistency */
       .nc-root,
-      [class*='nc-'] {
-        --nc-primary: var(--accent);
-        --nc-secondary: var(--accent-2);
-        --nc-bg: var(--bg-soft);
-        --nc-border: var(--border);
-        --nc-text: var(--text);
-        --nc-muted: var(--muted);
+      [class*='nc-'],
+      #nc-root,
+      [data-netlify-cms-root] {
+        --nc-primary: var(--nc-primary) !important;
+        --nc-bg: var(--nc-bg) !important;
+        --nc-bg-elevated: var(--nc-bg-elevated) !important;
+        --nc-border: var(--nc-border) !important;
+        --nc-text: var(--nc-text) !important;
+        --nc-text-secondary: var(--nc-text-secondary) !important;
+        --nc-text-muted: var(--nc-text-muted) !important;
       }
 
-      .nc-root a,
-      [class*='nc-'] a {
-        color: var(--accent) !important;
-      }
-
-      .nc-root [class*='Button'] button,
-      .nc-root [class*='button'] button,
-      .nc-root button[type='button'],
-      [class*='nc-'] button {
-        background: linear-gradient(135deg, var(--accent), var(--accent-2)) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 12px !important;
-        padding: 0.75rem 1.5rem !important;
-        font-weight: 600 !important;
-        font-family: var(--font-display, 'Space Grotesk', sans-serif) !important;
-        box-shadow: 0 4px 14px rgba(99, 102, 241, 0.35) !important;
-        transition:
-          transform 0.2s ease,
-          box-shadow 0.2s ease !important;
-      }
-
-      .nc-root button:hover,
-      [class*='nc-'] button:hover {
-        transform: translateY(-1px) !important;
-        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45) !important;
+      /* Sidebar and panels: readable contrast */
+      .nc-root [class*='Sidebar'],
+      .nc-root [class*='sidebar'],
+      .nc-root [class*='Collection'],
+      .nc-root [class*='collection'],
+      [class*='nc-'] [class*='Sidebar'],
+      [class*='nc-'] [class*='sidebar'] {
+        background: var(--nc-bg-elevated) !important;
+        border-color: var(--nc-border) !important;
       }
 
       .nc-root [class*='Card'],
+      .nc-root [class*='card'],
+      .nc-root [class*='CollectionPage'],
+      [class*='nc-'] [class*='Card'],
       [class*='nc-'] [class*='card'] {
-        background: var(--bg-soft) !important;
-        border: 1px solid var(--border) !important;
-        border-radius: 16px !important;
-        backdrop-filter: blur(14px) !important;
-        box-shadow: 0 24px 80px -40px rgba(0, 0, 0, 0.6) !important;
+        background: var(--nc-bg-elevated) !important;
+        border: 1px solid var(--nc-border) !important;
+      }
+
+      /* Text contrast: headings and main content */
+      .nc-root h1,
+      .nc-root h2,
+      .nc-root h3,
+      .nc-root [class*='Label'],
+      .nc-root [class*='Title'],
+      [class*='nc-'] h1,
+      [class*='nc-'] h2,
+      [class*='nc-'] h3,
+      [class*='nc-'] [class*='Label'],
+      [class*='nc-'] [class*='Title'] {
+        color: var(--nc-text) !important;
+      }
+
+      .nc-root [class*='muted'],
+      .nc-root [class*='description'],
+      .nc-root [class*='hint'],
+      [class*='nc-'] [class*='muted'],
+      [class*='nc-'] [class*='description'] {
+        color: var(--nc-text-secondary) !important;
+      }
+
+      /* Primary buttons */
+      .nc-root button[class*='primary'],
+      .nc-root [class*='Button'] button:not([class*='invert']),
+      .nc-root [class*='New'] button,
+      [class*='nc-'] button[class*='primary'],
+      [class*='nc-'] [class*='Button']:not([class*='invert']) button {
+        background: var(--nc-primary) !important;
+        color: white !important;
+        border: none !important;
+        font-weight: 600 !important;
+      }
+
+      .nc-root button[class*='primary']:hover,
+      .nc-root [class*='New'] button:hover,
+      [class*='nc-'] button[class*='primary']:hover {
+        background: var(--nc-primary-hover) !important;
+      }
+
+      /* Links */
+      .nc-root a,
+      [class*='nc-'] a {
+        color: var(--nc-primary) !important;
+      }
+
+      /* Inputs */
+      .nc-root input,
+      .nc-root textarea,
+      .nc-root select,
+      [class*='nc-'] input,
+      [class*='nc-'] textarea {
+        background: var(--nc-bg-input) !important;
+        border-color: var(--nc-border) !important;
+        color: var(--nc-text) !important;
       }
     </style>
   </head>
   <body>
-    <div class="shell" aria-hidden="true">
-      <div class="panel">
-        <div class="eyebrow">Private writing portal</div>
-        <h1>Notes Admin</h1>
-        <p>
-          Draft new notes, save edits, and publish directly into the repository. Published entries are deployed to the
-          public notes page automatically.
-        </p>
-      </div>
-    </div>
-
     <script src="https://unpkg.com/decap-cms@^3.8.3/dist/decap-cms.js"></script>
   </body>
 </html>
