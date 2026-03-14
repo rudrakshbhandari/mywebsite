@@ -47,6 +47,10 @@ Decap's GitHub backend requires an authentication provider in production. This r
 
 For an options comparison, see [`docs/NOTES_PORTAL_AUTH_OPTIONS.md`](NOTES_PORTAL_AUTH_OPTIONS.md).
 
+### Troubleshooting
+
+**Login redirects to GitHub with `client_id=undefined`** — Your browser cached an old redirect from before the OAuth secrets were set. Fix: clear site data for `rudrakshbhandari.com` and `decap.rudrakshbhandari.com` (Chrome → Settings → Privacy → Clear browsing data → Cookies and cached images). Or use an incognito window.
+
 ### References
 
 - [Decap GitHub backend](https://decapcms.org/docs/github-backend/)
