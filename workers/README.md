@@ -53,7 +53,7 @@ backend:
   name: github
   repo: rudrakshbhandari/mywebsite
   branch: main
-  base_url: https://decap.rudrakshbhandari.com   # or your workers.dev URL
+  base_url: https://decap.rudrakshbhandari.com # or your workers.dev URL
   auth_endpoint: /auth
 ```
 

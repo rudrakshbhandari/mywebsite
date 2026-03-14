@@ -20,11 +20,7 @@ export class OAuthClient {
     this.clientConfig = config;
   }
 
-  authorizeURL(options: {
-    redirect_uri: string;
-    scope: string;
-    state: string;
-  }) {
+  authorizeURL(options: { redirect_uri: string; scope: string; state: string }) {
     const { clientConfig } = this;
     const { tokenHost, authorizePath } = clientConfig.target;
     const { redirect_uri, scope, state } = options;
