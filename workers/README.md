@@ -57,6 +57,17 @@ backend:
   auth_endpoint: /auth
 ```
 
+### 5. Access Control (Allowlist)
+
+By default, only the GitHub usernames in `ALLOWED_GITHUB_USERS` can complete login. Set in `wrangler.toml`:
+
+```toml
+[vars]
+ALLOWED_GITHUB_USERS = "rudrakshbhandari"   # comma-separated for multiple users
+```
+
+Leave empty or omit to allow any GitHub user (not recommended for personal sites).
+
 ## Local Development
 
 For local writing, use `npm run notes:admin` in the repo root. That runs the local proxy and bypasses this Worker.
