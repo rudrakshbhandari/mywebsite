@@ -33,6 +33,16 @@ const createOAuth = (env: Env) => {
 };
 
 const handleAuth = async (url: URL, env: Env) => {
+  if (!env.GITHUB_OAUTH_ID || !env.GITHUB_OAUTH_SECRET) {
+    return new Response(
+      `OAuth secrets not configured. Run from the repo root:\n\n  cd workers/decap-proxy\n  npx wrangler secret put GITHUB_OAUTH_ID\n  npx wrangler secret put GITHUB_OAUTH_SECRET\n\nThen retry logging in.`,
+      {
+        status: 500,
+        headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+      }
+    );
+  }
+
   const provider = url.searchParams.get('provider');
   if (provider !== 'github') {
     return new Response('Invalid provider', { status: 400 });
