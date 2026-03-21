@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-03-21T13:05:37.538Z",
+  "lastUpdatedIso": "2026-03-21T13:52:42.457Z",
   "day": "2026-03-20",
   "byDay": [
     {
@@ -145,10 +145,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-03-20",
   "heartRateSeries": [
-    {
-      "t": "2026-03-20T13:08:13.000Z",
-      "bpm": 64
-    },
     {
       "t": "2026-03-20T13:53:13.000Z",
       "bpm": 63
