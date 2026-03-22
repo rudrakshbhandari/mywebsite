@@ -1,0 +1,45 @@
+backend:
+  name: github
+  repo: rudrakshbhandari/mywebsite
+  branch: main
+  base_url: https://decap.rudrakshbhandari.com
+  auth_endpoint: /auth
+
+local_backend: true
+
+site_url: https://rudrakshbhandari.com
+display_url: https://rudrakshbhandari.com/notes/
+logo_url: /img/android-chrome-192x192.png
+
+media_folder: 'img/uploads'
+public_folder: '/img/uploads'
+
+publish_mode: editorial_workflow
+
+collections:
+  - name: 'notes'
+    label: 'Notes'
+    label_singular: 'Note'
+    folder: 'content/notes'
+    create: true
+    slug: '{{slug}}'
+    extension: 'md'
+    format: 'frontmatter'
+    summary: '{{title}} - {{date}}'
+    sortable_fields: ['date', 'title']
+    view_filters:
+      - label: 'Published'
+        field: 'published'
+        pattern: true
+      - label: 'Drafts'
+        field: 'published'
+        pattern: false
+    fields:
+      - { label: 'Title', name: 'title', widget: 'string' }
+      - { label: 'Slug', name: 'slug', widget: 'string', hint: 'Lowercase URL slug, for example: ai-and-attention' }
+      - { label: 'Date', name: 'date', widget: 'datetime', format: 'YYYY-MM-DD', time_format: false }
+      - { label: 'Tags', name: 'tags', widget: 'list', default: [] }
+      - { label: 'Summary', name: 'summary', widget: 'text', required: false }
+      - { label: 'Featured', name: 'featured', widget: 'boolean', default: false, required: false }
+      - { label: 'Published', name: 'published', widget: 'boolean', default: true }
+      - { label: 'Body', name: 'body', widget: 'markdown' }

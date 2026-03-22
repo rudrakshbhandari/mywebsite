@@ -173,6 +173,21 @@
         line-height: 1.6;
       }
 
+      .page-subtitle a {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(34, 211, 238, 0.4);
+        transition:
+          color var(--transition-normal),
+          border-color var(--transition-normal);
+      }
+
+      .page-subtitle a:hover {
+        color: var(--text-light);
+        border-bottom-color: var(--accent-color);
+      }
+
       .data-source {
         display: inline-flex;
         align-items: center;
@@ -499,6 +514,12 @@
         border: 1px solid rgba(248, 113, 113, 0.24);
       }
 
+      .heartbeat-live-chip.is-stale {
+        color: #fde68a;
+        background: rgba(120, 53, 15, 0.3);
+        border-color: rgba(245, 158, 11, 0.28);
+      }
+
       .heartbeat-live-chip::before {
         content: '';
         width: 0.45rem;
@@ -507,6 +528,12 @@
         background: #fb7185;
         box-shadow: 0 0 0 0 rgba(251, 113, 133, 0.45);
         animation: heartbeatLiveDot 1.6s ease-out infinite;
+      }
+
+      .heartbeat-live-chip.is-stale::before {
+        background: #f59e0b;
+        box-shadow: none;
+        animation: none;
       }
 
       .heartbeat-age-chip {
@@ -1354,7 +1381,17 @@
     <main>
       <div class="page-header">
         <h1 class="page-title">Health Metrics</h1>
-        <p class="page-subtitle">A transparent view of my daily wellness data.</p>
+        <p class="page-subtitle">
+          A transparent view of my daily wellness data.
+          <br />
+          Inspired by Bryan Johnson's
+          <a
+            href="https://blueprint.bryanjohnson.com/blogs/news/bryan-johnsons-protocol"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Blueprint Protocol</a
+          >. #DontDie
+        </p>
         <div class="data-source">
           <i class="fas fa-ring"></i>
           <span>Powered by Oura Ring 4</span>
@@ -1430,6 +1467,7 @@
             </span>
           </div>
           <div class="timeline-chart">
+            <!--
             <div class="heartbeat-stage heartbeat-stage-paused" id="heartbeat-stage">
               <div class="heartbeat-stage-header">
                 <div class="heartbeat-stage-title">
@@ -1492,6 +1530,7 @@
                 Heart cadence uses the latest HR sample. The line shows recent sampled HR values, not an ECG trace.
               </div>
             </div>
+            -->
             <div class="timeline-chart-inner">
               <svg
                 id="heart-rate-timeline"
