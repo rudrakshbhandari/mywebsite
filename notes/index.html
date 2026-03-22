@@ -20,7 +20,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
 
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#f8f6f2" />
 
     <meta property="og:title" content="Notes | Rudraksh Bhandari" />
     <meta
@@ -35,7 +35,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -47,17 +47,18 @@
     />
 
     <style>
+      /* Notes: elegant light theme — intentionally different from the dark portfolio */
       :root {
-        --primary: #6366f1;
-        --accent: #f97316;
-        --text: #f8fafc;
-        --muted: #cbd5e1;
-        --soft: #94a3b8;
-        --bg: #020617;
-        --bg-card: rgba(15, 23, 42, 0.86);
-        --border: rgba(148, 163, 184, 0.16);
-        --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        --font-display: 'Space Grotesk', var(--font-body);
+        --text: #1c1917;
+        --text-muted: #57534e;
+        --text-soft: #78716c;
+        --bg: #f8f6f2;
+        --bg-card: #ffffff;
+        --border: rgba(28, 25, 23, 0.08);
+        --accent: #6b5344;
+        --accent-hover: #514439;
+        --font-body: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+        --font-display: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       }
 
       * {
@@ -68,10 +69,7 @@
         margin: 0;
         color: var(--text);
         font-family: var(--font-body);
-        background:
-          radial-gradient(circle at top left, rgba(249, 115, 22, 0.18), transparent 24%),
-          radial-gradient(circle at 80% 20%, rgba(99, 102, 241, 0.22), transparent 30%),
-          linear-gradient(180deg, #0f172a 0%, #020617 100%);
+        background: var(--bg);
         min-height: 100vh;
       }
 
@@ -83,9 +81,9 @@
         position: sticky;
         top: 0;
         z-index: 1000;
-        backdrop-filter: blur(16px);
-        -webkit-backdrop-filter: blur(16px);
-        background: rgba(2, 6, 23, 0.72);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(248, 246, 242, 0.88);
         border-bottom: 1px solid var(--border);
       }
 
@@ -104,14 +102,19 @@
         font-family: var(--font-display);
         font-weight: 600;
         letter-spacing: -0.02em;
+        color: var(--text);
       }
 
       .nav-back {
         text-decoration: none;
-        color: var(--soft);
+        color: var(--text-soft);
         display: inline-flex;
         align-items: center;
         gap: 0.5rem;
+      }
+
+      .nav-back:hover {
+        color: var(--text);
       }
 
       main {
@@ -133,9 +136,10 @@
         gap: 0.5rem;
         padding: 0.45rem 0.8rem;
         border-radius: 999px;
-        border: 1px solid rgba(249, 115, 22, 0.24);
-        background: rgba(249, 115, 22, 0.09);
-        color: #fdba74;
+        border: 1px solid var(--border);
+        background: var(--bg-card);
+        color: var(--text-muted);
+        font-family: var(--font-display);
         font-size: 0.82rem;
         font-weight: 600;
       }
@@ -146,14 +150,15 @@
         font-size: clamp(2.8rem, 8vw, 5.4rem);
         line-height: 0.92;
         letter-spacing: -0.06em;
+        color: var(--text);
       }
 
       .hero-copy {
         max-width: 60ch;
         margin-top: 1.2rem;
-        color: var(--muted);
-        line-height: 1.85;
-        font-size: 1.04rem;
+        color: var(--text-muted);
+        line-height: 1.75;
+        font-size: 1.12rem;
       }
 
       .chip-row {
@@ -167,8 +172,9 @@
         padding: 0.5rem 0.85rem;
         border: 1px solid var(--border);
         border-radius: 999px;
-        background: rgba(15, 23, 42, 0.54);
-        color: var(--muted);
+        background: var(--bg-card);
+        color: var(--text-muted);
+        font-family: var(--font-display);
         font-size: 0.9rem;
       }
 
@@ -176,9 +182,9 @@
       .reader,
       .sidebar {
         border: 1px solid var(--border);
-        border-radius: 24px;
+        border-radius: 20px;
         background: var(--bg-card);
-        box-shadow: 0 24px 80px -40px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 1px 3px rgba(28, 25, 23, 0.04);
       }
 
       .featured {
@@ -186,11 +192,12 @@
       }
 
       .featured-label {
-        color: #fdba74;
+        color: var(--text-soft);
+        font-family: var(--font-display);
         text-transform: uppercase;
         letter-spacing: 0.08em;
         font-size: 0.76rem;
-        font-weight: 700;
+        font-weight: 600;
       }
 
       .featured h2 {
@@ -198,11 +205,12 @@
         font-family: var(--font-display);
         font-size: 1.5rem;
         letter-spacing: -0.04em;
+        color: var(--text);
       }
 
       .featured p {
-        color: var(--muted);
-        line-height: 1.8;
+        color: var(--text-muted);
+        line-height: 1.7;
       }
 
       .featured-meta {
@@ -210,7 +218,7 @@
         gap: 0.9rem;
         flex-wrap: wrap;
         margin-top: 1rem;
-        color: var(--soft);
+        color: var(--text-soft);
         font-size: 0.92rem;
       }
 
@@ -219,11 +227,16 @@
         border: 0;
         border-radius: 999px;
         padding: 0.8rem 1.1rem;
-        background: linear-gradient(135deg, var(--accent), var(--primary));
-        color: white;
-        font: inherit;
+        background: var(--accent);
+        color: #ffffff;
+        font-family: var(--font-display);
         font-weight: 600;
         cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .featured-button:hover {
+        background: var(--accent-hover);
       }
 
       .meta-strip {
@@ -232,12 +245,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
-        color: var(--soft);
-      }
-
-      .portal-tip {
-        color: var(--muted);
-        font-size: 0.95rem;
+        color: var(--text-soft);
       }
 
       .notes-layout {
@@ -254,11 +262,12 @@
         margin: 0 0 0.75rem;
         font-family: var(--font-display);
         font-size: 1.1rem;
+        color: var(--text);
       }
 
       .sidebar-empty,
       .note-placeholder {
-        color: var(--muted);
+        color: var(--text-muted);
         line-height: 1.8;
       }
 
@@ -271,22 +280,22 @@
         width: 100%;
         text-align: left;
         padding: 1rem;
-        border-radius: 18px;
+        border-radius: 14px;
         border: 1px solid transparent;
-        background: rgba(15, 23, 42, 0.7);
+        background: var(--bg);
         color: inherit;
+        font-family: inherit;
         cursor: pointer;
         transition:
-          transform 0.2s ease,
           border-color 0.2s ease,
           background 0.2s ease;
       }
 
       .note-list-item:hover,
       .note-list-item.is-active {
-        transform: translateY(-1px);
-        border-color: rgba(99, 102, 241, 0.34);
-        background: rgba(30, 41, 59, 0.84);
+        border-color: var(--border);
+        background: var(--bg-card);
+        box-shadow: 0 1px 2px rgba(28, 25, 23, 0.04);
       }
 
       .note-list-date,
@@ -295,7 +304,8 @@
       }
 
       .note-list-date {
-        color: #fdba74;
+        color: var(--text-soft);
+        font-family: var(--font-display);
         font-size: 0.8rem;
         font-weight: 600;
         text-transform: uppercase;
@@ -308,11 +318,12 @@
         font-family: var(--font-display);
         font-size: 1rem;
         font-weight: 600;
+        color: var(--text);
       }
 
       .note-list-summary {
-        color: var(--muted);
-        line-height: 1.65;
+        color: var(--text-muted);
+        line-height: 1.6;
         font-size: 0.92rem;
       }
 
@@ -328,7 +339,8 @@
       }
 
       .note-article-meta {
-        color: #fdba74;
+        color: var(--text-soft);
+        font-family: var(--font-display);
         font-size: 0.86rem;
         font-weight: 600;
         text-transform: uppercase;
@@ -340,28 +352,30 @@
         font-family: var(--font-display);
         font-size: clamp(2rem, 4vw, 3rem);
         letter-spacing: -0.05em;
+        color: var(--text);
       }
 
       .note-article-summary {
         margin: 0.95rem 0 1rem;
-        color: var(--muted);
-        font-size: 1.05rem;
-        line-height: 1.85;
+        color: var(--text-muted);
+        font-size: 1.08rem;
+        line-height: 1.75;
       }
 
       .note-tag {
         padding: 0.4rem 0.7rem;
         border-radius: 999px;
         border: 1px solid var(--border);
-        background: rgba(15, 23, 42, 0.62);
-        color: var(--muted);
+        background: var(--bg);
+        color: var(--text-muted);
+        font-family: var(--font-display);
         font-size: 0.85rem;
       }
 
       .note-article-body {
         margin-top: 1.4rem;
         color: var(--text);
-        line-height: 1.95;
+        line-height: 1.85;
       }
 
       .note-article-body p,
@@ -379,20 +393,27 @@
       }
 
       .note-article-body a {
-        color: #fdba74;
+        color: var(--accent);
+      }
+
+      .note-article-body a:hover {
+        text-decoration: underline;
       }
 
       .note-article-body code {
         padding: 0.15rem 0.35rem;
         border-radius: 6px;
-        background: rgba(15, 23, 42, 0.82);
+        background: var(--bg);
+        font-family: var(--font-display);
+        font-size: 0.9em;
       }
 
       .note-article-body pre {
         overflow-x: auto;
         padding: 1rem;
-        border-radius: 18px;
-        background: rgba(15, 23, 42, 0.92);
+        border-radius: 14px;
+        background: var(--bg);
+        border: 1px solid var(--border);
       }
 
       @media (max-width: 960px) {
@@ -456,9 +477,6 @@
 
       <div class="meta-strip">
         <div id="notes-count">0 published notes</div>
-        <div class="portal-tip">
-          New entries are published through the private writing portal and appear here automatically.
-        </div>
       </div>
 
       <section class="notes-layout" aria-label="Published notes">

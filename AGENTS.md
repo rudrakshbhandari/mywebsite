@@ -54,6 +54,14 @@ When working on this codebase, follow these workflow rules:
 
 If you catch yourself writing a code block or explaining "here's what you should change" — STOP. You should have already made the change via the tools.
 
+## Image Cache Busting
+
+**When adding or replacing an image** (logo, project thumbnail, photo, etc.):
+
+- **Always add a cache-busting query param** — Images use long immutable cache in production. Append `?v=N` to the `src` (e.g., `img/nomnom.png?v=2`) so CDN/browsers fetch the new file instead of serving a cached old version.
+- **Bump the version** — When replacing an existing image at the same path, increment the `v` value (e.g., from `?v=2` to `?v=3`). For new images, start with `?v=1`.
+- **Do this automatically** — Apply the version param as part of any image update without being asked.
+
 ## Proactive Automation
 
 **Run scripts yourself when possible.** If the codebase contains scripts/tools that can diagnose or fix an issue:
