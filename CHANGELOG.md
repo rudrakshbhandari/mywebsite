@@ -6,10 +6,17 @@ The format is based on Keep a Changelog and this project uses date-based release
 
 ## [Unreleased]
 
+### Added
+
+- Separate `/notes/` page for personal writing, linked from the main navigation.
+- Private `/notes-admin/` writing portal powered by Decap CMS.
+- Markdown-backed notes pipeline that builds public notes data during GitHub Pages deploys.
+
 ### Changed
 
 - Updated documentation to match the current health pipeline behavior (15-minute workflow cadence, exposed downsampled heart-rate series, and token/secret guidance).
 - Replaced Vercel hosting/analytics hooks with GitHub Pages deployment scaffolding plus Cloudflare and GA4 configuration.
+- Removed the lingering Vercel custom-domain aliases and Git integration for `mywebsite` so production is unambiguously GitHub Pages + Cloudflare.
 
 ## [2026-02-27]
 

@@ -12,6 +12,8 @@ const MAX_HEARTBEAT_BPM = 160;
 const HEARTBEAT_STAGE_WIDTH = 1200;
 const HEARTBEAT_STAGE_HEIGHT = 170;
 const HEARTBEAT_STAGE_BASELINE = 85;
+const HEARTBEAT_STAGE_MIN_POINTS = 16;
+const HEARTBEAT_STAGE_MAX_POINTS = 48;
 
 /**
  * Format relative time (e.g., "12 min ago")
@@ -34,6 +36,46 @@ function getRelativeTime(isoDate) {
   if (diffHour < 24) return `${diffHour} hour${diffHour > 1 ? 's' : ''} ago`;
   if (diffDay < 7) return `${diffDay} day${diffDay > 1 ? 's' : ''} ago`;
   return date.toLocaleDateString();
+}
+
+/**
+ * Get elapsed minutes from an ISO date
+ * @param {string} isoDate
+ * @returns {number|null}
+ */
+function getElapsedMinutes(isoDate) {
+  if (!isoDate) return null;
+
+  const timestamp = new Date(isoDate).getTime();
+  if (!Number.isFinite(timestamp)) return null;
+
+  return Math.max(0, Math.floor((Date.now() - timestamp) / 60000));
+}
+
+/**
+ * Describe how fresh the latest HR sample really is
+ * @param {string|null} isoDate
+ * @returns {{label: string, stale: boolean}}
+ */
+function getHeartRateFreshness(isoDate) {
+  const elapsedMinutes = getElapsedMinutes(isoDate);
+  if (elapsedMinutes === null) {
+    return { label: 'Sample timing unknown', stale: true };
+  }
+
+  if (elapsedMinutes <= 90) {
+    return { label: 'Near real-time', stale: false };
+  }
+
+  if (elapsedMinutes <= 360) {
+    return { label: 'Recent samples', stale: false };
+  }
+
+  if (elapsedMinutes < 1440) {
+    return { label: 'Delayed samples', stale: true };
+  }
+
+  return { label: 'Historical samples', stale: true };
 }
 
 /**
@@ -284,7 +326,11 @@ function renderHeartbeatStage(series, data) {
     return;
   }
 
-  const recentPoints = finiteSeries.slice(-24);
+  const desiredPointCount = Math.max(
+    HEARTBEAT_STAGE_MIN_POINTS,
+    Math.min(HEARTBEAT_STAGE_MAX_POINTS, finiteSeries.length)
+  );
+  const recentPoints = finiteSeries.slice(-desiredPointCount);
   const bpms = recentPoints.map(point => Number(point.bpm));
   const minBpm = Math.min(...bpms);
   const maxBpm = Math.max(...bpms);
