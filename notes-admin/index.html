@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Notes Admin | Rudraksh Bhandari</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --nc-primary: #f97316;
+        --nc-primary-hover: #ea580c;
+        --nc-bg: #0f172a;
+        --nc-bg-elevated: #1e293b;
+        --nc-bg-input: #1e293b;
+        --nc-border: #334155;
+        --nc-text: #f8fafc;
+        --nc-text-secondary: #94a3b8;
+        --nc-text-muted: #64748b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        font-family: 'Inter', sans-serif;
+        color: var(--nc-text);
+        background: #0f172a;
+      }
+
+      /* Decap CMS: improve contrast and consistency */
+      .nc-root,
+      [class*='nc-'],
+      #nc-root,
+      [data-netlify-cms-root] {
+        --nc-primary: var(--nc-primary) !important;
+        --nc-bg: var(--nc-bg) !important;
+        --nc-bg-elevated: var(--nc-bg-elevated) !important;
+        --nc-border: var(--nc-border) !important;
+        --nc-text: var(--nc-text) !important;
+        --nc-text-secondary: var(--nc-text-secondary) !important;
+        --nc-text-muted: var(--nc-text-muted) !important;
+      }
+
+      /* Sidebar and panels: readable contrast */
+      .nc-root [class*='Sidebar'],
+      .nc-root [class*='sidebar'],
+      .nc-root [class*='Collection'],
+      .nc-root [class*='collection'],
+      [class*='nc-'] [class*='Sidebar'],
+      [class*='nc-'] [class*='sidebar'] {
+        background: var(--nc-bg-elevated) !important;
+        border-color: var(--nc-border) !important;
+      }
+
+      .nc-root [class*='Card'],
+      .nc-root [class*='card'],
+      .nc-root [class*='CollectionPage'],
+      [class*='nc-'] [class*='Card'],
+      [class*='nc-'] [class*='card'] {
+        background: var(--nc-bg-elevated) !important;
+        border: 1px solid var(--nc-border) !important;
+      }
+
+      /* Text contrast: headings and main content */
+      .nc-root h1,
+      .nc-root h2,
+      .nc-root h3,
+      .nc-root [class*='Label'],
+      .nc-root [class*='Title'],
+      [class*='nc-'] h1,
+      [class*='nc-'] h2,
+      [class*='nc-'] h3,
+      [class*='nc-'] [class*='Label'],
+      [class*='nc-'] [class*='Title'] {
+        color: var(--nc-text) !important;
+      }
+
+      .nc-root [class*='muted'],
+      .nc-root [class*='description'],
+      .nc-root [class*='hint'],
+      [class*='nc-'] [class*='muted'],
+      [class*='nc-'] [class*='description'] {
+        color: var(--nc-text-secondary) !important;
+      }
+
+      /* Primary buttons */
+      .nc-root button[class*='primary'],
+      .nc-root [class*='Button'] button:not([class*='invert']),
+      .nc-root [class*='New'] button,
+      [class*='nc-'] button[class*='primary'],
+      [class*='nc-'] [class*='Button']:not([class*='invert']) button {
+        background: var(--nc-primary) !important;
+        color: white !important;
+        border: none !important;
+        font-weight: 600 !important;
+      }
+
+      .nc-root button[class*='primary']:hover,
+      .nc-root [class*='New'] button:hover,
+      [class*='nc-'] button[class*='primary']:hover {
+        background: var(--nc-primary-hover) !important;
+      }
+
+      /* Links */
+      .nc-root a,
+      [class*='nc-'] a {
+        color: var(--nc-primary) !important;
+      }
+
+      /* Inputs */
+      .nc-root input,
+      .nc-root textarea,
+      .nc-root select,
+      [class*='nc-'] input,
+      [class*='nc-'] textarea {
+        background: var(--nc-bg-input) !important;
+        border-color: var(--nc-border) !important;
+        color: var(--nc-text) !important;
+      }
+    </style>
+  </head>
+  <body>
+    <script src="https://unpkg.com/decap-cms@^3.8.3/dist/decap-cms.js"></script>
+  </body>
+</html>

@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Notes on tech, AI, life, philosophy, politics, and whatever else stays on my mind."
+    />
+    <meta name="author" content="Rudraksh Bhandari" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com; form-action 'self'; upgrade-insecure-requests"
+    />
+
+    <link rel="canonical" href="https://rudrakshbhandari.com/notes" />
+
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
+
+    <meta name="theme-color" content="#f8f6f2" />
+
+    <meta property="og:title" content="Notes | Rudraksh Bhandari" />
+    <meta
+      property="og:description"
+      content="Thoughts on tech, AI, life, philosophy, politics, and whatever else I can't stop thinking about."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rudrakshbhandari.com/notes" />
+
+    <title>Notes | Rudraksh Bhandari</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      /* Notes: elegant light theme — intentionally different from the dark portfolio */
+      :root {
+        --text: #1c1917;
+        --text-muted: #57534e;
+        --text-soft: #78716c;
+        --bg: #f8f6f2;
+        --bg-card: #ffffff;
+        --border: rgba(28, 25, 23, 0.08);
+        --accent: #6b5344;
+        --accent-hover: #514439;
+        --font-body: 'Crimson Pro', Georgia, 'Times New Roman', serif;
+        --font-display: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        color: var(--text);
+        font-family: var(--font-body);
+        background: var(--bg);
+        min-height: 100vh;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: rgba(248, 246, 242, 0.88);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .nav {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      .nav-logo {
+        text-decoration: none;
+        font-family: var(--font-display);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        color: var(--text);
+      }
+
+      .nav-back {
+        text-decoration: none;
+        color: var(--text-soft);
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .nav-back:hover {
+        color: var(--text);
+      }
+
+      main {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 4rem 1.5rem 5rem;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: 1.15fr 0.85fr;
+        gap: 1.25rem;
+        align-items: start;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.45rem 0.8rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--bg-card);
+        color: var(--text-muted);
+        font-family: var(--font-display);
+        font-size: 0.82rem;
+        font-weight: 600;
+      }
+
+      h1 {
+        margin: 1rem 0 0;
+        font-family: var(--font-display);
+        font-size: clamp(2.8rem, 8vw, 5.4rem);
+        line-height: 0.92;
+        letter-spacing: -0.06em;
+        color: var(--text);
+      }
+
+      .hero-copy {
+        max-width: 60ch;
+        margin-top: 1.2rem;
+        color: var(--text-muted);
+        line-height: 1.75;
+        font-size: 1.12rem;
+      }
+
+      .chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.7rem;
+        margin-top: 1.4rem;
+      }
+
+      .chip {
+        padding: 0.5rem 0.85rem;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--bg-card);
+        color: var(--text-muted);
+        font-family: var(--font-display);
+        font-size: 0.9rem;
+      }
+
+      .panel,
+      .reader,
+      .sidebar {
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        background: var(--bg-card);
+        box-shadow: 0 1px 3px rgba(28, 25, 23, 0.04);
+      }
+
+      .featured {
+        padding: 1.5rem;
+      }
+
+      .featured-label {
+        color: var(--text-soft);
+        font-family: var(--font-display);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-size: 0.76rem;
+        font-weight: 600;
+      }
+
+      .featured h2 {
+        margin: 0.8rem 0 0.75rem;
+        font-family: var(--font-display);
+        font-size: 1.5rem;
+        letter-spacing: -0.04em;
+        color: var(--text);
+      }
+
+      .featured p {
+        color: var(--text-muted);
+        line-height: 1.7;
+      }
+
+      .featured-meta {
+        display: flex;
+        gap: 0.9rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+        color: var(--text-soft);
+        font-size: 0.92rem;
+      }
+
+      .featured-button {
+        margin-top: 1.25rem;
+        border: 0;
+        border-radius: 999px;
+        padding: 0.8rem 1.1rem;
+        background: var(--accent);
+        color: #ffffff;
+        font-family: var(--font-display);
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+
+      .featured-button:hover {
+        background: var(--accent-hover);
+      }
+
+      .meta-strip {
+        margin: 1rem 0 1.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        color: var(--text-soft);
+      }
+
+      .notes-layout {
+        display: grid;
+        grid-template-columns: 360px minmax(0, 1fr);
+        gap: 1.25rem;
+      }
+
+      .sidebar {
+        padding: 1rem;
+      }
+
+      .sidebar-title {
+        margin: 0 0 0.75rem;
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        color: var(--text);
+      }
+
+      .sidebar-empty,
+      .note-placeholder {
+        color: var(--text-muted);
+        line-height: 1.8;
+      }
+
+      .notes-list {
+        display: grid;
+        gap: 0.7rem;
+      }
+
+      .note-list-item {
+        width: 100%;
+        text-align: left;
+        padding: 1rem;
+        border-radius: 14px;
+        border: 1px solid transparent;
+        background: var(--bg);
+        color: inherit;
+        font-family: inherit;
+        cursor: pointer;
+        transition:
+          border-color 0.2s ease,
+          background 0.2s ease;
+      }
+
+      .note-list-item:hover,
+      .note-list-item.is-active {
+        border-color: var(--border);
+        background: var(--bg-card);
+        box-shadow: 0 1px 2px rgba(28, 25, 23, 0.04);
+      }
+
+      .note-list-date,
+      .note-list-summary {
+        display: block;
+      }
+
+      .note-list-date {
+        color: var(--text-soft);
+        font-family: var(--font-display);
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .note-list-title {
+        display: block;
+        margin: 0.45rem 0;
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--text);
+      }
+
+      .note-list-summary {
+        color: var(--text-muted);
+        line-height: 1.6;
+        font-size: 0.92rem;
+      }
+
+      .reader {
+        padding: 1.5rem;
+      }
+
+      .note-article-meta,
+      .note-tag-row {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .note-article-meta {
+        color: var(--text-soft);
+        font-family: var(--font-display);
+        font-size: 0.86rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+      }
+
+      .note-article h2 {
+        margin: 1rem 0 0;
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3rem);
+        letter-spacing: -0.05em;
+        color: var(--text);
+      }
+
+      .note-article-summary {
+        margin: 0.95rem 0 1rem;
+        color: var(--text-muted);
+        font-size: 1.08rem;
+        line-height: 1.75;
+      }
+
+      .note-tag {
+        padding: 0.4rem 0.7rem;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        background: var(--bg);
+        color: var(--text-muted);
+        font-family: var(--font-display);
+        font-size: 0.85rem;
+      }
+
+      .note-article-body {
+        margin-top: 1.4rem;
+        color: var(--text);
+        line-height: 1.85;
+      }
+
+      .note-article-body p,
+      .note-article-body ul,
+      .note-article-body ol,
+      .note-article-body blockquote {
+        margin: 0 0 1.2rem;
+      }
+
+      .note-article-body h3,
+      .note-article-body h4 {
+        margin: 2rem 0 0.8rem;
+        font-family: var(--font-display);
+        letter-spacing: -0.03em;
+      }
+
+      .note-article-body a {
+        color: var(--accent);
+      }
+
+      .note-article-body a:hover {
+        text-decoration: underline;
+      }
+
+      .note-article-body code {
+        padding: 0.15rem 0.35rem;
+        border-radius: 6px;
+        background: var(--bg);
+        font-family: var(--font-display);
+        font-size: 0.9em;
+      }
+
+      .note-article-body pre {
+        overflow-x: auto;
+        padding: 1rem;
+        border-radius: 14px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+      }
+
+      @media (max-width: 960px) {
+        .hero,
+        .notes-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .nav,
+        main {
+          padding-left: 1rem;
+          padding-right: 1rem;
+        }
+
+        .meta-strip {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .reader,
+        .sidebar,
+        .featured {
+          padding: 1.1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav class="nav" aria-label="Notes navigation">
+        <a class="nav-logo" href="/">Rudraksh Bhandari</a>
+        <a class="nav-back" href="/"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="notes-title">
+        <div>
+          <div class="eyebrow"><i class="fas fa-pencil-alt" aria-hidden="true"></i> Personal writing</div>
+          <h1 id="notes-title">Notes</h1>
+          <p class="hero-copy">
+            Thoughts on tech, AI, life, philosophy, politics, and whatever else I can't stop thinking about.
+          </p>
+          <div class="chip-row" aria-label="Topics">
+            <span class="chip">Tech</span>
+            <span class="chip">AI</span>
+            <span class="chip">Life</span>
+            <span class="chip">Philosophy</span>
+            <span class="chip">Politics</span>
+          </div>
+        </div>
+
+        <aside class="panel featured" id="featured-note">
+          <div class="featured-label">Featured note</div>
+          <h2>Loading...</h2>
+          <p>Pulling in the latest published note.</p>
+        </aside>
+      </section>
+
+      <div class="meta-strip">
+        <div id="notes-count">0 published notes</div>
+      </div>
+
+      <section class="notes-layout" aria-label="Published notes">
+        <aside class="sidebar">
+          <h2 class="sidebar-title">Library</h2>
+          <div id="notes-empty" class="sidebar-empty" hidden>No notes have been published yet.</div>
+          <div id="notes-list" class="notes-list"></div>
+        </aside>
+
+        <div class="reader" id="note-detail">
+          <div class="note-placeholder">
+            <h2>Loading notes...</h2>
+            <p>Fetching the latest published writing.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="/js/config.js"></script>
+    <script src="/js/analytics.js"></script>
+    <script src="/js/notes.js"></script>
+  </body>
+</html>
