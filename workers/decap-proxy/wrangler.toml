@@ -11,5 +11,7 @@ route = { pattern = "decap.rudrakshbhandari.com", zone_name = "rudrakshbhandari.
 workers_dev = false
 
 # Set to "1" if the content repo is private
+# Comma-separated GitHub usernames allowed to log in (empty = allow all)
 [vars]
 GITHUB_REPO_PRIVATE = "0"
+ALLOWED_GITHUB_USERS = "rudrakshbhandari"

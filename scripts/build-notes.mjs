@@ -71,8 +71,8 @@ async function loadNotes() {
         const html = marked.parse(content.trim());
         const plainText = stripHtml(html);
         const slug = data.slug ? slugify(data.slug) : slugify(entry.name.replace(/\.md$/, ''));
-        const summary =
-          typeof data.summary === 'string' && data.summary.trim() ? data.summary.trim() : plainText.slice(0, 180);
+        const hasExplicitSummary = typeof data.summary === 'string' && data.summary.trim().length > 0;
+        const summary = hasExplicitSummary ? data.summary.trim() : plainText.slice(0, 180);
         const date = normalizeDate(data.date);
 
         return {
@@ -80,6 +80,7 @@ async function loadNotes() {
           title: typeof data.title === 'string' ? data.title.trim() : slug,
           date,
           summary,
+          hasExplicitSummary,
           tags: ensureArray(data.tags),
           featured: Boolean(data.featured),
           published: data.published !== false,
