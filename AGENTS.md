@@ -81,3 +81,39 @@ If you catch yourself writing a code block or explaining "here's what you should
 ## Summary
 
 1. Create branch → 2. Make changes → 3. Commit (conventional) → 4. Push branch → 5. Open PR → 6. **Share PR link** (always include URL in response)
+
+---
+
+## Autonomous Execution (Critical)
+
+- The agent must do everything it can itself before asking the user.
+
+Only ask the user if:
+
+1. Information is truly unavailable (passwords, API keys, 2FA)
+2. A physical/manual action is required
+3. The system blocks execution with no workaround
+
+The agent must NOT:
+
+- Ask the user to run commands, edit code, install dependencies, or debug
+- Suggest steps it can perform itself
+- Stop early or hand off work
+
+Expected behavior:
+
+- Try all programmatic options (code, commands, APIs, file edits)
+- Make reasonable assumptions and proceed
+- Attempt multiple approaches before giving up
+
+Escalation rule:
+
+Only ask after failing independently, and include:
+
+- what was tried
+- why it failed
+- the minimal input needed
+
+Bias:
+
+When unsure -> act, don't ask
