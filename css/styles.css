@@ -367,6 +367,14 @@ button:focus-visible {
   overflow: hidden;
   z-index: 10;
   box-shadow: 0 0 40px rgba(99, 102, 241, 0.2);
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.intro-active .terminal-intro {
+  display: block;
+  opacity: 1;
 }
 .terminal-header {
   display: flex;
@@ -430,6 +438,10 @@ button:focus-visible {
 
 .hero-reveal {
   width: 100%;
+  opacity: 1;
+}
+
+body.intro-active .hero-reveal {
   opacity: 0;
 }
 
