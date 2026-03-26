@@ -30,14 +30,33 @@ function initTerminalIntro() {
   if (!terminalIntro || !heroReveal || !typingEl) return;
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) {
+  const revealHero = () => {
+    document.body.classList.remove('intro-active');
     terminalIntro.style.display = 'none';
     heroReveal.style.opacity = '1';
+    heroReveal.style.transform = 'translateY(0)';
+  };
+
+  if (prefersReducedMotion) {
+    revealHero();
     return;
   }
 
+  document.body.classList.add('intro-active');
+
   const terminalText = 'whoami → Rudraksh Bhandari';
   let charIndex = 0;
+  let isHeroRevealed = false;
+  const watchdog = setTimeout(() => {
+    if (!isHeroRevealed) revealHero();
+  }, 5000);
+
+  function finishIntro() {
+    if (isHeroRevealed) return;
+    isHeroRevealed = true;
+    clearTimeout(watchdog);
+    revealHero();
+  }
 
   function typeChar() {
     if (charIndex < terminalText.length) {
@@ -52,7 +71,7 @@ function initTerminalIntro() {
           duration: 0.5,
           ease: 'power2.inOut',
           onComplete: () => {
-            terminalIntro.style.display = 'none';
+            finishIntro();
             gsap.fromTo(heroReveal, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
           },
         });
