@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Case Studies | Rudraksh Bhandari" />
+    <meta name="author" content="Rudraksh Bhandari" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com; form-action 'self'; upgrade-insecure-requests"
+    />
+
+    <link rel="canonical" href="https://rudrakshbhandari.com/case-studies" />
+
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
+
+    <meta name="theme-color" content="#0f172a" />
+
+    <meta property="og:title" content="Case Studies | Rudraksh Bhandari" />
+    <meta property="og:description" content="How I approach high-impact product and engineering problems." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rudrakshbhandari.com/case-studies" />
+
+    <title>Case Studies | Rudraksh Bhandari</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0"
+      crossorigin="anonymous"
+    />
+
+    <style>
+      :root {
+        --primary-color: #6366f1;
+        --primary-glow: rgba(99, 102, 241, 0.4);
+        --secondary-color: #94a3b8;
+        --accent-color: #22d3ee;
+        --accent-glow: rgba(34, 211, 238, 0.3);
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --text-light: #ffffff;
+        --background-light: #0f172a;
+        --background-dark: #020617;
+        --background-card: #1e293b;
+        --border-color: #334155;
+        --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        --font-display: 'Space Grotesk', var(--font-family);
+        --radius-lg: 0.75rem;
+        --radius-xl: 1rem;
+        --transition-normal: 0.3s ease-in-out;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-family);
+        font-size: 16px;
+        line-height: 1.6;
+        color: var(--text-primary);
+        background: var(--background-dark);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      .page-background {
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 80%, rgba(34, 211, 238, 0.1) 0%, transparent 50%), var(--background-dark);
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .nav-logo a {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-light);
+        text-decoration: none;
+        letter-spacing: -0.02em;
+      }
+
+      .nav-back {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: color var(--transition-normal);
+      }
+
+      .nav-back:hover {
+        color: var(--accent-color);
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 7rem 1.5rem 4rem;
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .page-title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 700;
+        color: var(--text-light);
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.02em;
+      }
+
+      .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.0625rem;
+        max-width: 560px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      .case-studies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+      }
+
+      .case-study-card {
+        background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: 1.5rem;
+        transition: var(--transition-normal);
+      }
+
+      .case-study-card:hover {
+        transform: translateY(-6px);
+        border-color: var(--accent-color);
+        box-shadow: 0 0 28px var(--accent-glow);
+      }
+
+      .case-study-kicker {
+        font-size: 0.875rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--accent-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .case-study-title {
+        font-size: 1.5rem;
+        line-height: 1.3;
+        margin-bottom: 1rem;
+        color: var(--text-light);
+      }
+
+      .case-study-summary {
+        color: var(--text-secondary);
+        margin-bottom: 1rem;
+        line-height: 1.65;
+      }
+
+      .case-study-points {
+        margin-left: 1.1rem;
+        color: var(--text-secondary);
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .case-study-points li::marker {
+        color: var(--primary-color);
+      }
+
+      @media (max-width: 640px) {
+        .nav-container {
+          padding: 0.9rem 1rem;
+        }
+
+        main {
+          padding: 6.25rem 1rem 3rem;
+        }
+
+        .page-title {
+          font-size: 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-background" aria-hidden="true"></div>
+
+    <header>
+      <div class="nav-container">
+        <div class="nav-logo">
+          <a href="/">Rudraksh Bhandari</a>
+        </div>
+        <a href="/" class="nav-back"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-header">
+        <h1 class="page-title">Case Studies</h1>
+        <p class="page-subtitle">How I approach high-impact product and engineering problems</p>
+      </section>
+
+      <section class="case-studies-grid" aria-label="Case studies">
+        <article class="case-study-card">
+          <p class="case-study-kicker">AWS Hyperplane</p>
+          <h2 class="case-study-title">Reducing On-Call Operational Load</h2>
+          <p class="case-study-summary">
+            Built a CLI command generator and backend tooling that removed repeated manual incident-response steps and
+            improved operator response latency.
+          </p>
+          <ul class="case-study-points">
+            <li>Paired with operators and senior engineers to map the highest-friction workflows.</li>
+            <li>Designed UI + backend flow for reliable command generation and validation.</li>
+            <li>Result: manual effort reduced by approximately 75% for recurring on-call tasks.</li>
+          </ul>
+        </article>
+
+        <article class="case-study-card">
+          <p class="case-study-kicker">NomNom</p>
+          <h2 class="case-study-title">Building a Two-Sided Campus Delivery System</h2>
+          <p class="case-study-summary">
+            Designed student and courier app workflows, transaction-safe order handling, and UCSD-only guardrails for
+            secure campus operations.
+          </p>
+          <ul class="case-study-points">
+            <li>Implemented end-to-end order lifecycle and Firestore transaction protections.</li>
+            <li>Integrated OTP delivery, Stripe payments, and real-time ETA updates.</li>
+            <li>Shipped a production-ready flow balancing reliability and speed for student users.</li>
+          </ul>
+        </article>
+
+        <article class="case-study-card">
+          <p class="case-study-kicker">Personal Systems</p>
+          <h2 class="case-study-title">Publishing a Live Health Metrics Dashboard</h2>
+          <p class="case-study-summary">
+            Created an automated Oura ingestion pipeline and front-end dashboard with trend visualizations to make daily
+            recovery and activity signals transparent.
+          </p>
+          <ul class="case-study-points">
+            <li>Automated hourly data refresh and secret rotation handling in GitHub Actions.</li>
+            <li>Normalized API responses into a stable public JSON schema.</li>
+            <li>Delivered an accessible UI with trend charts and contributor-level breakdowns.</li>
+          </ul>
+        </article>
+      </section>
+    </main>
+  </body>
+</html>
