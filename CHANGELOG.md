@@ -11,6 +11,7 @@ The format is based on Keep a Changelog and this project uses date-based release
 - Separate `/notes/` page for personal writing, linked from the main navigation.
 - Private `/notes-admin/` writing portal powered by Decap CMS.
 - Markdown-backed notes pipeline that builds public notes data during GitHub Pages deploys.
+- Health dashboard watchdog automation that alerts on failed Oura updates and stale public data.
 
 ### Changed
 
