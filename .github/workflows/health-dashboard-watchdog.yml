@@ -1,0 +1,68 @@
+name: Health Dashboard Watchdog
+
+on:
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check-freshness:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Evaluate dashboard freshness
+        id: freshness
+        env:
+          OURA_MAX_STALENESS_HOURS: '36'
+        run: node scripts/check-health-dashboard-freshness.mjs
+
+      - name: Open or update staleness alert
+        if: steps.freshness.outputs.is_stale == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_TITLE: Health dashboard automation alert
+        run: |
+          RUN_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          cat > .health_alert_body.md <<EOF
+          @rudrakshbhandari the health dashboard data is stale.
+
+          - Last updated: \`${{ steps.freshness.outputs.last_updated_iso }}\`
+          - Data day: \`${{ steps.freshness.outputs.data_day }}\`
+          - Age: \`${{ steps.freshness.outputs.age_hours }} hours\`
+          - Threshold: \`${{ steps.freshness.outputs.max_staleness_hours }} hours\`
+          - Watchdog run: ${RUN_URL}
+
+          The scheduled updater may be failing, succeeding without producing fresh data, or missing valid Oura credentials.
+          EOF
+
+          ISSUE_NUMBER="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "'"${ISSUE_TITLE}"'") | .number' | head -n 1)"
+
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue edit "$ISSUE_NUMBER" --body-file .health_alert_body.md
+          else
+            gh issue create --title "$ISSUE_TITLE" --body-file .health_alert_body.md
+          fi
+
+      - name: Close staleness alert after recovery
+        if: steps.freshness.outputs.is_stale != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_TITLE: Health dashboard automation alert
+        run: |
+          ISSUE_NUMBER="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "'"${ISSUE_TITLE}"'") | .number' | head -n 1)"
+
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue close "$ISSUE_NUMBER" --comment "Watchdog confirms the dashboard is fresh again in https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}."
+          fi

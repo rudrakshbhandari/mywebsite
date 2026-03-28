@@ -12,6 +12,7 @@ concurrency:
 
 permissions:
   contents: write
+  issues: write
 
 jobs:
   fetch-and-commit:
@@ -30,16 +31,20 @@ jobs:
           node-version: '20'
 
       - name: Fetch Oura data
+        id: fetch_oura
         env:
           # Optional: Personal Access Token path (most reliable for personal projects)
           OURA_ACCESS_TOKEN: ${{ secrets.OURA_ACCESS_TOKEN }}
           OURA_CLIENT_ID: ${{ secrets.OURA_CLIENT_ID }}
           OURA_CLIENT_SECRET: ${{ secrets.OURA_CLIENT_SECRET }}
           OURA_REFRESH_TOKEN: ${{ secrets.OURA_REFRESH_TOKEN }}
-        run: node scripts/fetch_oura_and_write_json.mjs
+        run: |
+          set -o pipefail
+          node scripts/fetch_oura_and_write_json.mjs 2>&1 | tee .oura_fetch.log
 
       - name: Check if files changed
         id: check_changes
+        if: steps.fetch_oura.outcome == 'success'
         run: |
           if [ -f .oura_no_change ]; then
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -60,7 +65,7 @@ jobs:
           git push
 
       - name: Rotate refresh token secret (OAuth path)
-        if: always()
+        if: always() && steps.fetch_oura.outcome == 'success'
         env:
           OURA_ACCESS_TOKEN: ${{ secrets.OURA_ACCESS_TOKEN }}
           GH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN }}
@@ -97,3 +102,43 @@ jobs:
 
           echo "::error::Failed to update OURA_REFRESH_TOKEN after 3 attempts."
           exit 1
+
+      - name: Open or update dashboard alert issue
+        if: steps.fetch_oura.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_TITLE: Health dashboard automation alert
+        run: |
+          RUN_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          LAST_ERROR="$(tail -n 20 .oura_fetch.log | sed 's/\r$//' | tail -n 1)"
+          cat > .health_alert_body.md <<EOF
+          @rudrakshbhandari the scheduled Oura health dashboard update failed.
+
+          - Workflow: \`Oura Health Data Update\`
+          - Run: ${RUN_URL}
+          - Branch: \`${GITHUB_REF_NAME}\`
+          - Triggered at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          - Last log line: \`${LAST_ERROR}\`
+
+          This usually means the Oura token refresh path or related secrets need attention before the public dashboard goes stale.
+          EOF
+
+          ISSUE_NUMBER="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "'"${ISSUE_TITLE}"'") | .number' | head -n 1)"
+
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue edit "$ISSUE_NUMBER" --body-file .health_alert_body.md
+          else
+            gh issue create --title "$ISSUE_TITLE" --body-file .health_alert_body.md
+          fi
+
+      - name: Close dashboard alert issue after recovery
+        if: steps.fetch_oura.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_TITLE: Health dashboard automation alert
+        run: |
+          ISSUE_NUMBER="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "'"${ISSUE_TITLE}"'") | .number' | head -n 1)"
+
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue close "$ISSUE_NUMBER" --comment "Automation recovered in https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}."
+          fi
