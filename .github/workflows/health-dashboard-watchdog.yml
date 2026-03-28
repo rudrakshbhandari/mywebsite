@@ -25,7 +25,7 @@ jobs:
       - name: Evaluate dashboard freshness
         id: freshness
         env:
-          OURA_MAX_STALENESS_HOURS: '36'
+          OURA_MAX_STALENESS_HOURS: '12'
         run: node scripts/check-health-dashboard-freshness.mjs
 
       - name: Open or update staleness alert
