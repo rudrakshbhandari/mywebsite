@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-03-30T20:28:29.439Z",
+  "lastUpdatedIso": "2026-03-30T21:22:42.195Z",
   "day": "2026-03-30",
   "byDay": [
     {
@@ -12,12 +12,12 @@
       "steps": 3759,
       "activeCalories": 525,
       "spo2Average": null,
-      "workoutCount": 2,
-      "totalSleepDuration": 34620,
-      "deepSleepDuration": 6780,
-      "remSleepDuration": 7950,
-      "lightSleepDuration": 19890,
-      "sleepEfficiency": 88
+      "workoutCount": 0,
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-03-25",
@@ -29,12 +29,12 @@
       "steps": 3436,
       "activeCalories": 145,
       "spo2Average": null,
-      "workoutCount": 2,
-      "totalSleepDuration": 32640,
-      "deepSleepDuration": 8100,
-      "remSleepDuration": 6000,
-      "lightSleepDuration": 18540,
-      "sleepEfficiency": 91
+      "workoutCount": 0,
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-03-26",
@@ -46,12 +46,12 @@
       "steps": 8318,
       "activeCalories": 385,
       "spo2Average": null,
-      "workoutCount": 2,
-      "totalSleepDuration": 33990,
-      "deepSleepDuration": 9090,
-      "remSleepDuration": 7800,
-      "lightSleepDuration": 17100,
-      "sleepEfficiency": 87
+      "workoutCount": 0,
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-03-27",
@@ -63,12 +63,12 @@
       "steps": 8366,
       "activeCalories": 611,
       "spo2Average": null,
-      "workoutCount": 3,
-      "totalSleepDuration": 31140,
-      "deepSleepDuration": 7890,
-      "remSleepDuration": 7080,
-      "lightSleepDuration": 16170,
-      "sleepEfficiency": 89
+      "workoutCount": 0,
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-03-28",
@@ -80,12 +80,12 @@
       "steps": 11372,
       "activeCalories": 483,
       "spo2Average": null,
-      "workoutCount": 5,
-      "totalSleepDuration": 36420,
-      "deepSleepDuration": 7830,
-      "remSleepDuration": 9960,
-      "lightSleepDuration": 18630,
-      "sleepEfficiency": 88
+      "workoutCount": 0,
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-03-29",
@@ -98,11 +98,11 @@
       "activeCalories": 308,
       "spo2Average": null,
       "workoutCount": 0,
-      "totalSleepDuration": 20910,
-      "deepSleepDuration": 7020,
-      "remSleepDuration": 3600,
-      "lightSleepDuration": 10290,
-      "sleepEfficiency": 83
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-03-30",
@@ -143,357 +143,12 @@
   "tempDeviation": 0.19,
   "restingHrBpm": null,
   "hrvMs": null,
-  "heartRateSeriesDay": "2026-03-30",
-  "heartRateSeries": [
-    {
-      "t": "2026-03-29T21:09:28.000Z",
-      "bpm": 82
-    },
-    {
-      "t": "2026-03-29T21:32:26.000Z",
-      "bpm": 83
-    },
-    {
-      "t": "2026-03-29T21:45:20.000Z",
-      "bpm": 85
-    },
-    {
-      "t": "2026-03-29T22:30:10.000Z",
-      "bpm": 86
-    },
-    {
-      "t": "2026-03-29T22:48:41.000Z",
-      "bpm": 88
-    },
-    {
-      "t": "2026-03-29T23:02:47.000Z",
-      "bpm": 75
-    },
-    {
-      "t": "2026-03-29T23:40:55.000Z",
-      "bpm": 90
-    },
-    {
-      "t": "2026-03-30T00:09:03.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-03-30T00:30:43.000Z",
-      "bpm": 75
-    },
-    {
-      "t": "2026-03-30T01:05:47.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-03-30T01:16:31.000Z",
-      "bpm": 77
-    },
-    {
-      "t": "2026-03-30T01:43:05.800Z",
-      "bpm": 107
-    },
-    {
-      "t": "2026-03-30T01:43:45.800Z",
-      "bpm": 107
-    },
-    {
-      "t": "2026-03-30T01:44:25.800Z",
-      "bpm": 106
-    },
-    {
-      "t": "2026-03-30T01:45:05.800Z",
-      "bpm": 108
-    },
-    {
-      "t": "2026-03-30T01:45:45.800Z",
-      "bpm": 107
-    },
-    {
-      "t": "2026-03-30T01:46:25.800Z",
-      "bpm": 110
-    },
-    {
-      "t": "2026-03-30T01:47:05.800Z",
-      "bpm": 111
-    },
-    {
-      "t": "2026-03-30T01:47:45.800Z",
-      "bpm": 112
-    },
-    {
-      "t": "2026-03-30T01:48:25.800Z",
-      "bpm": 117
-    },
-    {
-      "t": "2026-03-30T01:49:05.800Z",
-      "bpm": 118
-    },
-    {
-      "t": "2026-03-30T01:49:45.800Z",
-      "bpm": 119
-    },
-    {
-      "t": "2026-03-30T01:50:25.800Z",
-      "bpm": 121
-    },
-    {
-      "t": "2026-03-30T01:51:05.800Z",
-      "bpm": 119
-    },
-    {
-      "t": "2026-03-30T01:51:45.800Z",
-      "bpm": 116
-    },
-    {
-      "t": "2026-03-30T02:16:11.000Z",
-      "bpm": 82
-    },
-    {
-      "t": "2026-03-30T02:26:57.000Z",
-      "bpm": 82
-    },
-    {
-      "t": "2026-03-30T02:39:15.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-03-30T02:54:16.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-03-30T03:04:19.000Z",
-      "bpm": 81
-    },
-    {
-      "t": "2026-03-30T03:17:41.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-03-30T03:31:30.000Z",
-      "bpm": 93
-    },
-    {
-      "t": "2026-03-30T03:32:50.000Z",
-      "bpm": 93
-    },
-    {
-      "t": "2026-03-30T03:34:01.400Z",
-      "bpm": 100
-    },
-    {
-      "t": "2026-03-30T03:34:41.400Z",
-      "bpm": 104
-    },
-    {
-      "t": "2026-03-30T03:35:21.400Z",
-      "bpm": 104
-    },
-    {
-      "t": "2026-03-30T03:36:01.400Z",
-      "bpm": 105
-    },
-    {
-      "t": "2026-03-30T03:36:41.400Z",
-      "bpm": 105
-    },
-    {
-      "t": "2026-03-30T03:37:21.400Z",
-      "bpm": 105
-    },
-    {
-      "t": "2026-03-30T03:38:01.400Z",
-      "bpm": 105
-    },
-    {
-      "t": "2026-03-30T03:38:41.400Z",
-      "bpm": 105
-    },
-    {
-      "t": "2026-03-30T03:39:21.400Z",
-      "bpm": 103
-    },
-    {
-      "t": "2026-03-30T03:40:01.400Z",
-      "bpm": 102
-    },
-    {
-      "t": "2026-03-30T03:40:41.400Z",
-      "bpm": 100
-    },
-    {
-      "t": "2026-03-30T03:41:21.400Z",
-      "bpm": 96
-    },
-    {
-      "t": "2026-03-30T03:42:01.400Z",
-      "bpm": 96
-    },
-    {
-      "t": "2026-03-30T03:42:41.400Z",
-      "bpm": 98
-    },
-    {
-      "t": "2026-03-30T03:43:21.400Z",
-      "bpm": 101
-    },
-    {
-      "t": "2026-03-30T03:44:01.400Z",
-      "bpm": 102
-    },
-    {
-      "t": "2026-03-30T03:44:41.400Z",
-      "bpm": 102
-    },
-    {
-      "t": "2026-03-30T03:45:21.400Z",
-      "bpm": 101
-    },
-    {
-      "t": "2026-03-30T03:46:01.400Z",
-      "bpm": 100
-    },
-    {
-      "t": "2026-03-30T04:36:22.300Z",
-      "bpm": 93
-    },
-    {
-      "t": "2026-03-30T04:37:02.300Z",
-      "bpm": 95
-    },
-    {
-      "t": "2026-03-30T04:37:42.300Z",
-      "bpm": 94
-    },
-    {
-      "t": "2026-03-30T04:38:22.300Z",
-      "bpm": 93
-    },
-    {
-      "t": "2026-03-30T04:39:02.300Z",
-      "bpm": 97
-    },
-    {
-      "t": "2026-03-30T04:39:42.300Z",
-      "bpm": 97
-    },
-    {
-      "t": "2026-03-30T04:40:22.300Z",
-      "bpm": 91
-    },
-    {
-      "t": "2026-03-30T04:41:02.300Z",
-      "bpm": 88
-    },
-    {
-      "t": "2026-03-30T04:41:42.300Z",
-      "bpm": 87
-    },
-    {
-      "t": "2026-03-30T04:42:22.300Z",
-      "bpm": 88
-    },
-    {
-      "t": "2026-03-30T04:58:35.000Z",
-      "bpm": 80
-    },
-    {
-      "t": "2026-03-30T05:15:30.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-03-30T05:31:24.000Z",
-      "bpm": 73
-    },
-    {
-      "t": "2026-03-30T05:57:37.000Z",
-      "bpm": 73
-    },
-    {
-      "t": "2026-03-30T06:27:52.000Z",
-      "bpm": 72
-    },
-    {
-      "t": "2026-03-30T06:53:08.000Z",
-      "bpm": 70
-    },
-    {
-      "t": "2026-03-30T07:01:30.000Z",
-      "bpm": 77
-    },
-    {
-      "t": "2026-03-30T07:16:25.000Z",
-      "bpm": 73
-    },
-    {
-      "t": "2026-03-30T07:59:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T08:39:17.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T09:19:16.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-30T09:59:16.000Z",
-      "bpm": 65
-    },
-    {
-      "t": "2026-03-30T10:39:16.000Z",
-      "bpm": 69
-    },
-    {
-      "t": "2026-03-30T11:19:14.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-30T11:59:14.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T12:39:14.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-30T13:19:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T13:59:14.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T14:39:14.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T15:19:16.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-03-30T15:59:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T16:39:14.000Z",
-      "bpm": 71
-    },
-    {
-      "t": "2026-03-30T17:16:02.000Z",
-      "bpm": 74
-    },
-    {
-      "t": "2026-03-30T17:41:02.000Z",
-      "bpm": 82
-    }
-  ],
-  "heartRateMinBpm": 64,
-  "heartRateMaxBpm": 121,
-  "heartRateAvgBpm": 90,
-  "heartRateLatestBpm": 82,
+  "heartRateSeriesDay": null,
+  "heartRateSeries": [],
+  "heartRateMinBpm": null,
+  "heartRateMaxBpm": null,
+  "heartRateAvgBpm": null,
+  "heartRateLatestBpm": null,
   "activityScore": null,
   "activityMeetTargets": null,
   "activityMoveHour": null,
