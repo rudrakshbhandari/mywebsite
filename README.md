@@ -125,6 +125,7 @@ The site emits the following events through `js/analytics.js`:
 - Public data includes daily aggregates plus a downsampled intraday heart-rate series for `/health`; exact sleep start/end timestamps are excluded.
 - Workflow failures open a GitHub issue alert, and `.github/workflows/health-dashboard-watchdog.yml` checks hourly for stale data older than 36 hours.
 - GitHub Pages deploys from `.github/workflows/pages.yml`.
+- Oura auth and agent maintenance guardrails are documented in `docs/OURA_AUTOMATION.md`.
 
 ## Release Cadence
 
