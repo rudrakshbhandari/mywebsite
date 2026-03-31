@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-03-31T07:20:25.542Z",
+  "lastUpdatedIso": "2026-03-31T08:37:12.024Z",
   "day": "2026-03-30",
   "byDay": [
     {
@@ -91,11 +91,11 @@
       "day": "2026-03-30",
       "sleepScore": 91,
       "readinessScore": 87,
-      "activityScore": 79,
+      "activityScore": 78,
       "restingHrBpm": null,
       "hrvMs": null,
-      "steps": 5615,
-      "activeCalories": 247,
+      "steps": 6019,
+      "activeCalories": 264,
       "spo2Average": null,
       "workoutCount": 2,
       "totalSleepDuration": 32550,
@@ -145,62 +145,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-03-30",
   "heartRateSeries": [
-    {
-      "t": "2026-03-30T07:25:27.000Z",
-      "bpm": 69
-    },
-    {
-      "t": "2026-03-30T07:25:31.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T07:26:41.000Z",
-      "bpm": 71
-    },
-    {
-      "t": "2026-03-30T07:35:02.000Z",
-      "bpm": 70
-    },
-    {
-      "t": "2026-03-30T07:49:14.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T07:54:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T07:59:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T08:04:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T08:09:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T08:14:14.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T08:19:17.000Z",
-      "bpm": 69
-    },
-    {
-      "t": "2026-03-30T08:24:17.000Z",
-      "bpm": 70
-    },
-    {
-      "t": "2026-03-30T08:29:17.000Z",
-      "bpm": 71
-    },
-    {
-      "t": "2026-03-30T08:34:17.000Z",
-      "bpm": 70
-    },
     {
       "t": "2026-03-30T08:39:17.000Z",
       "bpm": 67
@@ -3802,21 +3746,21 @@
   "heartRateMaxBpm": 102,
   "heartRateAvgBpm": 86,
   "heartRateLatestBpm": 75,
-  "activityScore": 79,
+  "activityScore": 78,
   "activityMeetTargets": 43,
   "activityMoveHour": 78,
   "activityRecoveryTime": 100,
-  "activityStayActive": 71,
+  "activityStayActive": 69,
   "activityTrainingFreq": 100,
   "activityTrainingVol": 98,
-  "steps": 5615,
-  "activeCalories": 247,
-  "totalCalories": 2028,
+  "steps": 6019,
+  "activeCalories": 264,
+  "totalCalories": 2065,
   "targetCalories": 500,
-  "metersToTarget": 5700,
+  "metersToTarget": 5300,
   "highActivityMinutes": 0,
-  "mediumActivityMinutes": 26,
-  "lowActivityMinutes": 144,
+  "mediumActivityMinutes": 27,
+  "lowActivityMinutes": 161,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
   "workoutCount": 2,
