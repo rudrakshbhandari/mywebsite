@@ -218,6 +218,14 @@ To test the GitHub Actions workflow immediately:
 - The refresh token may have been revoked
 - Re-run the OAuth flow (Step 2) to get a new token
 - Update the `OURA_REFRESH_TOKEN` secret
+- Local runs may also fail if `.oura_token` is stale relative to GitHub secrets; `scripts/fetch_oura_and_write_json.mjs` now attempts browser reauthorization automatically and saves the refreshed token back to `.oura_token`
+
+### Local run opens browser auth unexpectedly
+
+- This usually means the local `.oura_token` is stale or revoked
+- Complete the browser OAuth flow and let the script finish updating `.oura_token`
+- Do not replace the dynamic localhost callback logic with a hardcoded port; the script intentionally uses a fresh loopback port per recovery attempt
+- See `docs/OURA_AUTOMATION.md` before changing the auth flow
 
 ### "No data" showing on health page
 
@@ -230,6 +238,12 @@ To test the GitHub Actions workflow immediately:
 - Check the Actions tab for recent runs
 - Look for "No changes detected" in the logs (means no new data from Oura)
 - Confirm your ring is syncing with the Oura app
+
+### Local rerun changed only `lastUpdatedIso`
+
+- Treat this as a no-op unless other fields in `oura_public.json` changed
+- Do not commit `.oura_no_change`
+- Inspect the diff before opening a PR
 
 ### Rate limiting
 
