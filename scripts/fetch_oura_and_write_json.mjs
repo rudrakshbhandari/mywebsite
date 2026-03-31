@@ -18,6 +18,8 @@ const API_BASE = 'api.ouraring.com';
 const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
 const SHOULD_FAIL_ON_API_ERROR = IS_GITHUB_ACTIONS || process.env.OURA_FAIL_ON_API_ERROR === 'true';
 const PT_TIME_ZONE = 'America/Los_Angeles';
+/** Max HR samples in public JSON (~minute-level over 24h; keeps payload small vs full Oura stream). */
+const HR_TIMELINE_MAX_POINTS = 1440;
 
 /**
  * Load refresh token from file or env
@@ -197,6 +199,16 @@ function getPtDateParts(date) {
     month: getPart('month'),
     day: getPart('day'),
   };
+}
+
+/**
+ * PT calendar date (YYYY-MM-DD) for an ISO timestamp
+ * @param {string} isoTimestamp
+ * @returns {string}
+ */
+function getPtYmdFromTimestamp(isoTimestamp) {
+  const { year, month, day } = getPtDateParts(new Date(isoTimestamp));
+  return formatYmd(year, month, day);
 }
 
 /**
@@ -461,7 +473,7 @@ function toActivityMinutes(value) {
  * @param {number} maxPoints
  * @returns {Array<{timestamp: string, bpm: number}>}
  */
-function downsampleSeries(points, maxPoints = 96) {
+function downsampleSeries(points, maxPoints = HR_TIMELINE_MAX_POINTS) {
   if (!Array.isArray(points) || points.length <= maxPoints) {
     return points;
   }
@@ -677,9 +689,12 @@ async function main() {
     const readinessContributors = readinessData?.contributors || {};
     const activityContributors = activityData?.contributors || {};
 
-    // Heart rate: retain a downsampled time series for the public visualization.
-    const hrNormalized = heartRateRaw.map(normalizeHeartRatePoint).filter(Boolean);
-    const heartRateSeries = downsampleSeries(hrNormalized, 96);
+    // Heart rate: timeline for primary day only (PT), capped for public JSON size.
+    const hrNormalized = heartRateRaw
+      .map(normalizeHeartRatePoint)
+      .filter(Boolean)
+      .filter(p => getPtYmdFromTimestamp(p.timestamp) === dataDay);
+    const heartRateSeries = downsampleSeries(hrNormalized, HR_TIMELINE_MAX_POINTS);
     const heartRateStats =
       heartRateSeries.length > 0
         ? {
