@@ -6,6 +6,9 @@
  */
 
 import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { exec } from 'child_process';
+import http from 'http';
+import crypto from 'crypto';
 import { resolve } from 'path';
 import https from 'https';
 
@@ -14,10 +17,14 @@ const OUTPUT_PATH = resolve(process.cwd(), 'oura_public.json');
 const TOKEN_PATH = resolve(process.cwd(), '.oura_token');
 const ROTATED_TOKEN_PATH = resolve(process.cwd(), '.oura_rotated_token');
 const OAUTH_ENDPOINT = 'https://api.ouraring.com/oauth/token';
+const OAUTH_AUTHORIZE_ENDPOINT = 'https://cloud.ouraring.com/oauth/authorize';
 const API_BASE = 'api.ouraring.com';
 const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
 const SHOULD_FAIL_ON_API_ERROR = IS_GITHUB_ACTIONS || process.env.OURA_FAIL_ON_API_ERROR === 'true';
 const PT_TIME_ZONE = 'America/Los_Angeles';
+const OAUTH_CALLBACK_PORT = 3000;
+const OAUTH_REDIRECT_URI = `http://localhost:${OAUTH_CALLBACK_PORT}/callback`;
+const OAUTH_SCOPES = ['daily', 'heartrate', 'spo2Daily', 'workout'];
 /** Max HR samples in public JSON (~minute-level over 24h; keeps payload small vs full Oura stream). */
 const HR_TIMELINE_MAX_POINTS = 1440;
 
@@ -168,6 +175,185 @@ async function refreshAccessToken(clientId, clientSecret, refreshToken) {
     accessToken: response.access_token,
     newRefreshToken: response.refresh_token, // Oura may rotate refresh tokens
   };
+}
+
+/**
+ * Whether this run can recover by launching local OAuth in a browser
+ * @returns {boolean}
+ */
+function canRunInteractiveReauth() {
+  return !IS_GITHUB_ACTIONS && process.env.OURA_DISABLE_AUTO_REAUTH !== 'true';
+}
+
+/**
+ * Decide whether a refresh failure likely means the local refresh token is stale
+ * @param {Error} error
+ * @returns {boolean}
+ */
+function isRecoverableRefreshError(error) {
+  const message = String(error?.message || '').toLowerCase();
+  return (
+    message.includes('invalid request') ||
+    message.includes('invalid_grant') ||
+    message.includes('refresh token') ||
+    message.includes('token endpoint')
+  );
+}
+
+/**
+ * Create an OAuth state token for callback validation
+ * @returns {string}
+ */
+function createOauthState() {
+  return crypto.randomBytes(32).toString('hex');
+}
+
+/**
+ * Build the Oura authorization URL for local recovery
+ * @param {string} clientId
+ * @param {string} state
+ * @returns {string}
+ */
+function buildAuthorizationUrl(clientId, state) {
+  const params = new URLSearchParams({
+    response_type: 'code',
+    client_id: clientId,
+    redirect_uri: OAUTH_REDIRECT_URI,
+    scope: OAUTH_SCOPES.join(' '),
+    state,
+  });
+  return `${OAUTH_AUTHORIZE_ENDPOINT}?${params.toString()}`;
+}
+
+/**
+ * Open a URL in the user's default browser
+ * @param {string} url
+ * @returns {Promise<void>}
+ */
+function openBrowser(url) {
+  const command =
+    process.platform === 'darwin'
+      ? `open "${url}"`
+      : process.platform === 'win32'
+        ? `start "" "${url}"`
+        : `xdg-open "${url}"`;
+
+  return new Promise(resolve => {
+    exec(command, error => {
+      if (error) {
+        console.log('Open this URL manually to re-authorize Oura:');
+        console.log(url);
+      }
+      resolve();
+    });
+  });
+}
+
+/**
+ * Wait for the local OAuth callback and return the authorization code
+ * @param {string} expectedState
+ * @returns {Promise<string>}
+ */
+function waitForAuthorizationCode(expectedState) {
+  return new Promise((resolve, reject) => {
+    const server = http.createServer((req, res) => {
+      const url = new URL(req.url, OAUTH_REDIRECT_URI);
+      if (url.pathname !== '/callback') {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not found');
+        return;
+      }
+
+      const code = url.searchParams.get('code');
+      const error = url.searchParams.get('error');
+      const receivedState = url.searchParams.get('state');
+
+      if (error) {
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(`Authorization failed: ${error}`);
+        server.close();
+        reject(new Error(`OAuth authorize error: ${error}`));
+        return;
+      }
+
+      if (!receivedState || receivedState !== expectedState) {
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end('Invalid state parameter');
+        server.close();
+        reject(new Error('OAuth callback state mismatch.'));
+        return;
+      }
+
+      if (!code) {
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end('Missing code parameter');
+        return;
+      }
+
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('Authorization successful. You can close this tab.');
+      server.close();
+      resolve(code);
+    });
+
+    server.listen(OAUTH_CALLBACK_PORT, '127.0.0.1', () => {
+      console.log(`Waiting for Oura OAuth callback on ${OAUTH_REDIRECT_URI}`);
+    });
+
+    server.on('error', reject);
+  });
+}
+
+/**
+ * Exchange an authorization code for fresh OAuth tokens
+ * @param {string} clientId
+ * @param {string} clientSecret
+ * @param {string} code
+ * @returns {Promise<{accessToken: string, refreshToken: string}>}
+ */
+async function exchangeAuthorizationCode(clientId, clientSecret, code) {
+  const params = new URLSearchParams({
+    grant_type: 'authorization_code',
+    client_id: clientId,
+    client_secret: clientSecret,
+    code,
+    redirect_uri: OAUTH_REDIRECT_URI,
+  });
+
+  const response = await httpsRequest(
+    OAUTH_ENDPOINT,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    },
+    params.toString()
+  );
+
+  if (!response.access_token || !response.refresh_token) {
+    throw new Error('OAuth code exchange did not return both access and refresh tokens');
+  }
+
+  return {
+    accessToken: response.access_token,
+    refreshToken: response.refresh_token,
+  };
+}
+
+/**
+ * Recover local OAuth credentials when the saved refresh token is stale
+ * @param {string} clientId
+ * @param {string} clientSecret
+ * @returns {Promise<{accessToken: string, refreshToken: string}>}
+ */
+async function recoverCredentialsInteractively(clientId, clientSecret) {
+  console.warn('Refresh token rejected. Starting one-time browser reauthorization to recover local access...');
+  const state = createOauthState();
+  const authUrl = buildAuthorizationUrl(clientId, state);
+  console.log('Approve access in your browser if prompted:');
+  console.log(authUrl);
+  await openBrowser(authUrl);
+  const code = await waitForAuthorizationCode(state);
+  return exchangeAuthorizationCode(clientId, clientSecret, code);
 }
 
 /**
@@ -496,7 +682,7 @@ async function main() {
   const clientId = process.env.OURA_CLIENT_ID;
   const clientSecret = process.env.OURA_CLIENT_SECRET;
   const directAccessToken = loadDirectAccessToken();
-  const refreshToken = loadRefreshToken();
+  let refreshToken = loadRefreshToken();
 
   // Validate environment variables
   if (!directAccessToken && (!clientId || !clientSecret || !refreshToken)) {
@@ -521,21 +707,34 @@ async function main() {
       console.log('Using direct OURA_ACCESS_TOKEN from environment');
     } else {
       console.log('Refreshing OAuth token...');
-      const { accessToken: refreshedAccessToken, newRefreshToken } = await refreshAccessToken(
-        clientId,
-        clientSecret,
-        refreshToken
-      );
-      accessToken = refreshedAccessToken;
-      console.log('Token refreshed successfully');
+      try {
+        const { accessToken: refreshedAccessToken, newRefreshToken } = await refreshAccessToken(
+          clientId,
+          clientSecret,
+          refreshToken
+        );
+        accessToken = refreshedAccessToken;
+        console.log('Token refreshed successfully');
 
-      // Save new refresh token locally when it rotates; never write secrets in CI.
-      if (newRefreshToken && newRefreshToken !== refreshToken) {
-        if (IS_GITHUB_ACTIONS) {
-          saveRotatedTokenForWorkflow(newRefreshToken);
-        } else {
-          saveRefreshToken(newRefreshToken);
+        // Save new refresh token locally when it rotates; never write secrets in CI.
+        if (newRefreshToken && newRefreshToken !== refreshToken) {
+          refreshToken = newRefreshToken;
+          if (IS_GITHUB_ACTIONS) {
+            saveRotatedTokenForWorkflow(newRefreshToken);
+          } else {
+            saveRefreshToken(newRefreshToken);
+          }
         }
+      } catch (refreshError) {
+        if (!canRunInteractiveReauth() || !isRecoverableRefreshError(refreshError)) {
+          throw refreshError;
+        }
+
+        const recoveredTokens = await recoverCredentialsInteractively(clientId, clientSecret);
+        accessToken = recoveredTokens.accessToken;
+        refreshToken = recoveredTokens.refreshToken;
+        saveRefreshToken(recoveredTokens.refreshToken);
+        console.log('Local OAuth credentials recovered successfully');
       }
     }
 
