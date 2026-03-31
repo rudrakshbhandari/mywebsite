@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-03-31T08:37:12.024Z",
+  "lastUpdatedIso": "2026-03-31T09:46:16.927Z",
   "day": "2026-03-30",
   "byDay": [
     {
@@ -94,8 +94,8 @@
       "activityScore": 78,
       "restingHrBpm": null,
       "hrvMs": null,
-      "steps": 6019,
-      "activeCalories": 264,
+      "steps": 6052,
+      "activeCalories": 268,
       "spo2Average": null,
       "workoutCount": 2,
       "totalSleepDuration": 32550,
@@ -145,62 +145,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-03-30",
   "heartRateSeries": [
-    {
-      "t": "2026-03-30T08:39:17.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T08:44:17.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T08:49:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T08:54:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T08:59:14.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T09:04:14.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-30T09:09:14.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-30T09:14:14.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-30T09:19:16.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-30T09:24:16.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-30T09:29:16.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-03-30T09:34:16.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-03-30T09:39:16.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-03-30T09:44:16.000Z",
-      "bpm": 64
-    },
     {
       "t": "2026-03-30T09:49:16.000Z",
       "bpm": 64
@@ -3753,14 +3697,14 @@
   "activityStayActive": 69,
   "activityTrainingFreq": 100,
   "activityTrainingVol": 98,
-  "steps": 6019,
-  "activeCalories": 264,
-  "totalCalories": 2065,
+  "steps": 6052,
+  "activeCalories": 268,
+  "totalCalories": 2077,
   "targetCalories": 500,
-  "metersToTarget": 5300,
+  "metersToTarget": 5200,
   "highActivityMinutes": 0,
   "mediumActivityMinutes": 27,
-  "lowActivityMinutes": 161,
+  "lowActivityMinutes": 167,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
   "workoutCount": 2,
