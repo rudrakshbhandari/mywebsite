@@ -22,8 +22,6 @@ const API_BASE = 'api.ouraring.com';
 const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
 const SHOULD_FAIL_ON_API_ERROR = IS_GITHUB_ACTIONS || process.env.OURA_FAIL_ON_API_ERROR === 'true';
 const PT_TIME_ZONE = 'America/Los_Angeles';
-const OAUTH_CALLBACK_PORT = 3000;
-const OAUTH_REDIRECT_URI = `http://localhost:${OAUTH_CALLBACK_PORT}/callback`;
 const OAUTH_SCOPES = ['daily', 'heartrate', 'spo2Daily', 'workout'];
 /** Max HR samples in public JSON (~minute-level over 24h; keeps payload small vs full Oura stream). */
 const HR_TIMELINE_MAX_POINTS = 1440;
@@ -209,16 +207,52 @@ function createOauthState() {
 }
 
 /**
+ * Reserve a free loopback port for the OAuth callback server
+ * @returns {Promise<number>}
+ */
+function allocateCallbackPort() {
+  return new Promise((resolve, reject) => {
+    const server = http.createServer();
+    server.listen(0, '127.0.0.1', () => {
+      const address = server.address();
+      const port = typeof address === 'object' && address ? address.port : null;
+      server.close(closeError => {
+        if (closeError) {
+          reject(closeError);
+          return;
+        }
+        if (!port) {
+          reject(new Error('Could not allocate OAuth callback port'));
+          return;
+        }
+        resolve(port);
+      });
+    });
+    server.on('error', reject);
+  });
+}
+
+/**
+ * Build a loopback redirect URI from a callback port
+ * @param {number} callbackPort
+ * @returns {string}
+ */
+function buildRedirectUri(callbackPort) {
+  return `http://localhost:${callbackPort}/callback`;
+}
+
+/**
  * Build the Oura authorization URL for local recovery
  * @param {string} clientId
  * @param {string} state
+ * @param {string} redirectUri
  * @returns {string}
  */
-function buildAuthorizationUrl(clientId, state) {
+function buildAuthorizationUrl(clientId, state, redirectUri) {
   const params = new URLSearchParams({
     response_type: 'code',
     client_id: clientId,
-    redirect_uri: OAUTH_REDIRECT_URI,
+    redirect_uri: redirectUri,
     scope: OAUTH_SCOPES.join(' '),
     state,
   });
@@ -252,12 +286,14 @@ function openBrowser(url) {
 /**
  * Wait for the local OAuth callback and return the authorization code
  * @param {string} expectedState
+ * @param {string} redirectUri
+ * @param {number} callbackPort
  * @returns {Promise<string>}
  */
-function waitForAuthorizationCode(expectedState) {
+function waitForAuthorizationCode(expectedState, redirectUri, callbackPort) {
   return new Promise((resolve, reject) => {
     const server = http.createServer((req, res) => {
-      const url = new URL(req.url, OAUTH_REDIRECT_URI);
+      const url = new URL(req.url, redirectUri);
       if (url.pathname !== '/callback') {
         res.writeHead(404, { 'Content-Type': 'text/plain' });
         res.end('Not found');
@@ -296,8 +332,8 @@ function waitForAuthorizationCode(expectedState) {
       resolve(code);
     });
 
-    server.listen(OAUTH_CALLBACK_PORT, '127.0.0.1', () => {
-      console.log(`Waiting for Oura OAuth callback on ${OAUTH_REDIRECT_URI}`);
+    server.listen(callbackPort, '127.0.0.1', () => {
+      console.log(`Waiting for Oura OAuth callback on ${redirectUri}`);
     });
 
     server.on('error', reject);
@@ -309,15 +345,16 @@ function waitForAuthorizationCode(expectedState) {
  * @param {string} clientId
  * @param {string} clientSecret
  * @param {string} code
+ * @param {string} redirectUri
  * @returns {Promise<{accessToken: string, refreshToken: string}>}
  */
-async function exchangeAuthorizationCode(clientId, clientSecret, code) {
+async function exchangeAuthorizationCode(clientId, clientSecret, code, redirectUri) {
   const params = new URLSearchParams({
     grant_type: 'authorization_code',
     client_id: clientId,
     client_secret: clientSecret,
     code,
-    redirect_uri: OAUTH_REDIRECT_URI,
+    redirect_uri: redirectUri,
   });
 
   const response = await httpsRequest(
@@ -348,12 +385,14 @@ async function exchangeAuthorizationCode(clientId, clientSecret, code) {
 async function recoverCredentialsInteractively(clientId, clientSecret) {
   console.warn('Refresh token rejected. Starting one-time browser reauthorization to recover local access...');
   const state = createOauthState();
-  const authUrl = buildAuthorizationUrl(clientId, state);
+  const callbackPort = await allocateCallbackPort();
+  const redirectUri = buildRedirectUri(callbackPort);
+  const authUrl = buildAuthorizationUrl(clientId, state, redirectUri);
   console.log('Approve access in your browser if prompted:');
   console.log(authUrl);
   await openBrowser(authUrl);
-  const code = await waitForAuthorizationCode(state);
-  return exchangeAuthorizationCode(clientId, clientSecret, code);
+  const code = await waitForAuthorizationCode(state, redirectUri, callbackPort);
+  return exchangeAuthorizationCode(clientId, clientSecret, code, redirectUri);
 }
 
 /**
