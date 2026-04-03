@@ -1,24 +1,7 @@
 {
-  "lastUpdatedIso": "2026-04-03T04:55:52.623Z",
+  "lastUpdatedIso": "2026-04-03T07:38:52.312Z",
   "day": "2026-04-02",
   "byDay": [
-    {
-      "day": "2026-03-27",
-      "sleepScore": 92,
-      "readinessScore": 83,
-      "activityScore": 86,
-      "restingHrBpm": null,
-      "hrvMs": null,
-      "steps": 8366,
-      "activeCalories": 611,
-      "spo2Average": null,
-      "workoutCount": 3,
-      "totalSleepDuration": 31140,
-      "deepSleepDuration": 7890,
-      "remSleepDuration": 7080,
-      "lightSleepDuration": 16170,
-      "sleepEfficiency": 89
-    },
     {
       "day": "2026-03-28",
       "sleepScore": 96,
@@ -97,7 +80,7 @@
       "steps": 7757,
       "activeCalories": 368,
       "spo2Average": null,
-      "workoutCount": 3,
+      "workoutCount": 5,
       "totalSleepDuration": 28140,
       "deepSleepDuration": 6480,
       "remSleepDuration": 6840,
@@ -108,6 +91,23 @@
       "day": "2026-04-02",
       "sleepScore": 92,
       "readinessScore": 81,
+      "activityScore": 88,
+      "restingHrBpm": null,
+      "hrvMs": null,
+      "steps": 10784,
+      "activeCalories": 645,
+      "spo2Average": null,
+      "workoutCount": 1,
+      "totalSleepDuration": 32460,
+      "deepSleepDuration": 7980,
+      "remSleepDuration": 7860,
+      "lightSleepDuration": 16620,
+      "sleepEfficiency": 93
+    },
+    {
+      "day": "2026-04-03",
+      "sleepScore": null,
+      "readinessScore": null,
       "activityScore": null,
       "restingHrBpm": null,
       "hrvMs": null,
@@ -145,42 +145,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-04-02",
   "heartRateSeries": [
-    {
-      "t": "2026-04-02T07:03:48.000Z",
-      "bpm": 79
-    },
-    {
-      "t": "2026-04-02T07:04:09.000Z",
-      "bpm": 81
-    },
-    {
-      "t": "2026-04-02T07:04:24.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-04-02T07:05:33.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-04-02T07:08:27.000Z",
-      "bpm": 74
-    },
-    {
-      "t": "2026-04-02T07:08:46.000Z",
-      "bpm": 77
-    },
-    {
-      "t": "2026-04-02T07:09:32.000Z",
-      "bpm": 72
-    },
-    {
-      "t": "2026-04-02T07:10:33.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-04-02T07:15:33.000Z",
-      "bpm": 79
-    },
     {
       "t": "2026-04-02T07:46:20.000Z",
       "bpm": 80
@@ -4522,24 +4486,24 @@
   "heartRateMaxBpm": 124,
   "heartRateAvgBpm": 93,
   "heartRateLatestBpm": 90,
-  "activityScore": null,
-  "activityMeetTargets": null,
-  "activityMoveHour": null,
-  "activityRecoveryTime": null,
-  "activityStayActive": null,
-  "activityTrainingFreq": null,
-  "activityTrainingVol": null,
-  "steps": null,
-  "activeCalories": null,
-  "totalCalories": null,
-  "targetCalories": null,
-  "metersToTarget": null,
-  "highActivityMinutes": null,
-  "mediumActivityMinutes": null,
-  "lowActivityMinutes": null,
+  "activityScore": 88,
+  "activityMeetTargets": 60,
+  "activityMoveHour": 100,
+  "activityRecoveryTime": 100,
+  "activityStayActive": 91,
+  "activityTrainingFreq": 100,
+  "activityTrainingVol": 98,
+  "steps": 10784,
+  "activeCalories": 645,
+  "totalCalories": 2452,
+  "targetCalories": 400,
+  "metersToTarget": -5300,
+  "highActivityMinutes": 0,
+  "mediumActivityMinutes": 129,
+  "lowActivityMinutes": 212,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
-  "workoutCount": 0,
+  "workoutCount": 1,
   "workoutMinutes": 0,
-  "workoutCalories": 0
+  "workoutCalories": 29
 }
