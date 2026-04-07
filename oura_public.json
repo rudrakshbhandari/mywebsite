@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-04-07T09:37:18.598Z",
+  "lastUpdatedIso": "2026-04-07T10:41:49.919Z",
   "day": "2026-04-06",
   "byDay": [
     {
@@ -94,7 +94,7 @@
       "activityScore": 82,
       "restingHrBpm": null,
       "hrvMs": null,
-      "steps": 5502,
+      "steps": 5503,
       "activeCalories": 275,
       "spo2Average": null,
       "workoutCount": 1,
@@ -145,58 +145,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-04-06",
   "heartRateSeries": [
-    {
-      "t": "2026-04-06T09:38:15.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-04-06T09:43:15.000Z",
-      "bpm": 65
-    },
-    {
-      "t": "2026-04-06T09:48:15.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-04-06T09:53:15.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-04-06T09:58:15.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-04-06T10:03:15.000Z",
-      "bpm": 65
-    },
-    {
-      "t": "2026-04-06T10:08:15.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-04-06T10:13:15.000Z",
-      "bpm": 69
-    },
-    {
-      "t": "2026-04-06T10:18:15.000Z",
-      "bpm": 69
-    },
-    {
-      "t": "2026-04-06T10:23:15.000Z",
-      "bpm": 69
-    },
-    {
-      "t": "2026-04-06T10:28:15.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-04-06T10:33:15.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-04-06T10:38:15.000Z",
-      "bpm": 65
-    },
     {
       "t": "2026-04-06T10:43:15.000Z",
       "bpm": 66
@@ -2496,18 +2444,18 @@
   ],
   "heartRateMinBpm": 62,
   "heartRateMaxBpm": 124,
-  "heartRateAvgBpm": 90,
+  "heartRateAvgBpm": 91,
   "heartRateLatestBpm": 77,
   "activityScore": 82,
   "activityMeetTargets": 60,
   "activityMoveHour": 95,
   "activityRecoveryTime": 100,
-  "activityStayActive": 55,
+  "activityStayActive": 54,
   "activityTrainingFreq": 96,
   "activityTrainingVol": 96,
-  "steps": 5502,
+  "steps": 5503,
   "activeCalories": 275,
-  "totalCalories": 2140,
+  "totalCalories": 2143,
   "targetCalories": 550,
   "metersToTarget": 6200,
   "highActivityMinutes": 0,
