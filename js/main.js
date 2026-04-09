@@ -39,11 +39,28 @@ function initNavigation() {
   var navbar = document.getElementById('navbar');
   var navLinks = document.querySelectorAll('.nav-link');
 
+  var darkSections = document.querySelectorAll('.scene--experience, .scene--contact');
+
   window.addEventListener('scroll', function () {
     if (window.scrollY > 50) {
       navbar.classList.add('scrolled');
     } else {
       navbar.classList.remove('scrolled');
+    }
+
+    var navBottom = navbar.getBoundingClientRect().bottom;
+    var isInDark = false;
+    darkSections.forEach(function (section) {
+      var rect = section.getBoundingClientRect();
+      if (rect.top < navBottom && rect.bottom > 0) {
+        isInDark = true;
+      }
+    });
+
+    if (isInDark) {
+      navbar.classList.add('inverted');
+    } else {
+      navbar.classList.remove('inverted');
     }
   });
 
@@ -122,7 +139,9 @@ function initMobileMenu() {
    Dot Navigation
    =========================== */
 function initDotNav() {
+  var dotNav = document.getElementById('dot-nav');
   var dots = document.querySelectorAll('.dot-nav__dot');
+  var darkSections = document.querySelectorAll('.scene--experience, .scene--contact');
 
   dots.forEach(function (dot) {
     dot.addEventListener('click', function (e) {
@@ -153,6 +172,18 @@ function initDotNav() {
         dot.classList.add('active');
       }
     });
+
+    if (dotNav) {
+      var dotCenter = window.innerHeight / 2;
+      var isInDark = false;
+      darkSections.forEach(function (section) {
+        var rect = section.getBoundingClientRect();
+        if (rect.top < dotCenter && rect.bottom > dotCenter) {
+          isInDark = true;
+        }
+      });
+      dotNav.classList.toggle('inverted', isInDark);
+    }
   });
 }
 
@@ -260,6 +291,3 @@ function initProjectImageCrossfade() {
 window.addEventListener('load', function () {
   document.body.classList.add('loaded');
 });
-
-console.log('%cRudraksh Bhandari', 'color: #C8553D; font-size: 18px; font-weight: bold; font-family: Syne;');
-console.log('%cThe Scroll Film — Concept C', 'color: #8B8680; font-size: 12px;');

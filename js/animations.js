@@ -23,6 +23,8 @@ document.addEventListener('DOMContentLoaded', function () {
     return;
   }
 
+  document.body.classList.add('gsap-ready');
+
   initHeroScene();
   initAboutScene();
   initExperienceScene();
@@ -70,11 +72,11 @@ function initStaticFallback() {
 function initHeroScene() {
   var heroSection = document.querySelector('.scene--hero');
   var heroInner = document.querySelector('.hero__inner');
+  var heroName = document.querySelector('.hero__name');
   var photoWrap = document.querySelector('.hero__photo-wrap');
   var subtitle = document.querySelector('.hero__subtitle');
-  var letters = document.querySelectorAll('.hero__letter:not(.hero__letter--space)');
 
-  if (!heroSection || !heroInner || !photoWrap) return;
+  if (!heroSection || !heroInner || !photoWrap || !heroName) return;
 
   var tl = gsap.timeline({
     scrollTrigger: {
@@ -88,9 +90,9 @@ function initHeroScene() {
   });
 
   tl.to(
-    letters,
+    heroName,
     {
-      letterSpacing: '0.5em',
+      letterSpacing: '0.35em',
       duration: 0.5,
       ease: 'none',
     },
@@ -105,7 +107,7 @@ function initHeroScene() {
       duration: 0.5,
       ease: 'none',
     },
-    0.1
+    0.05
   );
 
   tl.to(
@@ -115,7 +117,7 @@ function initHeroScene() {
       duration: 0.3,
       ease: 'none',
     },
-    0.5
+    0.45
   );
 }
 
@@ -169,18 +171,18 @@ function initExperienceScene() {
 
   if (!section || !track || !cards.length) return;
 
-  var totalScrollWidth = track.scrollWidth - window.innerWidth;
+  function getScrollAmount() {
+    return -(track.scrollWidth - section.offsetWidth);
+  }
 
   gsap.to(track, {
-    x: function () {
-      return -totalScrollWidth;
-    },
+    x: getScrollAmount,
     ease: 'none',
     scrollTrigger: {
       trigger: section,
       start: 'top top',
       end: function () {
-        return '+=' + totalScrollWidth;
+        return '+=' + Math.abs(getScrollAmount());
       },
       pin: true,
       scrub: 1,
