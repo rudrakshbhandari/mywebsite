@@ -1,7 +1,12 @@
 /**
- * GSAP Animations - Portfolio
- * Handles: Terminal intro, ScrollTrigger reveals, parallax, magnetic buttons,
- * custom cursor, particle background
+ * Concept C: The Scroll Film — GSAP Animations
+ *
+ * All scroll-driven scenes using GSAP ScrollTrigger.
+ * Scene 1: Hero — pinned, letter-spacing + photo scale
+ * Scene 2: About — sticky photo desaturate + paragraph reveals
+ * Scene 3: Experience — horizontal scroll via vertical scroll
+ * Scene 4: Projects — image crossfade driven by scroll
+ * Scene 5: Contact — background color transition
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -10,371 +15,246 @@ document.addEventListener('DOMContentLoaded', function () {
 
   gsap.registerPlugin(ScrollTrigger);
 
-  initTerminalIntro();
-  initScrollReveals();
-  initParallax();
-  initMagneticButtons();
-  initCustomCursor();
-  initParticleBackground();
-  initProjectCardTilt();
-});
+  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isMobile = window.innerWidth <= 768;
 
-/**
- * Phase 4: Terminal-style hero intro
- */
-function initTerminalIntro() {
-  const terminalIntro = document.getElementById('terminal-intro');
-  const heroReveal = document.querySelector('.hero-reveal');
-  const typingEl = document.getElementById('terminal-typing');
-
-  if (!terminalIntro || !heroReveal || !typingEl) return;
-
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const revealHero = () => {
-    document.body.classList.remove('intro-active');
-    terminalIntro.style.display = 'none';
-    heroReveal.style.opacity = '1';
-    heroReveal.style.transform = 'translateY(0)';
-  };
-
-  if (prefersReducedMotion) {
-    revealHero();
+  if (prefersReducedMotion || isMobile) {
+    initStaticFallback();
     return;
   }
 
-  document.body.classList.add('intro-active');
+  initHeroScene();
+  initAboutScene();
+  initExperienceScene();
+  initProjectsScene();
+  initContactScene();
+});
 
-  const terminalText = 'whoami → Rudraksh Bhandari';
-  let charIndex = 0;
-  let isHeroRevealed = false;
-  const watchdog = setTimeout(() => {
-    if (!isHeroRevealed) revealHero();
-  }, 5000);
+/* ===========================
+   Static fallback (reduced motion / mobile)
+   Show all content without pinning or scrub
+   =========================== */
+function initStaticFallback() {
+  var heroPhotoWrap = document.querySelector('.hero__photo-wrap');
+  var heroSubtitle = document.querySelector('.hero__subtitle');
+  var paragraphs = document.querySelectorAll('.about__paragraph');
+  var projCards = document.querySelectorAll('.proj-card');
+  var projImages = document.querySelectorAll('.projects__img');
 
-  function finishIntro() {
-    if (isHeroRevealed) return;
-    isHeroRevealed = true;
-    clearTimeout(watchdog);
-    revealHero();
+  if (heroPhotoWrap) {
+    heroPhotoWrap.style.opacity = '1';
+    heroPhotoWrap.style.transform = 'translate(-50%, -50%) scale(1)';
+  }
+  if (heroSubtitle) {
+    heroSubtitle.style.opacity = '1';
   }
 
-  function typeChar() {
-    if (charIndex < terminalText.length) {
-      typingEl.textContent += terminalText.charAt(charIndex);
-      charIndex++;
-      setTimeout(typeChar, 80);
-    } else {
-      setTimeout(() => {
-        gsap.to(terminalIntro, {
-          opacity: 0,
-          y: -20,
-          duration: 0.5,
-          ease: 'power2.inOut',
-          onComplete: () => {
-            finishIntro();
-            gsap.fromTo(heroReveal, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' });
-          },
-        });
-      }, 600);
-    }
+  paragraphs.forEach(function (p) {
+    p.style.opacity = '1';
+    p.style.transform = 'none';
+  });
+
+  projCards.forEach(function (card) {
+    card.style.opacity = '1';
+  });
+
+  if (projImages.length) {
+    projImages[0].classList.add('active');
   }
-
-  // Start typing after brief delay
-  setTimeout(typeChar, 800);
 }
 
-/**
- * Phase 2: Scroll-triggered staggered reveals
- */
-function initScrollReveals() {
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReducedMotion) return;
+/* ===========================
+   SCENE 1: HERO
+   Pin for ~150vh, spread letters, reveal photo
+   =========================== */
+function initHeroScene() {
+  var heroSection = document.querySelector('.scene--hero');
+  var heroInner = document.querySelector('.hero__inner');
+  var photoWrap = document.querySelector('.hero__photo-wrap');
+  var subtitle = document.querySelector('.hero__subtitle');
+  var letters = document.querySelectorAll('.hero__letter:not(.hero__letter--space)');
 
-  gsap.utils.toArray('.reveal-el').forEach((el, i) => {
-    gsap.fromTo(
-      el,
-      { opacity: 0, y: 60 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: el,
-          start: 'top 85%',
-          toggleActions: 'play none none reverse',
-        },
-        delay: i * 0.05,
-      }
-    );
+  if (!heroSection || !heroInner || !photoWrap) return;
+
+  var tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: heroSection,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 1,
+      pin: heroInner,
+      pinSpacing: false,
+    },
   });
 
-  // Staggered project cards
-  gsap.utils.toArray('.project-card').forEach((card, i) => {
-    gsap.fromTo(
-      card,
-      { opacity: 0, y: 80 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 90%',
-          toggleActions: 'play none none reverse',
-        },
-        delay: i * 0.1,
-      }
-    );
-  });
+  tl.to(
+    letters,
+    {
+      letterSpacing: '0.5em',
+      duration: 0.5,
+      ease: 'none',
+    },
+    0
+  );
 
-  // Experience items
-  gsap.utils.toArray('.experience-item').forEach((item, i) => {
-    gsap.fromTo(
-      item,
-      { opacity: 0, x: i % 2 === 0 ? -50 : 50 },
-      {
-        opacity: 1,
-        x: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: item,
-          start: 'top 88%',
-          toggleActions: 'play none none reverse',
-        },
-        delay: i * 0.08,
-      }
-    );
-  });
+  tl.to(
+    photoWrap,
+    {
+      opacity: 1,
+      scale: 1,
+      duration: 0.5,
+      ease: 'none',
+    },
+    0.1
+  );
 
-  // Skill categories
-  gsap.utils.toArray('.skill-category').forEach((cat, i) => {
-    gsap.fromTo(
-      cat,
-      { opacity: 0, scale: 0.95 },
-      {
-        opacity: 1,
-        scale: 1,
-        duration: 0.6,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: cat,
-          start: 'top 90%',
-          toggleActions: 'play none none reverse',
-        },
-        delay: i * 0.06,
-      }
-    );
-  });
+  tl.to(
+    subtitle,
+    {
+      opacity: 1,
+      duration: 0.3,
+      ease: 'none',
+    },
+    0.5
+  );
 }
 
-/**
- * Phase 2: Parallax on hero image
- */
-function initParallax() {
-  const heroImage = document.querySelector('.hero-image');
-  const hero = document.querySelector('.hero');
+/* ===========================
+   SCENE 2: ABOUT
+   Photo desaturates, paragraphs slide in
+   =========================== */
+function initAboutScene() {
+  var aboutSection = document.querySelector('.scene--about');
+  var photo = document.querySelector('.about__photo');
+  var paragraphs = document.querySelectorAll('.about__paragraph');
 
-  if (!heroImage || !hero) return;
+  if (!aboutSection || !photo) return;
 
   ScrollTrigger.create({
-    trigger: hero,
-    start: 'top top',
-    end: 'bottom top',
+    trigger: aboutSection,
+    start: 'top 80%',
+    end: 'bottom 20%',
     scrub: 1,
-    onUpdate: self => {
-      const progress = self.progress;
-      gsap.set(heroImage, { y: progress * 80 });
+    onUpdate: function (self) {
+      var progress = self.progress;
+      var grayPercent = progress * 40;
+      photo.style.filter = 'grayscale(' + grayPercent + '%)';
+    },
+  });
+
+  paragraphs.forEach(function (p, i) {
+    gsap.to(p, {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'power3.out',
+      scrollTrigger: {
+        trigger: p,
+        start: 'top 85%',
+        toggleActions: 'play none none reverse',
+      },
+      delay: i * 0.05,
+    });
+  });
+}
+
+/* ===========================
+   SCENE 3: EXPERIENCE
+   Horizontal scroll driven by vertical scroll
+   =========================== */
+function initExperienceScene() {
+  var section = document.querySelector('.scene--experience');
+  var track = document.querySelector('.experience__track');
+  var cards = document.querySelectorAll('.exp-card');
+
+  if (!section || !track || !cards.length) return;
+
+  var totalScrollWidth = track.scrollWidth - window.innerWidth;
+
+  gsap.to(track, {
+    x: function () {
+      return -totalScrollWidth;
+    },
+    ease: 'none',
+    scrollTrigger: {
+      trigger: section,
+      start: 'top top',
+      end: function () {
+        return '+=' + totalScrollWidth;
+      },
+      pin: true,
+      scrub: 1,
+      anticipatePin: 1,
+      invalidateOnRefresh: true,
     },
   });
 }
 
-/**
- * Phase 2: Magnetic button effect
- */
-function initMagneticButtons() {
-  const buttons = document.querySelectorAll('.magnetic-btn');
+/* ===========================
+   SCENE 4: PROJECTS
+   Image crossfade as project cards scroll into view
+   =========================== */
+function initProjectsScene() {
+  var images = document.querySelectorAll('.projects__img');
+  var cards = document.querySelectorAll('.proj-card');
 
-  buttons.forEach(btn => {
-    btn.addEventListener('mousemove', function (e) {
-      const rect = btn.getBoundingClientRect();
-      const x = e.clientX - rect.left - rect.width / 2;
-      const y = e.clientY - rect.top - rect.height / 2;
+  if (!images.length || !cards.length) return;
 
-      gsap.to(btn, {
-        x: x * 0.2,
-        y: y * 0.2,
-        duration: 0.3,
-        ease: 'power2.out',
-      });
-    });
+  images[0].classList.add('active');
+  cards[0].classList.add('active');
 
-    btn.addEventListener('mouseleave', function () {
-      gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.5)' });
-    });
-  });
-}
-
-/**
- * Phase 2: Custom cursor (desktop only)
- */
-function initCustomCursor() {
-  const cursor = document.getElementById('custom-cursor');
-  const cursorDot = document.getElementById('custom-cursor-dot');
-
-  if (!cursor || !cursorDot) return;
-
-  // Hide on touch devices
-  if ('ontouchstart' in window) {
-    cursor.style.display = 'none';
-    cursorDot.style.display = 'none';
-    return;
-  }
-
-  let mouseX = 0;
-  let mouseY = 0;
-  let cursorX = 0;
-  let cursorY = 0;
-
-  document.addEventListener('mousemove', e => {
-    mouseX = e.clientX;
-    mouseY = e.clientY;
-  });
-
-  // Smooth follow for outer cursor
-  function animateCursor() {
-    cursorX += (mouseX - cursorX) * 0.15;
-    cursorY += (mouseY - cursorY) * 0.15;
-
-    cursor.style.left = cursorX + 'px';
-    cursor.style.top = cursorY + 'px';
-    cursorDot.style.left = mouseX + 'px';
-    cursorDot.style.top = mouseY + 'px';
-
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
-
-  // Hover states
-  const hoverTargets = document.querySelectorAll('a, button, .project-card');
-  hoverTargets.forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      cursor.classList.add('cursor-hover');
-      cursorDot.classList.add('cursor-hover');
-    });
-    el.addEventListener('mouseleave', () => {
-      cursor.classList.remove('cursor-hover');
-      cursorDot.classList.remove('cursor-hover');
+  cards.forEach(function (card) {
+    ScrollTrigger.create({
+      trigger: card,
+      start: 'top 60%',
+      end: 'bottom 40%',
+      onEnter: function () {
+        activateProject(card, images, cards);
+      },
+      onEnterBack: function () {
+        activateProject(card, images, cards);
+      },
     });
   });
 }
 
-/**
- * Phase 4: Canvas particle background
- */
-function initParticleBackground() {
-  const canvas = document.getElementById('particle-canvas');
-  if (!canvas) return;
+function activateProject(card, images, cards) {
+  var idx = parseInt(card.getAttribute('data-project'), 10);
 
-  const ctx = canvas.getContext('2d');
-  let particles = [];
-  let animationId;
+  images.forEach(function (img) {
+    img.classList.remove('active');
+  });
+  cards.forEach(function (c) {
+    c.classList.remove('active');
+  });
 
-  function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-    initParticles();
-  }
+  if (images[idx]) images[idx].classList.add('active');
+  card.classList.add('active');
+}
 
-  function initParticles() {
-    particles = [];
-    const count = Math.min(80, Math.floor((canvas.width * canvas.height) / 15000));
+/* ===========================
+   SCENE 5: CONTACT
+   Background color transition from cream to accent
+   =========================== */
+function initContactScene() {
+  var contactSection = document.querySelector('.scene--contact');
+  var skillsSection = document.querySelector('.scene--skills');
 
-    for (let i = 0; i < count; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        radius: Math.random() * 2 + 0.5,
-        opacity: Math.random() * 0.5 + 0.2,
-      });
+  if (!contactSection || !skillsSection) return;
+
+  gsap.fromTo(
+    contactSection,
+    { opacity: 0.6 },
+    {
+      opacity: 1,
+      duration: 1,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: contactSection,
+        start: 'top 80%',
+        end: 'top 20%',
+        scrub: 1,
+      },
     }
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-      if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(99, 102, 241, ${p.opacity})`;
-      ctx.fill();
-    });
-
-    // Draw connections
-    particles.forEach((p1, i) => {
-      particles.slice(i + 1).forEach(p2 => {
-        const dx = p1.x - p2.x;
-        const dy = p1.y - p2.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        if (dist < 120) {
-          ctx.beginPath();
-          ctx.moveTo(p1.x, p1.y);
-          ctx.lineTo(p2.x, p2.y);
-          ctx.strokeStyle = `rgba(99, 102, 241, ${0.1 * (1 - dist / 120)})`;
-          ctx.lineWidth = 0.5;
-          ctx.stroke();
-        }
-      });
-    });
-
-    animationId = requestAnimationFrame(animate);
-  }
-
-  resize();
-  window.addEventListener('resize', resize);
-  animate();
-}
-
-/**
- * Phase 1: 3D tilt on project cards and hero image
- */
-function initProjectCardTilt() {
-  const tiltElements = document.querySelectorAll('[data-tilt], .project-card');
-
-  tiltElements.forEach(el => {
-    el.addEventListener('mousemove', e => {
-      const rect = el.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-      const tiltX = y * 8;
-      const tiltY = x * -8;
-
-      gsap.to(el, {
-        rotateX: tiltX,
-        rotateY: tiltY,
-        transformPerspective: 1000,
-        duration: 0.3,
-        ease: 'power2.out',
-      });
-    });
-
-    el.addEventListener('mouseleave', () => {
-      gsap.to(el, {
-        rotateX: 0,
-        rotateY: 0,
-        duration: 0.5,
-        ease: 'power2.out',
-      });
-    });
-  });
+  );
 }
