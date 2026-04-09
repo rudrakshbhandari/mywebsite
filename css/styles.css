@@ -12,8 +12,8 @@
   --color-cream: #f5f0eb;
   --color-white: #ffffff;
 
-  --font-display: "Syne", sans-serif;
-  --font-body: "Libre Baskerville", Georgia, serif;
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Libre Baskerville', Georgia, serif;
 
   --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
@@ -528,7 +528,7 @@ button:focus-visible {
 }
 
 .exp-card__bullets li::before {
-  content: "—";
+  content: '—';
   position: absolute;
   left: 0;
   color: var(--color-accent);
