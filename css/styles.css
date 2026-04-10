@@ -299,7 +299,7 @@ button:focus-visible {
    ============================================= */
 .scene--hero {
   position: relative;
-  height: 300vh;
+  height: 250vh;
   overflow: visible;
 }
 
@@ -317,14 +317,14 @@ button:focus-visible {
 .hero__name {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.5rem, 12vw, 14rem);
-  line-height: 0.95;
+  font-size: clamp(2.5rem, 7vw, 7rem);
+  line-height: 1;
   text-align: center;
   color: var(--color-text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   z-index: 2;
-  white-space: nowrap;
-  will-change: letter-spacing;
+  position: relative;
+  will-change: letter-spacing, opacity;
 }
 
 .hero__letter {
@@ -337,39 +337,36 @@ button:focus-visible {
 }
 
 .hero__photo-wrap {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) scale(1);
-  transform-origin: center center;
+  position: relative;
   z-index: 1;
+  margin-top: -1.5rem;
+  margin-bottom: -1rem;
   opacity: 1;
   will-change: transform, opacity;
 }
 
 .gsap-ready .hero__photo-wrap {
-  transform: translate(-50%, -50%) scale(0.4);
   opacity: 0;
+  transform: scale(0.92);
 }
 
 .hero__photo {
-  width: 600px;
-  max-width: 80vw;
+  width: min(500px, 65vw);
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
   object-position: 50% 25%;
   border-radius: 16px;
   box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.18),
-    0 10px 25px rgba(0, 0, 0, 0.1);
+    0 30px 80px rgba(0, 0, 0, 0.15),
+    0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 .hero__subtitle {
   font-family: var(--font-body);
-  font-size: clamp(0.85rem, 1.5vw, 1.15rem);
+  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
   color: var(--color-muted);
-  margin-top: 1.5rem;
+  margin-top: 1rem;
   z-index: 3;
   opacity: 1;
   font-style: italic;
@@ -486,17 +483,21 @@ button:focus-visible {
 }
 
 .about__stat-number {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 2.5rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 2.25rem;
   color: var(--color-accent);
   line-height: 1.1;
 }
 
 .about__stat-label {
-  font-size: 0.85rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
   color: var(--color-muted);
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
 }
 
 /* =============================================
@@ -793,7 +794,8 @@ button:focus-visible {
 }
 
 .contact__inner {
-  max-width: 700px;
+  max-width: 900px;
+  padding: 0 2rem;
 }
 
 .contact__tagline {
@@ -807,14 +809,12 @@ button:focus-visible {
 .contact__email {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(1.5rem, 4.5vw, 3.5rem);
+  font-size: clamp(1.25rem, 3.8vw, 3rem);
   color: var(--color-white);
   text-decoration: none;
   display: block;
   margin-bottom: 2.5rem;
-  overflow-wrap: break-word;
-  word-break: normal;
-  hyphens: none;
+  white-space: nowrap;
   transition: opacity 0.2s ease;
 }
 
@@ -909,14 +909,11 @@ button:focus-visible {
 
   /* Hero */
   .hero__name {
-    font-size: clamp(2rem, 10vw, 4rem);
-    flex-wrap: wrap;
-    justify-content: center;
+    font-size: clamp(2.5rem, 11vw, 4.5rem);
   }
 
   .hero__photo {
-    width: 300px;
-    max-width: 70vw;
+    width: min(300px, 70vw);
   }
 
   /* About */
@@ -1008,7 +1005,7 @@ button:focus-visible {
   }
 
   .hero__photo {
-    width: 250px;
+    width: min(250px, 65vw);
   }
 }
 
@@ -1027,7 +1024,7 @@ button:focus-visible {
 
   .gsap-ready .hero__photo-wrap {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: none;
   }
 
   .gsap-ready .hero__subtitle {
