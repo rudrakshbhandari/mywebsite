@@ -12,7 +12,7 @@
   --color-cream: #f5f0eb;
   --color-white: #ffffff;
 
-  --font-display: 'Syne', sans-serif;
+  --font-display: 'Plus Jakarta Sans', sans-serif;
   --font-body: 'Libre Baskerville', Georgia, serif;
 
   --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
@@ -299,7 +299,7 @@ button:focus-visible {
    ============================================= */
 .scene--hero {
   position: relative;
-  height: 250vh;
+  height: 300vh;
   overflow: visible;
 }
 
@@ -317,41 +317,33 @@ button:focus-visible {
 .hero__name {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.5rem, 7vw, 7rem);
-  line-height: 1;
+  font-size: clamp(3rem, 8vw, 8rem);
+  line-height: 1.05;
   text-align: center;
   color: var(--color-text);
   letter-spacing: -0.03em;
   z-index: 2;
   position: relative;
-  will-change: letter-spacing, opacity;
-}
-
-.hero__letter {
-  display: inline;
-}
-
-.hero__letter--space {
-  display: inline;
-  word-spacing: 0.3em;
+  will-change: transform, opacity;
 }
 
 .hero__photo-wrap {
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 1;
-  margin-top: -1.5rem;
-  margin-bottom: -1rem;
   opacity: 1;
   will-change: transform, opacity;
 }
 
 .gsap-ready .hero__photo-wrap {
   opacity: 0;
-  transform: scale(0.92);
+  transform: translate(-50%, -50%) scale(0.85);
 }
 
 .hero__photo {
-  width: min(500px, 65vw);
+  width: min(480px, 60vw);
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
@@ -363,13 +355,15 @@ button:focus-visible {
 }
 
 .hero__subtitle {
-  font-family: var(--font-body);
-  font-size: clamp(0.85rem, 1.5vw, 1.1rem);
-  color: var(--color-muted);
-  margin-top: 1rem;
+  font-family: var(--font-display);
+  font-size: clamp(0.8rem, 1.3vw, 1rem);
+  font-weight: 500;
+  color: var(--color-text);
+  opacity: 0.5;
+  margin-top: 1.25rem;
   z-index: 3;
-  opacity: 1;
-  font-style: italic;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   will-change: opacity;
 }
 
@@ -909,11 +903,11 @@ button:focus-visible {
 
   /* Hero */
   .hero__name {
-    font-size: clamp(2.5rem, 11vw, 4.5rem);
+    font-size: clamp(2.5rem, 12vw, 5rem);
   }
 
   .hero__photo {
-    width: min(300px, 70vw);
+    width: min(280px, 65vw);
   }
 
   /* About */
@@ -1005,7 +999,7 @@ button:focus-visible {
   }
 
   .hero__photo {
-    width: min(250px, 65vw);
+    width: min(240px, 60vw);
   }
 }
 
@@ -1024,7 +1018,7 @@ button:focus-visible {
 
   .gsap-ready .hero__photo-wrap {
     opacity: 1;
-    transform: none;
+    transform: translate(-50%, -50%) scale(1);
   }
 
   .gsap-ready .hero__subtitle {
