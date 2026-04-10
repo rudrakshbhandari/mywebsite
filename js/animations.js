@@ -37,12 +37,17 @@ document.addEventListener('DOMContentLoaded', function () {
    Show all content without pinning or scrub
    =========================== */
 function initStaticFallback() {
+  var heroLines = document.querySelectorAll('.hero__line');
   var heroPhotoWrap = document.querySelector('.hero__photo-wrap');
   var heroSubtitle = document.querySelector('.hero__subtitle');
   var paragraphs = document.querySelectorAll('.about__paragraph');
   var projCards = document.querySelectorAll('.proj-card');
   var projImages = document.querySelectorAll('.projects__img');
 
+  heroLines.forEach(function (line) {
+    line.style.opacity = '1';
+    line.style.transform = 'none';
+  });
   if (heroPhotoWrap) {
     heroPhotoWrap.style.opacity = '1';
     heroPhotoWrap.style.transform = 'none';
@@ -67,18 +72,62 @@ function initStaticFallback() {
 
 /* ===========================
    SCENE 1: HERO
-   Pin for ~150vh, spread letters, reveal photo
+   Entrance animation on load + subtle scroll parallax
    =========================== */
 function initHeroScene() {
   var heroSection = document.querySelector('.scene--hero');
   var heroInner = document.querySelector('.hero__inner');
-  var heroName = document.querySelector('.hero__name');
+  var firstLine = document.querySelector('.hero__line--first');
+  var lastLine = document.querySelector('.hero__line--last');
   var photoWrap = document.querySelector('.hero__photo-wrap');
   var subtitle = document.querySelector('.hero__subtitle');
 
-  if (!heroSection || !heroInner || !photoWrap || !heroName) return;
+  if (!heroSection || !heroInner || !firstLine || !lastLine || !photoWrap) return;
 
-  var tl = gsap.timeline({
+  /* --- Entrance timeline (plays once on load) --- */
+  var entrance = gsap.timeline({ delay: 0.3 });
+
+  entrance.to(firstLine, {
+    opacity: 1,
+    y: 0,
+    duration: 0.9,
+    ease: 'power3.out',
+  });
+
+  entrance.to(
+    photoWrap,
+    {
+      opacity: 1,
+      scale: 1,
+      duration: 1,
+      ease: 'power3.out',
+    },
+    0.15
+  );
+
+  entrance.to(
+    lastLine,
+    {
+      opacity: 1,
+      y: 0,
+      duration: 0.9,
+      ease: 'power3.out',
+    },
+    0.25
+  );
+
+  entrance.to(
+    subtitle,
+    {
+      opacity: 0.45,
+      duration: 0.8,
+      ease: 'power2.out',
+    },
+    0.7
+  );
+
+  /* --- Scroll parallax (name spreads, photo lifts away) --- */
+  var scrollTl = gsap.timeline({
     scrollTrigger: {
       trigger: heroSection,
       start: 'top top',
@@ -89,36 +138,10 @@ function initHeroScene() {
     },
   });
 
-  tl.to(
-    heroName,
-    {
-      letterSpacing: '0.06em',
-      duration: 0.6,
-      ease: 'none',
-    },
-    0
-  );
-
-  tl.to(
-    photoWrap,
-    {
-      opacity: 1,
-      scale: 1,
-      duration: 0.5,
-      ease: 'none',
-    },
-    0.05
-  );
-
-  tl.to(
-    subtitle,
-    {
-      opacity: 0.5,
-      duration: 0.3,
-      ease: 'none',
-    },
-    0.4
-  );
+  scrollTl.to(firstLine, { y: -40, opacity: 0.3, duration: 1, ease: 'none' }, 0);
+  scrollTl.to(lastLine, { y: 40, opacity: 0.3, duration: 1, ease: 'none' }, 0);
+  scrollTl.to(photoWrap, { scale: 1.08, duration: 1, ease: 'none' }, 0);
+  scrollTl.to(subtitle, { opacity: 0, duration: 0.5, ease: 'none' }, 0);
 }
 
 /* ===========================
