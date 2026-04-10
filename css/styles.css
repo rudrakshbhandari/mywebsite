@@ -312,6 +312,7 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  gap: 0;
 }
 
 .hero__name {
@@ -322,16 +323,14 @@ button:focus-visible {
   text-align: center;
   color: var(--color-text);
   letter-spacing: -0.03em;
-  z-index: 2;
   position: relative;
+  z-index: 2;
   will-change: transform, opacity;
 }
 
 .hero__photo-wrap {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 1rem 0 0;
+  position: relative;
   z-index: 1;
   opacity: 1;
   will-change: transform, opacity;
@@ -339,11 +338,11 @@ button:focus-visible {
 
 .gsap-ready .hero__photo-wrap {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.85);
+  transform: scale(0.9);
 }
 
 .hero__photo {
-  width: min(480px, 60vw);
+  width: min(400px, 55vw);
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
@@ -356,13 +355,14 @@ button:focus-visible {
 
 .hero__subtitle {
   font-family: var(--font-display);
-  font-size: clamp(0.8rem, 1.3vw, 1rem);
-  font-weight: 500;
+  font-size: clamp(0.7rem, 1.1vw, 0.85rem);
+  font-weight: 600;
   color: var(--color-text);
-  opacity: 0.5;
-  margin-top: 1.25rem;
-  z-index: 3;
-  letter-spacing: 0.04em;
+  opacity: 0.45;
+  margin-top: 1.5rem;
+  position: relative;
+  z-index: 2;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   will-change: opacity;
 }
@@ -1018,7 +1018,7 @@ button:focus-visible {
 
   .gsap-ready .hero__photo-wrap {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: none;
   }
 
   .gsap-ready .hero__subtitle {
