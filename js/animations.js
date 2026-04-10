@@ -45,7 +45,7 @@ function initStaticFallback() {
 
   if (heroPhotoWrap) {
     heroPhotoWrap.style.opacity = '1';
-    heroPhotoWrap.style.transform = 'translate(-50%, -50%) scale(1)';
+    heroPhotoWrap.style.transform = 'none';
   }
   if (heroSubtitle) {
     heroSubtitle.style.opacity = '1';
@@ -90,6 +90,16 @@ function initHeroScene() {
   });
 
   tl.to(
+    heroName,
+    {
+      letterSpacing: '0.06em',
+      duration: 0.6,
+      ease: 'none',
+    },
+    0
+  );
+
+  tl.to(
     photoWrap,
     {
       opacity: 1,
@@ -97,28 +107,17 @@ function initHeroScene() {
       duration: 0.5,
       ease: 'none',
     },
-    0
-  );
-
-  tl.to(
-    heroName,
-    {
-      opacity: 0,
-      y: -40,
-      duration: 0.4,
-      ease: 'none',
-    },
-    0.25
+    0.05
   );
 
   tl.to(
     subtitle,
     {
-      opacity: 0.6,
+      opacity: 0.5,
       duration: 0.3,
       ease: 'none',
     },
-    0.5
+    0.4
   );
 }
 
