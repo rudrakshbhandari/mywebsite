@@ -45,7 +45,7 @@ function initStaticFallback() {
 
   if (heroPhotoWrap) {
     heroPhotoWrap.style.opacity = '1';
-    heroPhotoWrap.style.transform = 'none';
+    heroPhotoWrap.style.transform = 'translate(-50%, -50%) scale(1)';
   }
   if (heroSubtitle) {
     heroSubtitle.style.opacity = '1';
@@ -101,23 +101,24 @@ function initHeroScene() {
   );
 
   tl.to(
-    subtitle,
+    heroName,
     {
-      opacity: 1,
+      opacity: 0,
+      y: -40,
       duration: 0.4,
       ease: 'none',
     },
-    0.3
+    0.25
   );
 
   tl.to(
-    heroName,
+    subtitle,
     {
-      letterSpacing: '0.08em',
-      duration: 0.6,
+      opacity: 0.6,
+      duration: 0.3,
       ease: 'none',
     },
-    0
+    0.5
   );
 }
 
