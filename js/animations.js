@@ -138,13 +138,13 @@ function initHeroScene() {
     },
   });
 
-  /* First 30% of scroll: nothing moves — user absorbs the hero */
-  scrollTl.to({}, { duration: 0.3 });
+  /* First 10% of scroll: brief pause so first scroll tick isn't jarring */
+  scrollTl.to({}, { duration: 0.1 });
 
-  /* Remaining 70%: gentle positional drift, text stays readable */
-  scrollTl.to(firstLine, { y: -30, opacity: 0.7, duration: 0.7, ease: 'none' }, 0.3);
-  scrollTl.to(lastLine, { y: 30, opacity: 0.7, duration: 0.7, ease: 'none' }, 0.3);
-  scrollTl.to(photoWrap, { scale: 1.05, duration: 0.7, ease: 'none' }, 0.3);
+  /* Remaining 90%: gentle positional drift, text stays readable */
+  scrollTl.to(firstLine, { y: -25, opacity: 0.7, duration: 0.9, ease: 'none' }, 0.1);
+  scrollTl.to(lastLine, { y: 25, opacity: 0.7, duration: 0.9, ease: 'none' }, 0.1);
+  scrollTl.to(photoWrap, { scale: 1.05, duration: 0.9, ease: 'none' }, 0.1);
 }
 
 /* ===========================
