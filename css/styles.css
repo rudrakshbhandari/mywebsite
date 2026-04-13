@@ -337,8 +337,17 @@ button:focus-visible {
   opacity: 0;
 }
 
+.gsap-ready .hero__line--first {
+  transform: translateY(30px);
+}
+
+.gsap-ready .hero__line--last {
+  transform: translateY(-30px);
+}
+
 .gsap-ready .hero__photo-wrap {
   opacity: 0;
+  transform: scale(0.92);
 }
 
 .gsap-ready .hero__subtitle {
