@@ -17,7 +17,7 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
 
-    <meta name="theme-color" content="#0f172a" />
+    <meta name="theme-color" content="#12100e" />
 
     <meta property="og:title" content="Case Studies | Rudraksh Bhandari" />
     <meta property="og:description" content="How I approach high-impact product and engineering problems." />
@@ -29,7 +29,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -42,20 +42,21 @@
 
     <style>
       :root {
-        --primary-color: #6366f1;
-        --primary-glow: rgba(99, 102, 241, 0.4);
-        --secondary-color: #94a3b8;
-        --accent-color: #22d3ee;
-        --accent-glow: rgba(34, 211, 238, 0.3);
-        --text-primary: #f1f5f9;
-        --text-secondary: #94a3b8;
-        --text-light: #ffffff;
-        --background-light: #0f172a;
-        --background-dark: #020617;
-        --background-card: #1e293b;
-        --border-color: #334155;
-        --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        --font-display: 'Space Grotesk', var(--font-family);
+        --primary-color: #c8553d;
+        --primary-glow: rgba(200, 85, 61, 0.3);
+        --secondary-color: #a09890;
+        --accent-color: #c8553d;
+        --accent-glow: rgba(200, 85, 61, 0.2);
+        --text-primary: #f0ebe6;
+        --text-secondary: #a09890;
+        --text-light: #f5f0eb;
+        --background-light: #1a1714;
+        --background-dark: #12100e;
+        --background-card: #242019;
+        --border-color: #3a3530;
+        --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        --font-display: 'Plus Jakarta Sans', var(--font-family);
+        --font-body: 'Libre Baskerville', Georgia, serif;
         --radius-lg: 0.75rem;
         --radius-xl: 1rem;
         --transition-normal: 0.3s ease-in-out;
@@ -81,8 +82,8 @@
         position: fixed;
         inset: 0;
         background:
-          radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-          radial-gradient(ellipse at 80% 80%, rgba(34, 211, 238, 0.1) 0%, transparent 50%), var(--background-dark);
+          radial-gradient(ellipse at 20% 20%, rgba(200, 85, 61, 0.08) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 80%, rgba(200, 85, 61, 0.04) 0%, transparent 50%), var(--background-dark);
         z-index: -1;
         pointer-events: none;
       }
@@ -93,7 +94,7 @@
         left: 0;
         right: 0;
         z-index: 1000;
-        background: rgba(15, 23, 42, 0.8);
+        background: rgba(18, 16, 14, 0.85);
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border-bottom: 1px solid var(--border-color);
@@ -110,8 +111,8 @@
 
       .nav-logo a {
         font-family: var(--font-display);
-        font-size: 1.25rem;
-        font-weight: 600;
+        font-size: 1.15rem;
+        font-weight: 800;
         color: var(--text-light);
         text-decoration: none;
         letter-spacing: -0.02em;
@@ -154,6 +155,7 @@
 
       .page-subtitle {
         color: var(--text-secondary);
+        font-family: var(--font-body);
         font-size: 1.0625rem;
         max-width: 560px;
         margin: 0 auto;
@@ -167,7 +169,7 @@
       }
 
       .case-study-card {
-        background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.95) 100%);
+        background: linear-gradient(180deg, rgba(26, 23, 20, 0.95) 0%, rgba(36, 32, 25, 0.95) 100%);
         border: 1px solid var(--border-color);
         border-radius: var(--radius-xl);
         padding: 1.5rem;
@@ -200,6 +202,7 @@
         color: var(--text-secondary);
         margin-bottom: 1rem;
         line-height: 1.65;
+        font-family: var(--font-body);
       }
 
       .case-study-points {
@@ -210,7 +213,7 @@
       }
 
       .case-study-points li::marker {
-        color: var(--primary-color);
+        color: var(--accent-color);
       }
 
       @media (max-width: 640px) {
@@ -234,7 +237,7 @@
     <header>
       <div class="nav-container">
         <div class="nav-logo">
-          <a href="/">Rudraksh Bhandari</a>
+          <a href="/">RB</a>
         </div>
         <a href="/" class="nav-back"><i class="fas fa-arrow-left" aria-hidden="true"></i> Back to portfolio</a>
       </div>
