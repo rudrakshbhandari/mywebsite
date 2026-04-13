@@ -84,15 +84,17 @@ function initHeroScene() {
 
   if (!heroSection || !heroInner || !firstLine || !lastLine || !photoWrap) return;
 
-  /* --- Entrance: plays automatically on load --- */
+  /* --- Entrance: elements land in a tight, overlapping position --- */
+  var overlap = 25;
   var entrance = gsap.timeline({ delay: 0.3 });
 
-  entrance.to(firstLine, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' });
+  entrance.to(firstLine, { opacity: 1, y: overlap, duration: 0.9, ease: 'power3.out' });
   entrance.to(photoWrap, { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 0.15);
-  entrance.to(lastLine, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, 0.25);
+  entrance.to(lastLine, { opacity: 1, y: -overlap, duration: 0.9, ease: 'power3.out' }, 0.25);
   entrance.to(subtitle, { opacity: 0.45, duration: 0.8, ease: 'power2.out' }, 0.7);
 
-  /* --- Scroll: pin + very subtle drift (no opacity changes) --- */
+  /* --- Scroll: name lines breathe outward from tight overlap --- */
+  var spread = overlap + 20;
   ScrollTrigger.create({
     trigger: heroSection,
     start: 'top top',
@@ -101,9 +103,9 @@ function initHeroScene() {
     pinSpacing: false,
     onUpdate: function (self) {
       var p = self.progress;
-      gsap.set(firstLine, { y: p * -12 });
-      gsap.set(lastLine, { y: p * 12 });
-      gsap.set(photoWrap, { scale: 1 + p * 0.01 });
+      gsap.set(firstLine, { y: overlap - p * spread });
+      gsap.set(lastLine, { y: -overlap + p * spread });
+      gsap.set(photoWrap, { scale: 1 + p * 0.015 });
     },
   });
 }
