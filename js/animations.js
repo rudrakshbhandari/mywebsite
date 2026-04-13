@@ -126,7 +126,7 @@ function initHeroScene() {
     0.7
   );
 
-  /* Pin + depth parallax: very gentle layer drift for 3D feel */
+  /* Pin + depth parallax with initial dead zone and ease-in */
   var scrollTl = gsap.timeline({
     scrollTrigger: {
       trigger: heroSection,
@@ -138,10 +138,14 @@ function initHeroScene() {
     },
   });
 
-  scrollTl.to(firstLine, { y: -20, duration: 1, ease: 'none' }, 0);
-  scrollTl.to(photoWrap, { y: -5, scale: 1.015, duration: 1, ease: 'none' }, 0);
-  scrollTl.to(lastLine, { y: 20, duration: 1, ease: 'none' }, 0);
-  scrollTl.to(subtitle, { y: 10, duration: 1, ease: 'none' }, 0);
+  /* First 40% of scroll: nothing moves */
+  scrollTl.to({}, { duration: 0.4 });
+
+  /* Last 60%: drift eases in slowly then accelerates */
+  scrollTl.to(firstLine, { y: -18, duration: 0.6, ease: 'power2.in' }, 0.4);
+  scrollTl.to(photoWrap, { y: -4, scale: 1.01, duration: 0.6, ease: 'power2.in' }, 0.4);
+  scrollTl.to(lastLine, { y: 18, duration: 0.6, ease: 'power2.in' }, 0.4);
+  scrollTl.to(subtitle, { y: 8, duration: 0.6, ease: 'power2.in' }, 0.4);
 }
 
 /* ===========================
