@@ -72,7 +72,7 @@ function initStaticFallback() {
 
 /* ===========================
    SCENE 1: HERO
-   Entrance animation on load + subtle scroll parallax
+   One continuous scroll-driven reveal + drift
    =========================== */
 function initHeroScene() {
   var heroSection = document.querySelector('.scene--hero');
@@ -84,68 +84,31 @@ function initHeroScene() {
 
   if (!heroSection || !heroInner || !firstLine || !lastLine || !photoWrap) return;
 
-  /* --- Entrance timeline (plays once on load) --- */
-  var entrance = gsap.timeline({ delay: 0.3 });
-
-  entrance.to(firstLine, {
-    opacity: 1,
-    y: 0,
-    duration: 0.9,
-    ease: 'power3.out',
-  });
-
-  entrance.to(
-    photoWrap,
-    {
-      opacity: 1,
-      scale: 1,
-      duration: 1,
-      ease: 'power3.out',
-    },
-    0.15
-  );
-
-  entrance.to(
-    lastLine,
-    {
-      opacity: 1,
-      y: 0,
-      duration: 0.9,
-      ease: 'power3.out',
-    },
-    0.25
-  );
-
-  entrance.to(
-    subtitle,
-    {
-      opacity: 0.45,
-      duration: 0.8,
-      ease: 'power2.out',
-    },
-    0.7
-  );
-
-  /* Pin + depth parallax with initial dead zone and ease-in */
-  var scrollTl = gsap.timeline({
+  var tl = gsap.timeline({
     scrollTrigger: {
       trigger: heroSection,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 3,
+      scrub: 1.5,
       pin: heroInner,
       pinSpacing: false,
     },
   });
 
-  /* First 40% of scroll: nothing moves */
-  scrollTl.to({}, { duration: 0.4 });
+  /* 0–0.3: elements reveal (scroll-driven entrance) */
+  tl.fromTo(firstLine, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.25, ease: 'none' }, 0);
+  tl.fromTo(photoWrap, { opacity: 0, scale: 0.92 }, { opacity: 1, scale: 1, duration: 0.3, ease: 'none' }, 0.03);
+  tl.fromTo(lastLine, { opacity: 0, y: -30 }, { opacity: 1, y: 0, duration: 0.25, ease: 'none' }, 0.06);
+  tl.fromTo(subtitle, { opacity: 0 }, { opacity: 0.45, duration: 0.2, ease: 'none' }, 0.15);
 
-  /* Last 60%: drift eases in slowly then accelerates */
-  scrollTl.to(firstLine, { y: -18, duration: 0.6, ease: 'power2.in' }, 0.4);
-  scrollTl.to(photoWrap, { y: -4, scale: 1.01, duration: 0.6, ease: 'power2.in' }, 0.4);
-  scrollTl.to(lastLine, { y: 18, duration: 0.6, ease: 'power2.in' }, 0.4);
-  scrollTl.to(subtitle, { y: 8, duration: 0.6, ease: 'power2.in' }, 0.4);
+  /* 0.3–0.65: hold — everything stays put */
+  tl.to({}, { duration: 0.35 });
+
+  /* 0.65–1.0: gentle drift as about section arrives */
+  tl.to(firstLine, { y: -15, duration: 0.35, ease: 'none' }, 0.65);
+  tl.to(lastLine, { y: 15, duration: 0.35, ease: 'none' }, 0.65);
+  tl.to(photoWrap, { scale: 1.02, duration: 0.35, ease: 'none' }, 0.65);
+  tl.to(subtitle, { y: 8, duration: 0.35, ease: 'none' }, 0.65);
 }
 
 /* ===========================
