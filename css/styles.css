@@ -299,7 +299,7 @@ button:focus-visible {
    ============================================= */
 .scene--hero {
   position: relative;
-  height: 150vh;
+  height: 180vh;
   overflow: visible;
 }
 
@@ -337,25 +337,19 @@ button:focus-visible {
   opacity: 0;
 }
 
-.gsap-ready .hero__line--first {
-  transform: translateY(30px);
+.gsap-ready .hero__photo-wrap {
+  opacity: 0;
 }
 
-.gsap-ready .hero__line--last {
-  transform: translateY(-30px);
+.gsap-ready .hero__subtitle {
+  opacity: 0;
 }
 
 .hero__photo-wrap {
   position: relative;
   z-index: 1;
   margin: -0.6em 0;
-  opacity: 1;
   will-change: transform, opacity;
-}
-
-.gsap-ready .hero__photo-wrap {
-  opacity: 0;
-  transform: scale(0.92);
 }
 
 .hero__photo {
@@ -375,17 +369,13 @@ button:focus-visible {
   font-size: clamp(0.65rem, 1vw, 0.8rem);
   font-weight: 600;
   color: var(--color-text);
-  opacity: 0.4;
+  opacity: 0.45;
   margin-top: 2rem;
   position: relative;
   z-index: 2;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   will-change: opacity;
-}
-
-.gsap-ready .hero__subtitle {
-  opacity: 0;
 }
 
 /* =============================================
