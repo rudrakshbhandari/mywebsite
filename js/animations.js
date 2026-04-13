@@ -85,7 +85,7 @@ function initHeroScene() {
   if (!heroSection || !heroInner || !firstLine || !lastLine || !photoWrap) return;
 
   /* --- Entrance: elements land in a tight, overlapping position --- */
-  var overlap = 25;
+  var overlap = 50;
   var entrance = gsap.timeline({ delay: 0.3 });
 
   entrance.to(firstLine, { opacity: 1, y: overlap, duration: 0.9, ease: 'power3.out' });
