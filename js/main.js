@@ -81,11 +81,11 @@ function initNavigation() {
   window.addEventListener('scroll', function () {
     var current = '';
     var sections = document.querySelectorAll('section[id]');
+    var viewportMid = window.innerHeight * 0.35;
 
     sections.forEach(function (section) {
-      var sectionTop = section.offsetTop - 150;
-      var sectionHeight = section.clientHeight;
-      if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+      var rect = section.getBoundingClientRect();
+      if (rect.top <= viewportMid && rect.bottom > viewportMid) {
         current = section.getAttribute('id');
       }
     });
@@ -157,11 +157,11 @@ function initDotNav() {
   window.addEventListener('scroll', function () {
     var current = '';
     var sections = document.querySelectorAll('section[id]');
+    var viewportMid = window.innerHeight * 0.35;
 
     sections.forEach(function (section) {
-      var sectionTop = section.offsetTop - 200;
-      var sectionHeight = section.clientHeight;
-      if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+      var rect = section.getBoundingClientRect();
+      if (rect.top <= viewportMid && rect.bottom > viewportMid) {
         current = section.getAttribute('id');
       }
     });

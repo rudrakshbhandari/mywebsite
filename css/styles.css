@@ -299,7 +299,7 @@ button:focus-visible {
    ============================================= */
 .scene--hero {
   position: relative;
-  height: 280vh;
+  height: 220vh;
   overflow: visible;
 }
 
