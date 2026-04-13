@@ -126,25 +126,14 @@ function initHeroScene() {
     0.7
   );
 
-  /* --- Scroll parallax (gentle drift, subtitle stays visible) --- */
-  var scrollTl = gsap.timeline({
-    scrollTrigger: {
-      trigger: heroSection,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 2,
-      pin: heroInner,
-      pinSpacing: false,
-    },
+  /* Pin the hero so it holds while the user scrolls, then unpin naturally */
+  ScrollTrigger.create({
+    trigger: heroSection,
+    start: 'top top',
+    end: 'bottom bottom',
+    pin: heroInner,
+    pinSpacing: false,
   });
-
-  /* First 10% of scroll: brief pause so first scroll tick isn't jarring */
-  scrollTl.to({}, { duration: 0.1 });
-
-  /* Remaining 90%: gentle positional drift, text stays readable */
-  scrollTl.to(firstLine, { y: -25, opacity: 0.7, duration: 0.9, ease: 'none' }, 0.1);
-  scrollTl.to(lastLine, { y: 25, opacity: 0.7, duration: 0.9, ease: 'none' }, 0.1);
-  scrollTl.to(photoWrap, { scale: 1.05, duration: 0.9, ease: 'none' }, 0.1);
 }
 
 /* ===========================
