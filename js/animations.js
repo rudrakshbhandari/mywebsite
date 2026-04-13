@@ -141,11 +141,10 @@ function initHeroScene() {
   /* First 30% of scroll: nothing moves — user absorbs the hero */
   scrollTl.to({}, { duration: 0.3 });
 
-  /* Remaining 70%: gentle parallax drift */
-  scrollTl.to(firstLine, { y: -35, opacity: 0.35, duration: 0.7, ease: 'none' }, 0.3);
-  scrollTl.to(lastLine, { y: 35, opacity: 0.35, duration: 0.7, ease: 'none' }, 0.3);
-  scrollTl.to(photoWrap, { scale: 1.06, duration: 0.7, ease: 'none' }, 0.3);
-  scrollTl.to(subtitle, { opacity: 0.15, duration: 0.7, ease: 'none' }, 0.3);
+  /* Remaining 70%: gentle positional drift, text stays readable */
+  scrollTl.to(firstLine, { y: -30, opacity: 0.7, duration: 0.7, ease: 'none' }, 0.3);
+  scrollTl.to(lastLine, { y: 30, opacity: 0.7, duration: 0.7, ease: 'none' }, 0.3);
+  scrollTl.to(photoWrap, { scale: 1.05, duration: 0.7, ease: 'none' }, 0.3);
 }
 
 /* ===========================
