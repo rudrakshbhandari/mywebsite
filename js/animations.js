@@ -9,10 +9,15 @@
  * Scene 5: Contact — background color transition
  */
 
+if ('scrollRestoration' in history) {
+  history.scrollRestoration = 'manual';
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   if (typeof IS_DEV_MODE !== 'undefined' && IS_DEV_MODE) return;
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
+  window.scrollTo(0, 0);
   gsap.registerPlugin(ScrollTrigger);
 
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
