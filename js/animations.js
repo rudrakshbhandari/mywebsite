@@ -126,22 +126,26 @@ function initHeroScene() {
     0.7
   );
 
-  /* --- Scroll parallax (name spreads, photo lifts away) --- */
+  /* --- Scroll parallax (gentle drift, subtitle stays visible) --- */
   var scrollTl = gsap.timeline({
     scrollTrigger: {
       trigger: heroSection,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 1,
+      scrub: 2,
       pin: heroInner,
       pinSpacing: false,
     },
   });
 
-  scrollTl.to(firstLine, { y: -40, opacity: 0.3, duration: 1, ease: 'none' }, 0);
-  scrollTl.to(lastLine, { y: 40, opacity: 0.3, duration: 1, ease: 'none' }, 0);
-  scrollTl.to(photoWrap, { scale: 1.08, duration: 1, ease: 'none' }, 0);
-  scrollTl.to(subtitle, { opacity: 0, duration: 0.5, ease: 'none' }, 0);
+  /* First 30% of scroll: nothing moves — user absorbs the hero */
+  scrollTl.to({}, { duration: 0.3 });
+
+  /* Remaining 70%: gentle parallax drift */
+  scrollTl.to(firstLine, { y: -35, opacity: 0.35, duration: 0.7, ease: 'none' }, 0.3);
+  scrollTl.to(lastLine, { y: 35, opacity: 0.35, duration: 0.7, ease: 'none' }, 0.3);
+  scrollTl.to(photoWrap, { scale: 1.06, duration: 0.7, ease: 'none' }, 0.3);
+  scrollTl.to(subtitle, { opacity: 0.15, duration: 0.7, ease: 'none' }, 0.3);
 }
 
 /* ===========================
