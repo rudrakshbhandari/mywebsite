@@ -304,8 +304,6 @@ button:focus-visible {
 }
 
 .hero__inner {
-  position: sticky;
-  top: 0;
   height: 100vh;
   display: flex;
   flex-direction: column;
