@@ -126,22 +126,22 @@ function initHeroScene() {
     0.7
   );
 
-  /* Pin + depth parallax: layers move at different speeds for a 3D feel */
+  /* Pin + depth parallax: very gentle layer drift for 3D feel */
   var scrollTl = gsap.timeline({
     scrollTrigger: {
       trigger: heroSection,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 1.5,
+      scrub: 3,
       pin: heroInner,
       pinSpacing: false,
     },
   });
 
-  scrollTl.to(firstLine, { y: -50, duration: 1, ease: 'none' }, 0);
-  scrollTl.to(photoWrap, { y: -15, scale: 1.03, duration: 1, ease: 'none' }, 0);
-  scrollTl.to(lastLine, { y: 50, duration: 1, ease: 'none' }, 0);
-  scrollTl.to(subtitle, { y: 25, duration: 1, ease: 'none' }, 0);
+  scrollTl.to(firstLine, { y: -20, duration: 1, ease: 'none' }, 0);
+  scrollTl.to(photoWrap, { y: -5, scale: 1.015, duration: 1, ease: 'none' }, 0);
+  scrollTl.to(lastLine, { y: 20, duration: 1, ease: 'none' }, 0);
+  scrollTl.to(subtitle, { y: 10, duration: 1, ease: 'none' }, 0);
 }
 
 /* ===========================
