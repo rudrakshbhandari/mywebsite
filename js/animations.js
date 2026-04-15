@@ -86,7 +86,33 @@ function initHeroScene() {
 
   /* --- Entrance: elements land in a tight, overlapping position --- */
   var overlap = 50;
-  var entrance = gsap.timeline({ delay: 0.3 });
+  var spread = overlap + 20;
+  var entranceSettled = false;
+
+  function finishEntrance() {
+    if (entranceSettled) return;
+
+    entranceSettled = true;
+    entrance.kill();
+
+    gsap.set([firstLine, lastLine], { opacity: 1 });
+    gsap.set(photoWrap, { opacity: 1, scale: 1 });
+    gsap.set(subtitle, { opacity: 0.45 });
+  }
+
+  function syncHeroToProgress(progress) {
+    gsap.set(firstLine, { opacity: 1, y: overlap - progress * spread });
+    gsap.set(lastLine, { opacity: 1, y: -overlap + progress * spread });
+    gsap.set(photoWrap, { opacity: 1, scale: 1 + progress * 0.015 });
+    gsap.set(subtitle, { opacity: 0.45 });
+  }
+
+  var entrance = gsap.timeline({
+    delay: 0.3,
+    onComplete: function () {
+      entranceSettled = true;
+    },
+  });
 
   entrance.to(firstLine, { opacity: 1, y: overlap, duration: 0.9, ease: 'power3.out' });
   entrance.to(photoWrap, { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 0.15);
@@ -94,18 +120,25 @@ function initHeroScene() {
   entrance.to(subtitle, { opacity: 0.45, duration: 0.8, ease: 'power2.out' }, 0.7);
 
   /* --- Scroll: name lines breathe outward from tight overlap --- */
-  var spread = overlap + 20;
   ScrollTrigger.create({
     trigger: heroSection,
     start: 'top top',
     end: 'bottom bottom',
     pin: heroInner,
     pinSpacing: false,
+    invalidateOnRefresh: true,
+    onRefresh: function (self) {
+      if (!entranceSettled && window.scrollY <= 1) return;
+      syncHeroToProgress(self.progress);
+    },
     onUpdate: function (self) {
-      var p = self.progress;
-      gsap.set(firstLine, { y: overlap - p * spread });
-      gsap.set(lastLine, { y: -overlap + p * spread });
-      gsap.set(photoWrap, { scale: 1 + p * 0.015 });
+      if (!entranceSettled && window.scrollY <= 1) return;
+
+      if (window.scrollY > 1) {
+        finishEntrance();
+      }
+
+      syncHeroToProgress(self.progress);
     },
   });
 }
