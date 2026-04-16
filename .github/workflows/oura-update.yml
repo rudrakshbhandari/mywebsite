@@ -12,6 +12,8 @@ concurrency:
 
 permissions:
   contents: write
+  issues: write
+  pull-requests: write
 
 jobs:
   fetch-and-commit:
@@ -30,16 +32,20 @@ jobs:
           node-version: '20'
 
       - name: Fetch Oura data
+        id: fetch_oura
         env:
           # Optional: Personal Access Token path (most reliable for personal projects)
           OURA_ACCESS_TOKEN: ${{ secrets.OURA_ACCESS_TOKEN }}
           OURA_CLIENT_ID: ${{ secrets.OURA_CLIENT_ID }}
           OURA_CLIENT_SECRET: ${{ secrets.OURA_CLIENT_SECRET }}
           OURA_REFRESH_TOKEN: ${{ secrets.OURA_REFRESH_TOKEN }}
-        run: node scripts/fetch_oura_and_write_json.mjs
+        run: |
+          set -o pipefail
+          node scripts/fetch_oura_and_write_json.mjs 2>&1 | tee .oura_fetch.log
 
       - name: Check if files changed
         id: check_changes
+        if: steps.fetch_oura.outcome == 'success'
         run: |
           if [ -f .oura_no_change ]; then
             echo "changed=false" >> $GITHUB_OUTPUT
@@ -50,17 +56,52 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Commit and push if changed
+      - name: Create branch and PR if changed
         if: steps.check_changes.outputs.changed == 'true'
+        id: create_pr
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Create a unique branch name with timestamp
+          BRANCH_NAME="oura-update-$(date -u +%Y%m%d-%H%M%S)"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+          git checkout -b "$BRANCH_NAME"
           git add oura_public.json
           git commit -m "feat(health): update Oura Ring metrics [$(date -u +%Y-%m-%d)]"
-          git push
+          git push origin "$BRANCH_NAME"
+
+          # Create PR
+          PR_URL=$(gh pr create \
+            --title "feat(health): update Oura Ring metrics [$(date -u +%Y-%m-%d)]" \
+            --body "Automated health data update from Oura Ring." \
+            --base main \
+            --head "$BRANCH_NAME")
+
+          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+          echo "Created PR: $PR_URL"
+
+      - name: Auto-merge PR
+        if: steps.check_changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Wait a moment for checks to potentially start
+          sleep 2
+
+          # Try to enable auto-merge (requires admin access or specific branch settings)
+          # If this fails, the PR will remain open for manual review
+          gh pr merge --auto --squash "${{ steps.create_pr.outputs.pr_url }}" 2>/dev/null || true
+
+          # If auto-merge isn't available, at least try to merge directly if we have permissions
+          # This will fail gracefully if branch protection requires reviews
+          gh pr merge --squash --delete-branch "${{ steps.create_pr.outputs.pr_url }}" 2>/dev/null || echo "PR created but requires manual review/merge due to branch protection"
 
       - name: Rotate refresh token secret (OAuth path)
-        if: always()
+        if: always() && steps.fetch_oura.outcome == 'success'
         env:
           OURA_ACCESS_TOKEN: ${{ secrets.OURA_ACCESS_TOKEN }}
           GH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN }}
@@ -97,3 +138,43 @@ jobs:
 
           echo "::error::Failed to update OURA_REFRESH_TOKEN after 3 attempts."
           exit 1
+
+      - name: Open or update dashboard alert issue
+        if: steps.fetch_oura.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_TITLE: Health dashboard automation alert
+        run: |
+          RUN_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
+          LAST_ERROR="$(tail -n 20 .oura_fetch.log | sed 's/\r$//' | tail -n 1)"
+          cat > .health_alert_body.md <<EOF
+          @rudrakshbhandari the scheduled Oura health dashboard update failed.
+
+          - Workflow: \`Oura Health Data Update\`
+          - Run: ${RUN_URL}
+          - Branch: \`${GITHUB_REF_NAME}\`
+          - Triggered at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          - Last log line: \`${LAST_ERROR}\`
+
+          This usually means the Oura token refresh path or related secrets need attention before the public dashboard goes stale.
+          EOF
+
+          ISSUE_NUMBER="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "'"${ISSUE_TITLE}"'") | .number' | head -n 1)"
+
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue edit "$ISSUE_NUMBER" --body-file .health_alert_body.md
+          else
+            gh issue create --title "$ISSUE_TITLE" --body-file .health_alert_body.md
+          fi
+
+      - name: Close dashboard alert issue after recovery
+        if: steps.fetch_oura.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_TITLE: Health dashboard automation alert
+        run: |
+          ISSUE_NUMBER="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "'"${ISSUE_TITLE}"'") | .number' | head -n 1)"
+
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue close "$ISSUE_NUMBER" --comment "Automation recovered in https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}."
+          fi

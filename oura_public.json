@@ -1,113 +1,113 @@
 {
-  "lastUpdatedIso": "2026-03-23T23:35:56.984Z",
-  "day": "2026-03-23",
+  "lastUpdatedIso": "2026-04-15T21:57:32.863Z",
+  "day": "2026-04-15",
   "byDay": [
     {
-      "day": "2026-03-17",
-      "sleepScore": 86,
-      "readinessScore": 88,
-      "activityScore": 70,
-      "restingHrBpm": null,
-      "hrvMs": null,
-      "steps": 4474,
-      "activeCalories": 212,
-      "spo2Average": null,
-      "workoutCount": 0,
-      "totalSleepDuration": 27930,
-      "deepSleepDuration": 6120,
-      "remSleepDuration": 5580,
-      "lightSleepDuration": 16230,
-      "sleepEfficiency": 94
-    },
-    {
-      "day": "2026-03-18",
-      "sleepScore": 47,
-      "readinessScore": 69,
-      "activityScore": 67,
-      "restingHrBpm": null,
-      "hrvMs": null,
-      "steps": 5724,
-      "activeCalories": 364,
-      "spo2Average": null,
-      "workoutCount": 3,
-      "totalSleepDuration": 9960,
-      "deepSleepDuration": 4170,
-      "remSleepDuration": 1530,
-      "lightSleepDuration": 4260,
-      "sleepEfficiency": 88
-    },
-    {
-      "day": "2026-03-19",
-      "sleepScore": 67,
-      "readinessScore": 69,
-      "activityScore": 79,
-      "restingHrBpm": null,
-      "hrvMs": null,
-      "steps": 4363,
-      "activeCalories": 529,
-      "spo2Average": null,
-      "workoutCount": 0,
-      "totalSleepDuration": 25710,
-      "deepSleepDuration": 6150,
-      "remSleepDuration": 3810,
-      "lightSleepDuration": 15750,
-      "sleepEfficiency": 67
-    },
-    {
-      "day": "2026-03-20",
-      "sleepScore": 90,
-      "readinessScore": 91,
-      "activityScore": 77,
-      "restingHrBpm": null,
-      "hrvMs": null,
-      "steps": 5336,
-      "activeCalories": 294,
-      "spo2Average": null,
-      "workoutCount": 1,
-      "totalSleepDuration": 40500,
-      "deepSleepDuration": 9270,
-      "remSleepDuration": 10350,
-      "lightSleepDuration": 20880,
-      "sleepEfficiency": 91
-    },
-    {
-      "day": "2026-03-21",
-      "sleepScore": 74,
-      "readinessScore": 74,
+      "day": "2026-04-09",
+      "sleepScore": 91,
+      "readinessScore": 86,
       "activityScore": 84,
       "restingHrBpm": null,
       "hrvMs": null,
-      "steps": 7306,
-      "activeCalories": 573,
+      "steps": 4688,
+      "activeCalories": 231,
       "spo2Average": null,
-      "workoutCount": 4,
-      "totalSleepDuration": 22350,
-      "deepSleepDuration": 7110,
-      "remSleepDuration": 4410,
-      "lightSleepDuration": 10830,
-      "sleepEfficiency": 87
+      "workoutCount": 2,
+      "totalSleepDuration": 33630,
+      "deepSleepDuration": 8850,
+      "remSleepDuration": 8430,
+      "lightSleepDuration": 16350,
+      "sleepEfficiency": 86
     },
     {
-      "day": "2026-03-22",
-      "sleepScore": 90,
-      "readinessScore": 76,
+      "day": "2026-04-10",
+      "sleepScore": 83,
+      "readinessScore": 80,
       "activityScore": 88,
       "restingHrBpm": null,
       "hrvMs": null,
-      "steps": 7516,
-      "activeCalories": 452,
+      "steps": 12589,
+      "activeCalories": 1097,
       "spo2Average": null,
-      "workoutCount": 0,
-      "totalSleepDuration": 31020,
-      "deepSleepDuration": 7170,
-      "remSleepDuration": 7980,
-      "lightSleepDuration": 15870,
-      "sleepEfficiency": 94
+      "workoutCount": 5,
+      "totalSleepDuration": 25200,
+      "deepSleepDuration": 6780,
+      "remSleepDuration": 6000,
+      "lightSleepDuration": 12420,
+      "sleepEfficiency": 96
     },
     {
-      "day": "2026-03-23",
-      "sleepScore": 71,
-      "readinessScore": 78,
+      "day": "2026-04-11",
+      "sleepScore": 51,
+      "readinessScore": 31,
+      "activityScore": 85,
+      "restingHrBpm": null,
+      "hrvMs": null,
+      "steps": 7731,
+      "activeCalories": 380,
+      "spo2Average": null,
+      "workoutCount": 5,
+      "totalSleepDuration": 21660,
+      "deepSleepDuration": 4380,
+      "remSleepDuration": 2610,
+      "lightSleepDuration": 14670,
+      "sleepEfficiency": 72
+    },
+    {
+      "day": "2026-04-12",
+      "sleepScore": 88,
+      "readinessScore": 76,
+      "activityScore": 84,
+      "restingHrBpm": null,
+      "hrvMs": null,
+      "steps": 3255,
+      "activeCalories": 193,
+      "spo2Average": null,
+      "workoutCount": 2,
+      "totalSleepDuration": 39900,
+      "deepSleepDuration": 9750,
+      "remSleepDuration": 9150,
+      "lightSleepDuration": 21000,
+      "sleepEfficiency": 88
+    },
+    {
+      "day": "2026-04-13",
+      "sleepScore": 96,
+      "readinessScore": 80,
+      "activityScore": 82,
+      "restingHrBpm": null,
+      "hrvMs": null,
+      "steps": 5760,
+      "activeCalories": 250,
+      "spo2Average": null,
+      "workoutCount": 2,
+      "totalSleepDuration": 36060,
+      "deepSleepDuration": 7440,
+      "remSleepDuration": 9150,
+      "lightSleepDuration": 19470,
+      "sleepEfficiency": 93
+    },
+    {
+      "day": "2026-04-14",
+      "sleepScore": 85,
+      "readinessScore": 79,
+      "activityScore": 84,
+      "restingHrBpm": null,
+      "hrvMs": null,
+      "steps": 6605,
+      "activeCalories": 530,
+      "spo2Average": null,
+      "workoutCount": 2,
+      "totalSleepDuration": 32220,
+      "deepSleepDuration": 6420,
+      "remSleepDuration": 4950,
+      "lightSleepDuration": 20850,
+      "sleepEfficiency": 88
+    },
+    {
+      "day": "2026-04-15",
+      "sleepScore": 94,
+      "readinessScore": 80,
       "activityScore": null,
       "restingHrBpm": null,
       "hrvMs": null,
@@ -122,390 +122,538 @@
       "sleepEfficiency": null
     }
   ],
-  "sleepScore": 71,
-  "sleepDeep": 77,
-  "sleepEfficiency": 72,
-  "sleepLatency": 12,
-  "sleepRem": 67,
-  "sleepRestfulness": 80,
-  "sleepTiming": 71,
-  "sleepTotal": 83,
-  "readinessScore": 78,
-  "readinessActivityBalance": 96,
-  "readinessBodyTemp": 91,
-  "readinessHrvBalance": 90,
-  "readinessPreviousDay": 54,
-  "readinessPreviousNight": 53,
-  "readinessRecoveryIndex": 89,
-  "readinessRestingHr": 95,
-  "readinessSleepBalance": 71,
-  "readinessSleepRegularity": 75,
-  "tempDeviation": 0.18,
+  "sleepScore": 94,
+  "sleepDeep": 97,
+  "sleepEfficiency": 97,
+  "sleepLatency": 89,
+  "sleepRem": 95,
+  "sleepRestfulness": 87,
+  "sleepTiming": 80,
+  "sleepTotal": 100,
+  "readinessScore": 80,
+  "readinessActivityBalance": 79,
+  "readinessBodyTemp": 99,
+  "readinessHrvBalance": 36,
+  "readinessPreviousDay": 85,
+  "readinessPreviousNight": 100,
+  "readinessRecoveryIndex": 78,
+  "readinessRestingHr": 94,
+  "readinessSleepBalance": 93,
+  "readinessSleepRegularity": 76,
+  "tempDeviation": -0.18,
   "restingHrBpm": null,
   "hrvMs": null,
-  "heartRateSeriesDay": "2026-03-23",
+  "heartRateSeriesDay": "2026-04-15",
   "heartRateSeries": [
     {
-      "t": "2026-03-22T23:37:57.000Z",
+      "t": "2026-04-15T07:02:11.000Z",
       "bpm": 78
     },
     {
-      "t": "2026-03-22T23:40:46.000Z",
+      "t": "2026-04-15T07:02:57.000Z",
       "bpm": 82
     },
     {
-      "t": "2026-03-22T23:48:14.000Z",
-      "bpm": 85
-    },
-    {
-      "t": "2026-03-22T23:54:48.000Z",
-      "bpm": 92
-    },
-    {
-      "t": "2026-03-23T00:05:10.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-03-23T00:09:43.000Z",
-      "bpm": 83
-    },
-    {
-      "t": "2026-03-23T00:17:02.000Z",
-      "bpm": 88
-    },
-    {
-      "t": "2026-03-23T00:26:00.500Z",
-      "bpm": 156
-    },
-    {
-      "t": "2026-03-23T00:26:20.500Z",
-      "bpm": 157
-    },
-    {
-      "t": "2026-03-23T00:26:40.500Z",
-      "bpm": 151
-    },
-    {
-      "t": "2026-03-23T00:27:00.500Z",
-      "bpm": 134
-    },
-    {
-      "t": "2026-03-23T00:27:20.500Z",
-      "bpm": 117
-    },
-    {
-      "t": "2026-03-23T00:27:40.500Z",
-      "bpm": 112
-    },
-    {
-      "t": "2026-03-23T00:28:00.500Z",
-      "bpm": 104
-    },
-    {
-      "t": "2026-03-23T00:28:20.500Z",
-      "bpm": 99
-    },
-    {
-      "t": "2026-03-23T00:28:40.500Z",
-      "bpm": 95
-    },
-    {
-      "t": "2026-03-23T00:29:00.500Z",
-      "bpm": 92
-    },
-    {
-      "t": "2026-03-23T00:29:20.500Z",
-      "bpm": 91
-    },
-    {
-      "t": "2026-03-23T00:29:40.500Z",
-      "bpm": 91
-    },
-    {
-      "t": "2026-03-23T00:58:54.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-03-23T01:48:40.000Z",
-      "bpm": 131
-    },
-    {
-      "t": "2026-03-23T01:49:20.000Z",
-      "bpm": 137
-    },
-    {
-      "t": "2026-03-23T02:12:31.000Z",
-      "bpm": 88
-    },
-    {
-      "t": "2026-03-23T02:18:25.000Z",
-      "bpm": 90
-    },
-    {
-      "t": "2026-03-23T02:22:50.000Z",
-      "bpm": 89
-    },
-    {
-      "t": "2026-03-23T02:31:44.000Z",
-      "bpm": 82
-    },
-    {
-      "t": "2026-03-23T02:37:04.000Z",
-      "bpm": 83
-    },
-    {
-      "t": "2026-03-23T03:06:36.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-03-23T03:16:30.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-03-23T03:18:47.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-03-23T03:31:30.000Z",
-      "bpm": 81
-    },
-    {
-      "t": "2026-03-23T03:37:54.000Z",
+      "t": "2026-04-15T07:03:46.000Z",
       "bpm": 80
     },
     {
-      "t": "2026-03-23T03:56:30.000Z",
-      "bpm": 78
+      "t": "2026-04-15T07:07:28.000Z",
+      "bpm": 77
     },
     {
-      "t": "2026-03-23T04:19:08.000Z",
+      "t": "2026-04-15T07:07:35.000Z",
       "bpm": 82
     },
     {
-      "t": "2026-03-23T04:25:09.000Z",
-      "bpm": 81
-    },
-    {
-      "t": "2026-03-23T04:30:57.000Z",
+      "t": "2026-04-15T07:07:59.000Z",
       "bpm": 80
     },
     {
-      "t": "2026-03-23T04:40:15.000Z",
+      "t": "2026-04-15T07:12:57.000Z",
+      "bpm": 80
+    },
+    {
+      "t": "2026-04-15T07:13:36.000Z",
+      "bpm": 82
+    },
+    {
+      "t": "2026-04-15T07:13:41.000Z",
+      "bpm": 79
+    },
+    {
+      "t": "2026-04-15T07:15:54.000Z",
+      "bpm": 82
+    },
+    {
+      "t": "2026-04-15T07:15:59.000Z",
+      "bpm": 77
+    },
+    {
+      "t": "2026-04-15T07:16:04.000Z",
+      "bpm": 80
+    },
+    {
+      "t": "2026-04-15T07:25:35.000Z",
+      "bpm": 80
+    },
+    {
+      "t": "2026-04-15T07:25:37.000Z",
+      "bpm": 79
+    },
+    {
+      "t": "2026-04-15T07:25:42.000Z",
+      "bpm": 82
+    },
+    {
+      "t": "2026-04-15T07:36:11.000Z",
       "bpm": 75
     },
     {
-      "t": "2026-03-23T04:46:37.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-03-23T04:51:34.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-03-23T05:04:36.000Z",
+      "t": "2026-04-15T07:36:24.000Z",
       "bpm": 81
     },
     {
-      "t": "2026-03-23T05:09:28.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-03-23T05:14:46.000Z",
-      "bpm": 83
-    },
-    {
-      "t": "2026-03-23T05:24:41.000Z",
-      "bpm": 82
-    },
-    {
-      "t": "2026-03-23T05:30:25.000Z",
+      "t": "2026-04-15T07:36:51.000Z",
       "bpm": 76
     },
     {
-      "t": "2026-03-23T05:49:10.000Z",
-      "bpm": 80
-    },
-    {
-      "t": "2026-03-23T05:54:09.000Z",
-      "bpm": 81
-    },
-    {
-      "t": "2026-03-23T06:04:16.000Z",
-      "bpm": 83
-    },
-    {
-      "t": "2026-03-23T06:10:26.000Z",
-      "bpm": 79
-    },
-    {
-      "t": "2026-03-23T06:13:18.000Z",
-      "bpm": 82
-    },
-    {
-      "t": "2026-03-23T06:30:01.000Z",
-      "bpm": 79
-    },
-    {
-      "t": "2026-03-23T06:33:01.000Z",
-      "bpm": 75
-    },
-    {
-      "t": "2026-03-23T06:42:20.000Z",
-      "bpm": 81
-    },
-    {
-      "t": "2026-03-23T07:02:28.000Z",
-      "bpm": 79
-    },
-    {
-      "t": "2026-03-23T07:08:30.000Z",
-      "bpm": 79
-    },
-    {
-      "t": "2026-03-23T07:13:09.000Z",
-      "bpm": 80
-    },
-    {
-      "t": "2026-03-23T07:17:50.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-03-23T07:38:31.000Z",
-      "bpm": 81
-    },
-    {
-      "t": "2026-03-23T08:01:31.000Z",
-      "bpm": 74
-    },
-    {
-      "t": "2026-03-23T08:20:32.000Z",
+      "t": "2026-04-15T08:07:16.000Z",
       "bpm": 78
     },
     {
-      "t": "2026-03-23T08:54:44.000Z",
-      "bpm": 74
+      "t": "2026-04-15T08:07:52.000Z",
+      "bpm": 79
     },
     {
-      "t": "2026-03-23T09:11:30.000Z",
+      "t": "2026-04-15T08:08:05.000Z",
       "bpm": 75
     },
     {
-      "t": "2026-03-23T09:39:44.000Z",
-      "bpm": 72
+      "t": "2026-04-15T08:13:02.000Z",
+      "bpm": 74
     },
     {
-      "t": "2026-03-23T09:59:44.000Z",
-      "bpm": 67
+      "t": "2026-04-15T08:13:10.000Z",
+      "bpm": 76
     },
     {
-      "t": "2026-03-23T10:19:44.000Z",
-      "bpm": 69
+      "t": "2026-04-15T08:14:00.000Z",
+      "bpm": 78
     },
     {
-      "t": "2026-03-23T10:39:44.000Z",
-      "bpm": 65
+      "t": "2026-04-15T08:18:09.000Z",
+      "bpm": 77
     },
     {
-      "t": "2026-03-23T10:59:44.000Z",
-      "bpm": 66
+      "t": "2026-04-15T08:18:14.000Z",
+      "bpm": 75
     },
     {
-      "t": "2026-03-23T11:19:44.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-23T11:39:44.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-23T11:59:44.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-23T12:19:44.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-03-23T12:39:44.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-23T12:59:44.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-03-23T13:19:44.000Z",
-      "bpm": 65
-    },
-    {
-      "t": "2026-03-23T13:39:44.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-03-23T13:59:44.000Z",
-      "bpm": 65
-    },
-    {
-      "t": "2026-03-23T14:19:44.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-23T14:39:44.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-23T14:59:44.000Z",
-      "bpm": 62
-    },
-    {
-      "t": "2026-03-23T15:19:44.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-23T15:39:44.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-23T15:59:44.000Z",
-      "bpm": 64
-    },
-    {
-      "t": "2026-03-23T16:19:44.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-23T16:39:44.000Z",
-      "bpm": 66
-    },
-    {
-      "t": "2026-03-23T16:59:44.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-03-23T17:19:44.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-03-23T17:37:30.000Z",
-      "bpm": 69
-    },
-    {
-      "t": "2026-03-23T17:59:44.000Z",
+      "t": "2026-04-15T08:19:33.000Z",
       "bpm": 73
     },
     {
-      "t": "2026-03-23T18:19:44.000Z",
+      "t": "2026-04-15T08:22:17.000Z",
+      "bpm": 74
+    },
+    {
+      "t": "2026-04-15T08:27:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-04-15T08:32:17.000Z",
       "bpm": 72
     },
     {
-      "t": "2026-03-23T18:23:30.000Z",
+      "t": "2026-04-15T08:37:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-04-15T08:42:17.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-04-15T08:47:17.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-04-15T08:52:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T08:57:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T09:02:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T09:07:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T09:12:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T09:17:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T09:22:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T09:27:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T09:32:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T09:37:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T09:42:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T09:47:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T09:52:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T09:57:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T10:02:17.000Z",
+      "bpm": 66
+    },
+    {
+      "t": "2026-04-15T10:07:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T10:12:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T10:17:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T10:22:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T10:27:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T10:32:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T10:37:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T10:42:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T10:47:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T10:52:17.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-04-15T10:57:17.000Z",
+      "bpm": 75
+    },
+    {
+      "t": "2026-04-15T11:02:17.000Z",
+      "bpm": 76
+    },
+    {
+      "t": "2026-04-15T11:07:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-04-15T11:12:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-04-15T11:17:17.000Z",
       "bpm": 74
+    },
+    {
+      "t": "2026-04-15T11:22:17.000Z",
+      "bpm": 74
+    },
+    {
+      "t": "2026-04-15T11:27:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-04-15T11:32:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-04-15T11:37:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-04-15T11:42:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-04-15T11:47:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-04-15T11:52:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-04-15T11:57:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-04-15T12:02:17.000Z",
+      "bpm": 74
+    },
+    {
+      "t": "2026-04-15T12:07:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-04-15T12:12:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-04-15T12:17:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-04-15T12:22:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T12:27:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T12:32:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T12:37:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T12:42:17.000Z",
+      "bpm": 63
+    },
+    {
+      "t": "2026-04-15T12:47:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T12:52:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T12:57:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T13:02:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T13:07:17.000Z",
+      "bpm": 65
+    },
+    {
+      "t": "2026-04-15T13:12:17.000Z",
+      "bpm": 66
+    },
+    {
+      "t": "2026-04-15T13:17:17.000Z",
+      "bpm": 66
+    },
+    {
+      "t": "2026-04-15T13:22:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T13:27:17.000Z",
+      "bpm": 66
+    },
+    {
+      "t": "2026-04-15T13:32:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T13:37:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T13:42:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T13:47:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T13:52:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T13:57:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T14:02:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T14:07:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T14:12:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T14:17:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-04-15T14:22:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T14:27:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T14:32:17.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-04-15T14:37:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T14:42:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T14:47:17.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-04-15T14:52:17.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-04-15T14:57:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T15:02:17.000Z",
+      "bpm": 66
+    },
+    {
+      "t": "2026-04-15T15:07:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T15:12:17.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-04-15T15:17:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T15:22:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T15:27:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T15:32:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T15:37:17.000Z",
+      "bpm": 62
+    },
+    {
+      "t": "2026-04-15T15:57:17.000Z",
+      "bpm": 66
+    },
+    {
+      "t": "2026-04-15T16:02:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T16:07:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T16:12:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T16:17:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T16:22:17.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-04-15T16:27:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T16:32:17.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-04-15T16:37:17.000Z",
+      "bpm": 65
+    },
+    {
+      "t": "2026-04-15T16:42:17.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-04-15T16:47:17.000Z",
+      "bpm": 69
     }
   ],
   "heartRateMinBpm": 62,
-  "heartRateMaxBpm": 157,
-  "heartRateAvgBpm": 83,
-  "heartRateLatestBpm": 74,
+  "heartRateMaxBpm": 82,
+  "heartRateAvgBpm": 71,
+  "heartRateLatestBpm": 69,
   "activityScore": null,
   "activityMeetTargets": null,
   "activityMoveHour": null,

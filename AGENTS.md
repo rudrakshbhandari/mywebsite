@@ -71,6 +71,16 @@ If you catch yourself writing a code block or explaining "here's what you should
 - **Use available automation** — Prefer automated solutions over manual steps whenever tools are available in `scripts/` or elsewhere
 - **Handle interactive prompts** — If a script is interactive, create a non-interactive wrapper or pipe inputs when possible, rather than asking the user to run it themselves
 
+## Oura Guardrails
+
+If you touch the Oura health pipeline, read `docs/OURA_AUTOMATION.md` first.
+
+- **Local and CI auth are intentionally different** — local runs may recover through browser OAuth and refresh `.oura_token`; CI must still fail loudly on auth problems.
+- **Do not hardcode a single localhost callback port** for Oura OAuth recovery.
+- **Do not commit auth artifacts** such as `.oura_token`, `.env`, `.oura_rotated_token`, or `.oura_no_change`.
+- **Do not ship timestamp-only Oura updates** — if `oura_public.json` changed only in `lastUpdatedIso`, treat it as a no-op.
+- **Prefer fixing `scripts/fetch_oura_and_write_json.mjs`** rather than adding new parallel Oura auth paths.
+
 ## After Completing a Task
 
 1. **Commit** all changes with a conventional commit message.
