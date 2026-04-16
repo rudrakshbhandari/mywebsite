@@ -93,7 +93,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    bindClickTracking('a[href*="Resume"], a[href$=".pdf"], .nav-resume', 'resume_click');
+    bindClickTracking('a[href*="Resume"], a[href$=".pdf"], .nav-resume, .nav__link--resume', 'resume_click');
     bindClickTracking('a[href^="mailto:"]', 'contact_email_click');
     bindClickTracking('.social-link', 'social_click', el => ({ network: el.getAttribute('title') || 'unknown' }));
     bindClickTracking('a[href="/health"], a[href="/health/"], a[href="health/"]', 'health_nav_click');
