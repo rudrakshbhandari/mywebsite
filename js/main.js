@@ -1,131 +1,293 @@
 /**
- * Main JS — Editorial Portfolio
- * Navigation, mobile menu, scroll effects, stat counters
+ * Concept C: The Scroll Film — Main JS
+ * Navigation, counters, mobile menu, dot-nav, dev mode
  */
 
 document.addEventListener('DOMContentLoaded', function () {
-  if (typeof IS_DEV_MODE !== 'undefined' && IS_DEV_MODE) return;
+  if (typeof IS_DEV_MODE !== 'undefined' && IS_DEV_MODE) {
+    initDevMode();
+    return;
+  }
 
   initNavigation();
   initMobileMenu();
-  initStatCounters();
+  initDotNav();
+  initCounters();
+  initProjectImageCrossfade();
 });
 
+/* ===========================
+   Dev Mode
+   =========================== */
+function initDevMode() {
+  var overlay = document.getElementById('dev-overlay');
+  if (!overlay) return;
+
+  overlay.innerHTML =
+    '<div style="max-width:500px">' +
+    '<h1 style="font-family:Syne,sans-serif;font-size:2.5rem;font-weight:800;margin-bottom:1rem">Work in Progress</h1>' +
+    '<p style="font-size:1.1rem;color:#8B8680;line-height:1.7">This website is currently under development.</p>' +
+    '</div>';
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+
+/* ===========================
+   Navigation (scroll effects)
+   =========================== */
 function initNavigation() {
-  const navbar = document.getElementById('navbar');
-  const navLinks = document.querySelectorAll('.nav__link');
+  var navbar = document.getElementById('navbar');
+  var navLinks = document.querySelectorAll('.nav-link');
+
+  var darkSections = document.querySelectorAll('.scene--experience, .scene--contact');
 
   window.addEventListener('scroll', function () {
-    navbar.classList.toggle('scrolled', window.scrollY > 20);
+    if (window.scrollY > 50) {
+      navbar.classList.add('scrolled');
+    } else {
+      navbar.classList.remove('scrolled');
+    }
+
+    var navBottom = navbar.getBoundingClientRect().bottom;
+    var isInDark = false;
+    darkSections.forEach(function (section) {
+      var rect = section.getBoundingClientRect();
+      if (rect.top < navBottom && rect.bottom > 0) {
+        isInDark = true;
+      }
+    });
+
+    if (isInDark) {
+      navbar.classList.add('inverted');
+    } else {
+      navbar.classList.remove('inverted');
+    }
   });
 
-  navLinks.forEach(link => {
+  navLinks.forEach(function (link) {
     link.addEventListener('click', function (e) {
-      const href = this.getAttribute('href');
-      if (href && href.startsWith('#')) {
+      var targetId = this.getAttribute('href');
+      if (targetId && targetId.startsWith('#')) {
         e.preventDefault();
-        const target = document.querySelector(href);
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
+        var targetSection = document.querySelector(targetId);
+        if (targetSection) {
+          var offsetTop = targetSection.offsetTop - 60;
+          window.scrollTo({ top: offsetTop, behavior: 'smooth' });
         }
       }
     });
   });
 
-  /* Active link tracking */
-  const sections = document.querySelectorAll('section[id]');
-  const observer = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const id = entry.target.getAttribute('id');
-          navLinks.forEach(l => {
-            l.classList.toggle('active', l.getAttribute('href') === `#${id}`);
-          });
-        }
-      });
-    },
-    { rootMargin: '-30% 0px -70% 0px' }
-  );
-  sections.forEach(s => observer.observe(s));
+  window.addEventListener('scroll', function () {
+    var current = '';
+    var sections = document.querySelectorAll('section[id]');
+    var viewportMid = window.innerHeight * 0.35;
+
+    sections.forEach(function (section) {
+      var rect = section.getBoundingClientRect();
+      if (rect.top <= viewportMid && rect.bottom > viewportMid) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    navLinks.forEach(function (link) {
+      link.classList.remove('active');
+      link.removeAttribute('aria-current');
+      var href = link.getAttribute('href');
+      if (href === '#' + current) {
+        link.classList.add('active');
+        link.setAttribute('aria-current', 'page');
+      }
+    });
+  });
 }
 
+/* ===========================
+   Mobile Menu
+   =========================== */
 function initMobileMenu() {
-  const toggle = document.getElementById('nav-toggle');
-  const menu = document.getElementById('nav-menu');
-  if (!toggle || !menu) return;
+  var navToggle = document.getElementById('nav-toggle');
+  var navMenu = document.getElementById('nav-menu');
+  var navLinks = document.querySelectorAll('.nav-link');
 
-  toggle.addEventListener('click', function () {
-    const isOpen = menu.classList.toggle('active');
-    toggle.classList.toggle('active');
-    toggle.setAttribute('aria-expanded', isOpen);
+  if (!navToggle || !navMenu) return;
+
+  navToggle.addEventListener('click', function () {
+    var isExpanded = navMenu.classList.toggle('active');
+    navToggle.classList.toggle('active');
+    navToggle.setAttribute('aria-expanded', isExpanded);
   });
 
-  menu.querySelectorAll('.nav__link').forEach(link => {
-    link.addEventListener('click', () => {
-      menu.classList.remove('active');
-      toggle.classList.remove('active');
-      toggle.setAttribute('aria-expanded', 'false');
+  navLinks.forEach(function (link) {
+    link.addEventListener('click', function () {
+      navMenu.classList.remove('active');
+      navToggle.classList.remove('active');
+      navToggle.setAttribute('aria-expanded', 'false');
     });
   });
 
   document.addEventListener('click', function (e) {
-    if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-      menu.classList.remove('active');
-      toggle.classList.remove('active');
-      toggle.setAttribute('aria-expanded', 'false');
+    if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+      navMenu.classList.remove('active');
+      navToggle.classList.remove('active');
+      navToggle.setAttribute('aria-expanded', 'false');
     }
   });
 }
 
-function initStatCounters() {
-  const stats = document.querySelectorAll('.about__stat-num');
-  const io = new IntersectionObserver(
-    entries => {
-      entries.forEach(entry => {
+/* ===========================
+   Dot Navigation
+   =========================== */
+function initDotNav() {
+  var dotNav = document.getElementById('dot-nav');
+  var dots = document.querySelectorAll('.dot-nav__dot');
+  var darkSections = document.querySelectorAll('.scene--experience, .scene--contact');
+
+  dots.forEach(function (dot) {
+    dot.addEventListener('click', function (e) {
+      e.preventDefault();
+      var targetId = this.getAttribute('href');
+      var targetSection = document.querySelector(targetId);
+      if (targetSection) {
+        window.scrollTo({ top: targetSection.offsetTop - 60, behavior: 'smooth' });
+      }
+    });
+  });
+
+  window.addEventListener('scroll', function () {
+    var current = '';
+    var sections = document.querySelectorAll('section[id]');
+    var viewportMid = window.innerHeight * 0.35;
+
+    sections.forEach(function (section) {
+      var rect = section.getBoundingClientRect();
+      if (rect.top <= viewportMid && rect.bottom > viewportMid) {
+        current = section.getAttribute('id');
+      }
+    });
+
+    dots.forEach(function (dot) {
+      dot.classList.remove('active');
+      if (dot.getAttribute('data-section') === current) {
+        dot.classList.add('active');
+      }
+    });
+
+    if (dotNav) {
+      var dotCenter = window.innerHeight / 2;
+      var isInDark = false;
+      darkSections.forEach(function (section) {
+        var rect = section.getBoundingClientRect();
+        if (rect.top < dotCenter && rect.bottom > dotCenter) {
+          isInDark = true;
+        }
+      });
+      dotNav.classList.toggle('inverted', isInDark);
+    }
+  });
+}
+
+/* ===========================
+   Counter Animation
+   =========================== */
+function initCounters() {
+  var stats = document.querySelectorAll('.about__stat-number');
+  if (!stats.length) return;
+
+  var observer = new IntersectionObserver(
+    function (entries) {
+      entries.forEach(function (entry) {
         if (entry.isIntersecting) {
           animateCounter(entry.target);
-          io.unobserve(entry.target);
+          observer.unobserve(entry.target);
         }
       });
     },
     { threshold: 0.5 }
   );
-  stats.forEach(s => io.observe(s));
+
+  stats.forEach(function (stat) {
+    observer.observe(stat);
+  });
 }
 
-function animateCounter(el) {
-  const text = el.textContent;
-  const isDecimal = text.includes('.');
+function animateCounter(element) {
+  var originalText = element.textContent;
+  var isDecimal = originalText.includes('.');
 
   if (isDecimal) {
-    const target = parseFloat(text);
-    let current = 0;
-    const step = target / 40;
-    const timer = setInterval(() => {
-      current += step;
+    var target = parseFloat(originalText);
+    var current = 0;
+    var increment = target / 50;
+    var timer = setInterval(function () {
+      current += increment;
       if (current >= target) {
-        el.textContent = text;
+        element.textContent = originalText;
         clearInterval(timer);
       } else {
-        el.textContent = current.toFixed(1);
+        element.textContent = current.toFixed(1);
       }
     }, 30);
   } else {
-    const numericPart = parseInt(text.replace(/\D/g, ''));
-    const suffix = text.replace(/\d/g, '');
-    let current = 0;
-    const step = numericPart / 40;
-    const timer = setInterval(() => {
-      current += step;
-      if (current >= numericPart) {
-        el.textContent = text;
-        clearInterval(timer);
+    var numTarget = parseInt(originalText.replace(/\D/g, ''));
+    var suffix = originalText.replace(/\d/g, '');
+    var numCurrent = 0;
+    var numIncrement = numTarget / 50;
+    var numTimer = setInterval(function () {
+      numCurrent += numIncrement;
+      if (numCurrent >= numTarget) {
+        element.textContent = numTarget + suffix;
+        clearInterval(numTimer);
       } else {
-        el.textContent = Math.floor(current) + suffix;
+        element.textContent = Math.floor(numCurrent) + suffix;
       }
     }, 30);
   }
 }
 
-window.addEventListener('load', () => document.body.classList.add('loaded'));
+/* ===========================
+   Project Image Crossfade (non-GSAP fallback)
+   Activated on mobile or when GSAP isn't available.
+   On desktop, GSAP animations.js handles this.
+   =========================== */
+function initProjectImageCrossfade() {
+  var images = document.querySelectorAll('.projects__img');
+  var cards = document.querySelectorAll('.proj-card');
+
+  if (!images.length || !cards.length) return;
+
+  images[0].classList.add('active');
+  cards[0].classList.add('active');
+
+  if (window.innerWidth <= 768) {
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var idx = parseInt(entry.target.getAttribute('data-project'), 10);
+            images.forEach(function (img) {
+              img.classList.remove('active');
+            });
+            cards.forEach(function (card) {
+              card.classList.remove('active');
+            });
+            if (images[idx]) images[idx].classList.add('active');
+            entry.target.classList.add('active');
+          }
+        });
+      },
+      { threshold: 0.4 }
+    );
+
+    cards.forEach(function (card) {
+      observer.observe(card);
+    });
+  }
+}
+
+/* ===========================
+   Utility
+   =========================== */
+window.addEventListener('load', function () {
+  document.body.classList.add('loaded');
+});
