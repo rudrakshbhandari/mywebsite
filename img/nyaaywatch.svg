@@ -1,0 +1,30 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">NyaayWatch</title>
+  <desc id="desc">Editorial thumbnail for the NyaayWatch judicial observability platform.</desc>
+  <rect width="1200" height="800" fill="#F4EFE7"/>
+  <rect x="40" y="40" width="1120" height="720" rx="20" fill="#FAF7F1" stroke="#D9D1C5" stroke-width="2"/>
+  <rect x="96" y="96" width="1008" height="72" rx="12" fill="#F1EBE2" stroke="#D9D1C5" stroke-width="2"/>
+  <text x="128" y="141" fill="#152033" font-family="Georgia, 'Times New Roman', serif" font-size="42" font-weight="700">NyaayWatch</text>
+  <text x="886" y="141" fill="#5C6473" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" letter-spacing="0.12em">PUBLISHED SNAPSHOTS</text>
+  <text x="96" y="240" fill="#152033" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="700">District-level evidence,</text>
+  <text x="96" y="314" fill="#152033" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="700">methodology, and</text>
+  <text x="96" y="388" fill="#152033" font-family="Georgia, 'Times New Roman', serif" font-size="64" font-weight="700">public data surfaces.</text>
+  <text x="98" y="450" fill="#6A3D2B" font-family="'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="0.08em">SNAPSHOT-BASED • REPRODUCIBLE • STATE-SCOPED</text>
+  <rect x="96" y="500" width="458" height="196" rx="16" fill="#FFFDFC" stroke="#D9D1C5" stroke-width="2"/>
+  <text x="124" y="542" fill="#5C6473" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" letter-spacing="0.12em">TRUST SURFACES</text>
+  <line x1="124" y1="566" x2="526" y2="566" stroke="#E2DBD0" stroke-width="2"/>
+  <text x="124" y="608" fill="#152033" font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="700">District scorecards</text>
+  <text x="124" y="648" fill="#152033" font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="700">Evidence pages and exports</text>
+  <text x="124" y="688" fill="#152033" font-family="'Helvetica Neue', Arial, sans-serif" font-size="28" font-weight="700">Methodology and API</text>
+  <rect x="586" y="500" width="518" height="196" rx="16" fill="#FFFDFC" stroke="#D9D1C5" stroke-width="2"/>
+  <text x="614" y="542" fill="#5C6473" font-family="'Helvetica Neue', Arial, sans-serif" font-size="18" letter-spacing="0.12em">PUBLIC SURFACES</text>
+  <line x1="614" y1="566" x2="1076" y2="566" stroke="#E2DBD0" stroke-width="2"/>
+  <rect x="614" y="594" width="148" height="72" rx="12" fill="#EEF2F7"/>
+  <rect x="778" y="594" width="148" height="72" rx="12" fill="#F3EEE7"/>
+  <rect x="942" y="594" width="134" height="72" rx="12" fill="#EEF2F7"/>
+  <text x="655" y="638" fill="#152033" font-family="'Helvetica Neue', Arial, sans-serif" font-size="26" font-weight="700">HP</text>
+  <text x="819" y="638" fill="#152033" font-family="'Helvetica Neue', Arial, sans-serif" font-size="26" font-weight="700">PB</text>
+  <text x="981" y="638" fill="#152033" font-family="'Helvetica Neue', Arial, sans-serif" font-size="26" font-weight="700">TN</text>
+  <line x1="614" y1="692" x2="1076" y2="692" stroke="#E2DBD0" stroke-width="2"/>
+  <text x="614" y="730" fill="#5C6473" font-family="'Helvetica Neue', Arial, sans-serif" font-size="22">Scorecards • Evidence • Exports • API</text>
+</svg>

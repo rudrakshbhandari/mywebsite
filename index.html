@@ -386,7 +386,7 @@
           <!-- Project images (stacked, crossfaded) -->
           <div class="projects__images" aria-hidden="true">
             <img
-              src="img/nomnom.png?v=2"
+              src="img/nyaaywatch.svg?v=1"
               alt=""
               class="projects__img"
               data-project="0"
@@ -394,7 +394,7 @@
               decoding="async"
             />
             <img
-              src="img/outfitr-placeholder.svg?v=1"
+              src="img/nomnom.png?v=2"
               alt=""
               class="projects__img"
               data-project="1"
@@ -402,7 +402,7 @@
               decoding="async"
             />
             <img
-              src="img/ShareAllBooks.jpg?v=1"
+              src="img/outfitr-placeholder.svg?v=1"
               alt=""
               class="projects__img"
               data-project="2"
@@ -410,19 +410,27 @@
               decoding="async"
             />
             <img
-              src="img/sapphix-placeholder.svg?v=1"
+              src="img/ShareAllBooks.jpg?v=1"
               alt=""
               class="projects__img"
               data-project="3"
               loading="lazy"
               decoding="async"
             />
-            <img src="img/dbc.svg?v=1" alt="" class="projects__img" data-project="4" loading="lazy" decoding="async" />
+            <img
+              src="img/sapphix-placeholder.svg?v=1"
+              alt=""
+              class="projects__img"
+              data-project="4"
+              loading="lazy"
+              decoding="async"
+            />
+            <img src="img/dbc.svg?v=1" alt="" class="projects__img" data-project="5" loading="lazy" decoding="async" />
             <img
               src="img/health-dashboard.png?v=1"
               alt=""
               class="projects__img"
-              data-project="5"
+              data-project="6"
               loading="lazy"
               decoding="async"
             />
@@ -430,17 +438,46 @@
               src="img/vibe-tracker.svg?v=1"
               alt=""
               class="projects__img"
-              data-project="6"
+              data-project="7"
               loading="lazy"
               decoding="async"
             />
-            <img src="img/poc.png?v=1" alt="" class="projects__img" data-project="7" loading="lazy" decoding="async" />
+            <img src="img/poc.png?v=1" alt="" class="projects__img" data-project="8" loading="lazy" decoding="async" />
           </div>
 
           <!-- Project info cards -->
           <div class="projects__cards">
-            <!-- 1. NomNom -->
+            <!-- 1. NyaayWatch -->
             <article class="proj-card" data-project="0">
+              <h3 class="proj-card__title">NyaayWatch</h3>
+              <p class="proj-card__desc">
+                Built an evidence-first platform for making Indian court backlog and district-level judicial performance
+                legible to the public. A public-interest judicial observability platform that turns published Indian
+                court-system snapshots into clear, district-level evidence, methodology, and public data surfaces. Ships
+                district scorecards, evidence pages, exports, and explicit state-scoped public surfaces across multiple
+                Indian states, backed by a reproducible snapshot pipeline with operator-controlled publish, replay, and
+                rollback on Node.js, TypeScript, PostgreSQL, S3, and AWS. Public site at
+                <a href="https://nyaaywatch.in" target="_blank" rel="noopener noreferrer" class="text-link"
+                  >nyaaywatch.in</a
+                >, source on
+                <a
+                  href="https://github.com/rudrakshbhandari/nyaaywatch"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-link"
+                  >GitHub</a
+                >.
+              </p>
+              <div class="proj-card__tech">
+                <span>Node.js</span><span>TypeScript</span><span>PostgreSQL</span><span>AWS</span>
+              </div>
+              <a href="https://nyaaywatch.in" target="_blank" rel="noopener noreferrer" class="proj-card__link"
+                >Visit nyaaywatch.in →</a
+              >
+            </article>
+
+            <!-- 2. NomNom -->
+            <article class="proj-card" data-project="1">
               <h3 class="proj-card__title">NomNom</h3>
               <p class="proj-card__desc">
                 UCSD-exclusive delivery startup connecting students with dining hall couriers. UCSD-only authentication,
@@ -453,8 +490,8 @@
               >
             </article>
 
-            <!-- 2. Outfitr -->
-            <article class="proj-card" data-project="1">
+            <!-- 3. Outfitr -->
+            <article class="proj-card" data-project="2">
               <h3 class="proj-card__title">Outfitr <span class="proj-card__badge">Launching soon</span></h3>
               <p class="proj-card__desc">
                 Built Outfitr, an AI-powered fashion discovery platform that aggregates multi-retailer catalogs and
@@ -475,8 +512,8 @@
               >
             </article>
 
-            <!-- 3. ShareAllBooks -->
-            <article class="proj-card" data-project="2">
+            <!-- 4. ShareAllBooks -->
+            <article class="proj-card" data-project="3">
               <h3 class="proj-card__title">ShareAllBooks</h3>
               <p class="proj-card__desc">
                 2k+ installs, 1.5k+ transactions,
@@ -495,8 +532,8 @@
               >
             </article>
 
-            <!-- 4. Sapphix -->
-            <article class="proj-card" data-project="3">
+            <!-- 5. Sapphix -->
+            <article class="proj-card" data-project="4">
               <h3 class="proj-card__title">Sapphix <span class="proj-card__badge">Launching soon</span></h3>
               <p class="proj-card__desc">
                 Women-only proximity dating app — solo-built full-stack MVP. Designed and implemented a full-stack
@@ -509,8 +546,8 @@
               </div>
             </article>
 
-            <!-- 5. David Brower Center -->
-            <article class="proj-card" data-project="4">
+            <!-- 6. David Brower Center -->
+            <article class="proj-card" data-project="5">
               <h3 class="proj-card__title">David Brower Center</h3>
               <p class="proj-card__desc">
                 Database platform for nonprofit organizations to visualize relationships between NPOs. Full-stack
@@ -530,8 +567,8 @@
               >
             </article>
 
-            <!-- 6. Health Dashboard -->
-            <article class="proj-card" data-project="5">
+            <!-- 7. Health Dashboard -->
+            <article class="proj-card" data-project="6">
               <h3 class="proj-card__title">Health Metrics Dashboard</h3>
               <p class="proj-card__desc">
                 Personal health analytics dashboard with automated Oura Ring data pipeline. Built a live dashboard that
@@ -545,8 +582,8 @@
               <a href="/health/" class="proj-card__link">View dashboard →</a>
             </article>
 
-            <!-- 7. Vibe Tracker -->
-            <article class="proj-card" data-project="6">
+            <!-- 8. Vibe Tracker -->
+            <article class="proj-card" data-project="7">
               <h3 class="proj-card__title">Vibe Tracker</h3>
               <p class="proj-card__desc">
                 Built a Next.js and TypeScript analytics platform for GitHub productivity tracking. Aggregates GitHub
@@ -565,8 +602,8 @@
               >
             </article>
 
-            <!-- 8. Psyches of Color -->
-            <article class="proj-card" data-project="7">
+            <!-- 9. Psyches of Color -->
+            <article class="proj-card" data-project="8">
               <h3 class="proj-card__title">Psyches of Color</h3>
               <p class="proj-card__desc">
                 Psyches of Color develops a mental health app serving underserved communities. Full-stack development
