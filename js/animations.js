@@ -219,26 +219,50 @@ function initExperienceScene() {
    Image crossfade as project cards scroll into view
    =========================== */
 function initProjectsScene() {
+  var section = document.querySelector('.scene--projects');
   var images = document.querySelectorAll('.projects__img');
   var cards = document.querySelectorAll('.proj-card');
 
-  if (!images.length || !cards.length) return;
+  if (!section || !images.length || !cards.length) return;
 
-  images[0].classList.add('active');
-  cards[0].classList.add('active');
+  var activeProjectIndex = -1;
 
-  cards.forEach(function (card) {
-    ScrollTrigger.create({
-      trigger: card,
-      start: 'top 60%',
-      end: 'bottom 40%',
-      onEnter: function () {
-        activateProject(card, images, cards);
-      },
-      onEnterBack: function () {
-        activateProject(card, images, cards);
-      },
+  function syncActiveProject() {
+    var viewportMid = window.innerHeight * 0.5;
+    var bestIndex = 0;
+    var bestDistance = Infinity;
+
+    cards.forEach(function (card, index) {
+      var rect = card.getBoundingClientRect();
+      var cardCenter = rect.top + rect.height / 2;
+      var distance = Math.abs(cardCenter - viewportMid);
+
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestIndex = index;
+      }
     });
+
+    if (bestIndex !== activeProjectIndex) {
+      activeProjectIndex = bestIndex;
+      activateProject(cards[bestIndex], images, cards);
+    }
+  }
+
+  syncActiveProject();
+
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top top',
+    end: 'bottom bottom',
+    onEnter: syncActiveProject,
+    onEnterBack: syncActiveProject,
+    onUpdate: syncActiveProject,
+    onRefresh: syncActiveProject,
+    onLeaveBack: function () {
+      activeProjectIndex = 0;
+      activateProject(cards[0], images, cards);
+    },
   });
 }
 
