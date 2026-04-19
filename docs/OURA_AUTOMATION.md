@@ -16,6 +16,12 @@ This note exists to keep future maintenance work on the Oura health pipeline fro
 - CI may rotate the refresh token in GitHub secrets after a successful run.
 - Local `.oura_token` does not magically sync with GitHub secrets, so it can become stale over time.
 
+## GitHub updates to `main` (critical)
+
+The scheduled workflow opens a PR when `oura_public.json` changes. **Do not use the default `GITHUB_TOKEN` alone for pushing that branch or creating the PR.** GitHub intentionally does **not** run workflows triggered by `pull_request` (or `push`) when the actor is the default `GITHUB_TOKEN`, so Portfolio CI (`checks`) never runs, the PR stays blocked by branch protection, and `main` goes stale while the workflow still reports success.
+
+**Fix:** set repo secret `OURA_SECRET_UPDATE_TOKEN` to a Personal Access Token with access to this repository (same PAT already used for `gh secret set` / refresh-token rotation). The workflow uses it for `actions/checkout`, `git push`, `gh pr create`, and merge polling so PRs behave like human-opened PRs, CI runs, and squash-merge can complete.
+
 ## Current Recovery Behavior
 
 - If a local refresh token is stale, `scripts/fetch_oura_and_write_json.mjs` now starts a browser OAuth recovery flow automatically.
