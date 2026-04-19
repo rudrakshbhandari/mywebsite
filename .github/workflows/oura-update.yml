@@ -15,16 +15,30 @@ permissions:
   issues: write
   pull-requests: write
 
+# PAT used for git push + gh pr create must NOT be the default GITHUB_TOKEN:
+# GitHub suppresses pull_request / push workflows for events created with GITHUB_TOKEN,
+# so required status checks never run and PRs cannot merge under branch protection.
+
 jobs:
   fetch-and-commit:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 22
+
+    env:
+      # Prefer OURA_SECRET_UPDATE_TOKEN (same PAT as gh secret set) so PRs are opened as a
+      # real user and CI (checks / preview) runs. Falls back to GITHUB_TOKEN for fetch-only.
+      GH_AUTH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && secrets.OURA_SECRET_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && secrets.OURA_SECRET_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Warn if Oura PAT missing for PR merges
+        if: secrets.OURA_SECRET_UPDATE_TOKEN == ''
+        run: |
+          echo "::warning::OURA_SECRET_UPDATE_TOKEN is not set. PRs opened with GITHUB_TOKEN do not trigger pull_request workflows (GitHub restriction), so required checks never run and merges stall. Set OURA_SECRET_UPDATE_TOKEN to the same PAT you use for gh secret set (repo Contents + Pull requests)."
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -60,12 +74,11 @@ jobs:
         if: steps.check_changes.outputs.changed == 'true'
         id: create_pr
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          # Create a unique branch name with timestamp
           BRANCH_NAME="oura-update-$(date -u +%Y%m%d-%H%M%S)"
           echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
 
@@ -74,7 +87,6 @@ jobs:
           git commit -m "feat(health): update Oura Ring metrics [$(date -u +%Y-%m-%d)]"
           git push origin "$BRANCH_NAME"
 
-          # Create PR
           PR_URL=$(gh pr create \
             --title "feat(health): update Oura Ring metrics [$(date -u +%Y-%m-%d)]" \
             --body "Automated health data update from Oura Ring." \
@@ -84,21 +96,35 @@ jobs:
           echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
           echo "Created PR: $PR_URL"
 
-      - name: Auto-merge PR
+      - name: Merge Oura PR after CI (poll)
+        id: merge_pr
         if: steps.check_changes.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
         run: |
-          # Wait a moment for checks to potentially start
-          sleep 2
+          PR_URL="${{ steps.create_pr.outputs.pr_url }}"
+          echo "Waiting for required checks, then merging: $PR_URL"
+          sleep 15
 
-          # Try to enable auto-merge (requires admin access or specific branch settings)
-          # If this fails, the PR will remain open for manual review
-          gh pr merge --auto --squash "${{ steps.create_pr.outputs.pr_url }}" 2>/dev/null || true
+          for attempt in $(seq 1 48); do
+            echo "merge attempt $attempt/48..."
+            if gh pr merge "$PR_URL" --squash --delete-branch; then
+              echo "merged=true" >> $GITHUB_OUTPUT
+              echo "Merged successfully."
+              exit 0
+            fi
+            STATE=$(gh pr view "$PR_URL" --json state -q .state 2>/dev/null || echo "")
+            if [ "$STATE" = "MERGED" ]; then
+              echo "merged=true" >> $GITHUB_OUTPUT
+              echo "PR already merged."
+              exit 0
+            fi
+            sleep 15
+          done
 
-          # If auto-merge isn't available, at least try to merge directly if we have permissions
-          # This will fail gracefully if branch protection requires reviews
-          gh pr merge --squash --delete-branch "${{ steps.create_pr.outputs.pr_url }}" 2>/dev/null || echo "PR created but requires manual review/merge due to branch protection"
+          echo "::error::Timed out waiting to merge Oura PR. Open PRs require passing checks; verify OURA_SECRET_UPDATE_TOKEN is set so pull_request workflows run."
+          echo "merged=false" >> $GITHUB_OUTPUT
+          exit 1
 
       - name: Rotate refresh token secret (OAuth path)
         if: always() && steps.fetch_oura.outcome == 'success'
@@ -168,7 +194,7 @@ jobs:
           fi
 
       - name: Close dashboard alert issue after recovery
-        if: steps.fetch_oura.outcome == 'success'
+        if: success() && steps.fetch_oura.outcome == 'success' && (steps.check_changes.outputs.changed != 'true' || steps.merge_pr.outputs.merged == 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_TITLE: Health dashboard automation alert
