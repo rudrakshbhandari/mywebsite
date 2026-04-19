@@ -33,6 +33,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
 }
 
 ::selection {
@@ -49,6 +50,8 @@ body {
   overflow-x: hidden;
   opacity: 0;
   transition: opacity 0.5s var(--ease-smooth);
+  padding-left: env(safe-area-inset-left, 0px);
+  padding-right: env(safe-area-inset-right, 0px);
 }
 
 body.loaded {
@@ -116,6 +119,7 @@ button:focus-visible {
   left: 0;
   right: 0;
   z-index: 1000;
+  padding-top: env(safe-area-inset-top, 0px);
   background: rgba(245, 240, 235, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -878,11 +882,27 @@ button:focus-visible {
 
 /* Tablet (768px) */
 @media (max-width: 768px) {
+  /* Hero: drop the extra 180vh “scroll runway” used for desktop pin; fill one stable viewport instead */
+  .scene--hero {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding-bottom: 2.5rem;
+  }
+
+  .hero__inner {
+    min-height: 100vh;
+    min-height: 100svh;
+    height: auto;
+    overflow: visible;
+    padding: 4.75rem 1.25rem 2rem;
+  }
+
   /* Nav */
   .nav-menu {
     position: fixed;
     left: -100%;
-    top: 60px;
+    top: calc(60px + env(safe-area-inset-top, 0px));
     flex-direction: column;
     background: rgba(245, 240, 235, 0.98);
     width: 100%;
