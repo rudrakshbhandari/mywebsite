@@ -254,11 +254,14 @@ function initProjectsScene() {
   ScrollTrigger.create({
     trigger: section,
     start: 'top top',
-    end: 'bottom bottom',
+    end: 'bottom top',
     onEnter: syncActiveProject,
     onEnterBack: syncActiveProject,
     onUpdate: syncActiveProject,
     onRefresh: syncActiveProject,
+    onLeave: function () {
+      activateProject(cards[cards.length - 1], images, cards);
+    },
     onLeaveBack: function () {
       activeProjectIndex = 0;
       activateProject(cards[0], images, cards);
