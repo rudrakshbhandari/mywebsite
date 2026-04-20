@@ -88,6 +88,12 @@ If you touch the Oura health pipeline, read `docs/OURA_AUTOMATION.md` first.
 3. **Create a Pull Request** (PR) targeting `main` with a clear title and description of the changes.
 4. **Always share the PR link** — Include the full URL in your response immediately after creating a PR. Do not skip this step.
 
+## PR Body Formatting
+
+- When a PR description includes Markdown code fences, backticks, or shell snippets, write the body to a file and use `gh pr create --body-file` or `gh pr edit --body-file`.
+- Do not inline multi-line PR bodies inside double-quoted shell strings, because the shell can strip or execute backticked content before GitHub receives it.
+- If you need to include validation output, keep it inside a fenced code block in the body file so the formatting survives intact.
+
 ## Summary
 
 1. Create branch → 2. Make changes → 3. Commit (conventional) → 4. Push branch → 5. Open PR → 6. **Share PR link** (always include URL in response)
