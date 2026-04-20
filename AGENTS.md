@@ -93,6 +93,8 @@ If you touch the Oura health pipeline, read `docs/OURA_AUTOMATION.md` first.
 - When a PR description includes Markdown code fences, backticks, or shell snippets, write the body to a file and use `gh pr create --body-file` or `gh pr edit --body-file`.
 - Do not inline multi-line PR bodies inside double-quoted shell strings, because the shell can strip or execute backticked content before GitHub receives it.
 - If you need to include validation output, keep it inside a fenced code block in the body file so the formatting survives intact.
+- After creating or editing a PR, verify both the stored body and the rendered output with `gh pr view --json body` and GraphQL `bodyHTML` before saying the PR formatting is fixed.
+- If there is any formatting doubt, prefer plain Markdown bullets and plain text command names over inline code styling in the PR body.
 
 ## Summary
 
