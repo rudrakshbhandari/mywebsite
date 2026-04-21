@@ -317,19 +317,43 @@
               <p class="exp-card__location">San Diego, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Built two React Native apps: Student app for ordering UCSD dining hall deliveries and Rider app for
-                  student couriers, using TypeScript, Firebase, and Stripe; implemented UCSD-only login and live
-                  tracking.
+                  Building NomNom, a UCSD-exclusive delivery startup connecting students with student couriers through
+                  two React Native apps.
                 </li>
                 <li>
-                  Designed end-to-end order flow and Firestore transaction logic for OTP and drop-off delivery,
-                  preventing duplicate accepts.
+                  Built the end-to-end ordering, dispatch, and delivery flow with TypeScript, Firebase, Stripe, OTP
+                  verification, live tracking, and in-app chat.
                 </li>
-                <li>Integrated notifications, in-app chat, and live ETAs using Expo Location and React Native Maps.</li>
+                <li>
+                  Designed the operational systems behind the product, including transaction-safe order handling, rider
+                  workflows, notifications, and real-time ETAs.
+                </li>
               </ul>
             </article>
 
-            <!-- Card 4: TSE Psyches of Color -->
+            <!-- Card 4: Outfitr -->
+            <article class="exp-card">
+              <span class="exp-card__date">2025 – Present</span>
+              <h3 class="exp-card__company">Outfitr</h3>
+              <h4 class="exp-card__role">Founder & Lead Engineer</h4>
+              <p class="exp-card__location">San Diego, CA</p>
+              <ul class="exp-card__bullets">
+                <li>
+                  Building Outfitr, an AI fashion discovery product focused on helping users find complete outfits, not
+                  just individual items.
+                </li>
+                <li>
+                  Architected the core platform across mobile, backend APIs, worker services, ingestion pipelines, and
+                  shared TypeScript packages.
+                </li>
+                <li>
+                  Built systems for catalog normalization, outfit generation, ranking, personalization, and virtual
+                  try-on infrastructure to support a scalable consumer product.
+                </li>
+              </ul>
+            </article>
+
+            <!-- Card 5: TSE Psyches of Color -->
             <article class="exp-card">
               <span class="exp-card__date">Nov 2024 – May 2025</span>
               <h3 class="exp-card__company">Triton Software Engineering</h3>
@@ -347,7 +371,7 @@
               </ul>
             </article>
 
-            <!-- Card 5: ShareAllBooks -->
+            <!-- Card 6: ShareAllBooks -->
             <article class="exp-card">
               <span class="exp-card__date">Aug 2023 – Sep 2024</span>
               <h3 class="exp-card__company">ShareAllBooks</h3>
@@ -394,7 +418,7 @@
               decoding="async"
             />
             <img
-              src="img/nomnom.png?v=2"
+              src="img/ShareAllBooks.jpg?v=1"
               alt=""
               class="projects__img"
               data-project="1"
@@ -402,35 +426,19 @@
               decoding="async"
             />
             <img
-              src="img/outfitr-placeholder.svg?v=1"
+              src="img/sapphix-placeholder.svg?v=1"
               alt=""
               class="projects__img"
               data-project="2"
               loading="lazy"
               decoding="async"
             />
-            <img
-              src="img/ShareAllBooks.jpg?v=1"
-              alt=""
-              class="projects__img"
-              data-project="3"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="img/sapphix-placeholder.svg?v=1"
-              alt=""
-              class="projects__img"
-              data-project="4"
-              loading="lazy"
-              decoding="async"
-            />
-            <img src="img/dbc.svg?v=1" alt="" class="projects__img" data-project="5" loading="lazy" decoding="async" />
+            <img src="img/dbc.svg?v=1" alt="" class="projects__img" data-project="3" loading="lazy" decoding="async" />
             <img
               src="img/health-dashboard.png?v=1"
               alt=""
               class="projects__img"
-              data-project="6"
+              data-project="4"
               loading="lazy"
               decoding="async"
             />
@@ -438,11 +446,11 @@
               src="img/vibe-tracker.svg?v=1"
               alt=""
               class="projects__img"
-              data-project="7"
+              data-project="5"
               loading="lazy"
               decoding="async"
             />
-            <img src="img/poc.png?v=1" alt="" class="projects__img" data-project="8" loading="lazy" decoding="async" />
+            <img src="img/poc.png?v=1" alt="" class="projects__img" data-project="6" loading="lazy" decoding="async" />
           </div>
 
           <!-- Project info cards -->
@@ -451,12 +459,10 @@
             <article class="proj-card" data-project="0">
               <h3 class="proj-card__title">NyaayWatch</h3>
               <p class="proj-card__desc">
-                Built an evidence-first platform for making Indian court backlog and district-level judicial performance
-                legible to the public. A public-interest judicial observability platform that turns published Indian
-                court-system snapshots into clear, district-level evidence, methodology, and public data surfaces. Ships
-                district scorecards, evidence pages, exports, and explicit state-scoped public surfaces across multiple
-                Indian states, backed by a reproducible snapshot pipeline with operator-controlled publish, replay, and
-                rollback on Node.js, TypeScript, PostgreSQL, S3, and AWS. Public site at
+                Built NyaayWatch, an evidence-first public-interest platform for making Indian court backlog and
+                district-level judicial performance legible to the public. Designed and shipped district scorecards,
+                evidence pages, exports, and public data surfaces backed by a reproducible snapshot pipeline on Node.js,
+                TypeScript, PostgreSQL, S3, and AWS. Public site at
                 <a href="https://nyaaywatch.in" target="_blank" rel="noopener noreferrer" class="text-link"
                   >nyaaywatch.in</a
                 >, source on
@@ -476,44 +482,8 @@
               >
             </article>
 
-            <!-- 2. NomNom -->
+            <!-- 2. ShareAllBooks -->
             <article class="proj-card" data-project="1">
-              <h3 class="proj-card__title">NomNom</h3>
-              <p class="proj-card__desc">
-                UCSD-exclusive delivery startup connecting students with dining hall couriers. UCSD-only authentication,
-                live ETAs, Stripe payments. Dual React Native apps (Student & Rider) with TypeScript, Firebase Firestore
-                transactions, real-time location tracking, OTP verification, and in-app chat.
-              </p>
-              <div class="proj-card__tech"><span>React Native</span><span>TypeScript</span><span>Firestore</span></div>
-              <a href="https://nomnom.cc" target="_blank" rel="noopener noreferrer" class="proj-card__link"
-                >Visit nomnom.cc →</a
-              >
-            </article>
-
-            <!-- 3. Outfitr -->
-            <article class="proj-card" data-project="2">
-              <h3 class="proj-card__title">Outfitr <span class="proj-card__badge">Launching soon</span></h3>
-              <p class="proj-card__desc">
-                Built Outfitr, an AI-powered fashion discovery platform that aggregates multi-retailer catalogs and
-                generates complete outfit recommendations in a swipe-based mobile experience. Architected a TypeScript
-                monorepo spanning mobile, backend API, worker services, ingestion pipelines, and shared SDK/config
-                packages to support scalable product development. Designed backend systems for catalog normalization,
-                outfit composition, ranking, caching, and bundle generation to help users discover and purchase full
-                looks across merchants. Implemented AI virtual try-on infrastructure with async job orchestration,
-                provider abstraction, media storage, and privacy-conscious processing flows. Developed API and service
-                layers for user preferences, saved outfits, telemetry, and experimentation to support personalization
-                and product iteration.
-              </p>
-              <div class="proj-card__tech">
-                <span>TypeScript</span><span>AI</span><span>Mobile</span><span>Fashion</span>
-              </div>
-              <a href="https://outfitr.net/" target="_blank" rel="noopener noreferrer" class="proj-card__link"
-                >Visit outfitr.net →</a
-              >
-            </article>
-
-            <!-- 4. ShareAllBooks -->
-            <article class="proj-card" data-project="3">
               <h3 class="proj-card__title">ShareAllBooks</h3>
               <p class="proj-card__desc">
                 2k+ installs, 1.5k+ transactions,
@@ -532,8 +502,8 @@
               >
             </article>
 
-            <!-- 5. Sapphix -->
-            <article class="proj-card" data-project="4">
+            <!-- 3. Sapphix -->
+            <article class="proj-card" data-project="2">
               <h3 class="proj-card__title">Sapphix <span class="proj-card__badge">Launching soon</span></h3>
               <p class="proj-card__desc">
                 Women-only proximity dating app — solo-built full-stack MVP. Designed and implemented a full-stack
@@ -546,8 +516,8 @@
               </div>
             </article>
 
-            <!-- 6. David Brower Center -->
-            <article class="proj-card" data-project="5">
+            <!-- 4. David Brower Center -->
+            <article class="proj-card" data-project="3">
               <h3 class="proj-card__title">David Brower Center</h3>
               <p class="proj-card__desc">
                 Database platform for nonprofit organizations to visualize relationships between NPOs. Full-stack
@@ -567,8 +537,8 @@
               >
             </article>
 
-            <!-- 7. Health Dashboard -->
-            <article class="proj-card" data-project="6">
+            <!-- 5. Health Dashboard -->
+            <article class="proj-card" data-project="4">
               <h3 class="proj-card__title">Health Metrics Dashboard</h3>
               <p class="proj-card__desc">
                 Personal health analytics dashboard with automated Oura Ring data pipeline. Built a live dashboard that
@@ -582,8 +552,8 @@
               <a href="/health/" class="proj-card__link">View dashboard →</a>
             </article>
 
-            <!-- 8. Vibe Tracker -->
-            <article class="proj-card" data-project="7">
+            <!-- 6. Vibe Tracker -->
+            <article class="proj-card" data-project="5">
               <h3 class="proj-card__title">Vibe Tracker</h3>
               <p class="proj-card__desc">
                 Built a Next.js and TypeScript analytics platform for GitHub productivity tracking. Aggregates GitHub
@@ -602,8 +572,8 @@
               >
             </article>
 
-            <!-- 9. Psyches of Color -->
-            <article class="proj-card" data-project="8">
+            <!-- 7. Psyches of Color -->
+            <article class="proj-card" data-project="6">
               <h3 class="proj-card__title">Psyches of Color</h3>
               <p class="proj-card__desc">
                 Psyches of Color develops a mental health app serving underserved communities. Full-stack development
