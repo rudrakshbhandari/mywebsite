@@ -294,6 +294,32 @@ button:focus-visible {
   color: var(--color-white);
 }
 
+.section-kicker {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 1rem;
+}
+
+.section-kicker--light {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.section-intro {
+  max-width: 42rem;
+  font-size: 1rem;
+  line-height: 1.75;
+  color: var(--color-muted);
+  margin-top: 1rem;
+}
+
+.section-intro--light {
+  color: rgba(255, 255, 255, 0.7);
+}
+
 /* =============================================
    SCENE 1: HERO
    ============================================= */
@@ -310,6 +336,17 @@ button:focus-visible {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+}
+
+.hero__eyebrow {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 1.5rem;
+  text-align: center;
 }
 
 .hero__name {
@@ -661,6 +698,41 @@ button:focus-visible {
   padding: 6rem 3rem 6rem 2rem;
 }
 
+.projects__intro {
+  padding: 0 0 2rem;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.08);
+}
+
+.projects__heading {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.05;
+  color: var(--color-text);
+  max-width: 15ch;
+}
+
+.projects__meta-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.projects__meta-link {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  transition: color 0.2s ease;
+}
+
+.projects__meta-link:hover {
+  color: var(--color-text);
+}
+
 .proj-card {
   padding: 4rem 0;
   border-bottom: 1px solid rgba(26, 26, 26, 0.08);
@@ -922,6 +994,12 @@ button:focus-visible {
     font-size: clamp(2.8rem, 11vw, 5rem);
   }
 
+  .hero__eyebrow,
+  .hero__subtitle {
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+
   .hero__photo {
     width: min(260px, 55vw);
   }
@@ -984,6 +1062,14 @@ button:focus-visible {
     padding: 2rem 1.5rem;
   }
 
+  .projects__intro {
+    padding-bottom: 1.5rem;
+  }
+
+  .projects__heading {
+    max-width: none;
+  }
+
   .proj-card {
     padding: 2rem 0;
     opacity: 1;
@@ -1012,6 +1098,10 @@ button:focus-visible {
 
   .projects__cards {
     padding: 2rem 1rem;
+  }
+
+  .projects__meta-links {
+    gap: 0.75rem;
   }
 
   .exp-card {
