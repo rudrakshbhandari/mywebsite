@@ -22,6 +22,8 @@ The scheduled workflow opens a PR when `oura_public.json` changes. **Do not use 
 
 **Fix:** set repo secret `OURA_SECRET_UPDATE_TOKEN` to a Personal Access Token with access to this repository (same PAT already used for `gh secret set` / refresh-token rotation). The workflow uses it for `actions/checkout`, `git push`, `gh pr create`, and merge polling so PRs behave like human-opened PRs, CI runs, and squash-merge can complete.
 
+**Do not use `secrets` in step `if:`** in Actions YAML — GitHub rejects the workflow (schedule and `workflow_dispatch` stop entirely). Use `env:` with an expression and check in the shell instead.
+
 ## Current Recovery Behavior
 
 - If a local refresh token is stale, `scripts/fetch_oura_and_write_json.mjs` now starts a browser OAuth recovery flow automatically.

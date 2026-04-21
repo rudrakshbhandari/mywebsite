@@ -35,10 +35,15 @@ jobs:
         with:
           token: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && secrets.OURA_SECRET_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
 
+      # GitHub forbids `secrets` in step `if:` — that made the whole workflow invalid and
+      # stopped schedule + workflow_dispatch. Use env + bash instead.
       - name: Warn if Oura PAT missing for PR merges
-        if: secrets.OURA_SECRET_UPDATE_TOKEN == ''
+        env:
+          OURA_PAT_CONFIGURED: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && 'yes' || 'no' }}
         run: |
-          echo "::warning::OURA_SECRET_UPDATE_TOKEN is not set. PRs opened with GITHUB_TOKEN do not trigger pull_request workflows (GitHub restriction), so required checks never run and merges stall. Set OURA_SECRET_UPDATE_TOKEN to the same PAT you use for gh secret set (repo Contents + Pull requests)."
+          if [ "${OURA_PAT_CONFIGURED}" != "yes" ]; then
+            echo "::warning::OURA_SECRET_UPDATE_TOKEN is not set. PRs opened with GITHUB_TOKEN do not trigger pull_request workflows (GitHub restriction), so required checks never run and merges stall. Set OURA_SECRET_UPDATE_TOKEN to the same PAT you use for gh secret set (repo Contents + Pull requests)."
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
