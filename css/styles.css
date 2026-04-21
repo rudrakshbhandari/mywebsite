@@ -338,17 +338,6 @@ button:focus-visible {
   overflow: hidden;
 }
 
-.hero__eyebrow {
-  font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: 1.5rem;
-  text-align: center;
-}
-
 .hero__name {
   display: flex;
   flex-direction: column;
@@ -415,13 +404,30 @@ button:focus-visible {
   font-size: clamp(0.65rem, 1vw, 0.8rem);
   font-weight: 600;
   color: var(--color-text);
-  opacity: 0.45;
   margin-top: 2rem;
   position: relative;
   z-index: 2;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-align: center;
   will-change: opacity;
+}
+
+.hero__subtitle-line {
+  display: block;
+}
+
+.hero__subtitle-line--lede {
+  color: var(--color-accent);
+  opacity: 0.85;
+}
+
+.hero__subtitle-line:not(.hero__subtitle-line--lede) {
+  opacity: 0.45;
 }
 
 /* =============================================
@@ -994,7 +1000,6 @@ button:focus-visible {
     font-size: clamp(2.8rem, 11vw, 5rem);
   }
 
-  .hero__eyebrow,
   .hero__subtitle {
     font-size: 0.68rem;
     letter-spacing: 0.08em;

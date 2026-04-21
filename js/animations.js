@@ -97,14 +97,14 @@ function initHeroScene() {
 
     gsap.set([firstLine, lastLine], { opacity: 1 });
     gsap.set(photoWrap, { opacity: 1, scale: 1 });
-    gsap.set(subtitle, { opacity: 0.45 });
+    gsap.set(subtitle, { opacity: 1 });
   }
 
   function syncHeroToProgress(progress) {
     gsap.set(firstLine, { opacity: 1, y: overlap - progress * spread });
     gsap.set(lastLine, { opacity: 1, y: -overlap + progress * spread });
     gsap.set(photoWrap, { opacity: 1, scale: 1 + progress * 0.015 });
-    gsap.set(subtitle, { opacity: 0.45 });
+    gsap.set(subtitle, { opacity: 1 });
   }
 
   var entrance = gsap.timeline({
@@ -117,7 +117,7 @@ function initHeroScene() {
   entrance.to(firstLine, { opacity: 1, y: overlap, duration: 0.9, ease: 'power3.out' });
   entrance.to(photoWrap, { opacity: 1, scale: 1, duration: 1, ease: 'power3.out' }, 0.15);
   entrance.to(lastLine, { opacity: 1, y: -overlap, duration: 0.9, ease: 'power3.out' }, 0.25);
-  entrance.to(subtitle, { opacity: 0.45, duration: 0.8, ease: 'power2.out' }, 0.7);
+  entrance.to(subtitle, { opacity: 1, duration: 0.8, ease: 'power2.out' }, 0.7);
 
   /* --- Scroll: name lines breathe outward from tight overlap --- */
   ScrollTrigger.create({
