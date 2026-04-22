@@ -446,18 +446,21 @@ button:focus-visible {
   display: grid;
   grid-template-columns: 0.4fr 0.6fr;
   gap: 4rem;
-  align-items: start;
+  align-items: center;
 }
 
 .about__photo-col {
   position: relative;
   display: flex;
+  align-items: center;
   justify-content: center;
 }
 
 .about__photo-sticky {
   position: sticky;
-  top: max(100px, calc(50vh - 280px));
+  top: clamp(100px, calc(50vh - 280px), 240px);
+  width: 100%;
+  max-width: 420px;
 }
 
 .about__photo {
