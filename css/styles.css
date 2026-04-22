@@ -451,11 +451,13 @@ button:focus-visible {
 
 .about__photo-col {
   position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 .about__photo-sticky {
   position: sticky;
-  top: 100px;
+  top: max(100px, calc(50vh - 280px));
 }
 
 .about__photo {
@@ -469,6 +471,7 @@ button:focus-visible {
     0 20px 50px rgba(0, 0, 0, 0.1),
     0 5px 15px rgba(0, 0, 0, 0.05);
   transition: filter 0.8s ease;
+  margin: 0 auto;
 }
 
 .about__text-col {
