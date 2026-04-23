@@ -133,12 +133,19 @@ async function fetchCloudflareVisitors() {
         console.warn(`[cf] ${site.domain}: API errors ${JSON.stringify(parsed.errors)}`);
         continue;
       }
-      const groups = parsed.data?.viewer?.accounts?.[0]?.rumPageloadEventsAdaptiveGroups ?? [];
+      const accounts = parsed.data?.viewer?.accounts ?? [];
+      if (accounts.length === 0) {
+        console.warn(`[cf] ${site.domain}: no accounts matched — accountTag likely wrong`);
+      }
+      const groups = accounts[0]?.rumPageloadEventsAdaptiveGroups ?? [];
       let visits = 0;
       let pageviews = 0;
       for (const g of groups) {
         visits += g.sum?.visits ?? 0;
         pageviews += g.count ?? 0;
+      }
+      if (groups.length === 0 || visits === 0) {
+        console.warn(`[cf] ${site.domain}: groups=${groups.length} visits=${visits} raw=${res.body.toString('utf8').slice(0, 400)}`);
       }
       results[site.domain] = { visits, pageviews };
       totalVisits += visits;
