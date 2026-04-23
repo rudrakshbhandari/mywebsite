@@ -120,14 +120,15 @@ function initHeroScene() {
 
   function syncHeroToProgress(progress) {
     var splitProgress = Math.max(0, Math.min((progress - 0.04) / 0.68, 1));
-    var bandProgress = Math.max(0, Math.min((splitProgress - 0.12) / 0.3, 1));
+    var gapOpen = splitProgress * splitDistance;
+    var bandProgress = Math.max(0, Math.min((gapOpen - 42) / 18, 1));
 
     gsap.set(firstLine, { opacity: 1, y: overlap - progress * spread });
     gsap.set(lastLine, { opacity: 1, y: -overlap + progress * spread });
     gsap.set(photoWrap, {
       opacity: 1,
       scale: 1 + progress * 0.012,
-      '--hero-gap-open': splitProgress * splitDistance + 'px',
+      '--hero-gap-open': gapOpen + 'px',
       '--hero-band-opacity': bandProgress,
     });
     gsap.set(subtitle, { opacity: 1 });
