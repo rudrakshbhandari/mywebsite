@@ -51,6 +51,7 @@ function initStaticFallback() {
   if (heroPhotoWrap) {
     heroPhotoWrap.style.opacity = '1';
     heroPhotoWrap.style.transform = 'none';
+    heroPhotoWrap.style.setProperty('--hero-split-offset', '0px');
   }
   if (heroSubtitle) {
     heroSubtitle.style.opacity = '1';
@@ -85,8 +86,9 @@ function initHeroScene() {
   if (!heroSection || !heroInner || !firstLine || !lastLine || !photoWrap) return;
 
   /* --- Entrance: elements land in a tight, overlapping position --- */
-  var overlap = 50;
-  var spread = overlap + 20;
+  var overlap = 42;
+  var spread = overlap + 26;
+  var splitDistance = 42;
   var entranceSettled = false;
 
   function finishEntrance() {
@@ -96,14 +98,18 @@ function initHeroScene() {
     entrance.kill();
 
     gsap.set([firstLine, lastLine], { opacity: 1 });
-    gsap.set(photoWrap, { opacity: 1, scale: 1 });
+    gsap.set(photoWrap, { opacity: 1, scale: 1, '--hero-split-offset': '0px' });
     gsap.set(subtitle, { opacity: 1 });
   }
 
   function syncHeroToProgress(progress) {
     gsap.set(firstLine, { opacity: 1, y: overlap - progress * spread });
     gsap.set(lastLine, { opacity: 1, y: -overlap + progress * spread });
-    gsap.set(photoWrap, { opacity: 1, scale: 1 + progress * 0.015 });
+    gsap.set(photoWrap, {
+      opacity: 1,
+      scale: 1 + progress * 0.012,
+      '--hero-split-offset': progress * splitDistance + 'px',
+    });
     gsap.set(subtitle, { opacity: 1 });
   }
 
