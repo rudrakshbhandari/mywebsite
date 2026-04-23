@@ -1,7 +1,7 @@
 {
-  "lastUpdated": "2026-04-23T20:06:44.879Z",
+  "lastUpdated": "2026-04-23T20:11:30.814Z",
   "sources": {
-    "cloudflare": "skipped",
+    "cloudflare": "ok",
     "appStore": "ok",
     "googlePlay": "skipped"
   },
@@ -19,5 +19,25 @@
       "total": 0
     }
   },
-  "websiteVisitors": null
+  "websiteVisitors": {
+    "windowDays": 30,
+    "windowStart": "2026-03-24",
+    "windowEnd": "2026-04-23",
+    "totalVisits": 0,
+    "totalPageviews": 0,
+    "perSite": {
+      "rudrakshbhandari.com": {
+        "visits": 0,
+        "pageviews": 0
+      },
+      "nomnom.cc": {
+        "visits": 0,
+        "pageviews": 0
+      },
+      "shareallbooks.com": {
+        "visits": 0,
+        "pageviews": 0
+      }
+    }
+  }
 }
