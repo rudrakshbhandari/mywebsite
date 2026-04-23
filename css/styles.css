@@ -468,13 +468,15 @@ button:focus-visible {
 
 .hero__headline-line {
   font-family: var(--font-display);
-  font-size: clamp(0.72rem, 1vw, 0.9rem);
+  font-size: clamp(0.68rem, 0.9vw, 0.82rem);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   text-align: center;
-  text-wrap: balance;
+  display: block;
+  width: 100%;
+  white-space: nowrap;
   color: rgba(28, 26, 24, 0.82);
   transform: translateY(6px);
 }
@@ -1116,7 +1118,7 @@ button:focus-visible {
   }
 
   .hero__headline-line {
-    font-size: 0.62rem;
+    font-size: 0.56rem;
     letter-spacing: 0.09em;
   }
 
@@ -1232,7 +1234,7 @@ button:focus-visible {
   }
 
   .hero__headline-line {
-    font-size: 0.58rem;
+    font-size: 0.52rem;
   }
 }
 
