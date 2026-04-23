@@ -1,22 +1,22 @@
 {
-  "lastUpdated": null,
+  "lastUpdated": "2026-04-23T20:06:44.879Z",
   "sources": {
-    "cloudflare": "pending",
-    "appStore": "pending",
-    "googlePlay": "pending"
+    "cloudflare": "skipped",
+    "appStore": "ok",
+    "googlePlay": "skipped"
   },
   "apps": {
     "shareallbooks": {
       "label": "ShareAllBooks",
-      "iosDownloads": null,
+      "iosDownloads": 200,
       "androidInstalls": null,
-      "total": 2000
+      "total": 200
     },
     "nomnomRider": {
       "label": "NomNom Rider",
-      "iosDownloads": null,
+      "iosDownloads": 0,
       "androidInstalls": null,
-      "total": null
+      "total": 0
     }
   },
   "websiteVisitors": null
