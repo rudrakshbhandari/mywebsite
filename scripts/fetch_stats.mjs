@@ -225,7 +225,7 @@ async function fetchAppleSalesReport({ jwt, vendorNumber, reportDate, frequency 
   return tsv;
 }
 
-function parseAppleSalesTsv(tsv, appId) {
+function parseAppleSalesTsv(tsv, appId, debugLabel) {
   if (!tsv) return 0;
   const lines = tsv.split('\n').filter(Boolean);
   if (lines.length < 2) return 0;
@@ -235,16 +235,22 @@ function parseAppleSalesTsv(tsv, appId) {
   const unitsCol = header.indexOf('Units');
   if (idCol < 0 || productTypeCol < 0 || unitsCol < 0) return 0;
 
+  const breakdown = {};
   let units = 0;
   for (let i = 1; i < lines.length; i++) {
     const parts = lines[i].split('\t');
     if (parts[idCol] !== String(appId)) continue;
+    const pt = parts[productTypeCol] || '?';
+    const u = Number(parts[unitsCol] || 0);
+    breakdown[pt] = (breakdown[pt] || 0) + u;
     // Total Downloads = first-time installs (1-series) + redownloads (3-series).
     // Updates (7-series) are excluded.
-    const pt = parts[productTypeCol];
-    if (pt && (pt.startsWith('1') || pt.startsWith('3'))) {
-      units += Number(parts[unitsCol] || 0);
+    if (pt.startsWith('1') || pt.startsWith('3')) {
+      units += u;
     }
+  }
+  if (process.env.DEBUG_APPLE === '1' && Object.keys(breakdown).length > 0) {
+    console.log(`[apple debug] ${debugLabel} app=${appId} counted=${units} breakdown=${JSON.stringify(breakdown)}`);
   }
   return units;
 }
@@ -296,7 +302,7 @@ async function fetchAppleDownloadsForTeam(team) {
         frequency: 'YEARLY',
       });
       if (!tsv) continue;
-      for (const id of appIds) totals[id] += parseAppleSalesTsv(tsv, id);
+      for (const id of appIds) totals[id] += parseAppleSalesTsv(tsv, id, `YEARLY ${year}`);
     } catch (err) {
       console.warn(`[apple ${vendorNumber}] YEARLY ${year}: ${err.message}`);
     }
@@ -312,7 +318,7 @@ async function fetchAppleDownloadsForTeam(team) {
         frequency: 'MONTHLY',
       });
       if (!tsv) continue;
-      for (const id of appIds) totals[id] += parseAppleSalesTsv(tsv, id);
+      for (const id of appIds) totals[id] += parseAppleSalesTsv(tsv, id, `MONTHLY ${currentYear}-${mm}`);
     } catch (err) {
       console.warn(`[apple ${vendorNumber}] MONTHLY ${currentYear}-${mm}: ${err.message}`);
     }
@@ -417,7 +423,7 @@ async function fetchPlayInstallsForApp({ accessToken, packageName }) {
     {
       method: 'POST',
       hostname: 'playdeveloperreporting.googleapis.com',
-      path: `/v1beta1/apps/${encodeURIComponent(packageName)}/installsTimelineSeries:query`,
+      path: `/v1beta1/apps/${encodeURIComponent(packageName)}/installsStats:query`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',

@@ -42,6 +42,7 @@ jobs:
           CF_EXTRA_SITE_TAGS: ${{ secrets.CF_EXTRA_SITE_TAGS }}
           APPLE_TEAMS: ${{ secrets.APPLE_TEAMS }}
           GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          DEBUG_APPLE: '1'
         run: |
           set -o pipefail
           node scripts/fetch_stats.mjs 2>&1 | tee .stats_fetch.log
