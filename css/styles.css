@@ -444,25 +444,27 @@ button:focus-visible {
   margin: 0 auto;
   padding: 0 2rem;
   display: grid;
-  grid-template-columns: 0.4fr 0.6fr;
-  gap: 4rem;
+  grid-template-columns: minmax(380px, 480px) minmax(0, 1fr);
+  gap: 3rem;
   align-items: start;
 }
 
 .about__photo-col {
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .about__photo-sticky {
   position: sticky;
   top: max(100px, calc(50vh - 280px));
+  width: 100%;
+  max-width: 480px;
 }
 
 .about__photo {
   width: 100%;
-  max-width: 420px;
+  max-width: none;
   aspect-ratio: 3 / 4;
   object-fit: cover;
   object-position: 55% center;
