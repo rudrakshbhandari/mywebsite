@@ -40,7 +40,6 @@ function initStaticFallback() {
   var heroLines = document.querySelectorAll('.hero__line');
   var heroPhotoWrap = document.querySelector('.hero__photo-wrap');
   var heroHeadlineBand = document.querySelector('.hero__headline-band');
-  var heroHeadlineBandText = document.querySelector('.hero__headline-band-text');
   var heroSubtitle = document.querySelector('.hero__subtitle');
   var paragraphs = document.querySelectorAll('.about__paragraph');
   var projCards = document.querySelectorAll('.proj-card');
@@ -57,19 +56,17 @@ function initStaticFallback() {
     heroPhotoWrap.style.transform = 'none';
     heroPhotoWrap.style.setProperty('--hero-gap-open', '0px');
     heroPhotoWrap.style.setProperty('--hero-band-opacity', '0');
+    heroPhotoWrap.style.setProperty('--hero-line-one-opacity', '0');
+    heroPhotoWrap.style.setProperty('--hero-line-two-opacity', '0');
+    heroPhotoWrap.style.setProperty('--hero-line-three-opacity', '0');
   }
   if (heroSubtitle) {
     heroSubtitle.style.opacity = '1';
   }
-  if (
-    heroHeadlineBand &&
-    heroHeadlineBandText &&
-    heroSubtitle &&
-    !heroSubtitle.querySelector('.hero__subtitle-line--credentials')
-  ) {
+  if (heroHeadlineBand && heroSubtitle && !heroSubtitle.querySelector('.hero__subtitle-line--credentials')) {
     var credentialsLine = document.createElement('span');
     credentialsLine.className = 'hero__subtitle-line hero__subtitle-line--credentials';
-    credentialsLine.textContent = heroHeadlineBandText.textContent;
+    credentialsLine.textContent = heroHeadlineBand.textContent.replace(/\s+/g, ' ').trim();
     heroSubtitle.appendChild(credentialsLine);
   }
 
@@ -114,14 +111,25 @@ function initHeroScene() {
     entrance.kill();
 
     gsap.set([firstLine, lastLine], { opacity: 1 });
-    gsap.set(photoWrap, { opacity: 1, scale: 1, '--hero-gap-open': '0px', '--hero-band-opacity': 0 });
+    gsap.set(photoWrap, {
+      opacity: 1,
+      scale: 1,
+      '--hero-gap-open': '0px',
+      '--hero-band-opacity': 0,
+      '--hero-line-one-opacity': 0,
+      '--hero-line-two-opacity': 0,
+      '--hero-line-three-opacity': 0,
+    });
     gsap.set(subtitle, { opacity: 1 });
   }
 
   function syncHeroToProgress(progress) {
     var splitProgress = Math.max(0, Math.min((progress - 0.04) / 0.68, 1));
     var gapOpen = splitProgress * splitDistance;
-    var bandProgress = Math.max(0, Math.min((gapOpen - 42) / 18, 1));
+    var bandProgress = Math.max(0, Math.min((gapOpen - 20) / 16, 1));
+    var lineOneProgress = Math.max(0, Math.min((gapOpen - 20) / 10, 1));
+    var lineTwoProgress = Math.max(0, Math.min((gapOpen - 36) / 10, 1));
+    var lineThreeProgress = Math.max(0, Math.min((gapOpen - 52) / 10, 1));
 
     gsap.set(firstLine, { opacity: 1, y: overlap - progress * spread });
     gsap.set(lastLine, { opacity: 1, y: -overlap + progress * spread });
@@ -130,6 +138,9 @@ function initHeroScene() {
       scale: 1 + progress * 0.012,
       '--hero-gap-open': gapOpen + 'px',
       '--hero-band-opacity': bandProgress,
+      '--hero-line-one-opacity': lineOneProgress,
+      '--hero-line-two-opacity': lineTwoProgress,
+      '--hero-line-three-opacity': lineThreeProgress,
     });
     gsap.set(subtitle, { opacity: 1 });
   }
