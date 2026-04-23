@@ -441,7 +441,7 @@ button:focus-visible {
 .hero__headline-band {
   position: absolute;
   inset-inline: clamp(0.8rem, 3vw, 1.25rem);
-  top: 50%;
+  top: calc((var(--hero-photo-height) * var(--hero-split-point)) + (var(--hero-gap-max) / 2));
   transform: translateY(-50%) scale(calc(0.96 + (var(--hero-band-opacity) * 0.04)));
   min-height: clamp(3.2rem, 5vw, 4rem);
   display: flex;
