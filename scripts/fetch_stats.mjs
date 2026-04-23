@@ -34,14 +34,14 @@ const PLAY_APPS = [{ packageName: 'com.rudraksh99.ShareAllBooks', label: 'ShareA
 
 // --- Cloudflare sites to aggregate --------------------------------------
 //
-// siteTag values are the same tokens embedded in the beacon `data-cf-beacon`
-// attribute across each site.
+// siteTag here is the CF internal rum_site_id (from the dashboard URL
+// /web-analytics/edit/<id>), NOT the data-cf-beacon token.
 const CF_SITES = [
-  { domain: 'rudrakshbhandari.com', siteTag: '7045f28413c9496d933d2299661cfc69' },
-  { domain: 'nomnom.cc', siteTag: '70f00ab34ee944268c6face29ab89662' },
-  { domain: 'shareallbooks.com', siteTag: 'db45abbb06fc456eafeb24ef9a54a216' },
-  // outfitr.net + nyaaywatch.in are CF-proxied (Automatic mode) — populated
-  // when CF_EXTRA_SITE_TAGS env var is set, formatted "domain:siteTag,...".
+  { domain: 'rudrakshbhandari.com', siteTag: 'fd83acce982749c98c424495b1e0625e' },
+  { domain: 'nomnom.cc', siteTag: 'a2bb6225092b406e9c9f41535fbccc7e' },
+  { domain: 'shareallbooks.com', siteTag: '2b4d2bbf2cec4c84b2e326865428f7cf' },
+  { domain: 'outfitr.net', siteTag: '1671c0d8d5c34790ab61905758858b3f' },
+  { domain: 'nyaaywatch.in', siteTag: '47d9aae9eb974d33a4ac4a2c7a07644f' },
 ];
 
 // --- HTTP helper --------------------------------------------------------
