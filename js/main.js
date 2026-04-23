@@ -1,6 +1,6 @@
 /**
  * Concept C: The Scroll Film — Main JS
- * Navigation, counters, mobile menu, dot-nav, dev mode
+ * Navigation, counters, mobile menu, dev mode
  */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   initNavigation();
   initMobileMenu();
-  initDotNav();
   initCounters();
   initProjectImageCrossfade();
 });
@@ -131,58 +130,6 @@ function initMobileMenu() {
       navMenu.classList.remove('active');
       navToggle.classList.remove('active');
       navToggle.setAttribute('aria-expanded', 'false');
-    }
-  });
-}
-
-/* ===========================
-   Dot Navigation
-   =========================== */
-function initDotNav() {
-  var dotNav = document.getElementById('dot-nav');
-  var dots = document.querySelectorAll('.dot-nav__dot');
-  var darkSections = document.querySelectorAll('.scene--experience, .scene--contact');
-
-  dots.forEach(function (dot) {
-    dot.addEventListener('click', function (e) {
-      e.preventDefault();
-      var targetId = this.getAttribute('href');
-      var targetSection = document.querySelector(targetId);
-      if (targetSection) {
-        window.scrollTo({ top: targetSection.offsetTop - 60, behavior: 'smooth' });
-      }
-    });
-  });
-
-  window.addEventListener('scroll', function () {
-    var current = '';
-    var sections = document.querySelectorAll('section[id]');
-    var viewportMid = window.innerHeight * 0.35;
-
-    sections.forEach(function (section) {
-      var rect = section.getBoundingClientRect();
-      if (rect.top <= viewportMid && rect.bottom > viewportMid) {
-        current = section.getAttribute('id');
-      }
-    });
-
-    dots.forEach(function (dot) {
-      dot.classList.remove('active');
-      if (dot.getAttribute('data-section') === current) {
-        dot.classList.add('active');
-      }
-    });
-
-    if (dotNav) {
-      var dotCenter = window.innerHeight / 2;
-      var isInDark = false;
-      darkSections.forEach(function (section) {
-        var rect = section.getBoundingClientRect();
-        if (rect.top < dotCenter && rect.bottom > dotCenter) {
-          isInDark = true;
-        }
-      });
-      dotNav.classList.toggle('inverted', isInDark);
     }
   });
 }
