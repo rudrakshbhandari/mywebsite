@@ -239,33 +239,51 @@ function parseAppleSalesTsv(tsv, appId) {
   for (let i = 1; i < lines.length; i++) {
     const parts = lines[i].split('\t');
     if (parts[idCol] !== String(appId)) continue;
-    // "1" and "1F" are app downloads (free/paid). Updates (7, 7F) don't count.
+    // Total Downloads = first-time installs (1-series) + redownloads (3-series).
+    // Updates (7-series) are excluded.
     const pt = parts[productTypeCol];
-    if (pt === '1' || pt === '1F' || pt === '1T' || pt === '1EP') {
+    if (pt && (pt.startsWith('1') || pt.startsWith('3'))) {
       units += Number(parts[unitsCol] || 0);
     }
   }
   return units;
 }
 
-async function fetchAppleDownloads(previousApps) {
+function loadAppleTeams() {
+  // Preferred path: APPLE_TEAMS env var holding a JSON array, one entry per
+  // App Store Connect team. Each entry: { issuerId, keyId, vendorNumber,
+  // privateKey, appIds: [...] }. privateKey may use literal \n escapes.
+  const raw = process.env.APPLE_TEAMS?.trim();
+  if (raw) {
+    try {
+      const arr = JSON.parse(raw);
+      return arr.map(t => ({
+        ...t,
+        privateKey: t.privateKey?.includes('\\n') ? t.privateKey.replace(/\\n/g, '\n') : t.privateKey,
+      }));
+    } catch (err) {
+      console.warn(`[apple] APPLE_TEAMS parse failed: ${err.message}`);
+      return [];
+    }
+  }
+  // Back-compat: legacy single-team env vars.
   const issuerId = process.env.APP_STORE_CONNECT_ISSUER_ID?.trim();
   const keyId = process.env.APP_STORE_CONNECT_KEY_ID?.trim();
   const vendorNumber = process.env.APP_STORE_CONNECT_VENDOR_NUMBER?.trim();
   const privateKey = loadApplePrivateKey();
-
-  if (!issuerId || !keyId || !vendorNumber || !privateKey) {
-    console.warn('[apple] credentials missing — skipping Apple downloads');
-    return null;
+  if (issuerId && keyId && vendorNumber && privateKey) {
+    return [{ issuerId, keyId, vendorNumber, privateKey, appIds: APPLE_APPS.map(a => a.id) }];
   }
+  return [];
+}
 
+async function fetchAppleDownloadsForTeam(team) {
+  const { issuerId, keyId, vendorNumber, privateKey, appIds } = team;
   const jwt = signAppStoreJwt({ issuerId, keyId, privateKey });
 
   const totals = {};
-  for (const app of APPLE_APPS) totals[app.id] = 0;
+  for (const id of appIds) totals[id] = 0;
 
-  // Strategy: iterate YEARLY reports from 2023 forward, plus MONTHLY for the
-  // current year's months so far. Apple retains reports for ~5 years.
   const now = new Date();
   const currentYear = now.getUTCFullYear();
 
@@ -278,11 +296,9 @@ async function fetchAppleDownloads(previousApps) {
         frequency: 'YEARLY',
       });
       if (!tsv) continue;
-      for (const app of APPLE_APPS) {
-        totals[app.id] += parseAppleSalesTsv(tsv, app.id);
-      }
+      for (const id of appIds) totals[id] += parseAppleSalesTsv(tsv, id);
     } catch (err) {
-      console.warn(`[apple] YEARLY ${year}: ${err.message}`);
+      console.warn(`[apple ${vendorNumber}] YEARLY ${year}: ${err.message}`);
     }
   }
 
@@ -296,19 +312,37 @@ async function fetchAppleDownloads(previousApps) {
         frequency: 'MONTHLY',
       });
       if (!tsv) continue;
-      for (const app of APPLE_APPS) {
-        totals[app.id] += parseAppleSalesTsv(tsv, app.id);
-      }
+      for (const id of appIds) totals[id] += parseAppleSalesTsv(tsv, id);
     } catch (err) {
-      console.warn(`[apple] MONTHLY ${currentYear}-${mm}: ${err.message}`);
+      console.warn(`[apple ${vendorNumber}] MONTHLY ${currentYear}-${mm}: ${err.message}`);
     }
   }
 
-  const perApp = {};
-  for (const app of APPLE_APPS) {
-    perApp[app.id] = { label: app.label, iosDownloads: totals[app.id] };
+  return totals;
+}
+
+async function fetchAppleDownloads() {
+  const teams = loadAppleTeams();
+  if (teams.length === 0) {
+    console.warn('[apple] no teams configured — skipping Apple downloads');
+    return null;
   }
-  return perApp;
+
+  const perApp = {};
+  let anyOk = false;
+  for (const team of teams) {
+    try {
+      const totals = await fetchAppleDownloadsForTeam(team);
+      for (const id of team.appIds) {
+        const label = APPLE_APPS.find(a => a.id === id)?.label ?? id;
+        perApp[id] = { label, iosDownloads: totals[id] ?? 0 };
+      }
+      anyOk = true;
+    } catch (err) {
+      console.warn(`[apple ${team.vendorNumber}] team failed: ${err.message}`);
+    }
+  }
+  return anyOk ? perApp : null;
 }
 
 // --- Google Play Developer Reporting -----------------------------------
@@ -480,7 +514,7 @@ async function main() {
       console.warn(`[cf] failed: ${err.message}`);
       return null;
     }),
-    fetchAppleDownloads(previous).catch(err => {
+    fetchAppleDownloads().catch(err => {
       console.warn(`[apple] failed: ${err.message}`);
       return null;
     }),
