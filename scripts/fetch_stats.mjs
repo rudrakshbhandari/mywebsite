@@ -87,11 +87,11 @@ async function fetchCloudflareVisitors() {
   const sites = collectCloudflareSites();
   const end = new Date();
   const start = new Date(end.getTime() - 30 * 24 * 60 * 60 * 1000);
-  const startStr = start.toISOString();
-  const endStr = end.toISOString();
+  const startStr = start.toISOString().slice(0, 10);
+  const endStr = end.toISOString().slice(0, 10);
 
   const query = `
-    query ($accountTag: String!, $siteTag: String!, $start: Time!, $end: Time!) {
+    query ($accountTag: String!, $siteTag: String!, $start: Date!, $end: Date!) {
       viewer {
         accounts(filter: { accountTag: $accountTag }) {
           rumPageloadEventsAdaptiveGroups(
