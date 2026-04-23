@@ -1,0 +1,115 @@
+name: Portfolio Stats Update
+
+on:
+  schedule:
+    # Daily at 07:10 UTC (00:10 PT) — reports from the prior day are settled.
+    - cron: '10 7 * * *'
+  workflow_dispatch: # Allow manual trigger
+
+concurrency:
+  group: stats-update
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    env:
+      # Same PAT pattern as oura-update.yml so opened PRs run required checks.
+      GH_AUTH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && secrets.OURA_SECRET_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && secrets.OURA_SECRET_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch portfolio stats
+        id: fetch_stats
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_EXTRA_SITE_TAGS: ${{ secrets.CF_EXTRA_SITE_TAGS }}
+          APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+          APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+          APP_STORE_CONNECT_VENDOR_NUMBER: ${{ secrets.APP_STORE_CONNECT_VENDOR_NUMBER }}
+          APP_STORE_CONNECT_PRIVATE_KEY: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY }}
+          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          set -o pipefail
+          node scripts/fetch_stats.mjs 2>&1 | tee .stats_fetch.log
+
+      - name: Check if stats changed
+        id: check_changes
+        if: steps.fetch_stats.outcome == 'success'
+        run: |
+          if [ -f .stats_no_change ]; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+            rm -f .stats_no_change
+          elif git diff --quiet stats_public.json 2>/dev/null; then
+            echo "changed=false" >> $GITHUB_OUTPUT
+          else
+            echo "changed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create branch and PR if changed
+        if: steps.check_changes.outputs.changed == 'true'
+        id: create_pr
+        env:
+          GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          BRANCH_NAME="stats-update-$(date -u +%Y%m%d-%H%M%S)"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+          git checkout -b "$BRANCH_NAME"
+          git add stats_public.json
+          git commit -m "chore(stats): refresh portfolio stats [$(date -u +%Y-%m-%d)]"
+          git push origin "$BRANCH_NAME"
+
+          PR_URL=$(gh pr create \
+            --title "chore(stats): refresh portfolio stats [$(date -u +%Y-%m-%d)]" \
+            --body "Automated portfolio stats refresh (downloads + website visitors)." \
+            --base main \
+            --head "$BRANCH_NAME")
+
+          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
+          echo "Created PR: $PR_URL"
+
+      - name: Merge stats PR after CI (poll)
+        if: steps.check_changes.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
+        run: |
+          PR_URL="${{ steps.create_pr.outputs.pr_url }}"
+          echo "Waiting for required checks, then merging: $PR_URL"
+          sleep 15
+
+          for attempt in $(seq 1 48); do
+            echo "merge attempt $attempt/48..."
+            if gh pr merge "$PR_URL" --squash --delete-branch; then
+              echo "Merged successfully."
+              exit 0
+            fi
+            STATE=$(gh pr view "$PR_URL" --json state -q .state 2>/dev/null || echo "")
+            if [ "$STATE" = "MERGED" ]; then
+              echo "PR already merged."
+              exit 0
+            fi
+            sleep 15
+          done
+
+          echo "::error::Timed out waiting to merge stats PR."
+          exit 1

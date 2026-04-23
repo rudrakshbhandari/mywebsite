@@ -257,7 +257,8 @@
                 class="text-link"
                 >featured in national press</a
               >
-              that reached 2,000+ downloads and 1,500+ book transactions.
+              that reached <span data-stat="shareallbooks-downloads" data-stat-format="thousands-plus">2,000+</span>
+              downloads and 1,500+ book transactions.
             </p>
 
             <p class="about__paragraph">
@@ -272,8 +273,24 @@
                 <span class="about__stat-label">GPA @ UCSD</span>
               </div>
               <div class="about__stat">
-                <span class="about__stat-number" data-target="2K+">2K+</span>
+                <span
+                  class="about__stat-number"
+                  data-target="2K+"
+                  data-stat="app-downloads"
+                  data-stat-format="compact-plus"
+                  >2K+</span
+                >
                 <span class="about__stat-label">App Downloads</span>
+              </div>
+              <div class="about__stat">
+                <span
+                  class="about__stat-number"
+                  data-target="—"
+                  data-stat="monthly-visitors"
+                  data-stat-format="compact-plus"
+                  >—</span
+                >
+                <span class="about__stat-label">Monthly Site Visitors</span>
               </div>
             </div>
           </div>
@@ -362,7 +379,8 @@
               <p class="exp-card__location">United Arab Emirates</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Founded and launched a book-sharing mobile app (App Store & Play Store), reaching 2,000+ downloads
+                  Founded and launched a book-sharing mobile app (App Store & Play Store), reaching
+                  <span data-stat="shareallbooks-downloads" data-stat-format="thousands-plus">2,000+</span> downloads
                   within the first year.
                 </li>
                 <li>
@@ -545,7 +563,8 @@
             <article class="proj-card" data-project="3">
               <h3 class="proj-card__title">ShareAllBooks</h3>
               <p class="proj-card__desc">
-                2k+ installs, 1.5k+ transactions,
+                <span data-stat="shareallbooks-downloads" data-stat-format="compact-plus">2k+</span> installs, 1.5k+
+                transactions,
                 <a
                   href="https://www.khaleejtimes.com/uae/dubai-student-creates-app-for-free-exchange-of-books"
                   target="_blank"
@@ -718,5 +737,13 @@
     <script src="js/analytics.js"></script>
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
+    <script src="js/stats.js"></script>
+
+    <!-- Cloudflare Web Analytics -->
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "7045f28413c9496d933d2299661cfc69"}'
+    ></script>
   </body>
 </html>
