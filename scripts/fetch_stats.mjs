@@ -423,7 +423,7 @@ async function fetchPlayInstallsForApp({ accessToken, packageName }) {
     {
       method: 'POST',
       hostname: 'playdeveloperreporting.googleapis.com',
-      path: `/v1beta1/apps/${encodeURIComponent(packageName)}/installsTimelineSeries:query`,
+      path: `/v1beta1/apps/${encodeURIComponent(packageName)}/installsStats:query`,
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
