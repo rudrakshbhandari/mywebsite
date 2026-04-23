@@ -1,0 +1,23 @@
+{
+  "lastUpdated": null,
+  "sources": {
+    "cloudflare": "pending",
+    "appStore": "pending",
+    "googlePlay": "pending"
+  },
+  "apps": {
+    "shareallbooks": {
+      "label": "ShareAllBooks",
+      "iosDownloads": null,
+      "androidInstalls": null,
+      "total": 2000
+    },
+    "nomnomRider": {
+      "label": "NomNom Rider",
+      "iosDownloads": null,
+      "androidInstalls": null,
+      "total": null
+    }
+  },
+  "websiteVisitors": null
+}
