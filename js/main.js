@@ -230,6 +230,11 @@ function animateCounter(element) {
     }, 30);
   } else {
     var numTarget = parseInt(originalText.replace(/\D/g, ''));
+    if (!numTarget || isNaN(numTarget)) {
+      // Nothing to animate yet (e.g. placeholder "—" before async stats load).
+      // stats.js will overwrite the text when data arrives.
+      return;
+    }
     var suffix = originalText.replace(/\d/g, '');
     var numCurrent = 0;
     var numIncrement = numTarget / 50;
