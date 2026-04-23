@@ -452,7 +452,9 @@ function mergeApps({ previous, apple, play }) {
   const shareAllBooksTotal =
     shareAllBooksApple != null || shareAllBooksPlay != null
       ? (shareAllBooksApple ?? 0) + (shareAllBooksPlay ?? 0)
-      : null;
+      : (previous?.apps?.shareallbooks?.total ?? null);
+
+  const nomnomRiderTotal = nomnomRiderApple != null ? nomnomRiderApple : (previous?.apps?.nomnomRider?.total ?? null);
 
   return {
     shareallbooks: {
@@ -465,7 +467,7 @@ function mergeApps({ previous, apple, play }) {
       label: 'NomNom Rider',
       iosDownloads: nomnomRiderApple,
       androidInstalls: null,
-      total: nomnomRiderApple,
+      total: nomnomRiderTotal,
     },
   };
 }
