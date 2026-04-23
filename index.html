@@ -116,7 +116,6 @@
             <a href="#about" class="nav-link">About</a>
             <a href="#experience" class="nav-link">Experience</a>
             <a href="#projects" class="nav-link">Projects</a>
-            <a href="/health/" class="nav-link">Health</a>
             <a href="#contact" class="nav-link">Contact</a>
             <a
               href="Rudraksh_Bhandari_Resume.pdf?v=1"
@@ -140,25 +139,6 @@
         </div>
       </nav>
     </header>
-
-    <!-- Floating dot-nav (right side) -->
-    <nav class="dot-nav" id="dot-nav" aria-label="Scene navigation">
-      <a href="#hero" class="dot-nav__dot active" data-section="hero" aria-label="Hero section"
-        ><span class="dot-nav__label">Home</span></a
-      >
-      <a href="#about" class="dot-nav__dot" data-section="about" aria-label="About section"
-        ><span class="dot-nav__label">About</span></a
-      >
-      <a href="#experience" class="dot-nav__dot" data-section="experience" aria-label="Experience section"
-        ><span class="dot-nav__label">Experience</span></a
-      >
-      <a href="#projects" class="dot-nav__dot" data-section="projects" aria-label="Projects section"
-        ><span class="dot-nav__label">Projects</span></a
-      >
-      <a href="#contact" class="dot-nav__dot" data-section="contact" aria-label="Contact section"
-        ><span class="dot-nav__label">Contact</span></a
-      >
-    </nav>
 
     <!-- Main Content -->
     <main id="main-content">
@@ -186,11 +166,9 @@
           </h1>
           <p class="hero__subtitle">
             <span class="hero__subtitle-line hero__subtitle-line--lede"
-              >Machine learning, mobile systems, and public-interest software</span
+              >ML Researcher @ UCSD · SDE Intern @ AWS (returning '26) · Building NomNom and Outfitr</span
             >
-            <span class="hero__subtitle-line"
-              >ML Researcher @ UCSD · 2x SDE Intern @ AWS · Building NomNom and Outfitr</span
-            >
+            <span class="hero__subtitle-line">Machine learning, mobile systems, and public-interest software</span>
           </p>
         </div>
       </section>
@@ -257,8 +235,7 @@
                 class="text-link"
                 >featured in national press</a
               >
-              that reached <span data-stat="shareallbooks-downloads" data-stat-format="thousands-plus">2,000+</span>
-              downloads and 1,500+ book transactions.
+              that reached 2K+ downloads and 1,500+ book transactions.
             </p>
 
             <p class="about__paragraph">
@@ -273,13 +250,7 @@
                 <span class="about__stat-label">GPA @ UCSD</span>
               </div>
               <div class="about__stat">
-                <span
-                  class="about__stat-number"
-                  data-target="2K+"
-                  data-stat="app-downloads"
-                  data-stat-format="compact-plus"
-                  >2K+</span
-                >
+                <span class="about__stat-number" data-target="2K+">2K+</span>
                 <span class="about__stat-label">App Downloads</span>
               </div>
               <div class="about__stat">
@@ -379,9 +350,8 @@
               <p class="exp-card__location">United Arab Emirates</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Founded and launched a book-sharing mobile app (App Store & Play Store), reaching
-                  <span data-stat="shareallbooks-downloads" data-stat-format="thousands-plus">2,000+</span> downloads
-                  within the first year.
+                  Founded and launched a book-sharing mobile app (App Store & Play Store), reaching 2K+ downloads within
+                  the first year.
                 </li>
                 <li>
                   Featured in
@@ -494,62 +464,89 @@
               <h2 class="projects__heading">Current projects and selected work</h2>
             </div>
 
+            <p class="projects__tier-label">Building now</p>
+
             <!-- 1. NomNom -->
-            <article class="proj-card" data-project="0">
+            <article class="proj-card proj-card--featured" data-project="0">
               <h3 class="proj-card__title">NomNom</h3>
+              <p class="proj-card__metric">UCSD dining-hall delivery · Founder · Student + Rider apps in beta</p>
               <p class="proj-card__desc">
-                UCSD-exclusive delivery startup connecting students with dining hall couriers. UCSD-only authentication,
-                live ETAs, Stripe payments. Dual React Native apps (Student & Rider) with TypeScript, Firebase Firestore
-                transactions, real-time location tracking, OTP verification, and in-app chat.
+                Two-sided mobile marketplace: students order dining-hall meals, verified UCSD couriers deliver. Solves
+                the "I missed dinner" problem for the ~40k students on campus.
               </p>
-              <div class="proj-card__tech"><span>React Native</span><span>TypeScript</span><span>Firestore</span></div>
+              <ul class="proj-card__bullets">
+                <li>Built dual React Native apps (Student + Rider) in a TypeScript monorepo.</li>
+                <li>
+                  Firestore transactions for order accept/drop-off; OTP + live tracking eliminate double-claims and
+                  disputes.
+                </li>
+                <li>Stripe payments, Expo Location ETAs, in-app chat, UCSD-only SSO.</li>
+              </ul>
+              <div class="proj-card__tech">
+                <span>React Native</span><span>TypeScript</span><span>Firestore</span><span>Stripe</span>
+              </div>
               <a href="https://nomnom.cc" target="_blank" rel="noopener noreferrer" class="proj-card__link"
                 >Visit nomnom.cc →</a
               >
             </article>
 
             <!-- 2. Outfitr -->
-            <article class="proj-card" data-project="1">
+            <article class="proj-card proj-card--featured" data-project="1">
               <h3 class="proj-card__title">Outfitr</h3>
+              <p class="proj-card__metric">AI outfit discovery · Founder · iOS in private beta</p>
               <p class="proj-card__desc">
-                Built Outfitr, an AI-powered fashion discovery platform that aggregates multi-retailer catalogs and
-                generates complete outfit recommendations in a swipe-based mobile experience. Architected a TypeScript
-                monorepo spanning mobile, backend API, worker services, ingestion pipelines, and shared SDK/config
-                packages to support scalable product development. Designed backend systems for catalog normalization,
-                outfit composition, ranking, caching, and bundle generation to help users discover and purchase full
-                looks across merchants. Implemented AI virtual try-on infrastructure with async job orchestration,
-                provider abstraction, media storage, and privacy-conscious processing flows. Developed API and service
-                layers for user preferences, saved outfits, telemetry, and experimentation to support personalization
-                and product iteration.
+                Swipe-based mobile app that builds shoppable outfits across retailers. Replaces the
+                one-product-at-a-time feed with "here is the full look, buy it in one tap."
               </p>
+              <ul class="proj-card__bullets">
+                <li>TypeScript monorepo: mobile app, API, ingestion workers, shared SDK.</li>
+                <li>
+                  Backend for catalog normalization, outfit composition, ranking, and bundle generation across
+                  merchants.
+                </li>
+                <li>AI virtual try-on with async job orchestration, provider abstraction, and privacy-aware media.</li>
+                <li>Telemetry + experimentation layer for personalization and A/B-ing the swipe flow.</li>
+              </ul>
               <div class="proj-card__tech">
-                <span>TypeScript</span><span>AI</span><span>Mobile</span><span>Fashion</span>
+                <span>TypeScript</span><span>React Native</span><span>AI</span><span>AWS</span>
               </div>
               <a href="https://outfitr.net/" target="_blank" rel="noopener noreferrer" class="proj-card__link"
                 >Visit outfitr.net →</a
               >
             </article>
 
-            <!-- 3. NyaayWatch -->
-            <article class="proj-card" data-project="2">
-              <h3 class="proj-card__title">NyaayWatch</h3>
-              <p class="proj-card__desc">
-                Built an evidence-first platform for making Indian court backlog and district-level judicial performance
-                legible to the public. A public-interest judicial observability platform that turns published Indian
-                court-system snapshots into clear, district-level evidence, methodology, and public data surfaces. Ships
-                district scorecards, evidence pages, exports, and explicit state-scoped public surfaces across multiple
-                Indian states, backed by a reproducible snapshot pipeline with operator-controlled publish, replay, and
-                rollback on Node.js, TypeScript, PostgreSQL, S3, and AWS. Public site at
-                <a href="https://nyaaywatch.in" target="_blank" rel="noopener noreferrer" class="text-link"
-                  >nyaaywatch.in</a
-                >, source on
+            <p class="projects__tier-label">Prior work</p>
+
+            <!-- 3. ShareAllBooks -->
+            <article class="proj-card" data-project="3">
+              <h3 class="proj-card__title">ShareAllBooks</h3>
+              <p class="proj-card__metric">
+                2K+ installs · 1,500+ book transactions ·
                 <a
-                  href="https://github.com/rudrakshbhandari/nyaaywatch"
+                  href="https://www.khaleejtimes.com/uae/dubai-student-creates-app-for-free-exchange-of-books"
                   target="_blank"
                   rel="noopener noreferrer"
                   class="text-link"
-                  >GitHub</a
-                >.
+                  >featured in UAE national press</a
+                >
+              </p>
+              <p class="proj-card__desc">
+                Founded and shipped a book-sharing app for the UAE, App Store + Play Store. Handled auth, real-time
+                database, and transactional email end-to-end.
+              </p>
+              <div class="proj-card__tech"><span>React Native</span><span>Firebase</span><span>EmailJS</span></div>
+              <a href="https://www.shareallbooks.com" target="_blank" rel="noopener noreferrer" class="proj-card__link"
+                >Visit shareallbooks.com →</a
+              >
+            </article>
+
+            <!-- 4. NyaayWatch -->
+            <article class="proj-card" data-project="2">
+              <h3 class="proj-card__title">NyaayWatch</h3>
+              <p class="proj-card__metric">Judicial observability · Public-interest · Multi-state coverage</p>
+              <p class="proj-card__desc">
+                Turns published Indian court-system snapshots into district-level scorecards, evidence pages, and public
+                data exports — backed by a reproducible pipeline with operator-controlled publish, replay, and rollback.
               </p>
               <div class="proj-card__tech">
                 <span>Node.js</span><span>TypeScript</span><span>PostgreSQL</span><span>AWS</span>
@@ -559,34 +556,14 @@
               >
             </article>
 
-            <!-- 4. ShareAllBooks -->
-            <article class="proj-card" data-project="3">
-              <h3 class="proj-card__title">ShareAllBooks</h3>
-              <p class="proj-card__desc">
-                <span data-stat="shareallbooks-downloads" data-stat-format="compact-plus">2k+</span> installs, 1.5k+
-                transactions,
-                <a
-                  href="https://www.khaleejtimes.com/uae/dubai-student-creates-app-for-free-exchange-of-books"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-link"
-                  >featured in UAE national press</a
-                >. React Native mobile app with Firebase backend, user authentication, real-time database operations,
-                and EmailJS notifications.
-              </p>
-              <div class="proj-card__tech"><span>React Native</span><span>Firebase</span><span>EmailJS</span></div>
-              <a href="https://www.shareallbooks.com" target="_blank" rel="noopener noreferrer" class="proj-card__link"
-                >Visit shareallbooks.com →</a
-              >
-            </article>
+            <p class="projects__tier-label">Also built</p>
 
             <!-- 5. Vibe Tracker -->
-            <article class="proj-card" data-project="4">
+            <article class="proj-card proj-card--compact" data-project="4">
               <h3 class="proj-card__title">Vibe Tracker</h3>
               <p class="proj-card__desc">
-                Built a Next.js and TypeScript analytics platform for GitHub productivity tracking. Aggregates GitHub
-                commit activity across repos, branches, and pull requests using deduplicated SHA-based tracking, with
-                GitHub OAuth/App integration, Prisma/PostgreSQL data modeling, and real-time productivity dashboards.
+                Next.js analytics for GitHub productivity — commit activity across repos, branches, and PRs with dedup'd
+                SHA tracking and OAuth.
               </p>
               <div class="proj-card__tech">
                 <span>Next.js</span><span>TypeScript</span><span>Prisma</span><span>PostgreSQL</span>
@@ -601,13 +578,10 @@
             </article>
 
             <!-- 6. David Brower Center -->
-            <article class="proj-card" data-project="5">
+            <article class="proj-card proj-card--compact" data-project="5">
               <h3 class="proj-card__title">David Brower Center</h3>
               <p class="proj-card__desc">
-                Database platform for nonprofit organizations to visualize relationships between NPOs. Full-stack
-                development with TypeScript, React frontend, Node.js backend, Prisma ORM, and Postgres (Supabase).
-                Building APIs and database schema for organization data and relationship mapping as part of Triton
-                Software Engineering.
+                Full-stack features for a nonprofit relationship-mapping platform with Triton Software Engineering.
               </p>
               <div class="proj-card__tech">
                 <span>TypeScript</span><span>React</span><span>Prisma</span><span>Postgres</span>
@@ -622,12 +596,11 @@
             </article>
 
             <!-- 7. Psyches of Color -->
-            <article class="proj-card" data-project="6">
+            <article class="proj-card proj-card--compact" data-project="6">
               <h3 class="proj-card__title">Psyches of Color</h3>
               <p class="proj-card__desc">
-                Psyches of Color develops a mental health app serving underserved communities. Full-stack development
-                with React Native frontend and Node.js/Express.js backend APIs with MongoDB. Collaborated in agile
-                environment with 12-member cross-functional team to improve mental health resource access.
+                React Native + Node/Mongo mental-health app for underserved communities, shipped with a 12-person TSE
+                team.
               </p>
               <div class="proj-card__tech"><span>React Native</span><span>Node.js</span><span>MongoDB</span></div>
               <a
@@ -640,13 +613,10 @@
             </article>
 
             <!-- 8. Health Dashboard -->
-            <article class="proj-card" data-project="7">
+            <article class="proj-card proj-card--compact" data-project="7">
               <h3 class="proj-card__title">Health Metrics Dashboard</h3>
               <p class="proj-card__desc">
-                Personal health analytics dashboard with automated Oura Ring data pipeline. Built a personal dashboard
-                that ingests and visualizes daily sleep, readiness, HRV, and activity metrics from the Oura API.
-                Automated data refresh via GitHub Actions with secure token handling. Features trend charts, historical
-                comparisons, and metric cards with status indicators.
+                Personal Oura Ring dashboard — automated GitHub Actions pipeline, trend charts, and status indicators.
               </p>
               <div class="proj-card__tech">
                 <span>JavaScript</span><span>Oura API</span><span>GitHub Actions</span><span>Chart.js</span>
@@ -682,6 +652,9 @@
       <!-- ============================================ -->
       <section id="contact" class="scene scene--contact">
         <div class="contact__inner">
+          <p class="contact__status">
+            Returning to AWS Hyperplane, Summer 2026 · Open to product conversations about NomNom and Outfitr
+          </p>
           <p class="contact__tagline">Let's build something</p>
           <a href="mailto:rubhandari@ucsd.edu" class="contact__email">rubhandari@ucsd.edu</a>
           <div class="contact__socials">
@@ -718,6 +691,7 @@
     <footer class="footer">
       <div class="footer__inner">
         <p>&copy; 2026 Rudraksh Bhandari</p>
+        <a href="/health/" class="footer__link">Health dashboard</a>
       </div>
     </footer>
 
