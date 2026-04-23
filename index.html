@@ -116,10 +116,11 @@
             <a href="#about" class="nav-link">About</a>
             <a href="#experience" class="nav-link">Experience</a>
             <a href="#projects" class="nav-link">Projects</a>
+            <a href="/work/" class="nav-link">Work</a>
             <a href="/health/" class="nav-link">Health</a>
             <a href="#contact" class="nav-link">Contact</a>
             <a
-              href="Rudraksh_Bhandari_Resume.pdf?v=1"
+              href="Rudraksh_Bhandari_Resume.pdf?v=2"
               class="nav-link nav-resume"
               target="_blank"
               rel="noopener noreferrer"
@@ -355,18 +356,22 @@
 
             <!-- Card 3: TSE David Brower Center -->
             <article class="exp-card">
-              <span class="exp-card__date">Nov 2025 – Present</span>
+              <span class="exp-card__date">Nov 2024 – Present</span>
               <h3 class="exp-card__company">Triton Software Engineering</h3>
-              <h4 class="exp-card__role">Software Developer · David Brower Center</h4>
+              <h4 class="exp-card__role">Software Developer · Nonprofit client projects</h4>
               <p class="exp-card__location">San Diego, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Building full-stack features for David Brower Center—a database platform for nonprofit organizations
-                  to visualize relationships between NPOs—using TypeScript, React, Node.js, Prisma, and Postgres.
+                  Building full-stack features for David Brower Center, a database platform for nonprofit organizations
+                  to visualize relationships between NPOs, using TypeScript, React, Node.js, Prisma, and Postgres.
                 </li>
                 <li>
-                  Contributing to frontend and backend architecture, API design, and database schema for organization
-                  data and relationship mapping.
+                  Previously developed features for Psyches of Color, a mental health mobile app for underserved
+                  communities, using React Native, Node.js, Express.js, and MongoDB.
+                </li>
+                <li>
+                  Collaborated within cross-functional teams for real nonprofit clients across product, design, and
+                  engineering workflows.
                 </li>
               </ul>
             </article>
@@ -396,24 +401,6 @@
                 <li>
                   Utilized React Native, JavaScript, Firebase, and EmailJS for user authentication, data storage, and
                   email confirmations.
-                </li>
-              </ul>
-            </article>
-
-            <!-- Card 5: TSE Psyches of Color -->
-            <article class="exp-card">
-              <span class="exp-card__date">Nov 2024 – May 2025</span>
-              <h3 class="exp-card__company">Triton Software Engineering</h3>
-              <h4 class="exp-card__role">Software Developer · Psyches of Color</h4>
-              <p class="exp-card__location">San Diego, CA</p>
-              <ul class="exp-card__bullets">
-                <li>
-                  Developed full-stack features for Psyches of Color mobile app (MongoDB, Express.js, React Native,
-                  Node.js) to provide mental health resources for underserved communities.
-                </li>
-                <li>
-                  Collaborated within a 12-member cross-functional team (engineers, designers, PMs, EM) to implement
-                  frontend screens and backend APIs, improving app usability and streamlining data flow.
                 </li>
               </ul>
             </article>
@@ -460,38 +447,16 @@
               loading="lazy"
               decoding="async"
             />
-            <img
-              src="img/vibe-tracker-live.png?v=1"
-              alt=""
-              class="projects__img"
-              data-project="4"
-              loading="lazy"
-              decoding="async"
-            />
-            <img
-              src="img/dbc-repo.png?v=1"
-              alt=""
-              class="projects__img"
-              data-project="5"
-              loading="lazy"
-              decoding="async"
-            />
-            <img src="img/poc.png?v=1" alt="" class="projects__img" data-project="6" loading="lazy" decoding="async" />
-            <img
-              src="img/health-dashboard-live.png?v=1"
-              alt=""
-              class="projects__img"
-              data-project="7"
-              loading="lazy"
-              decoding="async"
-            />
           </div>
 
           <!-- Project info cards -->
           <div class="projects__cards">
             <div class="projects__intro">
               <p class="section-kicker">Selected work</p>
-              <h2 class="projects__heading">Current projects and selected work</h2>
+              <h2 class="projects__heading">Current projects with real users and systems</h2>
+              <div class="projects__meta-links">
+                <a href="/work/" class="projects__meta-link">View all work →</a>
+              </div>
             </div>
 
             <!-- 1. NomNom -->
@@ -578,80 +543,6 @@
               <a href="https://www.shareallbooks.com" target="_blank" rel="noopener noreferrer" class="proj-card__link"
                 >Visit shareallbooks.com →</a
               >
-            </article>
-
-            <!-- 5. Vibe Tracker -->
-            <article class="proj-card" data-project="4">
-              <h3 class="proj-card__title">Vibe Tracker</h3>
-              <p class="proj-card__desc">
-                Built a Next.js and TypeScript analytics platform for GitHub productivity tracking. Aggregates GitHub
-                commit activity across repos, branches, and pull requests using deduplicated SHA-based tracking, with
-                GitHub OAuth/App integration, Prisma/PostgreSQL data modeling, and real-time productivity dashboards.
-              </p>
-              <div class="proj-card__tech">
-                <span>Next.js</span><span>TypeScript</span><span>Prisma</span><span>PostgreSQL</span>
-              </div>
-              <a
-                href="https://vibe-tracker-max.vercel.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="proj-card__link"
-                >Visit live →</a
-              >
-            </article>
-
-            <!-- 6. David Brower Center -->
-            <article class="proj-card" data-project="5">
-              <h3 class="proj-card__title">David Brower Center</h3>
-              <p class="proj-card__desc">
-                Database platform for nonprofit organizations to visualize relationships between NPOs. Full-stack
-                development with TypeScript, React frontend, Node.js backend, Prisma ORM, and Postgres (Supabase).
-                Building APIs and database schema for organization data and relationship mapping as part of Triton
-                Software Engineering.
-              </p>
-              <div class="proj-card__tech">
-                <span>TypeScript</span><span>React</span><span>Prisma</span><span>Postgres</span>
-              </div>
-              <a
-                href="https://github.com/TritonSE/David-Brower-Center"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="proj-card__link"
-                >View on GitHub →</a
-              >
-            </article>
-
-            <!-- 7. Psyches of Color -->
-            <article class="proj-card" data-project="6">
-              <h3 class="proj-card__title">Psyches of Color</h3>
-              <p class="proj-card__desc">
-                Psyches of Color develops a mental health app serving underserved communities. Full-stack development
-                with React Native frontend and Node.js/Express.js backend APIs with MongoDB. Collaborated in agile
-                environment with 12-member cross-functional team to improve mental health resource access.
-              </p>
-              <div class="proj-card__tech"><span>React Native</span><span>Node.js</span><span>MongoDB</span></div>
-              <a
-                href="https://github.com/TritonSE/Psyches-Of-Color-App"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="proj-card__link"
-                >View on GitHub →</a
-              >
-            </article>
-
-            <!-- 8. Health Dashboard -->
-            <article class="proj-card" data-project="7">
-              <h3 class="proj-card__title">Health Metrics Dashboard</h3>
-              <p class="proj-card__desc">
-                Personal health analytics dashboard with automated Oura Ring data pipeline. Built a personal dashboard
-                that ingests and visualizes daily sleep, readiness, HRV, and activity metrics from the Oura API.
-                Automated data refresh via GitHub Actions with secure token handling. Features trend charts, historical
-                comparisons, and metric cards with status indicators.
-              </p>
-              <div class="proj-card__tech">
-                <span>JavaScript</span><span>Oura API</span><span>GitHub Actions</span><span>Chart.js</span>
-              </div>
-              <a href="/health/" class="proj-card__link">View dashboard →</a>
             </article>
           </div>
         </div>

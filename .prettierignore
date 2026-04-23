@@ -25,6 +25,7 @@ package-lock.json
 *.svg
 *.ico
 *.pdf
+*.tex
 *.woff
 *.woff2
 *.ttf
