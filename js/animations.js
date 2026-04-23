@@ -39,14 +39,10 @@ document.addEventListener('DOMContentLoaded', function () {
 function initStaticFallback() {
   var heroLines = document.querySelectorAll('.hero__line');
   var heroPhotoWrap = document.querySelector('.hero__photo-wrap');
-  var heroHeadlineBand = document.querySelector('.hero__headline-band');
-  var heroHeadlineBandText = document.querySelector('.hero__headline-band-text');
   var heroSubtitle = document.querySelector('.hero__subtitle');
   var paragraphs = document.querySelectorAll('.about__paragraph');
   var projCards = document.querySelectorAll('.proj-card');
   var projImages = document.querySelectorAll('.projects__img');
-
-  document.body.classList.add('hero-static');
 
   heroLines.forEach(function (line) {
     line.style.opacity = '1';
@@ -55,22 +51,9 @@ function initStaticFallback() {
   if (heroPhotoWrap) {
     heroPhotoWrap.style.opacity = '1';
     heroPhotoWrap.style.transform = 'none';
-    heroPhotoWrap.style.setProperty('--hero-gap-open', '0px');
-    heroPhotoWrap.style.setProperty('--hero-band-opacity', '0');
   }
   if (heroSubtitle) {
     heroSubtitle.style.opacity = '1';
-  }
-  if (
-    heroHeadlineBand &&
-    heroHeadlineBandText &&
-    heroSubtitle &&
-    !heroSubtitle.querySelector('.hero__subtitle-line--credentials')
-  ) {
-    var credentialsLine = document.createElement('span');
-    credentialsLine.className = 'hero__subtitle-line hero__subtitle-line--credentials';
-    credentialsLine.textContent = heroHeadlineBandText.textContent;
-    heroSubtitle.appendChild(credentialsLine);
   }
 
   paragraphs.forEach(function (p) {
@@ -102,9 +85,8 @@ function initHeroScene() {
   if (!heroSection || !heroInner || !firstLine || !lastLine || !photoWrap) return;
 
   /* --- Entrance: elements land in a tight, overlapping position --- */
-  var overlap = 42;
-  var spread = overlap + 26;
-  var splitDistance = 84;
+  var overlap = 50;
+  var spread = overlap + 20;
   var entranceSettled = false;
 
   function finishEntrance() {
@@ -114,22 +96,14 @@ function initHeroScene() {
     entrance.kill();
 
     gsap.set([firstLine, lastLine], { opacity: 1 });
-    gsap.set(photoWrap, { opacity: 1, scale: 1, '--hero-gap-open': '0px', '--hero-band-opacity': 0 });
+    gsap.set(photoWrap, { opacity: 1, scale: 1 });
     gsap.set(subtitle, { opacity: 1 });
   }
 
   function syncHeroToProgress(progress) {
-    var splitProgress = Math.max(0, Math.min((progress - 0.04) / 0.68, 1));
-    var bandProgress = Math.max(0, Math.min((splitProgress - 0.12) / 0.3, 1));
-
     gsap.set(firstLine, { opacity: 1, y: overlap - progress * spread });
     gsap.set(lastLine, { opacity: 1, y: -overlap + progress * spread });
-    gsap.set(photoWrap, {
-      opacity: 1,
-      scale: 1 + progress * 0.012,
-      '--hero-gap-open': splitProgress * splitDistance + 'px',
-      '--hero-band-opacity': bandProgress,
-    });
+    gsap.set(photoWrap, { opacity: 1, scale: 1 + progress * 0.015 });
     gsap.set(subtitle, { opacity: 1 });
   }
 
