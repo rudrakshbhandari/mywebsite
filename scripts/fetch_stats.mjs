@@ -467,35 +467,44 @@ async function gcsGet({ accessToken, bucket, object }) {
 async function fetchPlayInstallsForApp({ accessToken, packageName }) {
   // Play monthly install CSVs live at
   //   gs://<bucket>/stats/installs/installs_<pkg>_YYYYMM_overview.csv
-  // "Total User Installs" in the last row of the latest month is the
-  // lifetime count of unique users — it never decrements on uninstall.
+  // The "Total User Installs" column is deprecated (always 0 in current
+  // reports). Lifetime first-time installs = sum of "Daily User Installs"
+  // across every row of every monthly overview CSV. This matches the
+  // "downloaded + uninstalled = 1" directive: each unique user counts once
+  // on first install and is never decremented.
   const prefix = `stats/installs/installs_${packageName}_`;
   const items = await gcsList({ accessToken, bucket: PLAY_GCS_BUCKET, prefix });
   const overviews = items.filter(o => o.name.endsWith('_overview.csv')).sort((a, b) => a.name.localeCompare(b.name));
   if (overviews.length === 0) {
     throw new Error(`no install overview CSVs found with prefix ${prefix}`);
   }
-  const latest = overviews[overviews.length - 1];
-  const buf = await gcsGet({ accessToken, bucket: PLAY_GCS_BUCKET, object: latest.name });
 
-  // Play bulk reports are UTF-16 LE with BOM.
-  let text;
-  if (buf.length >= 2 && buf[0] === 0xff && buf[1] === 0xfe) {
-    text = buf.slice(2).toString('utf16le');
-  } else {
-    text = buf.toString('utf8');
-  }
+  let total = 0;
+  for (const overview of overviews) {
+    const buf = await gcsGet({ accessToken, bucket: PLAY_GCS_BUCKET, object: overview.name });
 
-  const lines = text.split(/\r?\n/).filter(l => l.length > 0);
-  if (lines.length < 2) return 0;
-  const header = parseCsvLine(lines[0]).map(h => h.trim());
-  const col = header.indexOf('Total User Installs');
-  if (col === -1) {
-    throw new Error(`"Total User Installs" column missing in ${latest.name}; header: ${header.join('|')}`);
+    // Play bulk reports are UTF-16 LE with BOM.
+    let text;
+    if (buf.length >= 2 && buf[0] === 0xff && buf[1] === 0xfe) {
+      text = buf.slice(2).toString('utf16le');
+    } else {
+      text = buf.toString('utf8');
+    }
+
+    const lines = text.split(/\r?\n/).filter(l => l.length > 0);
+    if (lines.length < 2) continue;
+    const header = parseCsvLine(lines[0]).map(h => h.trim());
+    const col = header.indexOf('Daily User Installs');
+    if (col === -1) {
+      throw new Error(`"Daily User Installs" column missing in ${overview.name}; header: ${header.join('|')}`);
+    }
+    for (let i = 1; i < lines.length; i++) {
+      const row = parseCsvLine(lines[i]);
+      const v = Number(row[col]);
+      if (Number.isFinite(v)) total += v;
+    }
   }
-  const lastRow = parseCsvLine(lines[lines.length - 1]);
-  const value = Number(lastRow[col]);
-  return Number.isFinite(value) ? value : 0;
+  return total;
 }
 
 async function fetchPlayDownloads() {
