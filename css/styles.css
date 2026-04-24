@@ -857,6 +857,144 @@ button:focus-visible {
 }
 
 /* =============================================
+   ALL WORK PAGE
+   ============================================= */
+.work-page {
+  padding-top: 60px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(245, 240, 235, 0) 28rem), var(--color-bg);
+}
+
+.work-hero {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 7rem 2rem 4rem;
+}
+
+.work-hero h1 {
+  max-width: 13ch;
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 7rem);
+  line-height: 0.95;
+  font-weight: 800;
+  color: var(--color-text);
+}
+
+.work-hero p:not(.section-kicker) {
+  max-width: 46rem;
+  margin-top: 1.5rem;
+  font-size: 1.05rem;
+  color: var(--color-muted);
+}
+
+.work-section {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  border-top: 1px solid rgba(26, 26, 26, 0.1);
+}
+
+.work-section__header {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.35fr) 1fr;
+  gap: 2rem;
+  align-items: end;
+  margin-bottom: 2rem;
+}
+
+.work-section__header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  line-height: 1;
+  color: var(--color-text);
+}
+
+.work-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.work-grid--compact {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.work-card {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.42fr) 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.48);
+  border: 1px solid rgba(26, 26, 26, 0.08);
+  border-radius: 8px;
+}
+
+.work-card img {
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+  border-radius: 6px;
+  background: rgba(26, 26, 26, 0.05);
+}
+
+.work-card > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0.75rem 0.5rem;
+}
+
+.work-card__meta {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.65rem;
+}
+
+.work-card h3,
+.work-row h3 {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.15;
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+}
+
+.work-card p:not(.work-card__meta),
+.work-row p {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--color-muted);
+}
+
+.work-list {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid rgba(26, 26, 26, 0.1);
+}
+
+.work-row {
+  display: grid;
+  grid-template-columns: minmax(160px, 0.25fr) 1fr;
+  gap: 2rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(26, 26, 26, 0.1);
+}
+
+.work-row > span {
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+/* =============================================
    SKILLS (prose section on cream)
    ============================================= */
 .scene--skills {
@@ -1130,6 +1268,26 @@ button:focus-visible {
     opacity: 1;
   }
 
+  .work-hero {
+    padding: 5rem 1.5rem 3rem;
+  }
+
+  .work-section {
+    padding: 3rem 1.5rem;
+  }
+
+  .work-section__header,
+  .work-card,
+  .work-grid--compact,
+  .work-row {
+    grid-template-columns: 1fr;
+  }
+
+  .work-card img {
+    min-height: auto;
+    aspect-ratio: 16 / 10;
+  }
+
   /* Contact */
   .contact__socials {
     flex-direction: column;
@@ -1157,6 +1315,14 @@ button:focus-visible {
 
   .projects__meta-links {
     gap: 0.75rem;
+  }
+
+  .work-hero {
+    padding-inline: 1rem;
+  }
+
+  .work-section {
+    padding-inline: 1rem;
   }
 
   .exp-card {

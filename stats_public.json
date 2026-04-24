@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-04-24T00:20:47.993Z",
+  "lastUpdated": "2026-04-24T00:25:55.992Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -21,8 +21,8 @@
   },
   "websiteVisitors": {
     "windowDays": 30,
-    "windowStart": "2026-03-25T00:20:41.930Z",
-    "windowEnd": "2026-04-24T00:20:41.930Z",
+    "windowStart": "2026-03-25T00:25:49.406Z",
+    "windowEnd": "2026-04-24T00:25:49.406Z",
     "totalVisits": 990,
     "totalPageviews": 1100,
     "perSite": {
