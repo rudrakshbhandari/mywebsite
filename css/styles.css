@@ -334,12 +334,12 @@ button:focus-visible {
 .hero__photo-wrap {
   position: relative;
   z-index: 1;
-  margin: -0.6em 0;
+  margin: -0.25em 0;
   will-change: transform, opacity;
 }
 
 .hero__photo {
-  width: min(420px, 50vw);
+  width: min(340px, 42vw);
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
@@ -730,16 +730,52 @@ button:focus-visible {
 }
 
 .proj-card--compact {
-  padding: 2rem 0;
+  padding: 1.25rem 0;
+  border-bottom: none;
 }
 
 .proj-card--compact .proj-card__title {
-  font-size: 1.25rem;
-  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
 }
 
 .proj-card--compact .proj-card__desc {
-  margin-bottom: 0.75rem;
+  font-size: 0.85rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-muted);
+}
+
+.proj-card--compact .proj-card__tech {
+  margin-bottom: 0.4rem;
+}
+
+.proj-card--compact .proj-card__tech span {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+}
+
+/* Also-built grid: 2-col on desktop so cards feel like a list */
+.projects__also-built-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  border-top: 1px solid rgba(26, 26, 26, 0.08);
+  margin-top: 0;
+}
+
+.projects__also-built-grid .proj-card--compact {
+  border-right: 1px solid rgba(26, 26, 26, 0.08);
+  padding: 1.25rem 1rem 1.25rem 0;
+}
+
+.projects__also-built-grid .proj-card--compact:nth-child(even) {
+  border-right: none;
+  padding-left: 1rem;
+}
+
+.projects__also-built-grid .proj-card--compact:nth-last-child(-n + 2) {
+  border-bottom: none;
 }
 
 .gsap-ready .proj-card {
@@ -1062,18 +1098,55 @@ button:focus-visible {
 }
 
 .contact__status {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  font-family: var(--font-display);
+  color: var(--color-white);
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  padding: 0.65rem 1.4rem;
+  margin-bottom: 2rem;
+  line-height: 1.3;
+}
+
+.contact__status-line {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  opacity: 0.92;
+}
+
+.contact__status-line--primary {
+  font-weight: 700;
+  opacity: 1;
+}
+
+.contact__cta {
   display: inline-block;
   font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-white);
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-weight: 700;
+  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  letter-spacing: 0.02em;
+  color: var(--color-accent);
+  background: var(--color-white);
+  text-decoration: none;
+  padding: 0.85rem 1.6rem;
   border-radius: 999px;
-  padding: 0.5rem 1.1rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+}
+
+.contact__cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.22);
 }
 
 .contact__tagline {
@@ -1363,6 +1436,19 @@ button:focus-visible {
     -webkit-tap-highlight-color: transparent;
   }
 
+  .projects__also-built-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .projects__also-built-grid .proj-card--compact {
+    border-right: none;
+    padding-left: 0;
+  }
+
+  .projects__also-built-grid .proj-card--compact:nth-child(even) {
+    padding-left: 0;
+  }
+
   .scene--skills {
     padding-left: calc(1.5rem + env(safe-area-inset-left, 0px));
     padding-right: calc(1.5rem + env(safe-area-inset-right, 0px));
@@ -1414,6 +1500,20 @@ button:focus-visible {
 
   .contact__social-link:active {
     background: rgba(255, 255, 255, 0.12);
+  }
+
+  .contact__status {
+    padding: 0.55rem 1.1rem;
+    max-width: 92%;
+  }
+
+  .contact__status-line {
+    font-size: 0.78rem;
+  }
+
+  .contact__cta {
+    padding: 0.75rem 1.3rem;
+    font-size: 0.95rem;
   }
 }
 
