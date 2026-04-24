@@ -228,7 +228,8 @@ function animateCounter(element) {
    =========================== */
 function initProjectImageCrossfade() {
   var images = document.querySelectorAll('.projects__img');
-  var cards = document.querySelectorAll('.proj-card');
+  // Exclude compact cards — they're always full-opacity, not image-linked.
+  var cards = document.querySelectorAll('.proj-card:not(.proj-card--compact)');
 
   if (!images.length || !cards.length) return;
 
