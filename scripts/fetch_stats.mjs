@@ -402,6 +402,36 @@ async function getGoogleAccessToken(serviceAccountJson) {
   return parsed.access_token;
 }
 
+// Exchange a user OAuth2 refresh token for an access token.
+// Used when service account ACL propagation is incomplete or unavailable.
+async function getUserOAuthAccessToken(oauthJson) {
+  const { client_id, client_secret, refresh_token, token_uri } = JSON.parse(oauthJson);
+  const body = new URLSearchParams({
+    grant_type: 'refresh_token',
+    refresh_token,
+    client_id,
+    client_secret,
+  }).toString();
+  const url = new URL(token_uri || 'https://oauth2.googleapis.com/token');
+  const res = await httpsRequest(
+    {
+      method: 'POST',
+      hostname: url.hostname,
+      path: url.pathname,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Length': Buffer.byteLength(body),
+      },
+    },
+    body
+  );
+  const parsed = JSON.parse(res.body.toString('utf8'));
+  if (!parsed.access_token) {
+    throw new Error(`User OAuth token exchange failed: ${res.statusCode}`);
+  }
+  return parsed.access_token;
+}
+
 function parseCsvLine(line) {
   const out = [];
   let cur = '';
@@ -508,29 +538,51 @@ async function fetchPlayInstallsForApp({ accessToken, packageName }) {
 }
 
 async function fetchPlayDownloads() {
+  // Prefer user OAuth (has confirmed ACL access to pubsite bucket).
+  // Fall back to service account JWT (may be blocked by ACL propagation delay).
+  const userOauthJson = process.env.GOOGLE_GCS_USER_OAUTH_JSON?.trim();
   const sa = process.env.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON?.trim();
-  if (!sa) {
-    console.warn('[play] GOOGLE_PLAY_SERVICE_ACCOUNT_JSON missing — skipping Play');
+
+  if (!userOauthJson && !sa) {
+    console.warn('[play] no GCS credentials configured — skipping Play');
     return null;
   }
+
   let accessToken;
-  try {
-    accessToken = await getGoogleAccessToken(sa);
-  } catch (err) {
-    console.warn(`[play] token exchange failed: ${err.message}`);
+  if (userOauthJson) {
+    try {
+      accessToken = await getUserOAuthAccessToken(userOauthJson);
+      console.log('[play] using user OAuth token for GCS access');
+    } catch (err) {
+      console.warn(`[play] user OAuth token exchange failed: ${err.message}`);
+    }
+  }
+  if (!accessToken && sa) {
+    try {
+      accessToken = await getGoogleAccessToken(sa);
+      console.log('[play] using service account token for GCS access');
+    } catch (err) {
+      console.warn(`[play] SA token exchange failed: ${err.message}`);
+    }
+  }
+  if (!accessToken) {
+    console.warn('[play] could not obtain any GCS access token — skipping Play');
     return null;
   }
 
   const perApp = {};
+  let anyOk = false;
   for (const app of PLAY_APPS) {
     try {
       const installs = await fetchPlayInstallsForApp({ accessToken, packageName: app.packageName });
       perApp[app.packageName] = { label: app.label, androidInstalls: installs };
+      anyOk = true;
     } catch (err) {
       console.warn(`[play] ${app.packageName}: ${err.message}`);
     }
   }
-  return perApp;
+  // Return null if nothing succeeded so sources.googlePlay reflects reality.
+  return anyOk ? perApp : null;
 }
 
 // --- Main --------------------------------------------------------------
