@@ -270,19 +270,23 @@ function initProjectsScene() {
     },
   });
 
-  // Fade the left image panel when the "Also built" grid scrolls into view —
-  // those cards have no paired images so the panel would otherwise look orphaned.
-  var alsoBuiltGrid = document.querySelector('.projects__also-built-grid');
-  if (alsoBuiltGrid) {
-    var alsoBuiltObserver = new IntersectionObserver(
+  // Switch to the collage when the last featured card has scrolled above the
+  // viewport (i.e. user is now in the "Also built" region). Using the last
+  // card's exit rather than the grid's entrance avoids premature triggering
+  // while NyaayWatch is still centre-screen.
+  var lastFeaturedCard = cards[cards.length - 1];
+  if (lastFeaturedCard) {
+    var collageObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
-          section.classList.toggle('in-also-built', entry.isIntersecting);
+          // true = card has scrolled above viewport (top < 0 and not intersecting)
+          var scrolledPast = !entry.isIntersecting && entry.boundingClientRect.top < 0;
+          section.classList.toggle('in-also-built', scrolledPast);
         });
       },
-      { threshold: 0.15 }
+      { threshold: 0 }
     );
-    alsoBuiltObserver.observe(alsoBuiltGrid);
+    collageObserver.observe(lastFeaturedCard);
   }
 }
 

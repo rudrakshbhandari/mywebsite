@@ -647,9 +647,45 @@ button:focus-visible {
   transition: opacity 0.5s ease;
 }
 
-/* Fade the image panel when "Also built" compact cards are in view */
-.scene--projects.in-also-built .projects__images {
+/* "Also built" collage — shown in the left panel instead of a project image */
+.projects__also-built-collage {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  width: 80%;
   opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.scene--projects.in-also-built .projects__img.active {
+  opacity: 0;
+}
+
+.scene--projects.in-also-built .projects__also-built-collage {
+  opacity: 1;
+}
+
+.collage-card {
+  background: rgba(26, 26, 26, 0.04);
+  border: 1px solid rgba(26, 26, 26, 0.1);
+  border-radius: 10px;
+  padding: 1.1rem 1rem;
+}
+
+.collage-card__name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--color-text);
+  margin-bottom: 0.3rem;
+}
+
+.collage-card__stack {
+  font-size: 0.72rem;
+  color: var(--color-muted);
+  letter-spacing: 0.02em;
 }
 
 .projects__img {
