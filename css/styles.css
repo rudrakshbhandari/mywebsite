@@ -379,7 +379,7 @@ button:focus-visible {
 }
 
 .hero__subtitle-line:not(.hero__subtitle-line--lede) {
-  color: rgba(26, 26, 26, 0.6);
+  color: #5a5653;
   font-weight: 500;
   letter-spacing: 0.06em;
   font-style: italic;
@@ -644,6 +644,12 @@ button:focus-visible {
   justify-content: center;
   overflow: hidden;
   padding: 2rem;
+  transition: opacity 0.5s ease;
+}
+
+/* Fade the image panel when "Also built" compact cards are in view */
+.scene--projects.in-also-built .projects__images {
+  opacity: 0;
 }
 
 .projects__img {
@@ -743,7 +749,7 @@ button:focus-visible {
 .proj-card--compact .proj-card__desc {
   font-size: 0.85rem;
   margin-bottom: 0.5rem;
-  color: rgba(26, 26, 26, 0.65);
+  color: #4a4845;
 }
 
 .proj-card--compact .proj-card__tech {
@@ -861,7 +867,7 @@ button:focus-visible {
 .proj-card__desc {
   font-size: 0.95rem;
   line-height: 1.7;
-  color: rgba(26, 26, 26, 0.65);
+  color: #4a4845;
   margin-bottom: 1.25rem;
 }
 
