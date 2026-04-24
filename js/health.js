@@ -788,13 +788,43 @@ function renderHeartRateTimeline(series, data) {
     svgEl.onmousemove = e => findNearestAndUpdate(e.clientX, e.clientY);
     svgEl.onmouseleave = hideTracking;
 
-    // Touch support for mobile
-    svgEl.ontouchmove = e => {
-      e.preventDefault();
-      const touch = e.touches[0];
-      findNearestAndUpdate(touch.clientX, touch.clientY);
+    // Mobile: only hijack the gesture when the user is clearly scrubbing horizontally.
+    // Unconditional preventDefault on touchmove made vertical page scroll almost impossible on the chart.
+    let hrTouchStart = null;
+    let hrTouchMode = null;
+    const HR_GESTURE_PX = 12;
+
+    svgEl.ontouchstart = e => {
+      if (e.touches.length !== 1) return;
+      const t = e.touches[0];
+      hrTouchStart = { x: t.clientX, y: t.clientY };
+      hrTouchMode = null;
     };
-    svgEl.ontouchend = hideTracking;
+
+    svgEl.ontouchmove = e => {
+      if (!hrTouchStart || e.touches.length !== 1) return;
+      const t = e.touches[0];
+      const dx = t.clientX - hrTouchStart.x;
+      const dy = t.clientY - hrTouchStart.y;
+
+      if (hrTouchMode === null) {
+        if (Math.abs(dx) < HR_GESTURE_PX && Math.abs(dy) < HR_GESTURE_PX) return;
+        hrTouchMode = Math.abs(dy) > Math.abs(dx) + 4 ? 'scroll' : 'scrub';
+      }
+
+      if (hrTouchMode === 'scrub') {
+        e.preventDefault();
+        findNearestAndUpdate(t.clientX, t.clientY);
+      }
+    };
+
+    const endHrTouch = () => {
+      hrTouchStart = null;
+      hrTouchMode = null;
+      hideTracking();
+    };
+    svgEl.ontouchend = endHrTouch;
+    svgEl.ontouchcancel = endHrTouch;
   }
 
   const minEl = document.getElementById('heart-rate-min');
