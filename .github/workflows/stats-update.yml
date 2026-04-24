@@ -106,6 +106,13 @@ jobs:
               echo "PR already merged."
               exit 0
             fi
+            # Branch protection requires up-to-date branches (strict mode).
+            # If main moved ahead, update the PR branch so checks re-run.
+            MERGE_STATE=$(gh pr view "$PR_URL" --json mergeStateStatus -q .mergeStateStatus 2>/dev/null || echo "")
+            if [ "$MERGE_STATE" = "BEHIND" ]; then
+              echo "Branch is behind main — updating branch..."
+              gh pr update-branch "$PR_URL" || true
+            fi
             sleep 15
           done
 
