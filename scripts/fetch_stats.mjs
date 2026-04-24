@@ -409,13 +409,20 @@ function parseCsvLine(line) {
   for (let i = 0; i < line.length; i++) {
     const c = line[i];
     if (inQ) {
-      if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; }
-      else if (c === '"') { inQ = false; }
-      else { cur += c; }
+      if (c === '"' && line[i + 1] === '"') {
+        cur += '"';
+        i++;
+      } else if (c === '"') {
+        inQ = false;
+      } else {
+        cur += c;
+      }
     } else {
       if (c === '"') inQ = true;
-      else if (c === ',') { out.push(cur); cur = ''; }
-      else cur += c;
+      else if (c === ',') {
+        out.push(cur);
+        cur = '';
+      } else cur += c;
     }
   }
   out.push(cur);
@@ -464,9 +471,7 @@ async function fetchPlayInstallsForApp({ accessToken, packageName }) {
   // lifetime count of unique users — it never decrements on uninstall.
   const prefix = `stats/installs/installs_${packageName}_`;
   const items = await gcsList({ accessToken, bucket: PLAY_GCS_BUCKET, prefix });
-  const overviews = items
-    .filter(o => o.name.endsWith('_overview.csv'))
-    .sort((a, b) => a.name.localeCompare(b.name));
+  const overviews = items.filter(o => o.name.endsWith('_overview.csv')).sort((a, b) => a.name.localeCompare(b.name));
   if (overviews.length === 0) {
     throw new Error(`no install overview CSVs found with prefix ${prefix}`);
   }
