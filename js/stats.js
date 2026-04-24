@@ -35,12 +35,12 @@
       return rounded.toLocaleString('en-US') + '+';
     }
 
-    // default: compact-plus
-    const rounded = floorToNiceNumber(value);
-    if (rounded >= 1000) {
-      const thousands = Math.floor(rounded / 1000);
-      return thousands + 'K+';
+    // default: compact-plus (e.g. 1921 -> "1.9K+", 2347 -> "2.3K+")
+    if (value >= 1000) {
+      const tenths = Math.floor(value / 100);
+      return (tenths / 10).toFixed(1) + 'K+';
     }
+    const rounded = Math.floor(value / 10) * 10;
     return rounded.toLocaleString('en-US') + '+';
   }
 
