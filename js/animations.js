@@ -269,6 +269,21 @@ function initProjectsScene() {
       activateProject(cards[0], images, cards);
     },
   });
+
+  // Fade the left image panel when the "Also built" grid scrolls into view —
+  // those cards have no paired images so the panel would otherwise look orphaned.
+  var alsoBuiltGrid = document.querySelector('.projects__also-built-grid');
+  if (alsoBuiltGrid) {
+    var alsoBuiltObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          section.classList.toggle('in-also-built', entry.isIntersecting);
+        });
+      },
+      { threshold: 0.15 }
+    );
+    alsoBuiltObserver.observe(alsoBuiltGrid);
+  }
 }
 
 function activateProject(card, images, cards) {
