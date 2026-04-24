@@ -596,18 +596,46 @@ function loadPrevious() {
   }
 }
 
+// Ratchet: cumulative counts (installs, downloads) can only go up.
+// If a fresh value is lower than the stored one, keep the stored one and warn.
+// This catches partial-fetch bugs — a real count never decreases because
+// uninstalls are not subtracted ("downloaded + uninstalled = 1").
+function ratchet(key, freshVal, prevVal) {
+  if (freshVal == null) return prevVal ?? null;
+  if (prevVal == null) return freshVal;
+  if (freshVal < prevVal) {
+    console.warn(`[ratchet] ${key}: fresh=${freshVal} < prev=${prevVal} — keeping previous`);
+    return prevVal;
+  }
+  return freshVal;
+}
+
 function mergeApps({ previous, apple, play }) {
-  const shareAllBooksApple = apple?.['6457063516']?.iosDownloads ?? previous?.apps?.shareallbooks?.iosDownloads ?? null;
-  const shareAllBooksPlay =
-    play?.['com.rudraksh99.ShareAllBooks']?.androidInstalls ?? previous?.apps?.shareallbooks?.androidInstalls ?? null;
-  const nomnomRiderApple = apple?.['6760152698']?.iosDownloads ?? previous?.apps?.nomnomRider?.iosDownloads ?? null;
+  const prevSAB = previous?.apps?.shareallbooks;
+  const prevNNR = previous?.apps?.nomnomRider;
+
+  const shareAllBooksApple = ratchet(
+    'shareallbooks.iosDownloads',
+    apple?.['6457063516']?.iosDownloads ?? null,
+    prevSAB?.iosDownloads ?? null
+  );
+  const shareAllBooksPlay = ratchet(
+    'shareallbooks.androidInstalls',
+    play?.['com.rudraksh99.ShareAllBooks']?.androidInstalls ?? null,
+    prevSAB?.androidInstalls ?? null
+  );
+  const nomnomRiderApple = ratchet(
+    'nomnomRider.iosDownloads',
+    apple?.['6760152698']?.iosDownloads ?? null,
+    prevNNR?.iosDownloads ?? null
+  );
 
   const shareAllBooksTotal =
     shareAllBooksApple != null || shareAllBooksPlay != null
       ? (shareAllBooksApple ?? 0) + (shareAllBooksPlay ?? 0)
-      : (previous?.apps?.shareallbooks?.total ?? null);
+      : (prevSAB?.total ?? null);
 
-  const nomnomRiderTotal = nomnomRiderApple != null ? nomnomRiderApple : (previous?.apps?.nomnomRider?.total ?? null);
+  const nomnomRiderTotal = nomnomRiderApple != null ? nomnomRiderApple : (prevNNR?.total ?? null);
 
   return {
     shareallbooks: {
