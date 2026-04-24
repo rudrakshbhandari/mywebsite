@@ -351,14 +351,21 @@ async function fetchAppleDownloads() {
   return anyOk ? perApp : null;
 }
 
-// --- Google Play Developer Reporting -----------------------------------
+// --- Google Play bulk reports (Cloud Storage) --------------------------
+//
+// Play Developer Reporting API does not expose install counts. Lifetime
+// first-time installs ("Total User Installs") live in Play Console's
+// monthly CSV bulk reports at gs://pubsite_prod_<devId>/stats/installs/.
+// We read them via the Cloud Storage JSON API.
+
+const PLAY_GCS_BUCKET = 'pubsite_prod_6564941333959231233';
 
 async function getGoogleAccessToken(serviceAccountJson) {
   const { client_email, private_key } = JSON.parse(serviceAccountJson);
   const now = Math.floor(Date.now() / 1000);
   const claim = {
     iss: client_email,
-    scope: 'https://www.googleapis.com/auth/playdeveloperreporting',
+    scope: 'https://www.googleapis.com/auth/devstorage.read_only',
     aud: 'https://oauth2.googleapis.com/token',
     iat: now,
     exp: now + 3600,
@@ -395,55 +402,95 @@ async function getGoogleAccessToken(serviceAccountJson) {
   return parsed.access_token;
 }
 
-async function fetchPlayInstallsForApp({ accessToken, packageName }) {
-  // Play Developer Reporting API — InstallsTimelineSeries. Pull the maximum
-  // retention window (~1 year daily granularity) and sum it.
-  const now = new Date();
-  const start = new Date(now.getTime() - 365 * 24 * 60 * 60 * 1000);
-  const body = JSON.stringify({
-    timelineSpec: {
-      aggregationPeriod: 'DAILY',
-      startTime: {
-        year: start.getUTCFullYear(),
-        month: start.getUTCMonth() + 1,
-        day: start.getUTCDate(),
-        timeZone: { id: 'UTC' },
-      },
-      endTime: {
-        year: now.getUTCFullYear(),
-        month: now.getUTCMonth() + 1,
-        day: now.getUTCDate(),
-        timeZone: { id: 'UTC' },
-      },
-    },
-    metrics: ['activeDeviceInstalls'],
-  });
-
-  const res = await httpsRequest(
-    {
-      method: 'POST',
-      hostname: 'playdeveloperreporting.googleapis.com',
-      path: `/v1beta1/apps/${encodeURIComponent(packageName)}/installsStats:query`,
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-        'Content-Length': Buffer.byteLength(body),
-      },
-    },
-    body
-  );
-  if (res.statusCode !== 200) {
-    throw new Error(`Play installs query returned ${res.statusCode}: ${res.body.toString('utf8').slice(0, 200)}`);
+function parseCsvLine(line) {
+  const out = [];
+  let cur = '';
+  let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (inQ) {
+      if (c === '"' && line[i + 1] === '"') { cur += '"'; i++; }
+      else if (c === '"') { inQ = false; }
+      else { cur += c; }
+    } else {
+      if (c === '"') inQ = true;
+      else if (c === ',') { out.push(cur); cur = ''; }
+      else cur += c;
+    }
   }
-  const parsed = JSON.parse(res.body.toString('utf8'));
+  out.push(cur);
+  return out;
+}
 
-  // activeDeviceInstalls is a snapshot, not a sum. Use the most recent value.
-  const rows = parsed.timelineSpec ? (parsed.rows ?? []) : (parsed.rows ?? []);
-  if (rows.length === 0) return 0;
-  const last = rows[rows.length - 1];
-  const metric = last.metrics?.find?.(m => m.metric === 'activeDeviceInstalls');
-  const raw = metric?.decimalValue?.value ?? metric?.int64Value ?? 0;
-  return Number(raw);
+async function gcsList({ accessToken, bucket, prefix }) {
+  const items = [];
+  let pageToken = '';
+  do {
+    const qs = new URLSearchParams({ prefix });
+    if (pageToken) qs.set('pageToken', pageToken);
+    const res = await httpsRequest({
+      method: 'GET',
+      hostname: 'storage.googleapis.com',
+      path: `/storage/v1/b/${encodeURIComponent(bucket)}/o?${qs.toString()}`,
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    if (res.statusCode !== 200) {
+      throw new Error(`GCS list ${res.statusCode}: ${res.body.toString('utf8').slice(0, 200)}`);
+    }
+    const parsed = JSON.parse(res.body.toString('utf8'));
+    if (parsed.items) items.push(...parsed.items);
+    pageToken = parsed.nextPageToken ?? '';
+  } while (pageToken);
+  return items;
+}
+
+async function gcsGet({ accessToken, bucket, object }) {
+  const res = await httpsRequest({
+    method: 'GET',
+    hostname: 'storage.googleapis.com',
+    path: `/storage/v1/b/${encodeURIComponent(bucket)}/o/${encodeURIComponent(object)}?alt=media`,
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (res.statusCode !== 200) {
+    throw new Error(`GCS get ${res.statusCode}: ${res.body.toString('utf8').slice(0, 200)}`);
+  }
+  return res.body;
+}
+
+async function fetchPlayInstallsForApp({ accessToken, packageName }) {
+  // Play monthly install CSVs live at
+  //   gs://<bucket>/stats/installs/installs_<pkg>_YYYYMM_overview.csv
+  // "Total User Installs" in the last row of the latest month is the
+  // lifetime count of unique users — it never decrements on uninstall.
+  const prefix = `stats/installs/installs_${packageName}_`;
+  const items = await gcsList({ accessToken, bucket: PLAY_GCS_BUCKET, prefix });
+  const overviews = items
+    .filter(o => o.name.endsWith('_overview.csv'))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  if (overviews.length === 0) {
+    throw new Error(`no install overview CSVs found with prefix ${prefix}`);
+  }
+  const latest = overviews[overviews.length - 1];
+  const buf = await gcsGet({ accessToken, bucket: PLAY_GCS_BUCKET, object: latest.name });
+
+  // Play bulk reports are UTF-16 LE with BOM.
+  let text;
+  if (buf.length >= 2 && buf[0] === 0xff && buf[1] === 0xfe) {
+    text = buf.slice(2).toString('utf16le');
+  } else {
+    text = buf.toString('utf8');
+  }
+
+  const lines = text.split(/\r?\n/).filter(l => l.length > 0);
+  if (lines.length < 2) return 0;
+  const header = parseCsvLine(lines[0]).map(h => h.trim());
+  const col = header.indexOf('Total User Installs');
+  if (col === -1) {
+    throw new Error(`"Total User Installs" column missing in ${latest.name}; header: ${header.join('|')}`);
+  }
+  const lastRow = parseCsvLine(lines[lines.length - 1]);
+  const value = Number(lastRow[col]);
+  return Number.isFinite(value) ? value : 0;
 }
 
 async function fetchPlayDownloads() {
