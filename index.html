@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta
       name="description"
       content="ML researcher at UC San Diego building consumer and public-interest software across mobile products, AI systems, and civic data."
@@ -211,9 +211,10 @@
             </p>
 
             <p class="about__paragraph">
-              Last summer, I interned on the AWS Hyperplane team, and I'll be returning this coming summer. I shipped
-              internal frontend and backend tools adopted across the team, including a CLI command generator that
-              reduced on&#8209;call manual effort by ~75% and accelerated incident response.
+              Last summer, I was a Software Development Engineer (SDE) Intern on the AWS Hyperplane team, and I'll be
+              returning this coming summer. I shipped internal frontend and backend tools adopted across the team,
+              including a CLI command generator that reduced on&#8209;call manual effort by ~75% and accelerated
+              incident response.
             </p>
 
             <p class="about__paragraph">
@@ -227,8 +228,11 @@
             <p class="about__paragraph">
               Outside of current projects, I like work that has to stand up in the real world:
               <a href="https://nyaaywatch.in" target="_blank" rel="noopener noreferrer" class="text-link">NyaayWatch</a>
-              turns Indian court-system snapshots into public evidence surfaces, and ShareAllBooks was a UAE
-              book-sharing app
+              turns Indian court-system snapshots into public evidence surfaces, and
+              <a href="https://shareallbooks.com/" target="_blank" rel="noopener noreferrer" class="text-link"
+                >ShareAllBooks</a
+              >
+              was a UAE book-sharing app
               <a
                 href="https://www.khaleejtimes.com/uae/dubai-student-creates-app-for-free-exchange-of-books"
                 target="_blank"
@@ -242,9 +246,12 @@
             </p>
 
             <p class="about__paragraph">
-              I also build full-stack features with Triton Software Engineering for the David Brower Center using
-              TypeScript, React, Node.js, Prisma, and Postgres, which keeps me sharp in team environments as well as
-              independent builds.
+              I also build full-stack features with
+              <a href="https://tritonse.github.io/" target="_blank" rel="noopener noreferrer" class="text-link"
+                >Triton Software Engineering</a
+              >
+              for the David Brower Center using TypeScript, React, Node.js, Prisma, and Postgres, which keeps me sharp
+              in team environments as well as independent builds.
             </p>
 
             <div class="about__stats">
@@ -282,39 +289,55 @@
       <!-- ============================================ -->
       <section id="experience" class="scene scene--experience">
         <div class="experience__header">
-          <p class="section-kicker section-kicker--light">Current focus</p>
-          <h2 class="experience__heading">Experience & Projects</h2>
+          <p class="section-kicker section-kicker--light">Where I've shipped</p>
+          <h2 class="experience__heading">Experience</h2>
           <p class="section-intro section-intro--light">
-            Projects I'm building, followed by the teams where I've shipped production software and learned fast.
+            Currently co-founding two products. Previously shipped production software at AWS and nonprofits.
           </p>
         </div>
         <div class="experience__track-wrapper">
           <div class="experience__track">
-            <!-- Card 1: NomNom -->
+            <!-- Card: NomNom -->
             <article class="exp-card">
               <span class="exp-card__date">Sep 2025 – Present</span>
               <h3 class="exp-card__company">NomNom</h3>
-              <h4 class="exp-card__role">Building the Student and Rider apps</h4>
+              <h4 class="exp-card__role">Co-founder</h4>
               <p class="exp-card__location">San Diego, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Built two React Native apps: Student app for ordering UCSD dining hall deliveries and Rider app for
-                  student couriers, using TypeScript, Firebase, and Stripe; implemented UCSD-only login and live
-                  tracking.
+                  Building a two-sided dining-hall delivery marketplace for UCSD's ~40k students — separate React Native
+                  apps for students and riders, with Stripe payments, live order tracking, and UCSD-only SSO.
                 </li>
                 <li>
-                  Designed end-to-end order flow and Firestore transaction logic for OTP and drop-off delivery,
-                  preventing duplicate accepts.
+                  Shipping the Student and Rider apps in closed beta; handling product, engineering, and operations
+                  end-to-end alongside my co-founder.
                 </li>
-                <li>Integrated notifications, in-app chat, and live ETAs using Expo Location and React Native Maps.</li>
               </ul>
             </article>
 
-            <!-- Card 2: AWS Hyperplane -->
+            <!-- Card: Outfitr -->
+            <article class="exp-card">
+              <span class="exp-card__date">Feb 2026 – Present</span>
+              <h3 class="exp-card__company">Outfitr</h3>
+              <h4 class="exp-card__role">Co-founder</h4>
+              <p class="exp-card__location">Remote</p>
+              <ul class="exp-card__bullets">
+                <li>
+                  Building a swipe-based AI outfit discovery app that assembles shoppable looks across retailers —
+                  replacing the one-product feed with "here is the full look, buy it in one tap."
+                </li>
+                <li>
+                  Architecting a TypeScript monorepo across mobile app, catalog ingestion workers, AI virtual try-on
+                  pipeline, and an experimentation layer for personalisation. iOS in TestFlight private beta.
+                </li>
+              </ul>
+            </article>
+
+            <!-- Card: AWS Hyperplane -->
             <article class="exp-card">
               <span class="exp-card__date">Jun 2025 – Sep 2025</span>
               <h3 class="exp-card__company">Amazon Web Services</h3>
-              <h4 class="exp-card__role">SDE Intern · Hyperplane Team</h4>
+              <h4 class="exp-card__role">Software Development Engineer (SDE) Intern · Hyperplane Team</h4>
               <p class="exp-card__location">Sunnyvale, CA</p>
               <ul class="exp-card__bullets">
                 <li>
@@ -333,7 +356,7 @@
               </ul>
             </article>
 
-            <!-- Card 3: TSE David Brower Center -->
+            <!-- Card: TSE David Brower Center -->
             <article class="exp-card">
               <span class="exp-card__date">Nov 2024 – Present</span>
               <h3 class="exp-card__company">Triton Software Engineering</h3>
@@ -355,7 +378,7 @@
               </ul>
             </article>
 
-            <!-- Card 4: ShareAllBooks -->
+            <!-- Card: ShareAllBooks -->
             <article class="exp-card">
               <span class="exp-card__date">Aug 2023 – Sep 2024</span>
               <h3 class="exp-card__company">ShareAllBooks</h3>
@@ -432,7 +455,7 @@
           <div class="projects__cards">
             <div class="projects__intro">
               <p class="section-kicker">Selected work</p>
-              <h2 class="projects__heading">Current projects with real users and systems</h2>
+              <h2 class="projects__heading">What I'm building</h2>
               <div class="projects__meta-links">
                 <a href="/work/" class="projects__meta-link">View all work →</a>
               </div>
@@ -443,7 +466,9 @@
             <!-- 1. NomNom -->
             <article class="proj-card proj-card--featured" data-project="0">
               <h3 class="proj-card__title">NomNom</h3>
-              <p class="proj-card__metric">UCSD dining-hall delivery · Founder · Student + Rider apps in beta</p>
+              <p class="proj-card__metric">
+                Co-founder · Student + Rider apps in closed beta · Targeting ~40k UCSD students · Sep 2025 – present
+              </p>
               <p class="proj-card__desc">
                 Two-sided mobile marketplace: students order dining-hall meals, verified UCSD couriers deliver. Solves
                 the "I missed dinner" problem for the ~40k students on campus.
@@ -467,7 +492,9 @@
             <!-- 2. Outfitr -->
             <article class="proj-card proj-card--featured" data-project="1">
               <h3 class="proj-card__title">Outfitr</h3>
-              <p class="proj-card__metric">AI outfit discovery · Founder · iOS in private beta</p>
+              <p class="proj-card__metric">
+                Co-founder · iOS TestFlight private beta · Multi-retailer catalog ingestion · AI virtual try-on
+              </p>
               <p class="proj-card__desc">
                 Swipe-based mobile app that builds shoppable outfits across retailers. Replaces the
                 one-product-at-a-time feed with "here is the full look, buy it in one tap."
@@ -518,7 +545,9 @@
             <!-- 4. NyaayWatch -->
             <article class="proj-card" data-project="2">
               <h3 class="proj-card__title">NyaayWatch</h3>
-              <p class="proj-card__metric">Judicial observability · Public-interest · Multi-state coverage</p>
+              <p class="proj-card__metric">
+                Public-interest · Indian high-court coverage · District-level scorecards · Reproducible data pipeline
+              </p>
               <p class="proj-card__desc">
                 Turns published Indian court-system snapshots into district-level scorecards, evidence pages, and public
                 data exports — backed by a reproducible pipeline with operator-controlled publish, replay, and rollback.
@@ -530,6 +559,64 @@
                 >Visit nyaaywatch.in →</a
               >
             </article>
+
+            <p class="projects__tier-label">Also built</p>
+
+            <div class="projects__also-built-grid">
+              <!-- 5. Vibe Tracker -->
+              <article class="proj-card proj-card--compact" data-project="4">
+                <h3 class="proj-card__title">Vibe Tracker</h3>
+                <p class="proj-card__desc">
+                  GitHub commit analytics — dedup'd SHA tracking, branch/PR activity, OAuth.
+                </p>
+                <div class="proj-card__tech"><span>Next.js</span><span>TypeScript</span><span>Prisma</span></div>
+                <a
+                  href="https://vibe-tracker-max.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="proj-card__link"
+                  >Live →</a
+                >
+              </article>
+
+              <!-- 6. David Brower Center -->
+              <article class="proj-card proj-card--compact" data-project="5">
+                <h3 class="proj-card__title">David Brower Center</h3>
+                <p class="proj-card__desc">Nonprofit relationship-mapping platform with Triton Software Engineering.</p>
+                <div class="proj-card__tech"><span>TypeScript</span><span>React</span><span>Postgres</span></div>
+                <a
+                  href="https://github.com/TritonSE/David-Brower-Center"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="proj-card__link"
+                  >GitHub →</a
+                >
+              </article>
+
+              <!-- 7. Psyches of Color -->
+              <article class="proj-card proj-card--compact" data-project="6">
+                <h3 class="proj-card__title">Psyches of Color</h3>
+                <p class="proj-card__desc">Mental-health mobile app for underserved communities, 12-person TSE team.</p>
+                <div class="proj-card__tech"><span>React Native</span><span>Node.js</span><span>MongoDB</span></div>
+                <a
+                  href="https://github.com/TritonSE/Psyches-Of-Color-App"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="proj-card__link"
+                  >GitHub →</a
+                >
+              </article>
+
+              <!-- 8. Health Dashboard -->
+              <article class="proj-card proj-card--compact" data-project="7">
+                <h3 class="proj-card__title">Health Metrics Dashboard</h3>
+                <p class="proj-card__desc">
+                  Personal Oura Ring data pipeline — GitHub Actions, trend charts, daily status.
+                </p>
+                <div class="proj-card__tech"><span>JavaScript</span><span>Oura API</span><span>Chart.js</span></div>
+                <a href="/health/" class="proj-card__link">Dashboard →</a>
+              </article>
+            </div>
           </div>
         </div>
       </section>
@@ -560,9 +647,19 @@
       <section id="contact" class="scene scene--contact">
         <div class="contact__inner">
           <p class="contact__status">
-            Returning to AWS Hyperplane, Summer 2026 · Open to product conversations about NomNom and Outfitr
+            <span class="contact__status-line contact__status-line--primary"
+              >Returning to AWS Hyperplane · Summer 2026</span
+            >
+            <span class="contact__status-line">Open to product conversations about NomNom and Outfitr</span>
           </p>
-          <p class="contact__tagline">Let's build something</p>
+          <p class="contact__tagline">Let's build something people want</p>
+          <a
+            href="https://calendly.com/rudrakshbhandari99/20min"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact__cta"
+            >Book a 20-minute chat →</a
+          >
           <a href="mailto:rubhandari@ucsd.edu" class="contact__email">rubhandari@ucsd.edu</a>
           <div class="contact__socials">
             <a

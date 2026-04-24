@@ -221,7 +221,9 @@ function initExperienceScene() {
 function initProjectsScene() {
   var section = document.querySelector('.scene--projects');
   var images = document.querySelectorAll('.projects__img');
-  var cards = document.querySelectorAll('.proj-card');
+  // Compact "Also built" cards are always full-opacity; exclude them from
+  // the GSAP crossfade so all four stay visible and don't compete for focus.
+  var cards = document.querySelectorAll('.proj-card:not(.proj-card--compact)');
 
   if (!section || !images.length || !cards.length) return;
 
