@@ -28,6 +28,7 @@ const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
 const APPLE_APPS = [
   { id: '6457063516', label: 'ShareAllBooks' },
   { id: '6760152698', label: 'NomNom Rider' },
+  { id: '6760152476', label: 'NomNom Student' },
 ];
 
 const PLAY_APPS = [{ packageName: 'com.rudraksh99.ShareAllBooks', label: 'ShareAllBooks' }];
@@ -613,6 +614,7 @@ function ratchet(key, freshVal, prevVal) {
 function mergeApps({ previous, apple, play }) {
   const prevSAB = previous?.apps?.shareallbooks;
   const prevNNR = previous?.apps?.nomnomRider;
+  const prevNNS = previous?.apps?.nomnomStudent;
 
   const shareAllBooksApple = ratchet(
     'shareallbooks.iosDownloads',
@@ -629,6 +631,11 @@ function mergeApps({ previous, apple, play }) {
     apple?.['6760152698']?.iosDownloads ?? null,
     prevNNR?.iosDownloads ?? null
   );
+  const nomnomStudentApple = ratchet(
+    'nomnomStudent.iosDownloads',
+    apple?.['6760152476']?.iosDownloads ?? null,
+    prevNNS?.iosDownloads ?? null
+  );
 
   const shareAllBooksTotal =
     shareAllBooksApple != null || shareAllBooksPlay != null
@@ -636,6 +643,7 @@ function mergeApps({ previous, apple, play }) {
       : (prevSAB?.total ?? null);
 
   const nomnomRiderTotal = nomnomRiderApple != null ? nomnomRiderApple : (prevNNR?.total ?? null);
+  const nomnomStudentTotal = nomnomStudentApple != null ? nomnomStudentApple : (prevNNS?.total ?? null);
 
   return {
     shareallbooks: {
@@ -649,6 +657,12 @@ function mergeApps({ previous, apple, play }) {
       iosDownloads: nomnomRiderApple,
       androidInstalls: null,
       total: nomnomRiderTotal,
+    },
+    nomnomStudent: {
+      label: 'NomNom Student',
+      iosDownloads: nomnomStudentApple,
+      androidInstalls: null,
+      total: nomnomStudentTotal,
     },
   };
 }
