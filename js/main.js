@@ -158,7 +158,6 @@ function initMobileMenu() {
   });
 }
 
-
 /* ===========================
    Counter Animation
    =========================== */
