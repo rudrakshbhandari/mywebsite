@@ -15,6 +15,13 @@ document.addEventListener('DOMContentLoaded', function () {
   initProjectImageCrossfade();
 });
 
+/** Pixels to leave clear below the fixed navbar (includes safe-area padding on notched devices). */
+function getFixedNavOffset() {
+  var navbar = document.getElementById('navbar');
+  if (!navbar) return 60;
+  return navbar.offsetHeight;
+}
+
 /* ===========================
    Dev Mode
    =========================== */
@@ -70,7 +77,7 @@ function initNavigation() {
         e.preventDefault();
         var targetSection = document.querySelector(targetId);
         if (targetSection) {
-          var offsetTop = targetSection.offsetTop - 60;
+          var offsetTop = targetSection.offsetTop - getFixedNavOffset();
           window.scrollTo({ top: offsetTop, behavior: 'smooth' });
         }
       }
@@ -111,25 +118,42 @@ function initMobileMenu() {
 
   if (!navToggle || !navMenu) return;
 
+  function setNavMenuOpen(open) {
+    document.documentElement.classList.toggle('nav-menu-open', open);
+    document.body.classList.toggle('nav-menu-open', open);
+  }
+
+  function closeNavMenu() {
+    navMenu.classList.remove('active');
+    navToggle.classList.remove('active');
+    navToggle.setAttribute('aria-expanded', 'false');
+    setNavMenuOpen(false);
+  }
+
   navToggle.addEventListener('click', function () {
     var isExpanded = navMenu.classList.toggle('active');
     navToggle.classList.toggle('active');
     navToggle.setAttribute('aria-expanded', isExpanded);
+    setNavMenuOpen(isExpanded);
   });
 
   navLinks.forEach(function (link) {
     link.addEventListener('click', function () {
-      navMenu.classList.remove('active');
-      navToggle.classList.remove('active');
-      navToggle.setAttribute('aria-expanded', 'false');
+      closeNavMenu();
     });
   });
 
   document.addEventListener('click', function (e) {
     if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
-      navMenu.classList.remove('active');
-      navToggle.classList.remove('active');
-      navToggle.setAttribute('aria-expanded', 'false');
+      if (navMenu.classList.contains('active')) {
+        closeNavMenu();
+      }
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+      closeNavMenu();
     }
   });
 }
