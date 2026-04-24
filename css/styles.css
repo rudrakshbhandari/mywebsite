@@ -782,6 +782,11 @@ button:focus-visible {
   opacity: 0.3;
 }
 
+/* Compact "Also built" cards are not part of the crossfade — always full opacity */
+.gsap-ready .proj-card--compact {
+  opacity: 1;
+}
+
 .proj-card.active {
   opacity: 1;
 }
