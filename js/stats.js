@@ -35,10 +35,9 @@
       return rounded.toLocaleString('en-US') + '+';
     }
 
-    // default: compact-plus (e.g. 1921 -> "1.9K+", 2347 -> "2.3K+")
+    // default: compact-plus — round to nearest K (e.g. 1921 -> "2K+", 2400 -> "2K+")
     if (value >= 1000) {
-      const tenths = Math.floor(value / 100);
-      return (tenths / 10).toFixed(1) + 'K+';
+      return Math.round(value / 1000) + 'K+';
     }
     const rounded = Math.floor(value / 10) * 10;
     return rounded.toLocaleString('en-US') + '+';
