@@ -2,12 +2,12 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="Health Metrics - Oura Ring Data | Rudraksh Bhandari" />
     <meta name="author" content="Rudraksh Bhandari" />
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' https://www.googletagmanager.com https://static.cloudflareinsights.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://cloudflareinsights.com; form-action 'self'; upgrade-insecure-requests"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com; form-action 'self'; upgrade-insecure-requests"
     />
 
     <!-- Canonical URL -->
@@ -84,6 +84,7 @@
         color: var(--text-primary);
         background: var(--background-dark);
         min-height: 100vh;
+        min-height: 100dvh;
         overflow-x: hidden;
       }
 
@@ -114,7 +115,8 @@
       .nav-container {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 1rem 1.5rem;
+        padding: calc(1rem + env(safe-area-inset-top, 0px)) calc(1.5rem + env(safe-area-inset-right, 0px)) 1rem
+          calc(1.5rem + env(safe-area-inset-left, 0px));
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -148,7 +150,7 @@
       main {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 7rem 1.5rem 4rem;
+        padding: 7rem calc(1.5rem + env(safe-area-inset-right, 0px)) 4rem calc(1.5rem + env(safe-area-inset-left, 0px));
       }
 
       .page-header {
@@ -700,6 +702,7 @@
         width: 100%;
         height: 220px;
         display: block;
+        touch-action: pan-y;
       }
 
       .timeline-axis-label {
@@ -1042,7 +1045,8 @@
       footer {
         max-width: 1200px;
         margin: 0 auto;
-        padding: 2rem 1.5rem;
+        padding: 2rem calc(1.5rem + env(safe-area-inset-right, 0px)) calc(2rem + env(safe-area-inset-bottom, 0px))
+          calc(1.5rem + env(safe-area-inset-left, 0px));
         border-top: 1px solid var(--border-color);
         display: flex;
         flex-wrap: wrap;
@@ -1151,6 +1155,7 @@
         align-items: flex-end;
         gap: 0.5rem;
         height: 100%;
+        overscroll-behavior-x: contain;
       }
 
       .trend-day {
@@ -1319,6 +1324,34 @@
           font-size: 2rem;
         }
 
+        main {
+          padding-top: calc(5.5rem + env(safe-area-inset-top, 0px));
+          padding-bottom: calc(2.75rem + env(safe-area-inset-bottom, 0px));
+        }
+
+        .page-header {
+          margin-bottom: 2rem;
+        }
+
+        .nav-logo a {
+          font-size: 1.1rem;
+        }
+
+        .nav-back {
+          min-height: 44px;
+          padding: 0.4rem 0.6rem;
+          align-items: center;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .metric-card {
+          padding: 1.25rem;
+        }
+
+        .timeline-svg {
+          height: 200px;
+        }
+
         .timeline-stats {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
@@ -1350,9 +1383,11 @@
           padding-bottom: 0.5rem;
           -webkit-overflow-scrolling: touch;
           height: 140px;
+          touch-action: pan-x pan-y;
         }
 
         .trend-day {
+          flex: 0 0 auto;
           min-width: 44px;
         }
 
