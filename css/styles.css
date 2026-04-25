@@ -628,7 +628,7 @@ button:focus-visible {
 }
 
 .exp-card__bullets li::before {
-  content: '—';
+  content: '\2014';
   position: absolute;
   left: 0;
   color: var(--color-accent);
@@ -886,7 +886,7 @@ button:focus-visible {
 }
 
 .proj-card__bullets li::before {
-  content: '—';
+  content: '\2014';
   position: absolute;
   left: 0;
   color: var(--color-accent);
@@ -1426,13 +1426,15 @@ button:focus-visible {
   /* Experience: vertical layout on mobile */
   .experience__track {
     flex-direction: column;
-    padding: 2rem calc(1.25rem + env(safe-area-inset-left, 0px)) 2rem calc(1.25rem + env(safe-area-inset-right, 0px));
-    gap: 1.5rem;
+    padding: 1.25rem calc(1.25rem + env(safe-area-inset-left, 0px)) 1.25rem
+      calc(1.25rem + env(safe-area-inset-right, 0px));
+    gap: 1rem;
   }
 
   .exp-card {
     flex: none;
     width: 100%;
+    padding: 1.75rem;
   }
 
   /* Projects: stack vertically on mobile */
@@ -1452,7 +1454,8 @@ button:focus-visible {
   }
 
   .projects__cards {
-    padding: 2rem calc(1.1rem + env(safe-area-inset-left, 0px)) 2rem calc(1.1rem + env(safe-area-inset-right, 0px));
+    padding: 1.25rem calc(1.1rem + env(safe-area-inset-left, 0px)) 1.25rem
+      calc(1.1rem + env(safe-area-inset-right, 0px));
   }
 
   .projects__intro {
@@ -1464,8 +1467,16 @@ button:focus-visible {
   }
 
   .proj-card {
-    padding: 2rem 0;
+    padding: 1.5rem 0;
     opacity: 1;
+  }
+
+  /* Touch-friendly footer link */
+  .footer__link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 0.5rem;
   }
 
   .work-hero {
