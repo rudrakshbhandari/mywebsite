@@ -125,19 +125,33 @@ button:focus-visible {
   right: 0;
   z-index: 1000;
   padding-top: env(safe-area-inset-top, 0px);
+  border-bottom: 1px solid rgba(26, 26, 26, 0.06);
+  isolation: isolate;
+}
+
+/* Backdrop on a pseudo-element so .navbar does NOT become the containing
+   block for its position:fixed mobile drawer (backdrop-filter on the
+   element itself promotes it to a containing block per CSS spec). */
+.navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
   background: rgba(245, 240, 235, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(26, 26, 26, 0.06);
   transition: background 0.3s var(--ease-smooth);
+  z-index: -1;
 }
 
-.navbar.scrolled {
+.navbar.scrolled::before {
   background: rgba(245, 240, 235, 0.96);
 }
 
-.navbar.inverted {
+.navbar.inverted::before {
   background: rgba(26, 26, 26, 0.9);
+}
+
+.navbar.inverted {
   border-bottom-color: rgba(255, 255, 255, 0.06);
 }
 
