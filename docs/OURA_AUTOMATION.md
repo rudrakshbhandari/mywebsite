@@ -6,6 +6,7 @@ This note exists to keep future maintenance work on the Oura health pipeline fro
 
 - `oura_public.json` is the only public payload for `/health`.
 - `.github/workflows/oura-update.yml` is the scheduled production path.
+- `.github/workflows/health-dashboard-watchdog.yml` is the hourly freshness alert path and must fail when data is more than 12 hours old.
 - `scripts/fetch_oura_and_write_json.mjs` is the single source of truth for local and CI fetch behavior.
 - CI and local runs intentionally behave differently when auth breaks.
 
@@ -30,6 +31,12 @@ The scheduled workflow opens a PR when `oura_public.json` changes. **Do not use 
 - The script allocates a fresh localhost callback port for each recovery attempt instead of assuming port `3000` is free.
 - After successful browser auth, the new refresh token is saved back to `.oura_token`.
 - CI does **not** use this fallback. In GitHub Actions, auth failures should still fail loudly so the workflow alerting remains trustworthy.
+
+## Alerting Model
+
+- The health dashboard freshness threshold is 12 hours.
+- The watchdog opens or updates the `Health dashboard automation alert` issue when data is stale.
+- After writing the issue, the watchdog fails the workflow so GitHub Actions failure notifications are a second alert path.
 
 ## Agent Rules
 

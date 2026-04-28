@@ -25,7 +25,7 @@ jobs:
       - name: Evaluate dashboard freshness
         id: freshness
         env:
-          OURA_MAX_STALENESS_HOURS: '36'
+          OURA_MAX_STALENESS_HOURS: '12'
         run: node scripts/check-health-dashboard-freshness.mjs
 
       - name: Open or update staleness alert
@@ -54,6 +54,12 @@ jobs:
           else
             gh issue create --title "$ISSUE_TITLE" --body-file .health_alert_body.md
           fi
+
+      - name: Fail watchdog when dashboard is stale
+        if: steps.freshness.outputs.is_stale == 'true'
+        run: |
+          echo "::error::Health dashboard data is stale: ${{ steps.freshness.outputs.age_hours }} hours old, threshold ${{ steps.freshness.outputs.max_staleness_hours }} hours."
+          exit 1
 
       - name: Close staleness alert after recovery
         if: steps.freshness.outputs.is_stale != 'true'
