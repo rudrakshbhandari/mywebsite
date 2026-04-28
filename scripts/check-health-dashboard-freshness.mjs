@@ -9,7 +9,7 @@ import { resolve } from 'path';
 
 const DATA_PATH = resolve(process.cwd(), 'oura_public.json');
 const GITHUB_OUTPUT_PATH = process.env.GITHUB_OUTPUT;
-const MAX_STALENESS_HOURS = Number(process.env.OURA_MAX_STALENESS_HOURS || 36);
+const MAX_STALENESS_HOURS = Number(process.env.OURA_MAX_STALENESS_HOURS || 12);
 
 function setOutput(name, value) {
   if (!GITHUB_OUTPUT_PATH) {
