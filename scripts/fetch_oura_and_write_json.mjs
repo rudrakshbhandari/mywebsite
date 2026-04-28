@@ -23,6 +23,7 @@ const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
 const SHOULD_FAIL_ON_API_ERROR = IS_GITHUB_ACTIONS || process.env.OURA_FAIL_ON_API_ERROR === 'true';
 const PT_TIME_ZONE = 'America/Los_Angeles';
 const OAUTH_SCOPES = ['daily', 'heartrate', 'spo2Daily', 'workout'];
+const DEFAULT_OAUTH_CALLBACK_PORT = 3000;
 /** Max HR samples in public JSON (~minute-level over 24h; keeps payload small vs full Oura stream). */
 const HR_TIMELINE_MAX_POINTS = 1440;
 
@@ -207,38 +208,52 @@ function createOauthState() {
 }
 
 /**
- * Reserve a free loopback port for the OAuth callback server
- * @returns {Promise<number>}
- */
-function allocateCallbackPort() {
-  return new Promise((resolve, reject) => {
-    const server = http.createServer();
-    server.listen(0, '127.0.0.1', () => {
-      const address = server.address();
-      const port = typeof address === 'object' && address ? address.port : null;
-      server.close(closeError => {
-        if (closeError) {
-          reject(closeError);
-          return;
-        }
-        if (!port) {
-          reject(new Error('Could not allocate OAuth callback port'));
-          return;
-        }
-        resolve(port);
-      });
-    });
-    server.on('error', reject);
-  });
-}
-
-/**
  * Build a loopback redirect URI from a callback port
  * @param {number} callbackPort
  * @returns {string}
  */
 function buildRedirectUri(callbackPort) {
   return `http://localhost:${callbackPort}/callback`;
+}
+
+/**
+ * Resolve the OAuth redirect URI registered with Oura for local recovery.
+ * Oura requires an exact redirect URI match, so the default is the repo's
+ * registered localhost callback instead of an arbitrary free port.
+ * @returns {{redirectUri: string, callbackPort: number}}
+ */
+function getLocalOAuthRedirectConfig() {
+  const configuredRedirectUri = (process.env.OURA_OAUTH_REDIRECT_URI || process.env.OURA_REDIRECT_URI || '').trim();
+
+  if (configuredRedirectUri) {
+    let parsed;
+    try {
+      parsed = new URL(configuredRedirectUri);
+    } catch {
+      throw new Error(`Invalid Oura OAuth redirect URI: ${configuredRedirectUri}`);
+    }
+
+    const isLoopback = parsed.hostname === 'localhost' || parsed.hostname === '127.0.0.1';
+    if (parsed.protocol !== 'http:' || !isLoopback || parsed.pathname !== '/callback') {
+      throw new Error(
+        'Oura OAuth redirect URI must be http://localhost:<port>/callback or http://127.0.0.1:<port>/callback'
+      );
+    }
+
+    const callbackPort = Number(parsed.port || DEFAULT_OAUTH_CALLBACK_PORT);
+    if (!Number.isInteger(callbackPort) || callbackPort <= 0) {
+      throw new Error(`Invalid Oura OAuth callback port in redirect URI: ${configuredRedirectUri}`);
+    }
+
+    return { redirectUri: configuredRedirectUri, callbackPort };
+  }
+
+  const callbackPort = Number(process.env.OURA_OAUTH_CALLBACK_PORT || DEFAULT_OAUTH_CALLBACK_PORT);
+  if (!Number.isInteger(callbackPort) || callbackPort <= 0) {
+    throw new Error(`Invalid OURA_OAUTH_CALLBACK_PORT: ${process.env.OURA_OAUTH_CALLBACK_PORT}`);
+  }
+
+  return { redirectUri: buildRedirectUri(callbackPort), callbackPort };
 }
 
 /**
@@ -385,8 +400,7 @@ async function exchangeAuthorizationCode(clientId, clientSecret, code, redirectU
 async function recoverCredentialsInteractively(clientId, clientSecret) {
   console.warn('Refresh token rejected. Starting one-time browser reauthorization to recover local access...');
   const state = createOauthState();
-  const callbackPort = await allocateCallbackPort();
-  const redirectUri = buildRedirectUri(callbackPort);
+  const { redirectUri, callbackPort } = getLocalOAuthRedirectConfig();
   const authUrl = buildAuthorizationUrl(clientId, state, redirectUri);
   console.log('Approve access in your browser if prompted:');
   console.log(authUrl);
