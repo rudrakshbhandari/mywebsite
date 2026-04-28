@@ -28,7 +28,7 @@ The scheduled workflow opens a PR when `oura_public.json` changes. **Do not use 
 ## Current Recovery Behavior
 
 - If a local refresh token is stale, `scripts/fetch_oura_and_write_json.mjs` now starts a browser OAuth recovery flow automatically.
-- The script allocates a fresh localhost callback port for each recovery attempt instead of assuming port `3000` is free.
+- The browser recovery flow uses the registered local callback `http://localhost:3000/callback` by default. Override with `OURA_OAUTH_REDIRECT_URI` or `OURA_OAUTH_CALLBACK_PORT` only if the Oura app registration changes.
 - After successful browser auth, the new refresh token is saved back to `.oura_token`.
 - CI does **not** use this fallback. In GitHub Actions, auth failures should still fail loudly so the workflow alerting remains trustworthy.
 
@@ -42,7 +42,7 @@ The scheduled workflow opens a PR when `oura_public.json` changes. **Do not use 
 
 - Do not remove the local browser reauth fallback unless the replacement is equally automatic and fully verified.
 - Do not make CI silently preserve stale data on auth failure. Production automation must fail loudly.
-- Do not hardcode a single localhost callback port for Oura OAuth.
+- Do not switch local browser reauth back to a random callback port unless the Oura app is registered for that exact redirect URI; Oura rejects unregistered callback ports before approval.
 - Do not commit `.oura_token`, `.env`, or rotated token artifacts.
 - Prefer updating `scripts/fetch_oura_and_write_json.mjs` over creating parallel auth logic in new scripts.
 
