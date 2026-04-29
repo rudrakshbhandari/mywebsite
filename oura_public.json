@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-04-29T09:33:25.205Z",
+  "lastUpdatedIso": "2026-04-29T11:19:43.926Z",
   "day": "2026-04-28",
   "byDay": [
     {
@@ -95,7 +95,7 @@
       "restingHrBpm": null,
       "hrvMs": null,
       "steps": 3309,
-      "activeCalories": 151,
+      "activeCalories": 152,
       "spo2Average": null,
       "workoutCount": 0,
       "totalSleepDuration": 29730,
@@ -145,90 +145,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-04-28",
   "heartRateSeries": [
-    {
-      "t": "2026-04-28T09:36:45.000Z",
-      "bpm": 77
-    },
-    {
-      "t": "2026-04-28T09:41:45.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-04-28T09:46:45.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-04-28T09:51:45.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-04-28T09:56:45.000Z",
-      "bpm": 79
-    },
-    {
-      "t": "2026-04-28T10:01:45.000Z",
-      "bpm": 80
-    },
-    {
-      "t": "2026-04-28T10:06:45.000Z",
-      "bpm": 80
-    },
-    {
-      "t": "2026-04-28T10:11:45.000Z",
-      "bpm": 74
-    },
-    {
-      "t": "2026-04-28T10:16:45.000Z",
-      "bpm": 71
-    },
-    {
-      "t": "2026-04-28T10:21:45.000Z",
-      "bpm": 71
-    },
-    {
-      "t": "2026-04-28T10:26:45.000Z",
-      "bpm": 70
-    },
-    {
-      "t": "2026-04-28T10:31:45.000Z",
-      "bpm": 70
-    },
-    {
-      "t": "2026-04-28T10:36:45.000Z",
-      "bpm": 71
-    },
-    {
-      "t": "2026-04-28T10:41:45.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-04-28T10:46:45.000Z",
-      "bpm": 77
-    },
-    {
-      "t": "2026-04-28T10:51:45.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-04-28T10:56:45.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-04-28T11:01:45.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-04-28T11:06:45.000Z",
-      "bpm": 77
-    },
-    {
-      "t": "2026-04-28T11:11:45.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-04-28T11:16:45.000Z",
-      "bpm": 77
-    },
     {
       "t": "2026-04-28T11:21:45.000Z",
       "bpm": 79
@@ -2490,13 +2406,13 @@
   "activityTrainingFreq": null,
   "activityTrainingVol": null,
   "steps": 3309,
-  "activeCalories": 151,
-  "totalCalories": 1902,
+  "activeCalories": 152,
+  "totalCalories": 1904,
   "targetCalories": 300,
-  "metersToTarget": 3400,
+  "metersToTarget": 3300,
   "highActivityMinutes": 0,
   "mediumActivityMinutes": 14,
-  "lowActivityMinutes": 120,
+  "lowActivityMinutes": 121,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
   "workoutCount": 0,
