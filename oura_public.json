@@ -1,24 +1,7 @@
 {
-  "lastUpdatedIso": "2026-05-02T06:06:54.658Z",
+  "lastUpdatedIso": "2026-05-02T07:59:24.504Z",
   "day": "2026-05-01",
   "byDay": [
-    {
-      "day": "2026-04-25",
-      "sleepScore": 89,
-      "readinessScore": 83,
-      "activityScore": 92,
-      "restingHrBpm": null,
-      "hrvMs": null,
-      "steps": 9609,
-      "activeCalories": 455,
-      "spo2Average": null,
-      "workoutCount": 4,
-      "totalSleepDuration": 31740,
-      "deepSleepDuration": 7890,
-      "remSleepDuration": 7770,
-      "lightSleepDuration": 16080,
-      "sleepEfficiency": 90
-    },
     {
       "day": "2026-04-26",
       "sleepScore": 77,
@@ -97,7 +80,7 @@
       "steps": 5821,
       "activeCalories": 254,
       "spo2Average": null,
-      "workoutCount": 2,
+      "workoutCount": 3,
       "totalSleepDuration": 34170,
       "deepSleepDuration": 9750,
       "remSleepDuration": 8790,
@@ -108,6 +91,23 @@
       "day": "2026-05-01",
       "sleepScore": 90,
       "readinessScore": 77,
+      "activityScore": 91,
+      "restingHrBpm": null,
+      "hrvMs": null,
+      "steps": 6839,
+      "activeCalories": 338,
+      "spo2Average": null,
+      "workoutCount": 2,
+      "totalSleepDuration": 34380,
+      "deepSleepDuration": 7170,
+      "remSleepDuration": 8580,
+      "lightSleepDuration": 18630,
+      "sleepEfficiency": 87
+    },
+    {
+      "day": "2026-05-02",
+      "sleepScore": null,
+      "readinessScore": null,
       "activityScore": null,
       "restingHrBpm": null,
       "hrvMs": null,
@@ -145,74 +145,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-05-01",
   "heartRateSeries": [
-    {
-      "t": "2026-05-01T07:02:23.000Z",
-      "bpm": 84
-    },
-    {
-      "t": "2026-05-01T07:02:55.000Z",
-      "bpm": 85
-    },
-    {
-      "t": "2026-05-01T07:02:59.000Z",
-      "bpm": 79
-    },
-    {
-      "t": "2026-05-01T07:17:35.000Z",
-      "bpm": 80
-    },
-    {
-      "t": "2026-05-01T07:17:37.000Z",
-      "bpm": 81
-    },
-    {
-      "t": "2026-05-01T07:17:40.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-05-01T07:31:20.000Z",
-      "bpm": 85
-    },
-    {
-      "t": "2026-05-01T07:31:44.000Z",
-      "bpm": 83
-    },
-    {
-      "t": "2026-05-01T07:31:45.000Z",
-      "bpm": 87
-    },
-    {
-      "t": "2026-05-01T07:38:35.000Z",
-      "bpm": 75
-    },
-    {
-      "t": "2026-05-01T07:38:50.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-05-01T07:43:48.000Z",
-      "bpm": 74
-    },
-    {
-      "t": "2026-05-01T07:43:50.000Z",
-      "bpm": 76
-    },
-    {
-      "t": "2026-05-01T07:43:52.000Z",
-      "bpm": 72
-    },
-    {
-      "t": "2026-05-01T07:47:31.000Z",
-      "bpm": 74
-    },
-    {
-      "t": "2026-05-01T07:52:45.000Z",
-      "bpm": 72
-    },
-    {
-      "t": "2026-05-01T07:57:45.000Z",
-      "bpm": 72
-    },
     {
       "t": "2026-05-01T08:02:45.000Z",
       "bpm": 71
@@ -3976,26 +3908,26 @@
   ],
   "heartRateMinBpm": 69,
   "heartRateMaxBpm": 111,
-  "heartRateAvgBpm": 91,
+  "heartRateAvgBpm": 92,
   "heartRateLatestBpm": 88,
-  "activityScore": null,
-  "activityMeetTargets": null,
-  "activityMoveHour": null,
-  "activityRecoveryTime": null,
-  "activityStayActive": null,
-  "activityTrainingFreq": null,
-  "activityTrainingVol": null,
-  "steps": null,
-  "activeCalories": null,
-  "totalCalories": null,
-  "targetCalories": null,
-  "metersToTarget": null,
-  "highActivityMinutes": null,
-  "mediumActivityMinutes": null,
-  "lowActivityMinutes": null,
+  "activityScore": 91,
+  "activityMeetTargets": 78,
+  "activityMoveHour": 100,
+  "activityRecoveryTime": 100,
+  "activityStayActive": 85,
+  "activityTrainingFreq": 96,
+  "activityTrainingVol": 97,
+  "steps": 6839,
+  "activeCalories": 338,
+  "totalCalories": 2138,
+  "targetCalories": 400,
+  "metersToTarget": 1400,
+  "highActivityMinutes": 0,
+  "mediumActivityMinutes": 35,
+  "lowActivityMinutes": 218,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
-  "workoutCount": 0,
+  "workoutCount": 2,
   "workoutMinutes": 0,
-  "workoutCalories": 0
+  "workoutCalories": 93
 }
