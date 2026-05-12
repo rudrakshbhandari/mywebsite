@@ -222,8 +222,7 @@
             <p class="about__paragraph">
               I'm co-founding
               <a href="https://outfitr.net/" target="_blank" rel="noopener noreferrer" class="text-link">Outfitr</a>
-              with Yuni Kim — a swipe-first app where you discover items across retailers, Outfitr composes outfit
-              suggestions from your saves, you try them on with AI, and buy the whole look in one tap. I also co-founded
+              with Yuni Kim — wardrobe-first social fashion that plans what to wear today from clothes you already own, layers friend social on top for virtual try-ons, and owns the daily getting-dressed ritual instead of competing in the shopping moment. I also co-founded
               <a href="https://nomnom.cc" target="_blank" rel="noopener noreferrer" class="text-link">NomNom</a>, a
               dining-hall delivery marketplace for UCSD's ~40k students, building both the student and rider apps solo
               before UCSD admin shut us down — which taught us that products requiring institutional permission don't
@@ -309,13 +308,10 @@
               <p class="exp-card__location">Remote</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Swipe individual pieces from a multi-retailer catalog. Outfitr composes outfit suggestions from what
-                  you've saved, runs AI virtual try-on on any look, routes friend feedback through a share loop, and
-                  closes with one-tap bundle checkout. I'm writing every line of code: React Native / Expo app, Fastify
-                  BFF, catalog ingestion pipeline, outfit ranking engine, VTO orchestration, and AWS infrastructure.
+                  Wardrobe-first social fashion: import your closet from selfies (AI garment extraction), plan daily outfits from what you own, and layer social on top where friends virtually try on each other's wardrobes. I'm writing every line of code: React Native / Expo app, Fastify BFF, mirror-selfie ingestion pipeline, outfit ranking engine, VTO orchestration, and AWS infrastructure.
                 </li>
                 <li>
-                  Architecting a TypeScript monorepo across mobile app, catalog ingestion workers, AI virtual try-on
+                  Architecting a TypeScript monorepo across mobile app, closet-import workers, AI virtual try-on
                   pipeline, and an experimentation layer for personalisation. iOS in TestFlight private beta.
                 </li>
               </ul>
@@ -474,14 +470,10 @@
             <article class="proj-card proj-card--featured" data-project="0">
               <h3 class="proj-card__title">Outfitr</h3>
               <p class="proj-card__metric">
-                Co-founder & CTO · Solo engineer, full stack · iOS TestFlight · Multi-retailer catalog · Outfit
-                composition from saves · AI virtual try-on
+                Co-founder & CTO · Solo engineer, full stack · iOS TestFlight · Wardrobe data layer + daily outfit engine · AI virtual try-on
               </p>
               <p class="proj-card__desc">
-                Fashion discovery is broken across five apps. Outfitr collapses it into one swipe feed: browse
-                individual pieces curated across retailers, save what catches your eye, and Outfitr composes outfit
-                suggestions from your saves. Try any look on with AI before you commit, share with a friend for the
-                thumbs-up, and buy the whole outfit in one tap.
+                Fashion apps serve the shopping moment — people shop 3× a month. Outfitr owns the daily ritual of getting dressed instead. Wardrobe-first social fashion: your closet is the primary surface — Outfitr plans what to wear today from clothes you already own, then layers social on top with friends virtually trying on each other's wardrobes. Once your closet data is in and your friend graph is there, switching costs are real. Discovery and affiliate revenue are downstream consequences, not the product.
               </p>
               <ul class="proj-card__bullets">
                 <li>TypeScript monorepo: mobile app, API, ingestion workers, shared SDK.</li>
@@ -490,6 +482,7 @@
                   merchants.
                 </li>
                 <li>AI virtual try-on with async job orchestration, provider abstraction, and privacy-aware media.</li>
+                <li>Mirror-selfie import pipeline for wardrobe onboarding (photo library → AI garment extraction → closet).</li>
                 <li>Telemetry + experimentation layer for personalization and A/B-ing the swipe flow.</li>
               </ul>
               <div class="proj-card__tech">
