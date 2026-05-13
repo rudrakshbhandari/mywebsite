@@ -20,6 +20,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
   if (prefersReducedMotion || isMobile) {
     initStaticFallback();
+    // On mobile, keep the project image crossfade in sync with the sticky
+    // image strip so each card gets its own visual.
+    if (isMobile && !prefersReducedMotion) {
+      initProjectsScene();
+    }
     return;
   }
 
