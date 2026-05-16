@@ -541,7 +541,7 @@ button:focus-visible {
 }
 
 .experience__header {
-  padding: 6rem 2rem 2rem;
+  padding: 4rem 2rem 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -555,13 +555,13 @@ button:focus-visible {
 
 .experience__track-wrapper {
   overflow: hidden;
-  padding-bottom: 6rem;
+  padding-bottom: 2rem;
 }
 
 .experience__track {
   display: flex;
   gap: 2rem;
-  padding: 2rem 2rem 2rem 4rem;
+  padding: 1rem 2rem 1rem 4rem;
   will-change: transform;
 }
 
@@ -570,7 +570,7 @@ button:focus-visible {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  padding: 2.5rem;
+  padding: 1.75rem;
   backdrop-filter: blur(8px);
   transition: border-color 0.3s ease;
 }
@@ -1313,6 +1313,15 @@ button:focus-visible {
     padding: 4.75rem 1.25rem 2rem;
   }
 
+  .scene--about {
+    padding: 4.5rem 0 3.5rem;
+  }
+
+  .scene--skills {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+
   .hero__name {
     gap: 0.2rem;
   }
@@ -1383,8 +1392,10 @@ button:focus-visible {
   }
 
   .hero__subtitle {
-    font-size: 0.68rem;
-    letter-spacing: 0.08em;
+    font-size: 0.82rem;
+    letter-spacing: 0.06em;
+    margin-top: 1.25rem;
+    gap: 0.5rem;
   }
 
   .hero__photo {
@@ -1392,7 +1403,7 @@ button:focus-visible {
   }
 
   .hero__photo-wrap {
-    margin: -0.4em 0;
+    margin: -0.2em 0;
   }
 
   /* About */
@@ -1437,20 +1448,33 @@ button:focus-visible {
     padding: 1.75rem;
   }
 
-  /* Projects: stack vertically on mobile */
+  /* Projects: stack vertically on mobile, image stays sticky as you scroll cards */
   .projects__pin-container {
     grid-template-columns: 1fr;
   }
 
   .projects__images {
-    position: relative;
-    height: auto;
-    padding: 2rem;
-    aspect-ratio: 16 / 10;
+    position: sticky;
+    top: calc(60px + env(safe-area-inset-top, 0px));
+    height: 32vh;
+    height: 32svh;
+    padding: 1rem;
+    background: var(--color-bg);
+    z-index: 1;
   }
 
   .projects__img {
-    width: 80%;
+    width: 78%;
+    max-height: 30vh;
+  }
+
+  .projects__also-built-collage {
+    width: 86%;
+    gap: 0.5rem;
+  }
+
+  .collage-card {
+    padding: 0.7rem 0.75rem;
   }
 
   .projects__cards {
