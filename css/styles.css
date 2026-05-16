@@ -401,6 +401,10 @@ button:focus-visible {
   opacity: 1;
 }
 
+.hero__upright {
+  font-style: normal;
+}
+
 /* =============================================
    SCENE 2: ABOUT
    ============================================= */
