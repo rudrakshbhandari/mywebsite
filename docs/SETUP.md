@@ -224,7 +224,8 @@ To test the GitHub Actions workflow immediately:
 
 - This usually means the local `.oura_token` is stale or revoked
 - Complete the browser OAuth flow and let the script finish updating `.oura_token`
-- Do not replace the dynamic localhost callback logic with a hardcoded port; the script intentionally uses a fresh loopback port per recovery attempt
+- The browser OAuth flow defaults to `http://localhost:3000/callback`, which must match the Oura app's registered redirect URI
+- If the Oura app registration changes, set `OURA_OAUTH_REDIRECT_URI` or `OURA_OAUTH_CALLBACK_PORT` before running the script
 - See `docs/OURA_AUTOMATION.md` before changing the auth flow
 
 ### "No data" showing on health page
