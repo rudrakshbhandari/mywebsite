@@ -25,10 +25,9 @@ The format is based on Keep a Changelog and this project uses date-based release
 
 - Per-sample dots on the intraday Heart Rate Timeline so gaps in Oura's recording are visible. Long flat segments between two far-apart dots now read as "no data here," not as interpolated truth.
 
-### Changed
+### Fixed
 
-- Tightened NomNom and Outfitr project card copy to plainer descriptions; dropped the cute one-liners.
-- Prettier line-wrap pass on `index.html` (no behavior change).
+- Heart Rate Timeline now covers the full day instead of just the first sleep window. The Oura `/heartrate` endpoint requires `start_datetime`/`end_datetime` (not `start_date`/`end_date` like the daily-summary endpoints) and paginates via `next_token`. The previous fetch passed date-only params (silently ignored) and didn't follow pagination, so we were only seeing the first page (~600 dense sleep samples) and never the daytime data.
 
 ## [2026-02-27]
 
