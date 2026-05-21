@@ -675,6 +675,19 @@ function renderHeartRateTimeline(series, data) {
   line.setAttribute('d', linePath);
   fill.setAttribute('d', fillPath);
 
+  // Render a dot at each real sample so gaps in Oura's recording are visible —
+  // long flat segments between two far-apart dots = no data, not interpolated truth.
+  // r scales down for dense datasets so 200-point sleep windows don't look like a thick bar.
+  const pointsEl = document.getElementById('hr-points');
+  if (pointsEl) {
+    const dotRadius = points.length > 400 ? 1.4 : points.length > 150 ? 1.8 : 2.2;
+    pointsEl.innerHTML = points
+      .map(
+        p => `<circle class="timeline-point" cx="${p.x.toFixed(2)}" cy="${p.y.toFixed(2)}" r="${dotRadius}"></circle>`
+      )
+      .join('');
+  }
+
   axisY.innerHTML = `
     <text x="${marginLeft - 8}" y="${bottom}" class="timeline-axis-label" text-anchor="end">${minBpm}</text>
     <text x="${marginLeft - 8}" y="${(top + bottom) / 2}" class="timeline-axis-label" text-anchor="end">${midBpm}</text>
