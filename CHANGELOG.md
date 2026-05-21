@@ -25,6 +25,10 @@ The format is based on Keep a Changelog and this project uses date-based release
 
 - Per-sample dots on the intraday Heart Rate Timeline so gaps in Oura's recording are visible. Long flat segments between two far-apart dots now read as "no data here," not as interpolated truth.
 
+### Changed
+
+- Heart Rate Timeline X-axis is now pinned to a fixed PT 00:00 → 24:00 window with labels at 12 AM / 6 AM / 12 PM / 6 PM / 12 AM, instead of auto-fitting to whatever range the data happens to cover. Days with partial coverage (e.g., "today" before sunset) show empty space on the right — that's the truthful behavior. All chart time labels now render in Pacific time regardless of viewer timezone so axis labels match data positions.
+
 ### Fixed
 
 - Heart Rate Timeline now covers the full day instead of just the first sleep window. The Oura `/heartrate` endpoint requires `start_datetime`/`end_datetime` (not `start_date`/`end_date` like the daily-summary endpoints) and paginates via `next_token`. The previous fetch passed date-only params (silently ignored) and didn't follow pagination, so we were only seeing the first page (~600 dense sleep samples) and never the daytime data.
