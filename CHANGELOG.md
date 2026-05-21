@@ -19,6 +19,17 @@ The format is based on Keep a Changelog and this project uses date-based release
 - Replaced Vercel hosting/analytics hooks with GitHub Pages deployment scaffolding plus Cloudflare and GA4 configuration.
 - Removed the lingering Vercel custom-domain aliases and Git integration for `mywebsite` so production is unambiguously GitHub Pages + Cloudflare.
 
+## [2026-05-20]
+
+### Added
+
+- Per-sample dots on the intraday Heart Rate Timeline so gaps in Oura's recording are visible. Long flat segments between two far-apart dots now read as "no data here," not as interpolated truth.
+
+### Changed
+
+- Tightened NomNom and Outfitr project card copy to plainer descriptions; dropped the cute one-liners.
+- Prettier line-wrap pass on `index.html` (no behavior change).
+
 ## [2026-02-27]
 
 ### Added
