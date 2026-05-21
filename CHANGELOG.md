@@ -27,7 +27,7 @@ The format is based on Keep a Changelog and this project uses date-based release
 
 ### Changed
 
-- Heart Rate Timeline X-axis is now pinned to a fixed PT 00:00 → 24:00 window with labels at 12 AM / 6 AM / 12 PM / 6 PM / 12 AM, instead of auto-fitting to whatever range the data happens to cover. Days with partial coverage (e.g., "today" before sunset) show empty space on the right — that's the truthful behavior. All chart time labels now render in Pacific time regardless of viewer timezone so axis labels match data positions.
+- Heart Rate Timeline now shows a **rolling 24h window ending at the latest sample** instead of a PT calendar day. The latest data point anchors the right edge; the chart extends 24h to the left. At 3 PM PT that means last night's sleep + today's awake hours so far — always-full chart, no waiting for the day to fill in. Fetch pipeline filters samples to the same rolling window so the JSON payload matches the chart's range. All chart time labels render in Pacific time regardless of viewer timezone so axis labels match data positions.
 
 ### Fixed
 
