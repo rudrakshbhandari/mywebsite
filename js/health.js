@@ -619,25 +619,16 @@ function formatTime(iso) {
 }
 
 /**
- * Given a UTC ISO timestamp known to fall on a PT calendar day,
- * return the UTC ms of that day's PT midnight (start) and start + 24h (end).
- * DST-correct because the offset is derived from the sample's own PT hour-of-day,
- * not a hardcoded assumption.
- * @param {string} sampleIsoUtc
+ * Rolling 24h window ending at the latest sample's timestamp.
+ * Anchoring to the actual data (not "today PT midnight") keeps the chart
+ * full of data right up to the right edge — last night's sleep plus today
+ * so far, instead of a "today" view with an empty afternoon.
+ * @param {Array<{t: string}>} series - chronologically sorted
  * @returns {{ start: number, end: number }}
  */
-function getPtDayBoundsMs(sampleIsoUtc) {
-  const sample = new Date(sampleIsoUtc);
-  const hms = sample.toLocaleString('en-GB', {
-    timeZone: 'America/Los_Angeles',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: false,
-  });
-  const [hh, mm, ss] = hms.split(':').map(Number);
-  const start = sample.getTime() - (hh * 3600 + mm * 60 + ss) * 1000;
-  return { start, end: start + 86400000 };
+function getRolling24hBounds(series) {
+  const end = new Date(series[series.length - 1].t).getTime();
+  return { start: end - 86400000, end };
 }
 
 /**
@@ -685,11 +676,11 @@ function renderHeartRateTimeline(series, data) {
   const rangeBpm = Math.max(maxBpm - minBpm, 1);
   const midBpm = Math.round((minBpm + maxBpm) / 2);
 
-  // Pin the X-axis to the full PT calendar day (00:00 → 24:00 PT) so empty
-  // hours read as "no data here" instead of the chart squishing to whatever
-  // window the data happens to cover. For "today" this means the right side
-  // is intentionally empty until more samples arrive.
-  const { start: timeStart, end: timeEnd } = getPtDayBoundsMs(series[0].t);
+  // Rolling 24h window ending at the latest sample. The latest data point
+  // sits at the right edge; the chart extends 24h to the left of that. So
+  // at 3 PM you see last night's sleep + today's awake hours — not a
+  // "today" view with an empty afternoon waiting to fill in.
+  const { start: timeStart, end: timeEnd } = getRolling24hBounds(series);
   const timeRange = Math.max(timeEnd - timeStart, 1);
   const points = series.map(point => {
     const t = new Date(point.t).getTime();
@@ -889,8 +880,11 @@ function renderHeartRateTimeline(series, data) {
   if (latestEl) latestEl.textContent = data.heartRateLatestBpm !== null ? `${data.heartRateLatestBpm} bpm` : '--';
 
   if (footer) {
-    const sourceDay = data.heartRateSeriesDay ? `Source day: ${data.heartRateSeriesDay}` : 'Intraday trend';
-    footer.textContent = `${sourceDay} • ${series.length} points`;
+    // Rolling 24h window — anchor the footer to the latest sample's time
+    // so the user can tell at a glance how fresh the chart is.
+    const latestT = series.length > 0 ? series[series.length - 1].t : null;
+    const through = latestT ? `Last 24h through ${formatTime(latestT)}` : 'Last 24h';
+    footer.textContent = `${through} • ${series.length} points`;
   }
 }
 
