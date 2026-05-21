@@ -482,6 +482,21 @@ function getLast7DaysRange() {
 }
 
 /**
+ * Get an ISO 8601 datetime range covering the last 48 hours (UTC).
+ * Used by the heartrate endpoint, which requires start_datetime/end_datetime
+ * (not start_date/end_date like the daily-summary endpoints). 48h is enough
+ * to ensure the primary PT day plus its neighbors are fully covered regardless
+ * of the wall-clock time the fetch happens to run.
+ * @returns {{ startDatetime: string, endDatetime: string }}
+ */
+function getHeartRateDatetimeRange() {
+  const now = new Date();
+  const endDatetime = now.toISOString();
+  const startDatetime = new Date(now.getTime() - 48 * 60 * 60 * 1000).toISOString();
+  return { startDatetime, endDatetime };
+}
+
+/**
  * Fetch daily sleep data from Oura API (date range returns array)
  * @param {string} token - Access token
  * @param {string} startDate - Start date YYYY-MM-DD
@@ -527,18 +542,51 @@ async function fetchActivityDataRange(token, startDate, endDate) {
 }
 
 /**
- * Fetch heart rate time-series data from Oura API
+ * Fetch heart rate time-series data from Oura API, paginating until exhausted.
+ *
+ * The /heartrate endpoint is unlike the daily-summary endpoints: it requires
+ * start_datetime/end_datetime (ISO 8601) instead of start_date/end_date, and
+ * paginates via next_token. Passing date-only params silently falls back to
+ * Oura's default window and never reveals there's more data — which is why we
+ * were previously seeing only the first ~600 samples (a single sleep window's
+ * worth of dense ~17s sampling) instead of full-day coverage.
+ *
  * @param {string} token - Access token
- * @param {string} startDate - Start date YYYY-MM-DD
- * @param {string} endDate - End date YYYY-MM-DD
+ * @param {string} startDatetime - Start datetime, ISO 8601
+ * @param {string} endDatetime - End datetime, ISO 8601
  * @returns {Promise<Array>}
  */
-async function fetchHeartRateSeries(token, startDate, endDate) {
-  const url = `https://${API_BASE}/v2/usercollection/heartrate?start_date=${startDate}&end_date=${endDate}`;
-  const response = await httpsRequest(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  return Array.isArray(response.data) ? response.data : [];
+async function fetchHeartRateSeries(token, startDatetime, endDatetime) {
+  const MAX_PAGES = 25; // safety cap; ~25 pages × ~600 records = 15k samples, plenty for a 48h window
+  const allData = [];
+  let nextToken = null;
+  let page = 0;
+
+  do {
+    const params = new URLSearchParams({
+      start_datetime: startDatetime,
+      end_datetime: endDatetime,
+    });
+    if (nextToken) params.set('next_token', nextToken);
+
+    const url = `https://${API_BASE}/v2/usercollection/heartrate?${params.toString()}`;
+    const response = await httpsRequest(url, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (Array.isArray(response?.data)) {
+      allData.push(...response.data);
+    }
+
+    nextToken = response?.next_token || null;
+    page++;
+  } while (nextToken && page < MAX_PAGES);
+
+  if (nextToken) {
+    console.warn(`Heart rate fetch capped at ${MAX_PAGES} pages (${allData.length} samples); more data exists.`);
+  }
+
+  return allData;
 }
 
 /**
@@ -793,7 +841,9 @@ async function main() {
 
     // Step 2: Fetch last 7 days of data
     const { startDate, endDate } = getLast7DaysRange();
+    const { startDatetime: hrStartDatetime, endDatetime: hrEndDatetime } = getHeartRateDatetimeRange();
     console.log(`Fetching last 7 days (${startDate} → ${endDate})...`);
+    console.log(`Fetching heart-rate window (${hrStartDatetime} → ${hrEndDatetime})...`);
 
     const [sleepList, readinessList, activityList, heartRateRaw, spo2List, workoutList, sleepPeriodList] =
       await Promise.all([
@@ -809,7 +859,10 @@ async function main() {
           console.warn('Activity fetch failed:', e.message);
           return [];
         }),
-        fetchHeartRateSeries(accessToken, startDate, endDate).catch(() => []),
+        fetchHeartRateSeries(accessToken, hrStartDatetime, hrEndDatetime).catch(e => {
+          console.warn('Heart rate fetch failed:', e.message);
+          return [];
+        }),
         fetchSpo2DataRange(accessToken, startDate, endDate).catch(() => []),
         fetchWorkoutsRange(accessToken, startDate, endDate).catch(() => []),
         fetchSleepPeriodsRange(accessToken, startDate, endDate).catch(e => {
