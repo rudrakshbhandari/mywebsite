@@ -994,11 +994,18 @@ async function main() {
     const readinessContributors = readinessData?.contributors || {};
     const activityContributors = activityData?.contributors || {};
 
-    // Heart rate: timeline for primary day only (PT), capped for public JSON size.
-    const hrNormalized = heartRateRaw
-      .map(normalizeHeartRatePoint)
-      .filter(Boolean)
-      .filter(p => getPtYmdFromTimestamp(p.timestamp) === dataDay);
+    // Heart rate: rolling 24h window ending at the most recent sample.
+    // Chosen over a PT calendar day so the chart always shows the user's actual
+    // last day of activity — at 3 PM PT, that's last night's sleep + today so far,
+    // not a "today" view that's mostly empty.
+    const hrAll = heartRateRaw.map(normalizeHeartRatePoint).filter(Boolean);
+    hrAll.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
+    const latestMs = hrAll.length > 0 ? new Date(hrAll[hrAll.length - 1].timestamp).getTime() : 0;
+    const rollingStartMs = latestMs - 24 * 60 * 60 * 1000;
+    const hrNormalized = hrAll.filter(p => {
+      const ms = new Date(p.timestamp).getTime();
+      return ms >= rollingStartMs && ms <= latestMs;
+    });
     const heartRateSeries = downsampleSeries(hrNormalized, HR_TIMELINE_MAX_POINTS);
     const heartRateStats =
       heartRateSeries.length > 0
