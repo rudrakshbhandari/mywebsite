@@ -608,7 +608,36 @@ function renderSimpleTrendCard(byDay, config, formatDay) {
 function formatTime(iso) {
   if (!iso) return '--';
   const d = new Date(iso);
-  return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  // Always render in PT — the underlying data is PT-anchored and the chart's
+  // X-axis is pinned to PT day bounds, so showing the viewer's local TZ would
+  // make labels disagree with positions for anyone not in Pacific time.
+  return d.toLocaleTimeString('en-US', {
+    timeZone: 'America/Los_Angeles',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
+/**
+ * Given a UTC ISO timestamp known to fall on a PT calendar day,
+ * return the UTC ms of that day's PT midnight (start) and start + 24h (end).
+ * DST-correct because the offset is derived from the sample's own PT hour-of-day,
+ * not a hardcoded assumption.
+ * @param {string} sampleIsoUtc
+ * @returns {{ start: number, end: number }}
+ */
+function getPtDayBoundsMs(sampleIsoUtc) {
+  const sample = new Date(sampleIsoUtc);
+  const hms = sample.toLocaleString('en-GB', {
+    timeZone: 'America/Los_Angeles',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+  });
+  const [hh, mm, ss] = hms.split(':').map(Number);
+  const start = sample.getTime() - (hh * 3600 + mm * 60 + ss) * 1000;
+  return { start, end: start + 86400000 };
 }
 
 /**
@@ -656,9 +685,11 @@ function renderHeartRateTimeline(series, data) {
   const rangeBpm = Math.max(maxBpm - minBpm, 1);
   const midBpm = Math.round((minBpm + maxBpm) / 2);
 
-  // Position points by actual timestamp so they align with the time-based x-axis
-  const timeStart = new Date(series[0].t).getTime();
-  const timeEnd = new Date(series[series.length - 1].t).getTime();
+  // Pin the X-axis to the full PT calendar day (00:00 → 24:00 PT) so empty
+  // hours read as "no data here" instead of the chart squishing to whatever
+  // window the data happens to cover. For "today" this means the right side
+  // is intentionally empty until more samples arrive.
+  const { start: timeStart, end: timeEnd } = getPtDayBoundsMs(series[0].t);
   const timeRange = Math.max(timeEnd - timeStart, 1);
   const points = series.map(point => {
     const t = new Date(point.t).getTime();
@@ -670,7 +701,13 @@ function renderHeartRateTimeline(series, data) {
 
   const pointList = points.map(p => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ');
   const linePath = `M ${pointList.split(' ').join(' L ')}`;
-  const fillPath = `${linePath} L ${marginLeft + plotWidth},${220} L ${marginLeft},${220} Z`;
+  // Close the fill at the actual data range, not the chart edge. With the X-axis
+  // pinned to the full PT day, the last data point may be mid-chart (e.g. "today"
+  // before sunset) — extending the fill all the way to the right edge would paint
+  // hours that have no data.
+  const firstX = points[0].x.toFixed(2);
+  const lastX = points[points.length - 1].x.toFixed(2);
+  const fillPath = `${linePath} L ${lastX},${220} L ${firstX},${220} Z`;
 
   line.setAttribute('d', linePath);
   fill.setAttribute('d', fillPath);
@@ -695,8 +732,10 @@ function renderHeartRateTimeline(series, data) {
     <text x="${marginLeft - 35}" y="${(top + bottom) / 2}" class="timeline-axis-label" text-anchor="end" transform="rotate(-90, ${marginLeft - 35}, ${(top + bottom) / 2})">bpm</text>
   `;
 
-  // Generate evenly-spaced x-axis labels based on time range
-  const labelCount = Math.min(7, Math.max(4, Math.floor(plotWidth / 130)));
+  // Fixed 5 labels at 6-hour intervals across the pinned 24h window:
+  // 12 AM / 6 AM / 12 PM / 6 PM / 12 AM. Consistent across days so the eye
+  // doesn't have to recalibrate.
+  const labelCount = 5;
   let xAxisHtml = '';
   for (let i = 0; i < labelCount; i++) {
     const frac = i / (labelCount - 1);
