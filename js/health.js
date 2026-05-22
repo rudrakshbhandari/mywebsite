@@ -880,10 +880,20 @@ function renderHeartRateTimeline(series, data) {
   if (latestEl) latestEl.textContent = data.heartRateLatestBpm !== null ? `${data.heartRateLatestBpm} bpm` : '--';
 
   if (footer) {
-    // Rolling 24h window — anchor the footer to the latest sample's time
-    // so the user can tell at a glance how fresh the chart is.
+    // Rolling 24h window — anchor the footer to the latest sample's full
+    // date + time so the user can tell at a glance how fresh the chart is
+    // without having to guess which day "12:36 PM" referred to.
     const latestT = series.length > 0 ? series[series.length - 1].t : null;
-    const through = latestT ? `Last 24h through ${formatTime(latestT)}` : 'Last 24h';
+    let through = 'Last 24h';
+    if (latestT) {
+      const datePart = new Date(latestT).toLocaleDateString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+      });
+      through = `Last 24h through ${datePart}, ${formatTime(latestT)} PT`;
+    }
     footer.textContent = `${through} • ${series.length} points`;
   }
 }
