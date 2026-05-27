@@ -1,6 +1,6 @@
 {
-  "lastUpdatedIso": "2026-05-27T18:33:52.099Z",
-  "day": "2026-05-26",
+  "lastUpdatedIso": "2026-05-27T20:54:52.433Z",
+  "day": "2026-05-27",
   "byDay": [
     {
       "day": "2026-05-21",
@@ -106,8 +106,8 @@
     },
     {
       "day": "2026-05-27",
-      "sleepScore": null,
-      "readinessScore": null,
+      "sleepScore": 83,
+      "readinessScore": 86,
       "activityScore": null,
       "restingHrBpm": null,
       "hrvMs": null,
@@ -122,129 +122,29 @@
       "sleepEfficiency": null
     }
   ],
-  "sleepScore": 75,
-  "sleepDeep": 85,
-  "sleepEfficiency": 83,
-  "sleepLatency": 94,
-  "sleepRem": 53,
-  "sleepRestfulness": 59,
-  "sleepTiming": 94,
-  "sleepTotal": 72,
+  "sleepScore": 83,
+  "sleepDeep": 95,
+  "sleepEfficiency": 88,
+  "sleepLatency": 83,
+  "sleepRem": 63,
+  "sleepRestfulness": 82,
+  "sleepTiming": 80,
+  "sleepTotal": 85,
   "readinessScore": 86,
-  "readinessActivityBalance": 91,
+  "readinessActivityBalance": 77,
   "readinessBodyTemp": 98,
-  "readinessHrvBalance": 94,
-  "readinessPreviousDay": 91,
-  "readinessPreviousNight": 59,
-  "readinessRecoveryIndex": 100,
-  "readinessRestingHr": 100,
-  "readinessSleepBalance": 80,
+  "readinessHrvBalance": 95,
+  "readinessPreviousDay": 76,
+  "readinessPreviousNight": 80,
+  "readinessRecoveryIndex": 88,
+  "readinessRestingHr": 91,
+  "readinessSleepBalance": 94,
   "readinessSleepRegularity": 83,
-  "tempDeviation": -0.19,
+  "tempDeviation": -0.21,
   "restingHrBpm": null,
   "hrvMs": null,
-  "heartRateSeriesDay": "2026-05-26",
+  "heartRateSeriesDay": "2026-05-27",
   "heartRateSeries": [
-    {
-      "t": "2026-05-26T16:13:16.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-05-26T16:18:16.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-05-26T16:23:16.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-05-26T16:28:16.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-05-26T16:33:16.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-05-26T16:38:16.000Z",
-      "bpm": 67
-    },
-    {
-      "t": "2026-05-26T16:43:16.000Z",
-      "bpm": 69
-    },
-    {
-      "t": "2026-05-26T16:48:16.000Z",
-      "bpm": 71
-    },
-    {
-      "t": "2026-05-26T16:53:16.000Z",
-      "bpm": 70
-    },
-    {
-      "t": "2026-05-26T16:58:16.000Z",
-      "bpm": 70
-    },
-    {
-      "t": "2026-05-26T17:03:16.000Z",
-      "bpm": 69
-    },
-    {
-      "t": "2026-05-26T17:06:01.000Z",
-      "bpm": 68
-    },
-    {
-      "t": "2026-05-26T17:11:01.000Z",
-      "bpm": 70
-    },
-    {
-      "t": "2026-05-26T17:16:01.000Z",
-      "bpm": 72
-    },
-    {
-      "t": "2026-05-26T17:21:01.000Z",
-      "bpm": 73
-    },
-    {
-      "t": "2026-05-26T17:26:02.000Z",
-      "bpm": 73
-    },
-    {
-      "t": "2026-05-26T17:31:02.000Z",
-      "bpm": 75
-    },
-    {
-      "t": "2026-05-26T17:36:02.000Z",
-      "bpm": 74
-    },
-    {
-      "t": "2026-05-26T17:41:02.000Z",
-      "bpm": 77
-    },
-    {
-      "t": "2026-05-26T17:46:02.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-05-26T18:03:16.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-05-26T18:08:16.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-05-26T18:13:16.000Z",
-      "bpm": 78
-    },
-    {
-      "t": "2026-05-26T18:18:16.000Z",
-      "bpm": 77
-    },
-    {
-      "t": "2026-05-26T18:23:16.000Z",
-      "bpm": 79
-    },
     {
       "t": "2026-05-26T18:54:22.000Z",
       "bpm": 78
@@ -4580,30 +4480,150 @@
     {
       "t": "2026-05-27T16:11:16.000Z",
       "bpm": 67
+    },
+    {
+      "t": "2026-05-27T16:16:16.000Z",
+      "bpm": 65
+    },
+    {
+      "t": "2026-05-27T16:21:16.000Z",
+      "bpm": 64
+    },
+    {
+      "t": "2026-05-27T16:26:16.000Z",
+      "bpm": 66
+    },
+    {
+      "t": "2026-05-27T16:31:16.000Z",
+      "bpm": 67
+    },
+    {
+      "t": "2026-05-27T16:36:16.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-05-27T16:41:16.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-05-27T16:46:16.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-05-27T16:51:16.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-05-27T16:56:16.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-05-27T17:01:16.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-05-27T17:06:16.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-05-27T17:11:16.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-05-27T17:16:16.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-05-27T17:21:16.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-05-27T17:26:16.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-05-27T17:31:16.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-05-27T17:36:16.000Z",
+      "bpm": 65
+    },
+    {
+      "t": "2026-05-27T17:41:16.000Z",
+      "bpm": 66
+    },
+    {
+      "t": "2026-05-27T17:45:02.000Z",
+      "bpm": 68
+    },
+    {
+      "t": "2026-05-27T17:50:02.000Z",
+      "bpm": 69
+    },
+    {
+      "t": "2026-05-27T17:55:02.000Z",
+      "bpm": 70
+    },
+    {
+      "t": "2026-05-27T18:00:02.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-05-27T18:05:02.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-05-27T18:10:02.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-05-27T18:15:02.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-05-27T18:20:02.000Z",
+      "bpm": 77
+    },
+    {
+      "t": "2026-05-27T18:25:02.000Z",
+      "bpm": 77
+    },
+    {
+      "t": "2026-05-27T18:28:01.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-05-27T18:48:01.000Z",
+      "bpm": 76
+    },
+    {
+      "t": "2026-05-27T18:53:01.000Z",
+      "bpm": 78
     }
   ],
   "heartRateMinBpm": 63,
   "heartRateMaxBpm": 129,
   "heartRateAvgBpm": 94,
-  "heartRateLatestBpm": 67,
-  "activityScore": 85,
-  "activityMeetTargets": 60,
-  "activityMoveHour": 100,
-  "activityRecoveryTime": 100,
-  "activityStayActive": 70,
-  "activityTrainingFreq": 100,
-  "activityTrainingVol": 100,
-  "steps": 7200,
-  "activeCalories": 622,
-  "totalCalories": 2471,
-  "targetCalories": 500,
-  "metersToTarget": -2600,
-  "highActivityMinutes": 60,
-  "mediumActivityMinutes": 114,
-  "lowActivityMinutes": 146,
+  "heartRateLatestBpm": 78,
+  "activityScore": null,
+  "activityMeetTargets": null,
+  "activityMoveHour": null,
+  "activityRecoveryTime": null,
+  "activityStayActive": null,
+  "activityTrainingFreq": null,
+  "activityTrainingVol": null,
+  "steps": null,
+  "activeCalories": null,
+  "totalCalories": null,
+  "targetCalories": null,
+  "metersToTarget": null,
+  "highActivityMinutes": null,
+  "mediumActivityMinutes": null,
+  "lowActivityMinutes": null,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
-  "workoutCount": 2,
+  "workoutCount": 0,
   "workoutMinutes": 0,
-  "workoutCalories": 59
+  "workoutCalories": 0
 }
