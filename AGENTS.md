@@ -80,9 +80,11 @@ If you catch yourself writing a code block or explaining "here's what you should
 1. **Never use a script to resolve conflicts in `index.html`.** Always resolve manually — open the file, find each `<<<<<<<` marker, and decide line-by-line. Git auto-merges non-conflicting sections correctly; only the marked blocks need human judgment.
 
 2. **After committing a merge, immediately run a regression check:**
+
    ```bash
    git diff HEAD origin/main -- index.html | grep "^+" | grep -v "health\|oura\|stats"
    ```
+
    Any `+` lines are things `main` has that the branch doesn't. Cross-check each one: is it an intentional PR removal, or a regression? Fix regressions before pushing.
 
 3. **Prefer `git rebase origin/main` over `git merge origin/main`** for feature branches. Rebasing replays commits one at a time on top of `main`, producing smaller, easier-to-review conflict surfaces instead of one giant three-way merge of the whole file.
