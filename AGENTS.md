@@ -71,6 +71,31 @@ If you catch yourself writing a code block or explaining "here's what you should
 - **Use available automation** — Prefer automated solutions over manual steps whenever tools are available in `scripts/` or elsewhere
 - **Handle interactive prompts** — If a script is interactive, create a non-interactive wrapper or pipe inputs when possible, rather than asking the user to run it themselves
 
+## Merging main into a Feature Branch (Critical)
+
+`index.html` is a 700+ line monolithic file. Merge conflicts in it are high-risk — conflict zones border live content, so careless resolution silently reverts changes from `main` that were NOT part of the conflict.
+
+**Rules:**
+
+1. **Never use a script to resolve conflicts in `index.html`.** Always resolve manually — open the file, find each `<<<<<<<` marker, and decide line-by-line. Git auto-merges non-conflicting sections correctly; only the marked blocks need human judgment.
+
+2. **After committing a merge, immediately run a regression check:**
+
+   ```bash
+   git diff HEAD origin/main -- index.html | grep "^+" | grep -v "health\|oura\|stats"
+   ```
+
+   Any `+` lines are things `main` has that the branch doesn't. Cross-check each one: is it an intentional PR removal, or a regression? Fix regressions before pushing.
+
+3. **Prefer `git rebase origin/main` over `git merge origin/main`** for feature branches. Rebasing replays commits one at a time on top of `main`, producing smaller, easier-to-review conflict surfaces instead of one giant three-way merge of the whole file.
+
+4. **Key sentinel values to always verify after a merge** — these have regressed before:
+   - Email address in the contact section
+   - Contact status lines
+   - Experience section header copy
+   - Experience card order and content (new cards added to `main` can vanish)
+   - GPA stat (was removed from `main`; must stay removed)
+
 ## Oura Guardrails
 
 If you touch the Oura health pipeline, read `docs/OURA_AUTOMATION.md` first.
