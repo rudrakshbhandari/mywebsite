@@ -729,6 +729,11 @@
         fill: rgba(94, 234, 212, 0.14);
       }
 
+      .timeline-point {
+        fill: #5eead4;
+        pointer-events: none;
+      }
+
       .chart-tooltip {
         position: fixed;
         z-index: 100;
@@ -1578,6 +1583,7 @@
                 <g id="hr-grid"></g>
                 <path id="heart-rate-fill" class="timeline-fill" d=""></path>
                 <path id="heart-rate-line" class="timeline-line" d=""></path>
+                <g id="hr-points"></g>
                 <line
                   id="hr-tracking-line"
                   class="hr-tracking-line"

@@ -19,6 +19,20 @@ The format is based on Keep a Changelog and this project uses date-based release
 - Replaced Vercel hosting/analytics hooks with GitHub Pages deployment scaffolding plus Cloudflare and GA4 configuration.
 - Removed the lingering Vercel custom-domain aliases and Git integration for `mywebsite` so production is unambiguously GitHub Pages + Cloudflare.
 
+## [2026-05-20]
+
+### Added
+
+- Per-sample dots on the intraday Heart Rate Timeline so gaps in Oura's recording are visible. Long flat segments between two far-apart dots now read as "no data here," not as interpolated truth.
+
+### Changed
+
+- Heart Rate Timeline now shows a **rolling 24h window ending at the latest sample** instead of a PT calendar day. The latest data point anchors the right edge; the chart extends 24h to the left. At 3 PM PT that means last night's sleep + today's awake hours so far — always-full chart, no waiting for the day to fill in. Fetch pipeline filters samples to the same rolling window so the JSON payload matches the chart's range. All chart time labels render in Pacific time regardless of viewer timezone so axis labels match data positions.
+
+### Fixed
+
+- Heart Rate Timeline now covers the full day instead of just the first sleep window. The Oura `/heartrate` endpoint requires `start_datetime`/`end_datetime` (not `start_date`/`end_date` like the daily-summary endpoints) and paginates via `next_token`. The previous fetch passed date-only params (silently ignored) and didn't follow pagination, so we were only seeing the first page (~600 dense sleep samples) and never the daytime data.
+
 ## [2026-02-27]
 
 ### Added

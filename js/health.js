@@ -608,7 +608,27 @@ function renderSimpleTrendCard(byDay, config, formatDay) {
 function formatTime(iso) {
   if (!iso) return '--';
   const d = new Date(iso);
-  return d.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+  // Always render in PT — the underlying data is PT-anchored and the chart's
+  // X-axis is pinned to PT day bounds, so showing the viewer's local TZ would
+  // make labels disagree with positions for anyone not in Pacific time.
+  return d.toLocaleTimeString('en-US', {
+    timeZone: 'America/Los_Angeles',
+    hour: 'numeric',
+    minute: '2-digit',
+  });
+}
+
+/**
+ * Rolling 24h window ending at the latest sample's timestamp.
+ * Anchoring to the actual data (not "today PT midnight") keeps the chart
+ * full of data right up to the right edge — last night's sleep plus today
+ * so far, instead of a "today" view with an empty afternoon.
+ * @param {Array<{t: string}>} series - chronologically sorted
+ * @returns {{ start: number, end: number }}
+ */
+function getRolling24hBounds(series) {
+  const end = new Date(series[series.length - 1].t).getTime();
+  return { start: end - 86400000, end };
 }
 
 /**
@@ -656,9 +676,11 @@ function renderHeartRateTimeline(series, data) {
   const rangeBpm = Math.max(maxBpm - minBpm, 1);
   const midBpm = Math.round((minBpm + maxBpm) / 2);
 
-  // Position points by actual timestamp so they align with the time-based x-axis
-  const timeStart = new Date(series[0].t).getTime();
-  const timeEnd = new Date(series[series.length - 1].t).getTime();
+  // Rolling 24h window ending at the latest sample. The latest data point
+  // sits at the right edge; the chart extends 24h to the left of that. So
+  // at 3 PM you see last night's sleep + today's awake hours — not a
+  // "today" view with an empty afternoon waiting to fill in.
+  const { start: timeStart, end: timeEnd } = getRolling24hBounds(series);
   const timeRange = Math.max(timeEnd - timeStart, 1);
   const points = series.map(point => {
     const t = new Date(point.t).getTime();
@@ -670,10 +692,29 @@ function renderHeartRateTimeline(series, data) {
 
   const pointList = points.map(p => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ');
   const linePath = `M ${pointList.split(' ').join(' L ')}`;
-  const fillPath = `${linePath} L ${marginLeft + plotWidth},${220} L ${marginLeft},${220} Z`;
+  // Close the fill at the actual data range, not the chart edge. With the X-axis
+  // pinned to the full PT day, the last data point may be mid-chart (e.g. "today"
+  // before sunset) — extending the fill all the way to the right edge would paint
+  // hours that have no data.
+  const firstX = points[0].x.toFixed(2);
+  const lastX = points[points.length - 1].x.toFixed(2);
+  const fillPath = `${linePath} L ${lastX},${220} L ${firstX},${220} Z`;
 
   line.setAttribute('d', linePath);
   fill.setAttribute('d', fillPath);
+
+  // Render a dot at each real sample so gaps in Oura's recording are visible —
+  // long flat segments between two far-apart dots = no data, not interpolated truth.
+  // r scales down for dense datasets so 200-point sleep windows don't look like a thick bar.
+  const pointsEl = document.getElementById('hr-points');
+  if (pointsEl) {
+    const dotRadius = points.length > 400 ? 1.4 : points.length > 150 ? 1.8 : 2.2;
+    pointsEl.innerHTML = points
+      .map(
+        p => `<circle class="timeline-point" cx="${p.x.toFixed(2)}" cy="${p.y.toFixed(2)}" r="${dotRadius}"></circle>`
+      )
+      .join('');
+  }
 
   axisY.innerHTML = `
     <text x="${marginLeft - 8}" y="${bottom}" class="timeline-axis-label" text-anchor="end">${minBpm}</text>
@@ -682,8 +723,10 @@ function renderHeartRateTimeline(series, data) {
     <text x="${marginLeft - 35}" y="${(top + bottom) / 2}" class="timeline-axis-label" text-anchor="end" transform="rotate(-90, ${marginLeft - 35}, ${(top + bottom) / 2})">bpm</text>
   `;
 
-  // Generate evenly-spaced x-axis labels based on time range
-  const labelCount = Math.min(7, Math.max(4, Math.floor(plotWidth / 130)));
+  // Fixed 5 labels at 6-hour intervals across the pinned 24h window:
+  // 12 AM / 6 AM / 12 PM / 6 PM / 12 AM. Consistent across days so the eye
+  // doesn't have to recalibrate.
+  const labelCount = 5;
   let xAxisHtml = '';
   for (let i = 0; i < labelCount; i++) {
     const frac = i / (labelCount - 1);
@@ -837,8 +880,21 @@ function renderHeartRateTimeline(series, data) {
   if (latestEl) latestEl.textContent = data.heartRateLatestBpm !== null ? `${data.heartRateLatestBpm} bpm` : '--';
 
   if (footer) {
-    const sourceDay = data.heartRateSeriesDay ? `Source day: ${data.heartRateSeriesDay}` : 'Intraday trend';
-    footer.textContent = `${sourceDay} • ${series.length} points`;
+    // Rolling 24h window — anchor the footer to the latest sample's full
+    // date + time so the user can tell at a glance how fresh the chart is
+    // without having to guess which day "12:36 PM" referred to.
+    const latestT = series.length > 0 ? series[series.length - 1].t : null;
+    let through = 'Last 24h';
+    if (latestT) {
+      const datePart = new Date(latestT).toLocaleDateString('en-US', {
+        timeZone: 'America/Los_Angeles',
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+      });
+      through = `Last 24h through ${datePart}, ${formatTime(latestT)} PT`;
+    }
+    footer.textContent = `${through} • ${series.length} points`;
   }
 }
 
