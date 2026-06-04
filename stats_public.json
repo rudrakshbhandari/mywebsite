@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-03T12:04:20.253Z",
+  "lastUpdated": "2026-06-04T10:43:05.167Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -27,18 +27,18 @@
   },
   "websiteVisitors": {
     "windowDays": 30,
-    "windowStart": "2026-05-04T12:04:10.164Z",
-    "windowEnd": "2026-06-03T12:04:10.164Z",
-    "totalVisits": 9180,
-    "totalPageviews": 9310,
+    "windowStart": "2026-05-05T10:42:55.903Z",
+    "windowEnd": "2026-06-04T10:42:55.903Z",
+    "totalVisits": 9150,
+    "totalPageviews": 9300,
     "perSite": {
       "rudrakshbhandari.com": {
-        "visits": 200,
-        "pageviews": 230
+        "visits": 210,
+        "pageviews": 240
       },
       "nomnom.cc": {
-        "visits": 100,
-        "pageviews": 100
+        "visits": 80,
+        "pageviews": 80
       },
       "shareallbooks.com": {
         "visits": 250,
@@ -49,7 +49,7 @@
         "pageviews": 0
       },
       "nyaaywatch.in": {
-        "visits": 8630,
+        "visits": 8610,
         "pageviews": 8730
       }
     }
