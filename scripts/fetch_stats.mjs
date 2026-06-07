@@ -80,6 +80,7 @@ function collectCloudflareSites() {
 async function fetchCloudflareVisitors() {
   const token = process.env.CF_API_TOKEN?.trim();
   const accountId = process.env.CF_ACCOUNT_ID?.trim();
+  const excludeBots = process.env.CF_EXCLUDE_BOTS !== 'false';
   if (!token || !accountId) {
     console.warn('[cf] CF_API_TOKEN or CF_ACCOUNT_ID missing — skipping visitors');
     return null;
@@ -90,6 +91,7 @@ async function fetchCloudflareVisitors() {
   const start = new Date(end.getTime() - 30 * 24 * 60 * 60 * 1000);
   const startStr = start.toISOString();
   const endStr = end.toISOString();
+  const botFilterClause = excludeBots ? ', bot: 0' : '';
 
   const query = `
     query ($accountTag: String!, $siteTag: String!, $start: Time!, $end: Time!) {
@@ -97,7 +99,7 @@ async function fetchCloudflareVisitors() {
         accounts(filter: { accountTag: $accountTag }) {
           rumPageloadEventsAdaptiveGroups(
             limit: 10000
-            filter: { siteTag: $siteTag, datetime_geq: $start, datetime_leq: $end }
+            filter: { siteTag: $siteTag, datetime_geq: $start, datetime_leq: $end${botFilterClause} }
           ) {
             count
             sum { visits }
@@ -153,12 +155,32 @@ async function fetchCloudflareVisitors() {
   if (!anySucceeded) return null;
 
   return {
+    sourceStatus: 'fresh',
+    source: {
+      provider: 'cloudflare',
+      dataset: 'rumPageloadEventsAdaptiveGroups',
+      metric: 'sum.visits',
+      pageviewMetric: 'count',
+      botFilter: excludeBots ? 'excluded' : 'included',
+      botFilterExpression: excludeBots ? 'bot: 0' : null,
+      siteTagKind: 'cloudflare-rum-site-id',
+    },
     windowDays: 30,
     windowStart: startStr,
     windowEnd: endStr,
     totalVisits,
     totalPageviews,
     perSite: results,
+  };
+}
+
+function markStaleWebsiteVisitors(previous, reason) {
+  if (!previous?.websiteVisitors) return null;
+  return {
+    ...previous.websiteVisitors,
+    sourceStatus: 'stale',
+    staleReason: reason,
+    lastRefreshAttemptedAt: new Date().toISOString(),
   };
 }
 
@@ -686,12 +708,12 @@ async function main() {
   ]);
 
   const apps = mergeApps({ previous, apple, play });
-  const websiteVisitors = visitors ?? previous.websiteVisitors ?? null;
+  const websiteVisitors = visitors ?? markStaleWebsiteVisitors(previous, 'cloudflare_refresh_unavailable');
 
   const out = {
     lastUpdated: new Date().toISOString(),
     sources: {
-      cloudflare: visitors ? 'ok' : 'skipped',
+      cloudflare: visitors ? 'ok' : websiteVisitors ? 'stale' : 'skipped',
       appStore: apple ? 'ok' : 'skipped',
       googlePlay: play ? 'ok' : 'skipped',
     },
