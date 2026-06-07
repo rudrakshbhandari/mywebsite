@@ -478,41 +478,6 @@ button:focus-visible {
   transform: translateY(30px);
 }
 
-.about__proof {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
-  margin: 0.25rem 0 2rem;
-}
-
-.about__proof-item {
-  padding: 0.85rem 0.9rem;
-  border: 1px solid rgba(26, 26, 26, 0.1);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.35);
-}
-
-.about__proof-label {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 0.66rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-accent);
-  margin-bottom: 0.45rem;
-}
-
-.about__proof-value {
-  display: block;
-  font-family: var(--font-display);
-  font-size: 0.86rem;
-  font-weight: 600;
-  line-height: 1.35;
-  color: var(--color-text);
-}
-
 @media (prefers-reduced-motion: reduce) {
   .gsap-ready .about__paragraph {
     opacity: 1;
@@ -1467,19 +1432,6 @@ button:focus-visible {
   .about__stats {
     flex-direction: row;
     gap: 2rem;
-  }
-
-  .about__proof {
-    grid-template-columns: 1fr;
-    gap: 0.6rem;
-  }
-
-  .about__proof-item {
-    padding: 0.7rem 0.8rem;
-  }
-
-  .about__proof-value {
-    font-size: 0.82rem;
   }
 
   .experience__header {
