@@ -504,34 +504,36 @@ button:focus-visible {
 }
 
 .about__stats {
-  display: flex;
-  gap: 3rem;
-  margin-top: 2.5rem;
-  padding-top: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, max-content));
+  gap: 1rem 2rem;
+  align-items: baseline;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
   border-top: 1px solid rgba(26, 26, 26, 0.1);
 }
 
 .about__stat {
   display: flex;
-  flex-direction: column;
+  align-items: baseline;
+  gap: 0.5rem;
 }
 
-.about__stat-number {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 2.25rem;
+.about__stat-value {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1rem;
   color: var(--color-accent);
-  line-height: 1.1;
+  line-height: 1;
 }
 
 .about__stat-label {
   font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: 0.72rem;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-muted);
-  margin-top: 0.35rem;
 }
 
 /* =============================================
@@ -1430,7 +1432,7 @@ button:focus-visible {
   }
 
   .about__stats {
-    flex-direction: row;
+    grid-template-columns: 1fr;
     gap: 2rem;
   }
 
