@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-06-10T11:01:50.479Z",
+  "lastUpdated": "2026-06-11T11:45:17.626Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -9,8 +9,8 @@
     "shareallbooks": {
       "label": "ShareAllBooks",
       "iosDownloads": 238,
-      "androidInstalls": 1735,
-      "total": 1973
+      "androidInstalls": 1736,
+      "total": 1974
     },
     "nomnomRider": {
       "label": "NomNom Rider",
@@ -37,30 +37,30 @@
       "siteTagKind": "cloudflare-rum-site-id"
     },
     "windowDays": 30,
-    "windowStart": "2026-05-11T11:01:39.847Z",
-    "windowEnd": "2026-06-10T11:01:39.847Z",
-    "totalVisits": 7450,
-    "totalPageviews": 7520,
+    "windowStart": "2026-05-12T11:44:46.811Z",
+    "windowEnd": "2026-06-11T11:44:46.811Z",
+    "totalVisits": 4430,
+    "totalPageviews": 4430,
     "perSite": {
       "rudrakshbhandari.com": {
-        "visits": 150,
-        "pageviews": 170
+        "visits": 100,
+        "pageviews": 100
       },
       "nomnom.cc": {
         "visits": 50,
         "pageviews": 50
       },
       "shareallbooks.com": {
-        "visits": 260,
-        "pageviews": 260
+        "visits": 280,
+        "pageviews": 280
       },
       "outfitr.net": {
         "visits": 0,
         "pageviews": 0
       },
       "nyaaywatch.in": {
-        "visits": 6990,
-        "pageviews": 7040
+        "visits": 4000,
+        "pageviews": 4000
       }
     }
   }
