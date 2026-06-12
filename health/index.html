@@ -33,7 +33,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
@@ -44,6 +44,8 @@
       integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0"
       crossorigin="anonymous"
     />
+
+    <link rel="stylesheet" href="../css/tokens.css?v=1" />
 
     <style>
       /* CSS Variables - Matching main site */
@@ -64,8 +66,11 @@
         --border-color: #334155;
         --shadow-glow: 0 0 30px var(--primary-glow);
 
-        --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-        --font-display: 'Space Grotesk', var(--font-family);
+        /* Dashboard type pairing — defined in css/tokens.css (linked above).
+           Deliberate alternate to the brand serif: Inter/Space Grotesk read
+           better for the numeric, data-dense dashboard UI. */
+        --font-family: var(--font-dashboard-body);
+        --font-display: var(--font-dashboard-display);
         --radius-lg: 0.75rem;
         --radius-xl: 1rem;
         --transition-normal: 0.3s ease-in-out;
@@ -79,8 +84,8 @@
 
       body {
         font-family: var(--font-family);
-        font-size: 16px;
-        line-height: 1.6;
+        font-size: var(--fs-base);
+        line-height: var(--lh-base);
         color: var(--text-primary);
         background: var(--background-dark);
         min-height: 100vh;
