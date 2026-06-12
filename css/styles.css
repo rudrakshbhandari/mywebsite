@@ -3,7 +3,9 @@
    Inspired by Apple product pages, Linear, rauno.me
    ============================================= */
 
-/* --- CSS Variables --- */
+/* --- CSS Variables ---
+   Typography tokens (--font-display, --font-body, --fw-*, --fs-*, --lh-*)
+   live in css/tokens.css, which MUST be linked before this file. */
 :root {
   --color-bg: #f5f0eb;
   --color-text: #1a1a1a;
@@ -11,9 +13,6 @@
   --color-muted: #8b8680;
   --color-cream: #f5f0eb;
   --color-white: #ffffff;
-
-  --font-display: 'Plus Jakarta Sans', sans-serif;
-  --font-body: 'Libre Baskerville', Georgia, serif;
 
   --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
@@ -43,7 +42,7 @@ html {
 
 body {
   font-family: var(--font-body);
-  font-size: 1rem;
+  font-size: var(--fs-base);
   line-height: 1.7;
   color: var(--color-text);
   background-color: var(--color-bg);
@@ -102,7 +101,7 @@ ul {
   border-radius: 0 0 8px 0;
   transition: top 0.2s ease;
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
 }
 
 .skip-link:focus {
@@ -194,8 +193,8 @@ button:focus-visible {
 
 .nav-logo {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.25rem;
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-lg);
   color: var(--color-text);
   letter-spacing: -0.02em;
   text-decoration: none;
@@ -210,7 +209,7 @@ button:focus-visible {
 .nav-link {
   font-family: var(--font-display);
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   color: var(--color-muted);
   text-decoration: none;
   letter-spacing: 0.03em;
@@ -228,7 +227,7 @@ button:focus-visible {
   color: var(--color-white) !important;
   padding: 0.35rem 0.85rem;
   border-radius: 6px;
-  font-size: 0.75rem;
+  font-size: var(--fs-2xs);
 }
 
 .nav-resume:hover {
@@ -261,8 +260,8 @@ button:focus-visible {
 
 .section-kicker {
   font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 700;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-bold);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -275,7 +274,7 @@ button:focus-visible {
 
 .section-intro {
   max-width: 42rem;
-  font-size: 1rem;
+  font-size: var(--fs-base);
   line-height: 1.75;
   color: var(--color-muted);
   margin-top: 1rem;
@@ -313,7 +312,7 @@ button:focus-visible {
 
 .hero__line {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: var(--fw-extrabold);
   font-size: clamp(3.5rem, 9.5vw, 9.5rem);
   line-height: 0.9;
   color: var(--color-text);
@@ -367,7 +366,7 @@ button:focus-visible {
 .hero__subtitle {
   font-family: var(--font-display);
   font-size: clamp(0.78rem, 1.15vw, 0.95rem);
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--color-text);
   margin-top: 2rem;
   position: relative;
@@ -387,14 +386,14 @@ button:focus-visible {
 
 .hero__subtitle-line--lede {
   color: var(--color-text);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   letter-spacing: 0.04em;
   opacity: 1;
 }
 
 .hero__subtitle-line:not(.hero__subtitle-line--lede) {
   color: #5a5653;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.06em;
   font-style: italic;
   font-family: var(--font-body);
@@ -458,7 +457,7 @@ button:focus-visible {
 
 .about__heading {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: var(--fw-extrabold);
   font-size: clamp(2rem, 4vw, 3.5rem);
   margin-bottom: 2rem;
   color: var(--color-text);
@@ -492,7 +491,7 @@ button:focus-visible {
   transition:
     border-color 0.2s ease,
     color 0.2s ease;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
 }
 
 .text-link:hover {
@@ -518,16 +517,16 @@ button:focus-visible {
 
 .about__stat-number {
   font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 2.25rem;
+  font-weight: var(--fw-bold);
+  font-size: var(--fs-3xl);
   color: var(--color-accent);
   line-height: 1.1;
 }
 
 .about__stat-label {
   font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 500;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-medium);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--color-muted);
@@ -552,7 +551,7 @@ button:focus-visible {
 
 .experience__heading {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: var(--fw-extrabold);
   font-size: clamp(2rem, 4vw, 3.5rem);
   color: var(--color-white);
 }
@@ -586,8 +585,8 @@ button:focus-visible {
 
 .exp-card__date {
   font-family: var(--font-display);
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: var(--fs-2xs);
+  font-weight: var(--fw-semibold);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-accent);
@@ -597,8 +596,8 @@ button:focus-visible {
 
 .exp-card__company {
   font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 1.5rem;
+  font-weight: var(--fw-extrabold);
+  font-size: var(--fs-xl);
   margin-bottom: 0.25rem;
   color: var(--color-white);
 }
@@ -606,7 +605,7 @@ button:focus-visible {
 .exp-card__role {
   font-family: var(--font-body);
   font-size: 0.95rem;
-  font-weight: 400;
+  font-weight: var(--fw-regular);
   color: rgba(255, 255, 255, 0.7);
   margin-bottom: 0.25rem;
 }
@@ -694,7 +693,7 @@ button:focus-visible {
 
 .collage-card__name {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   font-size: 0.85rem;
   color: var(--color-text);
   margin-bottom: 0.3rem;
@@ -734,7 +733,7 @@ button:focus-visible {
 
 .projects__heading {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: var(--fw-extrabold);
   font-size: clamp(2rem, 4vw, 3.25rem);
   line-height: 1.05;
   color: var(--color-text);
@@ -751,7 +750,7 @@ button:focus-visible {
 .projects__meta-link {
   font-family: var(--font-display);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -765,7 +764,7 @@ button:focus-visible {
 .projects__tier-label {
   font-family: var(--font-display);
   font-size: 0.7rem;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -796,7 +795,7 @@ button:focus-visible {
 
 .proj-card--compact .proj-card__title {
   font-size: 1.05rem;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   margin-bottom: 0.3rem;
 }
 
@@ -858,7 +857,7 @@ button:focus-visible {
 .proj-card__metric {
   font-family: var(--font-display);
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--color-text);
   letter-spacing: 0.02em;
   margin-bottom: 1rem;
@@ -898,7 +897,7 @@ button:focus-visible {
 
 .proj-card__title {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: var(--fw-extrabold);
   font-size: 1.75rem;
   margin-bottom: 1rem;
   color: var(--color-text);
@@ -907,7 +906,7 @@ button:focus-visible {
 .proj-card__badge {
   display: inline-block;
   font-size: 0.65rem;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--color-accent);
   background: rgba(200, 85, 61, 0.1);
   border: 1px solid var(--color-accent);
@@ -935,7 +934,7 @@ button:focus-visible {
 .proj-card__tech span {
   font-family: var(--font-display);
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   text-transform: uppercase;
   letter-spacing: 0.06em;
   padding: 0.3rem 0.75rem;
@@ -947,7 +946,7 @@ button:focus-visible {
 .proj-card__link {
   font-family: var(--font-display);
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--color-accent);
   text-decoration: none;
   display: inline-block;
@@ -990,7 +989,7 @@ button:focus-visible {
   font-family: var(--font-display);
   font-size: clamp(3rem, 8vw, 7rem);
   line-height: 0.95;
-  font-weight: 800;
+  font-weight: var(--fw-extrabold);
   color: var(--color-text);
 }
 
@@ -1063,7 +1062,7 @@ button:focus-visible {
 .work-card__meta {
   font-family: var(--font-display);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-accent);
@@ -1103,7 +1102,7 @@ button:focus-visible {
 .work-row > span {
   font-family: var(--font-display);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-muted);
@@ -1125,7 +1124,7 @@ button:focus-visible {
 
 .skills__heading {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: var(--fw-extrabold);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   margin-bottom: 1.5rem;
   color: var(--color-text);
@@ -1139,7 +1138,7 @@ button:focus-visible {
 
 .skills__prose strong {
   color: var(--color-text);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
 }
 
 /* =============================================
@@ -1180,21 +1179,21 @@ button:focus-visible {
 .contact__status-line {
   display: block;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: var(--fw-medium);
   letter-spacing: 0.01em;
   text-transform: none;
   opacity: 0.92;
 }
 
 .contact__status-line--primary {
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   opacity: 1;
 }
 
 .contact__cta {
   display: inline-block;
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: var(--fw-bold);
   font-size: clamp(0.95rem, 1.4vw, 1.05rem);
   letter-spacing: 0.02em;
   color: var(--color-accent);
@@ -1224,7 +1223,7 @@ button:focus-visible {
 
 .contact__email {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: var(--fw-extrabold);
   font-size: clamp(1.25rem, 3.8vw, 3rem);
   color: var(--color-white);
   text-decoration: none;
@@ -1250,7 +1249,7 @@ button:focus-visible {
 .contact__social-link {
   font-family: var(--font-display);
   font-size: 0.85rem;
-  font-weight: 600;
+  font-weight: var(--fw-semibold);
   color: var(--color-white);
   text-decoration: none;
   text-transform: uppercase;
@@ -1556,7 +1555,7 @@ button:focus-visible {
 
   .skills__prose {
     text-align: left;
-    font-size: 1rem;
+    font-size: var(--fs-base);
     hyphens: auto;
   }
 

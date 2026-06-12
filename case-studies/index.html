@@ -40,6 +40,8 @@
       crossorigin="anonymous"
     />
 
+    <link rel="stylesheet" href="../css/tokens.css?v=1" />
+
     <style>
       :root {
         --primary-color: #c8553d;
@@ -54,9 +56,7 @@
         --background-dark: #12100e;
         --background-card: #242019;
         --border-color: #3a3530;
-        --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-        --font-display: 'Plus Jakarta Sans', var(--font-family);
-        --font-body: 'Libre Baskerville', Georgia, serif;
+        /* Font families come from css/tokens.css (linked above). */
         --radius-lg: 0.75rem;
         --radius-xl: 1rem;
         --transition-normal: 0.3s ease-in-out;
@@ -69,9 +69,9 @@
       }
 
       body {
-        font-family: var(--font-family);
-        font-size: 16px;
-        line-height: 1.6;
+        font-family: var(--font-body);
+        font-size: var(--fs-base);
+        line-height: var(--lh-base);
         color: var(--text-primary);
         background: var(--background-dark);
         min-height: 100vh;
@@ -121,8 +121,9 @@
       .nav-back {
         color: var(--text-secondary);
         text-decoration: none;
-        font-size: 0.875rem;
-        font-weight: 500;
+        font-family: var(--font-display);
+        font-size: var(--fs-sm);
+        font-weight: var(--fw-medium);
         display: flex;
         align-items: center;
         gap: 0.5rem;
@@ -156,7 +157,7 @@
       .page-subtitle {
         color: var(--text-secondary);
         font-family: var(--font-body);
-        font-size: 1.0625rem;
+        font-size: var(--fs-md);
         max-width: 560px;
         margin: 0 auto;
         line-height: 1.6;
@@ -183,8 +184,9 @@
       }
 
       .case-study-kicker {
-        font-size: 0.875rem;
-        font-weight: 600;
+        font-family: var(--font-display);
+        font-size: var(--fs-sm);
+        font-weight: var(--fw-semibold);
         letter-spacing: 0.08em;
         text-transform: uppercase;
         color: var(--accent-color);
@@ -192,8 +194,10 @@
       }
 
       .case-study-title {
-        font-size: 1.5rem;
-        line-height: 1.3;
+        font-family: var(--font-display);
+        font-size: var(--fs-xl);
+        font-weight: var(--fw-bold);
+        line-height: var(--lh-snug);
         margin-bottom: 1rem;
         color: var(--text-light);
       }
