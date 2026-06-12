@@ -1,0 +1,57 @@
+/* =============================================
+   DESIGN TOKENS — TYPOGRAPHY
+   Single source of truth for type across the whole site.
+   Every page links this file FIRST, then its own styles.
+   Do not redefine font families per-page; consume these tokens.
+   ============================================= */
+
+:root {
+  /* --- Font families --------------------------------------------------
+     Brand pairing (marketing/portfolio surfaces): Plus Jakarta Sans for
+     display/UI, Libre Baskerville for long-form reading copy.
+     Dashboard pairing (data-dense surfaces — Health, Notes admin): a
+     deliberate, documented alternate. Space Grotesk + Inter read better
+     for numeric/tabular UI. This is a CHOICE, not an accidental fork. */
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Libre Baskerville', Georgia, serif;
+
+  --font-dashboard-display: 'Space Grotesk', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-dashboard-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* --- Weights --------------------------------------------------------
+     Named so intent is legible and the loaded weight set is auditable. */
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+  --fw-extrabold: 800;
+
+  /* --- Line heights --------------------------------------------------- */
+  --lh-display: 0.95; /* oversized hero/section headings */
+  --lh-tight: 1.15; /* card titles, compact headings */
+  --lh-snug: 1.3; /* sub-headings, UI blocks */
+  --lh-base: 1.6; /* default UI text */
+  --lh-body: 1.75; /* serif reading copy */
+  --lh-loose: 1.9; /* airy prose blocks */
+
+  /* --- Type scale -----------------------------------------------------
+     Discrete steps in rem so they honor the user's browser font size.
+     Reach for these instead of inventing one-off literals. Fluid display
+     sizes (hero, section headers) stay as clamp() at the call site. */
+  --fs-2xs: 0.75rem; /* 12px — micro-labels, badges (floor for legibility) */
+  --fs-xs: 0.8125rem; /* 13px — kickers, tags, captions */
+  --fs-sm: 0.875rem; /* 14px — secondary UI text */
+  --fs-base: 1rem; /* 16px — base body */
+  --fs-md: 1.0625rem; /* 17px — lead paragraphs */
+  --fs-lg: 1.25rem; /* 20px — small headings */
+  --fs-xl: 1.5rem; /* 24px — card titles */
+  --fs-2xl: 1.875rem; /* 30px — section sub-heads */
+  --fs-3xl: 2.25rem; /* 36px — stat numbers / large heads */
+
+  /* --- Tracking (letter-spacing) -------------------------------------- */
+  --tracking-tighter: -0.04em; /* hero display */
+  --tracking-tight: -0.02em; /* logos, large headings */
+  --tracking-normal: 0;
+  --tracking-wide: 0.06em; /* small caps / labels */
+  --tracking-wider: 0.1em; /* kickers, uppercase eyebrows */
+}

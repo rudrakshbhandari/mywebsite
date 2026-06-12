@@ -8,6 +8,7 @@ The format is based on Keep a Changelog and this project uses date-based release
 
 ### Added
 
+- Shared typography token layer (`css/tokens.css`) — a single source of truth for font families, weights, line-heights, and a rem-based type scale. Every page links it first, so type is defined once instead of redefined across five separate stylesheets.
 - Separate `/notes/` page for personal writing, linked from the main navigation.
 - Private `/notes-admin/` writing portal powered by Decap CMS.
 - Markdown-backed notes pipeline that builds public notes data during GitHub Pages deploys.
@@ -15,6 +16,7 @@ The format is based on Keep a Changelog and this project uses date-based release
 
 ### Changed
 
+- Unified site typography onto the shared token layer: removed per-page font redefinitions, fixed case-studies reading copy (bullet points were sans while summaries were serif — both serif now), routed the Health/notes-admin dashboard pairing (Inter + Space Grotesk) through documented tokens, and converted px-locked base sizes to rem so they honor browser font-size settings. Dropped two unused web-font loads (Inter 300 on Health, Space Grotesk on notes-admin).
 - Updated documentation to match the current health pipeline behavior (15-minute workflow cadence, exposed downsampled heart-rate series, and token/secret guidance).
 - Replaced Vercel hosting/analytics hooks with GitHub Pages deployment scaffolding plus Cloudflare and GA4 configuration.
 - Removed the lingering Vercel custom-domain aliases and Git integration for `mywebsite` so production is unambiguously GitHub Pages + Cloudflare.
