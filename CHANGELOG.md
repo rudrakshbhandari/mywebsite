@@ -17,6 +17,9 @@ The format is based on Keep a Changelog and this project uses date-based release
 ### Changed
 
 - Unified site typography onto the shared token layer: removed per-page font redefinitions, fixed case-studies reading copy (bullet points were sans while summaries were serif — both serif now), routed the Health/notes-admin dashboard pairing (Inter + Space Grotesk) through documented tokens, and converted px-locked base sizes to rem so they honor browser font-size settings. Dropped two unused web-font loads (Inter 300 on Health, Space Grotesk on notes-admin).
+- Collapsed ~28 distinct font-size literals across styles.css, notes, and health onto the 9-step `--fs-*` token scale — eliminating the 0.7–0.92rem near-duplicate cluster (previously 8 visually-indistinguishable sizes) and mapping all body text, card copy, and UI labels to clear scale steps.
+- Raised all sub-12px text to the `--fs-2xs` floor across main, work, and health pages: `.proj-card__badge` (0.65rem → 12px), tech tag spans (0.7rem → 12px), meta labels (0.68–0.72rem → 12px), and SVG chart axis/inline labels (10–11px → 12px). All text is now WCAG 2.1 SC 1.4.4 compliant.
+- Swapped `/notes` body font from Libre Baskerville (a display serif) to Lora (purpose-built text serif optimised for screen reading at body sizes). Documented as `--font-reading` token in `css/tokens.css`. Display headings on the same page remain Plus Jakarta Sans.
 - Updated documentation to match the current health pipeline behavior (15-minute workflow cadence, exposed downsampled heart-rate series, and token/secret guidance).
 - Replaced Vercel hosting/analytics hooks with GitHub Pages deployment scaffolding plus Cloudflare and GA4 configuration.
 - Removed the lingering Vercel custom-domain aliases and Git integration for `mywebsite` so production is unambiguously GitHub Pages + Cloudflare.
