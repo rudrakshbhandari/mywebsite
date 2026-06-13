@@ -35,7 +35,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
 
@@ -46,7 +46,7 @@
       crossorigin="anonymous"
     />
 
-    <link rel="stylesheet" href="../css/tokens.css?v=1" />
+    <link rel="stylesheet" href="../css/tokens.css?v=2" />
 
     <style>
       :root {
@@ -58,7 +58,8 @@
         --border: rgba(26, 26, 26, 0.08);
         --accent: #c8553d;
         --accent-hover: #a84430;
-        /* Font families come from css/tokens.css (linked above). */
+        /* --font-display from tokens.css; --font-body overridden to Lora (var(--font-reading)) for long-form article reading. */
+        --font-body: 'Lora', Georgia, serif;
       }
 
       * {
@@ -101,7 +102,7 @@
         text-decoration: none;
         font-family: var(--font-display);
         font-weight: 800;
-        font-size: 1.15rem;
+        font-size: var(--fs-lg);
         letter-spacing: -0.02em;
         color: var(--text);
       }
@@ -141,8 +142,8 @@
         background: var(--bg-card);
         color: var(--text-muted);
         font-family: var(--font-display);
-        font-size: 0.82rem;
-        font-weight: 600;
+        font-size: var(--fs-xs);
+        font-weight: var(--fw-semibold);
       }
 
       h1 {
@@ -159,7 +160,7 @@
         margin-top: 1.2rem;
         color: var(--text-muted);
         line-height: 1.75;
-        font-size: 1.12rem;
+        font-size: var(--fs-md);
       }
 
       .chip-row {
@@ -176,7 +177,7 @@
         background: var(--bg-card);
         color: var(--text-muted);
         font-family: var(--font-display);
-        font-size: 0.9rem;
+        font-size: var(--fs-sm);
       }
 
       .panel,
@@ -197,14 +198,14 @@
         font-family: var(--font-display);
         text-transform: uppercase;
         letter-spacing: 0.08em;
-        font-size: 0.76rem;
-        font-weight: 600;
+        font-size: var(--fs-2xs);
+        font-weight: var(--fw-semibold);
       }
 
       .featured h2 {
         margin: 0.8rem 0 0.75rem;
         font-family: var(--font-display);
-        font-size: 1.5rem;
+        font-size: var(--fs-xl);
         letter-spacing: -0.04em;
         color: var(--text);
       }
@@ -220,7 +221,7 @@
         flex-wrap: wrap;
         margin-top: 1rem;
         color: var(--text-soft);
-        font-size: 0.92rem;
+        font-size: var(--fs-sm);
       }
 
       .featured-button {
@@ -231,7 +232,7 @@
         background: var(--accent);
         color: #ffffff;
         font-family: var(--font-display);
-        font-weight: 600;
+        font-weight: var(--fw-semibold);
         cursor: pointer;
         transition: background 0.2s ease;
       }
@@ -262,7 +263,7 @@
       .sidebar-title {
         margin: 0 0 0.75rem;
         font-family: var(--font-display);
-        font-size: 1.1rem;
+        font-size: var(--fs-lg);
         color: var(--text);
       }
 
@@ -307,8 +308,8 @@
       .note-list-date {
         color: var(--text-soft);
         font-family: var(--font-display);
-        font-size: 0.8rem;
-        font-weight: 600;
+        font-size: var(--fs-xs);
+        font-weight: var(--fw-semibold);
         text-transform: uppercase;
         letter-spacing: 0.06em;
       }
@@ -317,15 +318,15 @@
         display: block;
         margin: 0.45rem 0;
         font-family: var(--font-display);
-        font-size: 1rem;
-        font-weight: 600;
+        font-size: var(--fs-base);
+        font-weight: var(--fw-semibold);
         color: var(--text);
       }
 
       .note-list-summary {
         color: var(--text-muted);
         line-height: 1.6;
-        font-size: 0.92rem;
+        font-size: var(--fs-sm);
       }
 
       .reader {
@@ -342,8 +343,8 @@
       .note-article-meta {
         color: var(--text-soft);
         font-family: var(--font-display);
-        font-size: 0.86rem;
-        font-weight: 600;
+        font-size: var(--fs-sm);
+        font-weight: var(--fw-semibold);
         text-transform: uppercase;
         letter-spacing: 0.06em;
       }
@@ -359,7 +360,7 @@
       .note-article-summary {
         margin: 0.95rem 0 1rem;
         color: var(--text-muted);
-        font-size: 1.08rem;
+        font-size: var(--fs-md);
         line-height: 1.75;
       }
 
@@ -370,7 +371,7 @@
         background: var(--bg);
         color: var(--text-muted);
         font-family: var(--font-display);
-        font-size: 0.85rem;
+        font-size: var(--fs-sm);
       }
 
       .note-article-body {
