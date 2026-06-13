@@ -208,7 +208,7 @@ button:focus-visible {
 
 .nav-link {
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   font-weight: var(--fw-medium);
   color: var(--color-muted);
   text-decoration: none;
@@ -365,7 +365,7 @@ button:focus-visible {
 
 .hero__subtitle {
   font-family: var(--font-display);
-  font-size: clamp(0.78rem, 1.15vw, 0.95rem);
+  font-size: clamp(var(--fs-xs), 1.15vw, var(--fs-sm));
   font-weight: var(--fw-semibold);
   color: var(--color-text);
   margin-top: 2rem;
@@ -464,7 +464,7 @@ button:focus-visible {
 }
 
 .about__paragraph {
-  font-size: 1.05rem;
+  font-size: var(--fs-md);
   line-height: 1.8;
   color: var(--color-text);
   margin-bottom: 1.75rem;
@@ -604,14 +604,14 @@ button:focus-visible {
 
 .exp-card__role {
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: var(--fs-sm);
   font-weight: var(--fw-regular);
   color: rgba(255, 255, 255, 0.7);
   margin-bottom: 0.25rem;
 }
 
 .exp-card__location {
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   color: rgba(255, 255, 255, 0.4);
   margin-bottom: 1.25rem;
 }
@@ -625,7 +625,7 @@ button:focus-visible {
   position: relative;
   padding-left: 1.25rem;
   margin-bottom: 0.75rem;
-  font-size: 0.9rem;
+  font-size: var(--fs-sm);
   line-height: 1.6;
   color: rgba(255, 255, 255, 0.65);
 }
@@ -694,13 +694,13 @@ button:focus-visible {
 .collage-card__name {
   font-family: var(--font-display);
   font-weight: var(--fw-bold);
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   color: var(--color-text);
   margin-bottom: 0.3rem;
 }
 
 .collage-card__stack {
-  font-size: 0.72rem;
+  font-size: var(--fs-2xs);
   color: var(--color-muted);
   letter-spacing: 0.02em;
 }
@@ -749,7 +749,7 @@ button:focus-visible {
 
 .projects__meta-link {
   font-family: var(--font-display);
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   font-weight: var(--fw-bold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -763,7 +763,7 @@ button:focus-visible {
 
 .projects__tier-label {
   font-family: var(--font-display);
-  font-size: 0.7rem;
+  font-size: var(--fs-2xs);
   font-weight: var(--fw-bold);
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -794,13 +794,13 @@ button:focus-visible {
 }
 
 .proj-card--compact .proj-card__title {
-  font-size: 1.05rem;
+  font-size: var(--fs-md);
   font-weight: var(--fw-bold);
   margin-bottom: 0.3rem;
 }
 
 .proj-card--compact .proj-card__desc {
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   margin-bottom: 0.5rem;
   color: #4a4845;
 }
@@ -810,7 +810,7 @@ button:focus-visible {
 }
 
 .proj-card--compact .proj-card__tech span {
-  font-size: 0.7rem;
+  font-size: var(--fs-2xs);
   padding: 0.2rem 0.5rem;
 }
 
@@ -856,7 +856,7 @@ button:focus-visible {
 
 .proj-card__metric {
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
   color: var(--color-text);
   letter-spacing: 0.02em;
@@ -882,7 +882,7 @@ button:focus-visible {
 .proj-card__bullets li {
   position: relative;
   padding-left: 1.25rem;
-  font-size: 0.95rem;
+  font-size: var(--fs-sm);
   line-height: 1.65;
   color: var(--color-muted);
   margin-bottom: 0.5rem;
@@ -898,14 +898,14 @@ button:focus-visible {
 .proj-card__title {
   font-family: var(--font-display);
   font-weight: var(--fw-extrabold);
-  font-size: 1.75rem;
+  font-size: var(--fs-2xl);
   margin-bottom: 1rem;
   color: var(--color-text);
 }
 
 .proj-card__badge {
   display: inline-block;
-  font-size: 0.65rem;
+  font-size: var(--fs-2xs);
   font-weight: var(--fw-semibold);
   color: var(--color-accent);
   background: rgba(200, 85, 61, 0.1);
@@ -918,7 +918,7 @@ button:focus-visible {
 }
 
 .proj-card__desc {
-  font-size: 0.95rem;
+  font-size: var(--fs-sm);
   line-height: 1.7;
   color: #4a4845;
   margin-bottom: 1.25rem;
@@ -933,7 +933,7 @@ button:focus-visible {
 
 .proj-card__tech span {
   font-family: var(--font-display);
-  font-size: 0.7rem;
+  font-size: var(--fs-2xs);
   font-weight: var(--fw-semibold);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -945,7 +945,7 @@ button:focus-visible {
 
 .proj-card__link {
   font-family: var(--font-display);
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   font-weight: var(--fw-semibold);
   color: var(--color-accent);
   text-decoration: none;
@@ -996,7 +996,7 @@ button:focus-visible {
 .work-hero p:not(.section-kicker) {
   max-width: 46rem;
   margin-top: 1.5rem;
-  font-size: 1.05rem;
+  font-size: var(--fs-md);
   color: var(--color-muted);
 }
 
@@ -1061,7 +1061,7 @@ button:focus-visible {
 
 .work-card__meta {
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: var(--fs-2xs);
   font-weight: var(--fw-bold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1072,7 +1072,7 @@ button:focus-visible {
 .work-card h3,
 .work-row h3 {
   font-family: var(--font-display);
-  font-size: 1.35rem;
+  font-size: var(--fs-xl);
   line-height: 1.15;
   color: var(--color-text);
   margin-bottom: 0.75rem;
@@ -1080,7 +1080,7 @@ button:focus-visible {
 
 .work-card p:not(.work-card__meta),
 .work-row p {
-  font-size: 0.95rem;
+  font-size: var(--fs-sm);
   line-height: 1.7;
   color: var(--color-muted);
 }
@@ -1101,7 +1101,7 @@ button:focus-visible {
 
 .work-row > span {
   font-family: var(--font-display);
-  font-size: 0.72rem;
+  font-size: var(--fs-2xs);
   font-weight: var(--fw-bold);
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -1131,7 +1131,7 @@ button:focus-visible {
 }
 
 .skills__prose {
-  font-size: 1.05rem;
+  font-size: var(--fs-md);
   line-height: 1.9;
   color: var(--color-muted);
 }
@@ -1178,7 +1178,7 @@ button:focus-visible {
 
 .contact__status-line {
   display: block;
-  font-size: 0.85rem;
+  font-size: var(--fs-sm);
   font-weight: var(--fw-medium);
   letter-spacing: 0.01em;
   text-transform: none;
@@ -1194,7 +1194,7 @@ button:focus-visible {
   display: inline-block;
   font-family: var(--font-display);
   font-weight: var(--fw-bold);
-  font-size: clamp(0.95rem, 1.4vw, 1.05rem);
+  font-size: clamp(var(--fs-sm), 1.4vw, var(--fs-md));
   letter-spacing: 0.02em;
   color: var(--color-accent);
   background: var(--color-white);
@@ -1216,7 +1216,7 @@ button:focus-visible {
 .contact__tagline {
   font-family: var(--font-body);
   font-style: italic;
-  font-size: clamp(1rem, 2vw, 1.35rem);
+  font-size: clamp(var(--fs-base), 2vw, var(--fs-xl));
   opacity: 0.8;
   margin-bottom: 1.5rem;
 }
@@ -1272,7 +1272,7 @@ button:focus-visible {
   color: rgba(255, 255, 255, 0.5);
   text-align: center;
   padding: 1.5rem 2rem calc(1.5rem + env(safe-area-inset-bottom, 0px));
-  font-size: 0.8rem;
+  font-size: var(--fs-xs);
   font-family: var(--font-display);
   letter-spacing: 0.03em;
 }
@@ -1395,7 +1395,7 @@ button:focus-visible {
   }
 
   .hero__subtitle {
-    font-size: 0.82rem;
+    font-size: var(--fs-xs);
     letter-spacing: 0.06em;
     margin-top: 1.25rem;
     gap: 0.5rem;
@@ -1607,12 +1607,12 @@ button:focus-visible {
   }
 
   .contact__status-line {
-    font-size: 0.78rem;
+    font-size: var(--fs-xs);
   }
 
   .contact__cta {
     padding: 0.75rem 1.3rem;
-    font-size: 0.95rem;
+    font-size: var(--fs-sm);
   }
 }
 
