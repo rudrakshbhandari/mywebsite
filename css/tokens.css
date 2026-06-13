@@ -17,7 +17,8 @@
 
   --font-dashboard-display: 'Space Grotesk', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-dashboard-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-reading: 'Lora', Georgia, serif; /* text-optimised reading serif; use in place of --font-body for long-form article bodies */
+  --font-reading:
+    'Lora', Georgia, serif; /* text-optimised reading serif; use in place of --font-body for long-form article bodies */
 
   /* --- Weights --------------------------------------------------------
      Named so intent is legible and the loaded weight set is auditable. */
