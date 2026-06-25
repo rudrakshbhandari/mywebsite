@@ -22,6 +22,22 @@ function getFixedNavOffset() {
   return navbar.offsetHeight;
 }
 
+function getAnchorScrollTop(targetSection) {
+  var top = targetSection.getBoundingClientRect().top + window.pageYOffset;
+
+  if (typeof ScrollTrigger !== 'undefined' && ScrollTrigger.getAll) {
+    var triggers = ScrollTrigger.getAll();
+    for (var i = 0; i < triggers.length; i += 1) {
+      if (triggers[i].trigger === targetSection && triggers[i].pin && typeof triggers[i].start === 'number') {
+        top = triggers[i].start;
+        break;
+      }
+    }
+  }
+
+  return Math.max(0, top - getFixedNavOffset());
+}
+
 /* ===========================
    Dev Mode
    =========================== */
@@ -77,8 +93,7 @@ function initNavigation() {
         e.preventDefault();
         var targetSection = document.querySelector(targetId);
         if (targetSection) {
-          var offsetTop = targetSection.offsetTop - getFixedNavOffset();
-          window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+          window.scrollTo({ top: getAnchorScrollTop(targetSection), behavior: 'smooth' });
         }
       }
     });
