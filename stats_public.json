@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-05T09:45:46.442Z",
+  "lastUpdated": "2026-07-06T11:42:40.477Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -37,8 +37,8 @@
       "siteTagKind": "cloudflare-rum-site-id"
     },
     "windowDays": 30,
-    "windowStart": "2026-06-05T09:45:38.554Z",
-    "windowEnd": "2026-07-05T09:45:38.554Z",
+    "windowStart": "2026-06-06T11:42:29.624Z",
+    "windowEnd": "2026-07-06T11:42:29.624Z",
     "totalVisits": 260,
     "totalPageviews": 260,
     "perSite": {
