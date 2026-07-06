@@ -34,15 +34,12 @@ const APPLE_APPS = [
 const PLAY_APPS = [{ packageName: 'com.rudraksh99.ShareAllBooks', label: 'ShareAllBooks' }];
 
 // --- Cloudflare sites to aggregate --------------------------------------
-//
-// siteTag here is the CF internal rum_site_id (from the dashboard URL
-// /web-analytics/edit/<id>), NOT the data-cf-beacon token.
 const CF_SITES = [
-  { domain: 'rudrakshbhandari.com', siteTag: 'fd83acce982749c98c424495b1e0625e' },
-  { domain: 'nomnom.cc', siteTag: 'a2bb6225092b406e9c9f41535fbccc7e' },
-  { domain: 'shareallbooks.com', siteTag: '2b4d2bbf2cec4c84b2e326865428f7cf' },
-  { domain: 'outfitr.net', siteTag: '1671c0d8d5c34790ab61905758858b3f' },
-  { domain: 'nyaaywatch.in', siteTag: '47d9aae9eb974d33a4ac4a2c7a07644f' },
+  { domain: 'rudrakshbhandari.com' },
+  { domain: 'nomnom.cc' },
+  { domain: 'shareallbooks.com' },
+  { domain: 'outfitr.net' },
+  { domain: 'nyaaywatch.in' },
 ];
 
 // --- HTTP helper --------------------------------------------------------
@@ -63,26 +60,68 @@ function httpsRequest(options, body) {
   });
 }
 
-// --- Cloudflare Web Analytics ------------------------------------------
+// --- Cloudflare Zone Analytics -----------------------------------------
 
 function collectCloudflareSites() {
   const sites = [...CF_SITES];
-  const extra = process.env.CF_EXTRA_SITE_TAGS?.trim();
+  const extra = process.env.CF_EXTRA_ZONES?.trim() || process.env.CF_EXTRA_SITE_TAGS?.trim();
   if (extra) {
     for (const pair of extra.split(',')) {
-      const [domain, siteTag] = pair.split(':').map(s => s?.trim());
-      if (domain && siteTag) sites.push({ domain, siteTag });
+      const [domain, zoneTag] = pair.split(':').map(s => s?.trim());
+      if (domain) sites.push({ domain, zoneTag: zoneTag || null });
     }
   }
   return sites;
 }
 
+async function cloudflareGraphql({ token, query, variables }) {
+  const res = await httpsRequest(
+    {
+      method: 'POST',
+      hostname: 'api.cloudflare.com',
+      path: '/client/v4/graphql',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    },
+    JSON.stringify({ query, variables })
+  );
+  const parsed = JSON.parse(res.body.toString('utf8'));
+  return { statusCode: res.statusCode, parsed };
+}
+
+async function cloudflareRest({ token, path }) {
+  const res = await httpsRequest({
+    method: 'GET',
+    hostname: 'api.cloudflare.com',
+    path,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  const parsed = JSON.parse(res.body.toString('utf8'));
+  return { statusCode: res.statusCode, parsed };
+}
+
+async function resolveCloudflareZoneTag({ token, site }) {
+  if (site.zoneTag) return site.zoneTag;
+  const res = await cloudflareRest({
+    token,
+    path: `/client/v4/zones?name=${encodeURIComponent(site.domain)}&per_page=1`,
+  });
+  if (!res.parsed.success) {
+    throw new Error(`zone lookup failed: ${JSON.stringify(res.parsed.errors || [])}`);
+  }
+  const zoneTag = res.parsed.result?.[0]?.id;
+  if (!zoneTag) throw new Error('zone lookup returned no matching zone');
+  return zoneTag;
+}
+
 async function fetchCloudflareVisitors() {
   const token = process.env.CF_API_TOKEN?.trim();
-  const accountId = process.env.CF_ACCOUNT_ID?.trim();
-  const excludeBots = process.env.CF_EXCLUDE_BOTS !== 'false';
-  if (!token || !accountId) {
-    console.warn('[cf] CF_API_TOKEN or CF_ACCOUNT_ID missing — skipping visitors');
+  if (!token) {
+    console.warn('[cf] CF_API_TOKEN missing — skipping visitors');
     return null;
   }
 
@@ -91,61 +130,65 @@ async function fetchCloudflareVisitors() {
   const start = new Date(end.getTime() - 30 * 24 * 60 * 60 * 1000);
   const startStr = start.toISOString();
   const endStr = end.toISOString();
-  const botFilterClause = excludeBots ? ', bot: 0' : '';
+  const startDate = startStr.slice(0, 10);
+  const endDate = endStr.slice(0, 10);
 
-  const query = `
-    query ($accountTag: String!, $siteTag: String!, $start: Time!, $end: Time!) {
+  const dailyTotalsQuery = `
+    query ($zoneTag: string, $start: Date, $end: Date) {
       viewer {
-        accounts(filter: { accountTag: $accountTag }) {
-          rumPageloadEventsAdaptiveGroups(
-            limit: 10000
-            filter: { siteTag: $siteTag, datetime_geq: $start, datetime_leq: $end${botFilterClause} }
-          ) {
-            count
-            sum { visits }
+        zones(filter: { zoneTag: $zoneTag }) {
+          httpRequests1dGroups(limit: 40, filter: { date_geq: $start, date_leq: $end }) {
+            dimensions { date }
+            sum { requests pageViews bytes cachedBytes }
+            uniq { uniques }
           }
         }
       }
     }
   `;
 
+  // Cloudflare's GraphQL daily groups expose daily uniques, not the dashboard's
+  // whole-window deduped unique visitor count. Keep that distinction in metadata.
   const results = {};
   let totalVisits = 0;
   let totalPageviews = 0;
+  let totalRequests = 0;
   let anySucceeded = false;
 
   for (const site of sites) {
     try {
-      const res = await httpsRequest(
-        {
-          method: 'POST',
-          hostname: 'api.cloudflare.com',
-          path: '/client/v4/graphql',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
-          },
-        },
-        JSON.stringify({
-          query,
-          variables: { accountTag: accountId, siteTag: site.siteTag, start: startStr, end: endStr },
-        })
-      );
-      const parsed = JSON.parse(res.body.toString('utf8'));
-      if (parsed.errors) {
-        console.warn(`[cf] ${site.domain}: API errors ${JSON.stringify(parsed.errors)}`);
+      const zoneTag = await resolveCloudflareZoneTag({ token, site });
+      const dailyRes = await cloudflareGraphql({
+        token,
+        query: dailyTotalsQuery,
+        variables: { zoneTag, start: startDate, end: endDate },
+      });
+      if (dailyRes.parsed.errors) {
+        console.warn(`[cf] ${site.domain}: daily totals API errors ${JSON.stringify(dailyRes.parsed.errors)}`);
         continue;
       }
-      const groups = parsed.data?.viewer?.accounts?.[0]?.rumPageloadEventsAdaptiveGroups ?? [];
-      let visits = 0;
-      let pageviews = 0;
-      for (const g of groups) {
-        visits += g.sum?.visits ?? 0;
-        pageviews += g.count ?? 0;
+      const dailyGroups = dailyRes.parsed.data?.viewer?.zones?.[0]?.httpRequests1dGroups ?? [];
+      const dailyUniqueSum = dailyGroups.reduce((sum, g) => sum + (g.uniq?.uniques ?? 0), 0);
+      const dailyPageviews = dailyGroups.reduce((sum, g) => sum + (g.sum?.pageViews ?? 0), 0);
+      const dailyRequests = dailyGroups.reduce((sum, g) => sum + (g.sum?.requests ?? 0), 0);
+
+      const visits = dailyUniqueSum;
+      const pageviews = dailyPageviews;
+      const requests = dailyRequests;
+
+      if (visits == null) {
+        console.warn(`[cf] ${site.domain}: no unique visitor value returned`);
+        continue;
       }
-      results[site.domain] = { visits, pageviews };
+      results[site.domain] = {
+        visits,
+        pageviews,
+        requests,
+        dailyUniqueSum,
+      };
       totalVisits += visits;
       totalPageviews += pageviews;
+      totalRequests += requests;
       anySucceeded = true;
     } catch (err) {
       console.warn(`[cf] ${site.domain}: ${err.message}`);
@@ -158,18 +201,19 @@ async function fetchCloudflareVisitors() {
     sourceStatus: 'fresh',
     source: {
       provider: 'cloudflare',
-      dataset: 'rumPageloadEventsAdaptiveGroups',
-      metric: 'sum.visits',
-      pageviewMetric: 'count',
-      botFilter: excludeBots ? 'excluded' : 'included',
-      botFilterExpression: excludeBots ? 'bot: 0' : null,
-      siteTagKind: 'cloudflare-rum-site-id',
+      dataset: 'httpRequests1dGroups',
+      metric: 'sum(daily uniq.uniques)',
+      pageviewMetric: 'sum.pageViews',
+      requestMetric: 'sum.requests',
+      siteTagKind: 'cloudflare-zone-id',
+      zoneResolution: 'domain lookup via /client/v4/zones',
     },
     windowDays: 30,
     windowStart: startStr,
     windowEnd: endStr,
     totalVisits,
     totalPageviews,
+    totalRequests,
     perSite: results,
   };
 }
