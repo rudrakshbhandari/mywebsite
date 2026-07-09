@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-08T09:31:38.367Z",
+  "lastUpdated": "2026-07-09T10:29:53.158Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -9,8 +9,8 @@
     "shareallbooks": {
       "label": "ShareAllBooks",
       "iosDownloads": 257,
-      "androidInstalls": 1741,
-      "total": 1998
+      "androidInstalls": 1742,
+      "total": 1999
     },
     "nomnomRider": {
       "label": "NomNom Rider",
@@ -37,14 +37,14 @@
       "siteTagKind": "cloudflare-rum-site-id"
     },
     "windowDays": 30,
-    "windowStart": "2026-06-08T09:31:31.324Z",
-    "windowEnd": "2026-07-08T09:31:31.324Z",
-    "totalVisits": 260,
-    "totalPageviews": 260,
+    "windowStart": "2026-06-09T10:29:46.661Z",
+    "windowEnd": "2026-07-09T10:29:46.661Z",
+    "totalVisits": 270,
+    "totalPageviews": 270,
     "perSite": {
       "rudrakshbhandari.com": {
-        "visits": 50,
-        "pageviews": 50
+        "visits": 60,
+        "pageviews": 60
       },
       "nomnom.cc": {
         "visits": 20,
