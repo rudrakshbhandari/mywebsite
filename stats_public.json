@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-11T07:46:26.504Z",
+  "lastUpdated": "2026-07-12T07:50:31.693Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -9,8 +9,8 @@
     "shareallbooks": {
       "label": "ShareAllBooks",
       "iosDownloads": 257,
-      "androidInstalls": 1742,
-      "total": 1999
+      "androidInstalls": 1748,
+      "total": 2005
     },
     "nomnomRider": {
       "label": "NomNom Rider",
@@ -37,8 +37,8 @@
       "siteTagKind": "cloudflare-rum-site-id"
     },
     "windowDays": 30,
-    "windowStart": "2026-06-11T07:46:20.070Z",
-    "windowEnd": "2026-07-11T07:46:20.070Z",
+    "windowStart": "2026-06-12T07:50:23.729Z",
+    "windowEnd": "2026-07-12T07:50:23.729Z",
     "totalVisits": 280,
     "totalPageviews": 280,
     "perSite": {
