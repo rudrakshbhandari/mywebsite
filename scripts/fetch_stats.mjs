@@ -64,31 +64,23 @@ function httpsRequest(options, body) {
 
 function collectCloudflareSites() {
   const sites = [...CF_SITES];
-  const extra = process.env.CF_EXTRA_ZONES?.trim() || process.env.CF_EXTRA_SITE_TAGS?.trim();
-  if (extra) {
-    for (const pair of extra.split(',')) {
+  const extraZones = process.env.CF_EXTRA_ZONES?.trim();
+  const legacyExtraSites = process.env.CF_EXTRA_SITE_TAGS?.trim();
+
+  if (extraZones) {
+    for (const pair of extraZones.split(',')) {
       const [domain, zoneTag] = pair.split(':').map(s => s?.trim());
       if (domain) sites.push({ domain, zoneTag: zoneTag || null });
     }
   }
-  return sites;
-}
 
-async function cloudflareGraphql({ token, query, variables }) {
-  const res = await httpsRequest(
-    {
-      method: 'POST',
-      hostname: 'api.cloudflare.com',
-      path: '/client/v4/graphql',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
-    },
-    JSON.stringify({ query, variables })
-  );
-  const parsed = JSON.parse(res.body.toString('utf8'));
-  return { statusCode: res.statusCode, parsed };
+  if (legacyExtraSites) {
+    for (const pair of legacyExtraSites.split(',')) {
+      const [domain] = pair.split(':').map(s => s?.trim());
+      if (domain) sites.push({ domain });
+    }
+  }
+  return sites;
 }
 
 async function cloudflareRest({ token, path }) {
@@ -130,25 +122,6 @@ async function fetchCloudflareVisitors() {
   const start = new Date(end.getTime() - 30 * 24 * 60 * 60 * 1000);
   const startStr = start.toISOString();
   const endStr = end.toISOString();
-  const startDate = startStr.slice(0, 10);
-  const endDate = endStr.slice(0, 10);
-
-  const dailyTotalsQuery = `
-    query ($zoneTag: string, $start: Date, $end: Date) {
-      viewer {
-        zones(filter: { zoneTag: $zoneTag }) {
-          httpRequests1dGroups(limit: 40, filter: { date_geq: $start, date_leq: $end }) {
-            dimensions { date }
-            sum { requests pageViews bytes cachedBytes }
-            uniq { uniques }
-          }
-        }
-      }
-    }
-  `;
-
-  // Cloudflare's GraphQL daily groups expose daily uniques, not the dashboard's
-  // whole-window deduped unique visitor count. Keep that distinction in metadata.
   const results = {};
   let totalVisits = 0;
   let totalPageviews = 0;
@@ -158,23 +131,18 @@ async function fetchCloudflareVisitors() {
   for (const site of sites) {
     try {
       const zoneTag = await resolveCloudflareZoneTag({ token, site });
-      const dailyRes = await cloudflareGraphql({
+      const dashboardRes = await cloudflareRest({
         token,
-        query: dailyTotalsQuery,
-        variables: { zoneTag, start: startDate, end: endDate },
+        path: `/client/v4/zones/${zoneTag}/analytics/dashboard?since=${encodeURIComponent(startStr)}&until=${encodeURIComponent(endStr)}&continuous=false`,
       });
-      if (dailyRes.parsed.errors) {
-        console.warn(`[cf] ${site.domain}: daily totals API errors ${JSON.stringify(dailyRes.parsed.errors)}`);
+      if (!dashboardRes.parsed.success) {
+        console.warn(`[cf] ${site.domain}: dashboard API errors ${JSON.stringify(dashboardRes.parsed.errors || [])}`);
         continue;
       }
-      const dailyGroups = dailyRes.parsed.data?.viewer?.zones?.[0]?.httpRequests1dGroups ?? [];
-      const dailyUniqueSum = dailyGroups.reduce((sum, g) => sum + (g.uniq?.uniques ?? 0), 0);
-      const dailyPageviews = dailyGroups.reduce((sum, g) => sum + (g.sum?.pageViews ?? 0), 0);
-      const dailyRequests = dailyGroups.reduce((sum, g) => sum + (g.sum?.requests ?? 0), 0);
-
-      const visits = dailyUniqueSum;
-      const pageviews = dailyPageviews;
-      const requests = dailyRequests;
+      const totals = dashboardRes.parsed.result?.totals;
+      const visits = totals?.uniques?.all;
+      const pageviews = totals?.pageviews?.all ?? 0;
+      const requests = totals?.requests?.all ?? 0;
 
       if (visits == null) {
         console.warn(`[cf] ${site.domain}: no unique visitor value returned`);
@@ -184,7 +152,6 @@ async function fetchCloudflareVisitors() {
         visits,
         pageviews,
         requests,
-        dailyUniqueSum,
       };
       totalVisits += visits;
       totalPageviews += pageviews;
@@ -201,10 +168,10 @@ async function fetchCloudflareVisitors() {
     sourceStatus: 'fresh',
     source: {
       provider: 'cloudflare',
-      dataset: 'httpRequests1dGroups',
-      metric: 'sum(daily uniq.uniques)',
-      pageviewMetric: 'sum.pageViews',
-      requestMetric: 'sum.requests',
+      dataset: 'zone analytics dashboard',
+      metric: 'totals.uniques.all',
+      pageviewMetric: 'totals.pageviews.all',
+      requestMetric: 'totals.requests.all',
       siteTagKind: 'cloudflare-zone-id',
       zoneResolution: 'domain lookup via /client/v4/zones',
     },
