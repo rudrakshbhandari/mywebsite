@@ -63,7 +63,7 @@ jobs:
           fi
 
       - name: Create branch and PR if changed
-        if: steps.check_changes.outputs.changed == 'true'
+        if: steps.check_changes.outputs.changed == 'true' && github.event_name != 'workflow_dispatch'
         id: create_pr
         env:
           GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
@@ -89,7 +89,7 @@ jobs:
           echo "Created PR: $PR_URL"
 
       - name: Merge stats PR after CI (poll)
-        if: steps.check_changes.outputs.changed == 'true'
+        if: steps.check_changes.outputs.changed == 'true' && github.event_name != 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
         run: |
