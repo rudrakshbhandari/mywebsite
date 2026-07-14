@@ -1,7 +1,7 @@
 {
-  "lastUpdated": "2026-07-05T09:45:46.442Z",
+  "lastUpdated": "2026-07-14T05:08:07.111Z",
   "sources": {
-    "cloudflare": "ok",
+    "cloudflare": "stale",
     "appStore": "ok",
     "googlePlay": "ok"
   },
@@ -9,8 +9,8 @@
     "shareallbooks": {
       "label": "ShareAllBooks",
       "iosDownloads": 257,
-      "androidInstalls": 1739,
-      "total": 1996
+      "androidInstalls": 1748,
+      "total": 2005
     },
     "nomnomRider": {
       "label": "NomNom Rider",
@@ -26,7 +26,7 @@
     }
   },
   "websiteVisitors": {
-    "sourceStatus": "fresh",
+    "sourceStatus": "stale",
     "source": {
       "provider": "cloudflare",
       "dataset": "rumPageloadEventsAdaptiveGroups",
@@ -62,6 +62,8 @@
         "visits": 0,
         "pageviews": 0
       }
-    }
+    },
+    "staleReason": "cloudflare_refresh_unavailable",
+    "lastRefreshAttemptedAt": "2026-07-14T05:08:07.111Z"
   }
 }
