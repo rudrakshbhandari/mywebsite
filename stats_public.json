@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-13T08:15:58.892Z",
+  "lastUpdated": "2026-07-14T07:47:16.936Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -37,22 +37,22 @@
       "siteTagKind": "cloudflare-rum-site-id"
     },
     "windowDays": 30,
-    "windowStart": "2026-06-13T08:15:51.392Z",
-    "windowEnd": "2026-07-13T08:15:51.392Z",
-    "totalVisits": 270,
-    "totalPageviews": 270,
+    "windowStart": "2026-06-14T07:47:07.740Z",
+    "windowEnd": "2026-07-14T07:47:07.740Z",
+    "totalVisits": 290,
+    "totalPageviews": 290,
     "perSite": {
       "rudrakshbhandari.com": {
-        "visits": 70,
-        "pageviews": 70
+        "visits": 80,
+        "pageviews": 80
       },
       "nomnom.cc": {
         "visits": 20,
         "pageviews": 20
       },
       "shareallbooks.com": {
-        "visits": 180,
-        "pageviews": 180
+        "visits": 190,
+        "pageviews": 190
       },
       "outfitr.net": {
         "visits": 0,
