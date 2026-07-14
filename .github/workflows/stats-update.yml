@@ -62,6 +62,10 @@ jobs:
             echo "changed=true" >> $GITHUB_OUTPUT
           fi
 
+      - name: Print fetched website visitor totals
+        if: github.event_name == 'workflow_dispatch'
+        run: node -e "const s=require('./stats_public.json'); console.log(JSON.stringify(s.websiteVisitors, null, 2));"
+
       - name: Create branch and PR if changed
         if: steps.check_changes.outputs.changed == 'true' && github.event_name != 'workflow_dispatch'
         id: create_pr
