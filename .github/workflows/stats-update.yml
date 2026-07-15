@@ -4,7 +4,13 @@ on:
   schedule:
     # Daily at 07:10 UTC (00:10 PT) — reports from the prior day are settled.
     - cron: '10 7 * * *'
-  workflow_dispatch: # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      persist:
+        description: Commit and merge the fetched stats update
+        required: false
+        default: false
+        type: boolean
 
 concurrency:
   group: stats-update
@@ -67,7 +73,7 @@ jobs:
         run: node -e "const s=require('./stats_public.json'); console.log(JSON.stringify(s.websiteVisitors, null, 2));"
 
       - name: Create branch and PR if changed
-        if: steps.check_changes.outputs.changed == 'true' && github.event_name != 'workflow_dispatch'
+        if: steps.check_changes.outputs.changed == 'true' && (github.event_name != 'workflow_dispatch' || inputs.persist)
         id: create_pr
         env:
           GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
@@ -93,7 +99,7 @@ jobs:
           echo "Created PR: $PR_URL"
 
       - name: Merge stats PR after CI (poll)
-        if: steps.check_changes.outputs.changed == 'true' && github.event_name != 'workflow_dispatch'
+        if: steps.check_changes.outputs.changed == 'true' && (github.event_name != 'workflow_dispatch' || inputs.persist)
         env:
           GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
         run: |
