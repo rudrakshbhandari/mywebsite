@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-14T07:47:16.936Z",
+  "lastUpdated": "2026-07-15T07:47:33.987Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -37,14 +37,14 @@
       "siteTagKind": "cloudflare-rum-site-id"
     },
     "windowDays": 30,
-    "windowStart": "2026-06-14T07:47:07.740Z",
-    "windowEnd": "2026-07-14T07:47:07.740Z",
-    "totalVisits": 290,
-    "totalPageviews": 290,
+    "windowStart": "2026-06-15T07:47:27.742Z",
+    "windowEnd": "2026-07-15T07:47:27.742Z",
+    "totalVisits": 300,
+    "totalPageviews": 300,
     "perSite": {
       "rudrakshbhandari.com": {
-        "visits": 80,
-        "pageviews": 80
+        "visits": 90,
+        "pageviews": 90
       },
       "nomnom.cc": {
         "visits": 20,
