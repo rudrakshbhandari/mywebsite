@@ -63,24 +63,24 @@ function httpsRequest(options, body) {
 // --- Cloudflare Zone Analytics -----------------------------------------
 
 function collectCloudflareSites() {
-  const sites = [...CF_SITES];
+  const sitesByDomain = new Map(CF_SITES.map(site => [site.domain, site]));
   const extraZones = process.env.CF_EXTRA_ZONES?.trim();
   const legacyExtraSites = process.env.CF_EXTRA_SITE_TAGS?.trim();
 
   if (extraZones) {
     for (const pair of extraZones.split(',')) {
       const [domain, zoneTag] = pair.split(':').map(s => s?.trim());
-      if (domain) sites.push({ domain, zoneTag: zoneTag || null });
+      if (domain) sitesByDomain.set(domain, { domain, zoneTag: zoneTag || null });
     }
   }
 
   if (legacyExtraSites) {
     for (const pair of legacyExtraSites.split(',')) {
       const [domain] = pair.split(':').map(s => s?.trim());
-      if (domain) sites.push({ domain });
+      if (domain && !sitesByDomain.has(domain)) sitesByDomain.set(domain, { domain });
     }
   }
-  return sites;
+  return [...sitesByDomain.values()];
 }
 
 async function cloudflareRest({ token, path }) {
