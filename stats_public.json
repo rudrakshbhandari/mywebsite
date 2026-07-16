@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-15T07:47:33.987Z",
+  "lastUpdated": "2026-07-16T07:48:49.180Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -9,8 +9,8 @@
     "shareallbooks": {
       "label": "ShareAllBooks",
       "iosDownloads": 257,
-      "androidInstalls": 1748,
-      "total": 2005
+      "androidInstalls": 1749,
+      "total": 2006
     },
     "nomnomRider": {
       "label": "NomNom Rider",
@@ -37,22 +37,22 @@
       "siteTagKind": "cloudflare-rum-site-id"
     },
     "windowDays": 30,
-    "windowStart": "2026-06-15T07:47:27.742Z",
-    "windowEnd": "2026-07-15T07:47:27.742Z",
-    "totalVisits": 300,
-    "totalPageviews": 300,
+    "windowStart": "2026-06-16T07:48:42.842Z",
+    "windowEnd": "2026-07-16T07:48:42.842Z",
+    "totalVisits": 270,
+    "totalPageviews": 270,
     "perSite": {
       "rudrakshbhandari.com": {
-        "visits": 90,
-        "pageviews": 90
+        "visits": 100,
+        "pageviews": 100
       },
       "nomnom.cc": {
         "visits": 20,
         "pageviews": 20
       },
       "shareallbooks.com": {
-        "visits": 190,
-        "pageviews": 190
+        "visits": 150,
+        "pageviews": 150
       },
       "outfitr.net": {
         "visits": 0,
