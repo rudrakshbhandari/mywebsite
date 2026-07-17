@@ -1,6 +1,6 @@
 {
-  "lastUpdatedIso": "2026-07-17T16:28:17.771Z",
-  "day": "2026-07-16",
+  "lastUpdatedIso": "2026-07-17T17:26:30.857Z",
+  "day": "2026-07-17",
   "byDay": [
     {
       "day": "2026-07-11",
@@ -106,8 +106,8 @@
     },
     {
       "day": "2026-07-17",
-      "sleepScore": null,
-      "readinessScore": null,
+      "sleepScore": 93,
+      "readinessScore": 82,
       "activityScore": null,
       "restingHrBpm": null,
       "hrvMs": null,
@@ -122,45 +122,29 @@
       "sleepEfficiency": null
     }
   ],
-  "sleepScore": 63,
-  "sleepDeep": 62,
-  "sleepEfficiency": 83,
-  "sleepLatency": 83,
-  "sleepRem": 38,
-  "sleepRestfulness": 87,
-  "sleepTiming": 99,
-  "sleepTotal": 38,
-  "readinessScore": 66,
-  "readinessActivityBalance": 95,
-  "readinessBodyTemp": 100,
-  "readinessHrvBalance": 56,
-  "readinessPreviousDay": 76,
-  "readinessPreviousNight": 28,
-  "readinessRecoveryIndex": 45,
+  "sleepScore": 93,
+  "sleepDeep": 100,
+  "sleepEfficiency": 96,
+  "sleepLatency": 91,
+  "sleepRem": 96,
+  "sleepRestfulness": 81,
+  "sleepTiming": 92,
+  "sleepTotal": 95,
+  "readinessScore": 82,
+  "readinessActivityBalance": 84,
+  "readinessBodyTemp": 98,
+  "readinessHrvBalance": 44,
+  "readinessPreviousDay": 84,
+  "readinessPreviousNight": 100,
+  "readinessRecoveryIndex": 100,
   "readinessRestingHr": 88,
-  "readinessSleepBalance": 71,
+  "readinessSleepBalance": 87,
   "readinessSleepRegularity": 77,
-  "tempDeviation": -0.06,
+  "tempDeviation": 0.09,
   "restingHrBpm": null,
   "hrvMs": null,
-  "heartRateSeriesDay": "2026-07-16",
+  "heartRateSeriesDay": "2026-07-17",
   "heartRateSeries": [
-    {
-      "t": "2026-07-16T15:37:17.000Z",
-      "bpm": 77
-    },
-    {
-      "t": "2026-07-16T15:47:17.000Z",
-      "bpm": 80
-    },
-    {
-      "t": "2026-07-16T15:52:33.000Z",
-      "bpm": 83
-    },
-    {
-      "t": "2026-07-16T16:02:33.000Z",
-      "bpm": 91
-    },
     {
       "t": "2026-07-16T16:55:10.000Z",
       "bpm": 84
@@ -3024,27 +3008,83 @@
     {
       "t": "2026-07-17T15:35:17.000Z",
       "bpm": 70
+    },
+    {
+      "t": "2026-07-17T15:40:17.000Z",
+      "bpm": 65
+    },
+    {
+      "t": "2026-07-17T15:45:17.000Z",
+      "bpm": 74
+    },
+    {
+      "t": "2026-07-17T15:50:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-07-17T15:55:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-07-17T16:00:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-07-17T16:05:17.000Z",
+      "bpm": 73
+    },
+    {
+      "t": "2026-07-17T16:10:17.000Z",
+      "bpm": 74
+    },
+    {
+      "t": "2026-07-17T16:15:17.000Z",
+      "bpm": 74
+    },
+    {
+      "t": "2026-07-17T16:20:17.000Z",
+      "bpm": 71
+    },
+    {
+      "t": "2026-07-17T16:25:17.000Z",
+      "bpm": 72
+    },
+    {
+      "t": "2026-07-17T16:30:17.000Z",
+      "bpm": 74
+    },
+    {
+      "t": "2026-07-17T16:35:17.000Z",
+      "bpm": 76
+    },
+    {
+      "t": "2026-07-17T16:37:33.000Z",
+      "bpm": 76
+    },
+    {
+      "t": "2026-07-17T16:42:33.000Z",
+      "bpm": 76
     }
   ],
   "heartRateMinBpm": 63,
   "heartRateMaxBpm": 107,
   "heartRateAvgBpm": 84,
-  "heartRateLatestBpm": 70,
-  "activityScore": 84,
-  "activityMeetTargets": 60,
-  "activityMoveHour": 100,
-  "activityRecoveryTime": 100,
-  "activityStayActive": 64,
-  "activityTrainingFreq": 96,
-  "activityTrainingVol": 98,
-  "steps": 3376,
-  "activeCalories": 198,
-  "totalCalories": 2070,
-  "targetCalories": 300,
-  "metersToTarget": 2300,
-  "highActivityMinutes": 60,
-  "mediumActivityMinutes": 10,
-  "lowActivityMinutes": 228,
+  "heartRateLatestBpm": 76,
+  "activityScore": null,
+  "activityMeetTargets": null,
+  "activityMoveHour": null,
+  "activityRecoveryTime": null,
+  "activityStayActive": null,
+  "activityTrainingFreq": null,
+  "activityTrainingVol": null,
+  "steps": null,
+  "activeCalories": null,
+  "totalCalories": null,
+  "targetCalories": null,
+  "metersToTarget": null,
+  "highActivityMinutes": null,
+  "mediumActivityMinutes": null,
+  "lowActivityMinutes": null,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
   "workoutCount": 0,
