@@ -77,7 +77,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/tokens.css?v=2" />
-    <link rel="stylesheet" href="css/styles.css?v=4" />
+    <link rel="stylesheet" href="css/styles.css?v=5" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -282,6 +282,44 @@
                 >
                 <span class="about__stat-label">Monthly Site Visitors</span>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="github-contributions" class="about__contributions" hidden aria-label="GitHub contributions in 2026">
+          <div class="about__contributions-header">
+            <h3 class="about__contributions-heading">
+              <span data-contrib-total>9,682</span> contributions in
+              <span data-contrib-year>2026</span>
+            </h3>
+            <a
+              href="https://github.com/rudrakshbhandari"
+              class="about__contributions-link"
+              data-contrib-profile
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on GitHub →</a
+            >
+          </div>
+          <div class="about__contributions-scroll">
+            <div class="contrib-graph" data-contrib-graph></div>
+          </div>
+          <div class="contrib-graph__footer">
+            <a
+              href="https://docs.github.com/en/account-and-profile/setting-up-and-managing-your-github-profile/managing-contribution-settings-on-your-profile/why-are-my-contributions-not-showing-up-on-my-profile"
+              class="contrib-graph__learn"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Learn how GitHub counts contributions</a
+            >
+            <div class="contrib-graph__legend" aria-hidden="true">
+              <span>Less</span>
+              <span class="contrib-graph__day" data-level="0"></span>
+              <span class="contrib-graph__day" data-level="1"></span>
+              <span class="contrib-graph__day" data-level="2"></span>
+              <span class="contrib-graph__day" data-level="3"></span>
+              <span class="contrib-graph__day" data-level="4"></span>
+              <span>More</span>
             </div>
           </div>
         </div>
@@ -788,6 +826,7 @@
     <script src="js/main.js"></script>
     <script src="js/animations.js"></script>
     <script src="js/stats.js"></script>
+    <script src="js/contributions.js"></script>
 
     <!-- Cloudflare Web Analytics -->
     <script
