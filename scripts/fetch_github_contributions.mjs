@@ -51,6 +51,10 @@ function httpsGetJson(path) {
   });
 }
 
+function todayUtcDate() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 function materialPayloadChanged(prev, next) {
   if (!prev) return true;
   if (prev.total !== next.total) return true;
@@ -60,7 +64,15 @@ function materialPayloadChanged(prev, next) {
   for (let i = 0; i < next.contributions.length; i++) {
     const a = prev.contributions[i];
     const b = next.contributions[i];
-    if (!a || a.date !== b.date || a.count !== b.count || a.level !== b.level) return true;
+    if (
+      !a ||
+      a.date !== b.date ||
+      a.count !== b.count ||
+      a.level !== b.level ||
+      Boolean(a.future) !== Boolean(b.future)
+    ) {
+      return true;
+    }
   }
   return false;
 }
@@ -68,12 +80,18 @@ function materialPayloadChanged(prev, next) {
 async function main() {
   const data = await httpsGetJson(`/v4/${encodeURIComponent(GITHUB_USERNAME)}?y=${YEAR}`);
   const yearKey = String(YEAR);
-  const contributions = (data.contributions || []).map(({ date, count, level }) => ({
-    date,
-    count,
-    level,
-  }));
-  const total = data.total?.[yearKey] ?? contributions.reduce((sum, day) => sum + (day.count || 0), 0);
+  const today = todayUtcDate();
+  const contributions = (data.contributions || []).map(({ date, count, level }) => {
+    // Keep full-year calendar shape, but mark dates after today so the UI
+    // does not claim "No contributions" on days that have not happened yet.
+    if (date > today) {
+      return { date, count: 0, level: 0, future: true };
+    }
+    return { date, count, level };
+  });
+  const total =
+    data.total?.[yearKey] ??
+    contributions.reduce((sum, day) => sum + (day.future ? 0 : day.count || 0), 0);
 
   const payload = {
     username: GITHUB_USERNAME,
