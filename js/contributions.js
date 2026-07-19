@@ -129,6 +129,12 @@
         if (!day) {
           cell.classList.add('contrib-graph__day--empty');
           cell.setAttribute('aria-hidden', 'true');
+        } else if (day.future) {
+          // Future calendar days stay in the grid (GitHub-style), but must not
+          // claim "No contributions" for dates that have not happened yet.
+          cell.dataset.level = '0';
+          cell.classList.add('contrib-graph__day--future');
+          cell.setAttribute('aria-hidden', 'true');
         } else {
           const level = Math.max(0, Math.min(4, Number(day.level) || 0));
           cell.dataset.level = String(level);
