@@ -95,9 +95,7 @@ async function main() {
     }
     return { date, count, level };
   });
-  const total =
-    data.total?.[yearKey] ??
-    contributions.reduce((sum, day) => sum + (day.future ? 0 : day.count || 0), 0);
+  const total = data.total?.[yearKey] ?? contributions.reduce((sum, day) => sum + (day.future ? 0 : day.count || 0), 0);
 
   const payload = {
     username: GITHUB_USERNAME,
