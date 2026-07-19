@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-07-18T07:45:47.244Z",
+  "lastUpdated": "2026-07-19T06:52:57.833Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -29,38 +29,34 @@
     "sourceStatus": "fresh",
     "source": {
       "provider": "cloudflare",
-      "dataset": "rumPageloadEventsAdaptiveGroups",
-      "metric": "sum.visits",
-      "pageviewMetric": "count",
-      "botFilter": "excluded",
-      "botFilterExpression": "bot: 0",
-      "siteTagKind": "cloudflare-rum-site-id"
+      "dataset": "httpRequests1dGroups",
+      "metric": "uniq.uniques (whole window)",
+      "pageviewMetric": "sum.pageViews (whole window)",
+      "requestMetric": "sum.requests (whole window)",
+      "siteTagKind": "cloudflare-zone-id",
+      "zoneResolution": "domain lookup via /client/v4/zones"
     },
     "windowDays": 30,
-    "windowStart": "2026-06-18T07:45:40.306Z",
-    "windowEnd": "2026-07-18T07:45:40.306Z",
-    "totalVisits": 270,
-    "totalPageviews": 270,
+    "windowStart": "2026-06-19T06:52:51.685Z",
+    "windowEnd": "2026-07-19T06:52:51.685Z",
+    "totalVisits": 19186,
+    "totalPageviews": 78435,
+    "totalRequests": 451003,
     "perSite": {
       "rudrakshbhandari.com": {
-        "visits": 100,
-        "pageviews": 100
-      },
-      "nomnom.cc": {
-        "visits": 20,
-        "pageviews": 20
-      },
-      "shareallbooks.com": {
-        "visits": 150,
-        "pageviews": 150
+        "visits": 3347,
+        "pageviews": 2202,
+        "requests": 85002
       },
       "outfitr.net": {
-        "visits": 0,
-        "pageviews": 0
+        "visits": 3568,
+        "pageviews": 0,
+        "requests": 28684
       },
       "nyaaywatch.in": {
-        "visits": 0,
-        "pageviews": 0
+        "visits": 12271,
+        "pageviews": 76233,
+        "requests": 337317
       }
     }
   }
