@@ -12,6 +12,8 @@ build/
 !.env.example
 .oura_token
 .oura_rotated_token
+.github_contributions_no_change
+.stats_no_change
 
 # IDE files
 .vscode/

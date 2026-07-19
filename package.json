@@ -13,7 +13,8 @@
     "ci:check": "npm run format:check && npm run check:syntax",
     "oura:token": "node scripts/get-oura-token.mjs",
     "oura:diagnose": "node scripts/diagnose-oura-api.mjs",
-    "health:check-freshness": "node scripts/check-health-dashboard-freshness.mjs"
+    "health:check-freshness": "node scripts/check-health-dashboard-freshness.mjs",
+    "github:contributions": "node scripts/fetch_github_contributions.mjs"
   },
   "keywords": [
     "portfolio",
