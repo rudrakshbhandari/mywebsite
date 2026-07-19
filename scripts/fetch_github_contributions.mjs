@@ -51,8 +51,14 @@ function httpsGetJson(path) {
   });
 }
 
-function todayUtcDate() {
-  return new Date().toISOString().slice(0, 10);
+function todayLocalDate() {
+  // Portfolio owner timezone — keeps "today" aligned with the public graph day.
+  return new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'America/Los_Angeles',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).format(new Date());
 }
 
 function materialPayloadChanged(prev, next) {
@@ -80,7 +86,7 @@ function materialPayloadChanged(prev, next) {
 async function main() {
   const data = await httpsGetJson(`/v4/${encodeURIComponent(GITHUB_USERNAME)}?y=${YEAR}`);
   const yearKey = String(YEAR);
-  const today = todayUtcDate();
+  const today = todayLocalDate();
   const contributions = (data.contributions || []).map(({ date, count, level }) => {
     // Keep full-year calendar shape, but mark dates after today so the UI
     // does not claim "No contributions" on days that have not happened yet.
