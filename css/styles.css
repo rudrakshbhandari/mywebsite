@@ -352,7 +352,7 @@ button:focus-visible {
 }
 
 .hero__photo {
-  width: min(520px, 56vw);
+  width: min(780px, 70vw);
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
