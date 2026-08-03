@@ -315,7 +315,10 @@ button:focus-visible {
   font-weight: var(--fw-extrabold);
   font-size: clamp(3.5rem, 9.5vw, 9.5rem);
   line-height: 0.9;
-  color: var(--color-text);
+  color: var(--color-white);
+  -webkit-text-stroke: 1px rgba(26, 26, 26, 0.45);
+  paint-order: stroke fill;
+  text-shadow: 0 3px 14px rgba(0, 0, 0, 0.45);
   letter-spacing: -0.04em;
   display: block;
   position: relative;
