@@ -356,7 +356,7 @@ button:focus-visible {
   height: auto;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: 50% 25%;
+  object-position: 78% 50%;
   border-radius: 14px;
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.15),
@@ -442,7 +442,7 @@ button:focus-visible {
   max-width: none;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: 55% center;
+  object-position: 50% center;
   border-radius: 12px;
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.1),
@@ -791,9 +791,9 @@ button:focus-visible {
 .exp-card__media img {
   display: block;
   width: 100%;
-  height: auto;
-  aspect-ratio: 16 / 9;
+  height: 136px;
   object-fit: cover;
+  object-position: 78% 45%;
 }
 
 .exp-card__bullets {
@@ -1634,6 +1634,11 @@ button:focus-visible {
     flex: none;
     width: 100%;
     padding: 1.75rem;
+  }
+
+  .exp-card__media img {
+    height: auto;
+    aspect-ratio: 16 / 9;
   }
 
   /* Projects: stack vertically on mobile, image stays sticky as you scroll cards */
