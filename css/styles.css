@@ -782,6 +782,20 @@ button:focus-visible {
   margin-bottom: 1.25rem;
 }
 
+.exp-card__media {
+  margin: 0 0 1.25rem;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.exp-card__media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+
 .exp-card__bullets {
   list-style: none;
   padding: 0;
