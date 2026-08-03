@@ -783,7 +783,7 @@ button:focus-visible {
 }
 
 .exp-card__media {
-  margin: 0 0 1.25rem;
+  margin: 0 0 0.75rem;
   overflow: hidden;
   border-radius: 10px;
 }
@@ -791,7 +791,7 @@ button:focus-visible {
 .exp-card__media img {
   display: block;
   width: 100%;
-  height: 136px;
+  height: 72px;
   object-fit: cover;
   object-position: 78% 45%;
 }
