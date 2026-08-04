@@ -311,15 +311,12 @@ button:focus-visible {
 }
 
 .hero__line {
-  font-family: var(--font-display);
-  font-weight: var(--fw-extrabold);
+  font-family: var(--font-body);
+  font-weight: var(--fw-bold);
   font-size: clamp(3.5rem, 9.5vw, 9.5rem);
-  line-height: 0.9;
-  color: #3d342f;
-  -webkit-text-stroke: 2px var(--color-bg);
-  paint-order: stroke fill;
-  text-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-  letter-spacing: -0.04em;
+  line-height: 0.95;
+  color: #ad5946;
+  letter-spacing: -0.03em;
   display: block;
   position: relative;
   z-index: 2;
@@ -350,7 +347,7 @@ button:focus-visible {
 .hero__photo-wrap {
   position: relative;
   z-index: 1;
-  margin: -0.25em 0;
+  margin: 0.85rem 0;
   will-change: transform, opacity;
 }
 
@@ -1589,7 +1586,7 @@ button:focus-visible {
   }
 
   .hero__photo-wrap {
-    margin: -0.2em 0;
+    margin: 0.55rem 0;
   }
 
   /* About */
@@ -1850,7 +1847,7 @@ button:focus-visible {
   }
 
   .hero__photo-wrap {
-    margin: -0.3em 0;
+    margin: 0.45rem 0;
   }
 }
 
