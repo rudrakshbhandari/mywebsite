@@ -16,6 +16,7 @@ import https from 'https';
 const OUTPUT_PATH = resolve(process.cwd(), 'oura_public.json');
 const TOKEN_PATH = resolve(process.cwd(), '.oura_token');
 const ROTATED_TOKEN_PATH = resolve(process.cwd(), '.oura_rotated_token');
+const ROTATED_ACCESS_TOKEN_PATH = resolve(process.cwd(), '.oura_rotated_access_token');
 const OAUTH_ENDPOINT = 'https://api.ouraring.com/oauth/token';
 const OAUTH_AUTHORIZE_ENDPOINT = 'https://cloud.ouraring.com/oauth/authorize';
 const API_BASE = 'api.ouraring.com';
@@ -82,6 +83,82 @@ function saveRotatedTokenForWorkflow(token) {
   } catch (e) {
     console.warn('Could not save rotated token file:', e.message);
   }
+}
+
+/**
+ * Save access token for workflow secret update step in CI.
+ * Caching the access token lets subsequent runs skip refresh (and refresh-token
+ * rotation) until the access token expires — which is what made a single
+ * GitHub Secrets 503 permanently stale the dashboard.
+ * @param {string} token
+ */
+function saveRotatedAccessTokenForWorkflow(token) {
+  try {
+    writeFileSync(ROTATED_ACCESS_TOKEN_PATH, token);
+    console.log('Access token recorded for workflow secret update');
+  } catch (e) {
+    console.warn('Could not save rotated access token file:', e.message);
+  }
+}
+
+/**
+ * Persist rotated OAuth credentials for CI secret updates (and locally).
+ * @param {string} accessToken
+ * @param {string|null|undefined} newRefreshToken
+ * @param {string|null|undefined} previousRefreshToken
+ */
+function persistRotatedCredentials(accessToken, newRefreshToken, previousRefreshToken) {
+  if (IS_GITHUB_ACTIONS) {
+    saveRotatedAccessTokenForWorkflow(accessToken);
+    if (newRefreshToken && newRefreshToken !== previousRefreshToken) {
+      saveRotatedTokenForWorkflow(newRefreshToken);
+    }
+    return;
+  }
+
+  if (newRefreshToken && newRefreshToken !== previousRefreshToken) {
+    saveRefreshToken(newRefreshToken);
+  }
+}
+
+/**
+ * Whether an error looks like an expired/invalid bearer access token
+ * @param {Error} error
+ * @returns {boolean}
+ */
+function isUnauthorizedAccessError(error) {
+  const message = String(error?.message || '').toLowerCase();
+  return (
+    message.includes('http 401') ||
+    message.includes('unauthorized') ||
+    message.includes('invalid access token') ||
+    message.includes('token expired')
+  );
+}
+
+/**
+ * Lightweight probe so a cached OURA_ACCESS_TOKEN can fail closed into refresh
+ * instead of writing empty health data.
+ * @param {string} accessToken
+ * @returns {Promise<void>}
+ */
+async function assertAccessTokenWorks(accessToken) {
+  const { startDate, endDate } = getLast7DaysRange();
+  await fetchPersonalInfoOrSleepProbe(accessToken, startDate, endDate);
+}
+
+/**
+ * Minimal authenticated call used only to validate a cached access token
+ * @param {string} token
+ * @param {string} startDate
+ * @param {string} endDate
+ * @returns {Promise<void>}
+ */
+async function fetchPersonalInfoOrSleepProbe(token, startDate, endDate) {
+  const url = `https://${API_BASE}/v2/usercollection/daily_sleep?start_date=${startDate}&end_date=${endDate}`;
+  await httpsRequest(url, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
 }
 
 /**
@@ -801,42 +878,65 @@ async function main() {
   const existingData = loadExistingData();
 
   try {
-    // Step 1: Resolve access token
+    // Step 1: Resolve access token.
+    // Prefer a cached OURA_ACCESS_TOKEN when present so we do not refresh (and
+    // rotate) the refresh token on every scheduled run. Oura refresh tokens are
+    // single-use-on-rotate: if GitHub Secrets is briefly unavailable after a
+    // refresh, the dashboard goes permanently stale until manual reauth.
     let accessToken;
-    if (directAccessToken) {
-      accessToken = directAccessToken;
-      console.log('Using direct OURA_ACCESS_TOKEN from environment');
-    } else {
-      console.log('Refreshing OAuth token...');
+    let refreshTokenForRotation = refreshToken;
+
+    async function refreshOAuthCredentials(reason) {
+      if (!clientId || !clientSecret || !refreshTokenForRotation) {
+        throw new Error(
+          `Cannot refresh Oura OAuth token (${reason}): missing client credentials or refresh token`
+        );
+      }
+      console.log(`Refreshing OAuth token (${reason})...`);
       try {
         const { accessToken: refreshedAccessToken, newRefreshToken } = await refreshAccessToken(
           clientId,
           clientSecret,
-          refreshToken
+          refreshTokenForRotation
         );
-        accessToken = refreshedAccessToken;
         console.log('Token refreshed successfully');
-
-        // Save new refresh token locally when it rotates; never write secrets in CI.
-        if (newRefreshToken && newRefreshToken !== refreshToken) {
-          refreshToken = newRefreshToken;
-          if (IS_GITHUB_ACTIONS) {
-            saveRotatedTokenForWorkflow(newRefreshToken);
-          } else {
-            saveRefreshToken(newRefreshToken);
-          }
+        persistRotatedCredentials(refreshedAccessToken, newRefreshToken, refreshTokenForRotation);
+        if (newRefreshToken) {
+          refreshTokenForRotation = newRefreshToken;
         }
+        return refreshedAccessToken;
       } catch (refreshError) {
         if (!canRunInteractiveReauth() || !isRecoverableRefreshError(refreshError)) {
           throw refreshError;
         }
 
         const recoveredTokens = await recoverCredentialsInteractively(clientId, clientSecret);
-        accessToken = recoveredTokens.accessToken;
-        refreshToken = recoveredTokens.refreshToken;
-        saveRefreshToken(recoveredTokens.refreshToken);
+        persistRotatedCredentials(recoveredTokens.accessToken, recoveredTokens.refreshToken, refreshTokenForRotation);
+        refreshTokenForRotation = recoveredTokens.refreshToken;
         console.log('Local OAuth credentials recovered successfully');
+        return recoveredTokens.accessToken;
       }
+    }
+
+    if (directAccessToken && refreshTokenForRotation) {
+      // Cached OAuth access token + refresh token: try cache first, refresh on 401.
+      try {
+        await assertAccessTokenWorks(directAccessToken);
+        accessToken = directAccessToken;
+        console.log('Using cached OURA_ACCESS_TOKEN (skipped refresh/rotation)');
+      } catch (probeError) {
+        if (!isUnauthorizedAccessError(probeError)) {
+          throw probeError;
+        }
+        console.warn(`Cached access token rejected (${probeError.message}); refreshing...`);
+        accessToken = await refreshOAuthCredentials('expired cached access token');
+      }
+    } else if (directAccessToken) {
+      // Personal access token path (no refresh token available).
+      accessToken = directAccessToken;
+      console.log('Using direct OURA_ACCESS_TOKEN from environment');
+    } else {
+      accessToken = await refreshOAuthCredentials('no cached access token');
     }
 
     // Step 2: Fetch last 7 days of data
