@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-08-08T19:15:43.869Z",
+  "lastUpdatedIso": "2026-08-08T19:53:34.387Z",
   "day": "2026-08-08",
   "byDay": [
     {
@@ -91,11 +91,11 @@
       "day": "2026-08-07",
       "sleepScore": 91,
       "readinessScore": 79,
-      "activityScore": 49,
+      "activityScore": 48,
       "restingHrBpm": null,
       "hrvMs": null,
-      "steps": 3658,
-      "activeCalories": 200,
+      "steps": 4212,
+      "activeCalories": 232,
       "spo2Average": null,
       "workoutCount": 3,
       "totalSleepDuration": 30600,
