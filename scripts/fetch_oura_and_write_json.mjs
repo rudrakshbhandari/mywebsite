@@ -888,9 +888,7 @@ async function main() {
 
     async function refreshOAuthCredentials(reason) {
       if (!clientId || !clientSecret || !refreshTokenForRotation) {
-        throw new Error(
-          `Cannot refresh Oura OAuth token (${reason}): missing client credentials or refresh token`
-        );
+        throw new Error(`Cannot refresh Oura OAuth token (${reason}): missing client credentials or refresh token`);
       }
       console.log(`Refreshing OAuth token (${reason})...`);
       try {
