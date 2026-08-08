@@ -313,8 +313,8 @@ button:focus-visible {
 .hero__line {
   font-family: var(--font-body);
   font-weight: var(--fw-bold);
-  font-size: clamp(3.5rem, 9.5vw, 9.5rem);
-  line-height: 0.95;
+  font-size: clamp(3rem, 7vw, 7rem);
+  line-height: 1;
   color: #ad5946;
   -webkit-text-stroke: 1.5px #5c3028;
   paint-order: stroke fill;
@@ -349,7 +349,7 @@ button:focus-visible {
 .hero__photo-wrap {
   position: relative;
   z-index: 1;
-  margin: 0.85rem 0;
+  margin: 1.75rem 0;
   will-change: transform, opacity;
 }
 
@@ -1573,7 +1573,7 @@ button:focus-visible {
 
   /* Hero */
   .hero__line {
-    font-size: clamp(2.8rem, 11vw, 5rem);
+    font-size: clamp(2.4rem, 10vw, 4.5rem);
   }
 
   .hero__subtitle {
@@ -1588,7 +1588,7 @@ button:focus-visible {
   }
 
   .hero__photo-wrap {
-    margin: 0.55rem 0;
+    margin: 1rem 0;
   }
 
   /* About */
@@ -1849,7 +1849,7 @@ button:focus-visible {
   }
 
   .hero__photo-wrap {
-    margin: 0.45rem 0;
+    margin: 0.85rem 0;
   }
 }
 
