@@ -316,7 +316,7 @@ button:focus-visible {
   font-size: clamp(3rem, 7vw, 7rem);
   line-height: 1;
   color: #ad5946;
-  -webkit-text-stroke: 1.5px #5c3028;
+  -webkit-text-stroke: 1.5px var(--color-bg);
   paint-order: stroke fill;
   letter-spacing: -0.03em;
   display: block;
