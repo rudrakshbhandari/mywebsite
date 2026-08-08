@@ -22,7 +22,7 @@ permissions:
 jobs:
   fetch-and-commit:
     runs-on: ubuntu-latest
-    timeout-minutes: 22
+    timeout-minutes: 40
 
     env:
       # Prefer OURA_SECRET_UPDATE_TOKEN (same PAT as gh secret set) so PRs are opened as a
@@ -131,53 +131,80 @@ jobs:
           echo "merged=false" >> $GITHUB_OUTPUT
           exit 1
 
-      - name: Rotate refresh token secret (OAuth path)
+      - name: Rotate OAuth secrets after refresh
         if: always() && steps.fetch_oura.outcome == 'success'
         env:
-          OURA_ACCESS_TOKEN: ${{ secrets.OURA_ACCESS_TOKEN }}
           GH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN }}
         run: |
-          if [ -n "$OURA_ACCESS_TOKEN" ]; then
-            echo "Using OURA_ACCESS_TOKEN path; refresh token rotation skipped."
+          # Oura rotates refresh tokens when used. Failing to persist the new
+          # refresh token permanently bricks the dashboard until manual reauth.
+          # We also cache the access token so most runs skip refresh entirely.
+          set -euo pipefail
+
+          if [ ! -f .oura_rotated_token ] && [ ! -f .oura_rotated_access_token ]; then
+            echo "No OAuth secret rotation required this run."
             exit 0
           fi
 
-          if [ ! -f .oura_rotated_token ]; then
-            echo "No refresh token rotation detected."
-            exit 0
-          fi
-
-          if [ -z "$GH_TOKEN" ]; then
-            echo "::error::Refresh token rotated but OURA_SECRET_UPDATE_TOKEN is missing."
-            echo "::error::Set OURA_SECRET_UPDATE_TOKEN so workflow can auto-update OURA_REFRESH_TOKEN."
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::OAuth tokens rotated but OURA_SECRET_UPDATE_TOKEN is missing."
+            echo "::error::Set OURA_SECRET_UPDATE_TOKEN so the workflow can update OURA_REFRESH_TOKEN / OURA_ACCESS_TOKEN."
             exit 1
           fi
 
-          NEW_REFRESH_TOKEN="$(tr -d '\n' < .oura_rotated_token)"
-
-          for attempt in 1 2 3; do
-            if gh secret set OURA_REFRESH_TOKEN --body "$NEW_REFRESH_TOKEN"; then
-              rm -f .oura_rotated_token
-              echo "Updated OURA_REFRESH_TOKEN secret automatically."
-              exit 0
+          update_secret() {
+            local name="$1"
+            local file="$2"
+            if [ ! -f "$file" ]; then
+              return 0
             fi
 
-            if [ "$attempt" -lt 3 ]; then
-              sleep $((attempt * 5))
-            fi
-          done
+            local value
+            value="$(tr -d '\n' < "$file")"
+            # GitHub Secrets API occasionally returns 503. Retry for ~15 minutes
+            # because losing a rotated refresh token is irreversible.
+            local attempt
+            local sleep_s=5
+            for attempt in $(seq 1 30); do
+              if gh secret set "$name" --body "$value"; then
+                rm -f "$file"
+                echo "Updated ${name} secret automatically (attempt ${attempt})."
+                return 0
+              fi
+              echo "Attempt ${attempt}/30 failed updating ${name}; retrying in ${sleep_s}s..."
+              sleep "$sleep_s"
+              if [ "$sleep_s" -lt 60 ]; then
+                sleep_s=$((sleep_s * 2))
+                if [ "$sleep_s" -gt 60 ]; then
+                  sleep_s=60
+                fi
+              fi
+            done
 
-          echo "::error::Failed to update OURA_REFRESH_TOKEN after 3 attempts."
-          exit 1
+            echo "::error::Failed to update ${name} after 30 attempts."
+            return 1
+          }
+
+          failed=0
+          update_secret OURA_REFRESH_TOKEN .oura_rotated_token || failed=1
+          update_secret OURA_ACCESS_TOKEN .oura_rotated_access_token || failed=1
+
+          if [ "$failed" -ne 0 ]; then
+            echo "::error::Secret rotation failed after OAuth refresh. Manual reauth is required before the next successful refresh can persist."
+            exit 1
+          fi
 
       - name: Open or update dashboard alert issue
-        if: steps.fetch_oura.outcome == 'failure'
+        if: failure()
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_TITLE: Health dashboard automation alert
         run: |
           RUN_URL="https://github.com/${GITHUB_REPOSITORY}/actions/runs/${GITHUB_RUN_ID}"
-          LAST_ERROR="$(tail -n 20 .oura_fetch.log | sed 's/\r$//' | tail -n 1)"
+          LAST_ERROR=""
+          if [ -f .oura_fetch.log ]; then
+            LAST_ERROR="$(tail -n 20 .oura_fetch.log | sed 's/\r$//' | tail -n 1)"
+          fi
           cat > .health_alert_body.md <<EOF
           @rudrakshbhandari the scheduled Oura health dashboard update failed.
 
@@ -187,7 +214,12 @@ jobs:
           - Triggered at: $(date -u +"%Y-%m-%dT%H:%M:%SZ")
           - Last log line: \`${LAST_ERROR}\`
 
-          This usually means the Oura token refresh path or related secrets need attention before the public dashboard goes stale.
+          Common causes:
+          1. Refresh token rejected (\`HTTP 400: Invalid request\`) after a failed GitHub secret update following OAuth rotation
+          2. Missing/expired \`OURA_SECRET_UPDATE_TOKEN\` so rotated tokens cannot be persisted
+          3. Transient Oura API failure
+
+          Recovery: run local browser reauth (\`set -a && source .env && set +a && node scripts/fetch_oura_and_write_json.mjs\`) then \`gh secret set OURA_REFRESH_TOKEN\` (and \`OURA_ACCESS_TOKEN\` if present) from the new local tokens.
           EOF
 
           ISSUE_NUMBER="$(gh issue list --state open --limit 100 --json number,title --jq '.[] | select(.title == "'"${ISSUE_TITLE}"'") | .number' | head -n 1)"
