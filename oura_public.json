@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-08-09T08:46:15.822Z",
+  "lastUpdatedIso": "2026-08-09T09:45:50.274Z",
   "day": "2026-08-08",
   "byDay": [
     {
@@ -91,7 +91,7 @@
       "day": "2026-08-08",
       "sleepScore": 94,
       "readinessScore": 82,
-      "activityScore": 47,
+      "activityScore": 48,
       "restingHrBpm": null,
       "hrvMs": null,
       "steps": 736,
@@ -2206,11 +2206,11 @@
   "heartRateMaxBpm": 107,
   "heartRateAvgBpm": 85,
   "heartRateLatestBpm": 90,
-  "activityScore": 47,
+  "activityScore": 48,
   "activityMeetTargets": 1,
   "activityMoveHour": 95,
   "activityRecoveryTime": 100,
-  "activityStayActive": 59,
+  "activityStayActive": 61,
   "activityTrainingFreq": 1,
   "activityTrainingVol": 26,
   "steps": 736,
