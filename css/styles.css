@@ -295,6 +295,7 @@ button:focus-visible {
 
 .hero__inner {
   height: 100vh;
+  height: 100svh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -352,7 +353,8 @@ button:focus-visible {
 }
 
 .hero__photo {
-  width: min(780px, 70vw);
+  width: min(780px, 70vw, calc((100vh - 26rem) * 16 / 9));
+  width: min(780px, 70vw, calc((100svh - 26rem) * 16 / 9));
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
@@ -378,6 +380,16 @@ button:focus-visible {
   gap: 0.4rem;
   text-align: center;
   will-change: opacity;
+}
+
+@media (max-height: 800px) and (min-width: 769px) {
+  .hero__photo-wrap {
+    margin: 1rem 0;
+  }
+
+  .hero__subtitle {
+    margin-top: 1.25rem;
+  }
 }
 
 .hero__subtitle-line {
@@ -1895,6 +1907,26 @@ button:focus-visible {
 
   .hero__inner {
     position: relative;
+  }
+
+  .scene--experience {
+    overflow: visible;
+  }
+
+  .experience__track-wrapper {
+    overflow: visible;
+  }
+
+  .experience__track {
+    flex-direction: column;
+    padding: 1.25rem 2rem 2rem;
+    gap: 1rem;
+    transform: none;
+  }
+
+  .exp-card {
+    flex: none;
+    width: min(42rem, calc(100% - 4rem));
   }
 }
 
