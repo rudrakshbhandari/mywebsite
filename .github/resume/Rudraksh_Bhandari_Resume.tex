@@ -47,7 +47,7 @@
 \addtolength{\oddsidemargin}{-0.75in}
 \addtolength{\evensidemargin}{-0.7in}
 \addtolength{\textwidth}{1.5in}
-\addtolength{\topmargin}{-0.775in}
+\addtolength{\topmargin}{-0.790in}
 \addtolength{\textheight}{1.6in}
 
 \urlstyle{same}
@@ -78,12 +78,39 @@
   }
 }
 
+% \newcommand{\resumeSubheading}[4]{
+% \item
+%     \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+%         \vspace{1pt}
+%       \textbf{\large #1} &    \vspace{1pt} \textbf{\small #2} \\
+%       \text{\large #3} & \textit{\small #4} \\
+%     \end{tabular*}\vspace{-10pt}
+% }
+
+% \newcommand{\resumeSubheading}[4]{
+% \item
+%     \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+%         \vspace{1pt}
+%       {\large #1} & \vspace{1pt} {\small #2} \\
+%       \textbf{\large #3} & \textit{\small #4} \\
+%     \end{tabular*}\vspace{-10pt}
+% }
+
 \newcommand{\resumeSubheading}[4]{
 \item
     \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
         \vspace{1pt}
-      \textbf{\large #1} &    \vspace{1pt} \textbf{\small #2} \\
-      \text{\large #3} & \textit{\small #4} \\
+      \textbf{\large #1} & \vspace{1pt} {\small #2} \\
+      {\large #3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-10pt}
+}
+
+\newcommand{\resumeEducation}[4]{
+\item
+    \begin{tabular*}{1.0\textwidth}[t]{l@{\extracolsep{\fill}}r}
+        \vspace{1pt}
+      \textbf{\large #1} & \vspace{1pt} {\small #2} \\
+      {\large #3} & \textit{\small #4} \\
     \end{tabular*}\vspace{-10pt}
 }
 
@@ -94,14 +121,21 @@
     \end{tabular*}\vspace{-15pt}
 }
 
+% \newcommand{\resumeProjectHeading}[2]{
+%     \item
+%     \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
+%     \vspace{5pt}
+%       \large#1 & \textbf{\small #2}\\
+%     \end{tabular*}\vspace{-5pt}
+% }
+
 \newcommand{\resumeProjectHeading}[2]{
     \item
     \begin{tabular*}{1.001\textwidth}{l@{\extracolsep{\fill}}r}
     \vspace{5pt}
-      \large#1 & \textbf{\small #2}\\
+      \large#1 & \textit{\small #2}\\
     \end{tabular*}\vspace{-5pt}
 }
-
 \newcommand{\resumeSubItem}[1]{\resumeItem{#1}\vspace{-2pt}}
 
 \renewcommand\labelitemi{$\vcenter{\hbox{\tiny$\bullet$}}$}
@@ -120,11 +154,11 @@
     {\Huge \scshape Rudraksh Bhandari} \\ \vspace{2pt}
     {San Diego, CA 92093} \\ \vspace{3pt}
     \small
-    \href{mailto:rubhandari@ucsd.edu}{rubhandari@ucsd.edu} $|$
+    \href{mailto:rudrakshbhandari99@gmail.com}{rudrakshbhandari99@gmail.com} $|$
     858-241-5942 $|$
-    \href{https://www.linkedin.com/in/rudrakshbhandari}{LinkedIn} $|$
-    \href{https://github.com/rudrakshbhandari}{GitHub} $|$
-    \href{https://rudrakshbhandari.com}{rudrakshbhandari.com}
+    \underline{\href{https://www.linkedin.com/in/rudrakshbhandari}{LinkedIn}} $|$
+    \underline{\href{https://github.com/rudrakshbhandari}{GitHub}} $|$
+    \underline{\href{https://rudrakshbhandari.com}{rudrakshbhandari.com}}
     \vspace{-10pt}
 \end{center}
 
@@ -133,83 +167,88 @@
 \section{Education}
   \resumeSubHeadingListStart
   \vspace{1pt}
-    \resumeSubheading
-      {University of California San Diego}{San Diego, California}
-      {Bachelor of Science in Computer Science $|$ GPA: \textbf{3.9}}{September 2024 \textbf{--} March 2027}
+    \resumeEducation
+      {University of California San Diego}{San Diego, CA}
+      {Bachelor of Science in Computer Science $|$ GPA: \textbf{3.9}}{September 2024 -- March 2027}
       \vspace{2pt}
-      \item \small{\textbf{Undergraduate Research}
-      \vspace{-7pt}
-      \resumeItemListStart
-        \resumeItem{Building end-to-end RAG systems in the \href{http://www.svcl.ucsd.edu/}{Statistical Visual Computing Laboratory (SVCL)} with focus on retrieval, embedding, and generation pipelines.}
-        \resumeItem{Developing KV-cache acceleration systems in the \href{http://act-lab.org/}{Alternative Computing Technologies (ACT) Lab}, building H100 evaluation infrastructure for LMCache, CacheBlend, KVComm, and EPIC.}
-    \resumeItemListEnd
-
-
   \resumeSubHeadingListEnd
 
-\vspace{-25pt}
+\vspace{-20pt}
 \section{Experience}
 \resumeSubHeadingListStart
 \vspace{0pt}
  \resumeSubheading
-  {Software Development Engineer Intern}{June 2026 -- Present}
-  {Amazon Web Services - HyperPlane, EC2 Gateway Networking}{Santa Clara, CA}
-  \vspace{0.5pt}
+  {Amazon Web Services - EC2 Gateway Networking}{Santa Clara, CA}
+ {Software Development Engineer Intern}{June 2026 -- Present}
+
+  \vspace{-3pt}
   \resumeItemListStart
-    \resumeItem{Built a Python/Bedrock AI-agent framework to automate game-day failure testing for AWS HyperPlane's host-health system, orchestrating fault-scenario injection, service-state mutations, and metric aggregation into automated root-cause reports. }
+    \resumeItem{Built a gameday testing framework for a distributed host-health system that converts \textbf{3 historical customer-impacting incidents}, including multi-zone failures, into repeatable regression tests using controlled fault injection.}
+    \resumeItem{Designed a guardrailed Python/Bedrock AI agent that executes one-command gameday replays, orchestrating cross-service fault injection, state mutations, evidence collection, and recovery with deterministic safety checks in \textbf{under 10 minutes}.}
 
   \resumeItemListEnd
+  \vspace{-25pt}
+
+  \resumeSubheading
+    {}{}
+    {Software Development Engineer Intern}{June 2025 -- September 2025}
   \vspace{-3pt}
+  \resumeItemListStart
+    \resumeItem{Built a React/TypeScript CLI command generator for on-call incident response, cutting manual engineer effort by \textbf{~75\%} and reducing command-generation latency from \textbf{2+ minutes to $<$30 seconds}.}
+    \resumeItem{Engineered a Java/Python AWS event service for patch visibility across EC2 cluster groups using Lambda, SSM, SQS, SNS.}
+
+  \resumeItemListEnd
+  \vspace{-4pt}
+
+
 \resumeSubheading
-  {Co-founder \& Lead Developer}{April 2026 -- Present}
-  {\href{https://outfitrapp.com/}{Outfitr}}{San Diego, CA}
-    \vspace{0.5pt}
-  \resumeItemListStart
-    \resumeItem{Founded a wardrobe-first social fashion app that helps Gen Z decide what to wear from clothes they already own, with closet import, outfit recommendations, and friend polls.}
-    \resumeItem{Built the full-stack iOS beta across React Native / Expo, Fastify, Postgres, AWS, photo-based closet import, recommendation workflows, and social polling.}
-  \resumeItemListEnd
+  {\href{https://outfitrapp.com/}{\underline{Outfitr}}}{San Diego, CA}
+    {Co-founder \& Lead Developer}{April 2026 -- Present}
+
     \vspace{-3pt}
-
-    \resumeSubheading
-  {Software Development Engineer Intern}{June 2025 -- September 2025}
-  {Amazon Web Services - HyperPlane, EC2 Gateway Networking}{Sunnyvale, CA}
-  \vspace{0.5pt}
   \resumeItemListStart
-    \resumeItem{Automated on-call operations by developing a CLI command generator that cut manual engineer effort by $\sim$75\% and improved incident response latency using React, Redux, and TypeScript.}
-    \resumeItem{Engineered a Java/Python AWS event service for patch visibility across 14 EC2 cluster groups using Lambda, SSM, SQS, SNS, and CloudWatch.}
+    \resumeItem{Launched a social fashion app that helps Gen Z decide what to wear from clothes they already own, with closet import, outfit recommendations, and friend polls; \textbf{Y Combinator} Summer '26 application ranked in the \textbf{top 10\% of applicants.}}
+
+    \resumeItem{Architected Outfitr's multimodal wardrobe-extraction pipeline: an asynchronous VLM-based system that processed \textbf{226 real-customer photos across 97 production jobs}, identifying 1,365 garment candidates and adding 279 garments to users’ closets with \textbf{zero job-level failures.}}
 
   \resumeItemListEnd
-  \vspace{-3pt}
+    \vspace{-5pt}
+
 
  \resumeSubheading
+   {\href{https://www.nomnom.cc}{\underline{NomNom}}}{San Diego, CA}
   {Co-founder \& Lead Developer}{September 2025 -- March 2026}
-  {\href{https://www.nomnom.cc}{NomNom}}{San Diego, CA}
-  \vspace{0.5pt}
+    \vspace{-3pt}
   \resumeItemListStart
-    \resumeItem{Built two React Native apps: Student app for ordering UCSD dining hall deliveries and Rider app for student couriers, using TypeScript, Firebase, and Stripe; integrated notifications, in-app chat, live ETAs using Expo Location \& React Native Maps.}
+
+    \resumeItem{Built and launched a two-sided campus delivery marketplace on the App Store, developing React Native apps for students and couriers with Stripe payments, real-time courier tracking, live ETAs, push notifications, and in-app chat.}
+
   \resumeItemListEnd
   \vspace{-5pt}
  \resumeSubheading
-  {Software Developer}{November 2024 -- June 2026}
-  {\href{https://tritonse.github.io/}{Triton Software Engineering}}{San Diego, CA}
-  \vspace{0.5pt}
+  {\href{https://tritonse.github.io/}{\underline{Triton Software Engineering}}}{San Diego, CA}
+    {Software Developer}{November 2024 -- June 2026}
+
+  \vspace{-3pt}
   \resumeItemListStart
-    \resumeItem{Built full-stack features for {\href{https://browercenter.org/}{David Brower Center}}, a database platform for nonprofit organizations to visualize relationships between NPOs, using TypeScript, React, Node.js, Prisma, and Postgres, working with a 12-member cross-functional team.}
+    \resumeItem{Built full-stack features for {\href{https://browercenter.org/}{\underline{David Brower Center}'s website}}, a database platform for nonprofit organizations to visualize relationships between NPOs, using TypeScript, React, Node.js, Prisma, and Postgres.}
+
 
   \resumeItemListEnd
 \vspace{-4pt}
  \resumeSubheading
-  {Founder}{August 2023 -- September 2024}
-  {\href{https://www.shareallbooks.com}{ShareAllBooks}}{United Arab Emirates}
-  \vspace{0.5pt}
+  {\href{https://www.shareallbooks.com}{\underline{ShareAllBooks}}}{United Arab Emirates}
+    {Founder}{August 2023 -- September 2024}
+
+  \vspace{-3pt}
   \resumeItemListStart
-    \resumeItem{Founded and launched a React Native book-sharing app on App Store \& Play Store, reaching 2,000+ downloads and 1,500+ donations/sales within the first year; featured in \href{https://www.khaleejtimes.com/uae/dubai-student-creates-app-for-free-exchange-of-books}{UAE national press}; utilized JavaScript, Firebase, and EmailJS}
+    \resumeItem{Built and launched a React Native book-sharing app on App Store \& Play Store, \textbf{reaching 2,000+ downloads and 1,500+ donations/sales} within months; featured in \href{https://www.khaleejtimes.com/uae/dubai-student-creates-app-for-free-exchange-of-books}{\underline{UAE national press}}; peaked at \textbf{\#41 in App Store's Top Charts} for Books.}
 
   \resumeItemListEnd
     \resumeSubHeadingListEnd
-\vspace{-20pt}
+\vspace{-22pt}
 \section{Technical Skills}
-\vspace{0pt}
+% \vspace{0pt}
 
 \begin{tabularx}{\textwidth}{@{}X X@{}}
 \textbf{Languages:} Java, Python, JavaScript, TypeScript, C++ &
@@ -218,19 +257,52 @@
 \textbf{Tools:} Git, AWS, Xcode, Stripe, Expo
 \end{tabularx}
 
-\vspace{-10pt}
+\vspace{-7pt}
+\section{Projects \& Research}
+% \vspace{-7pt}
 
-\section{Projects}
-    \vspace{-3pt}
-    \resumeSubHeadingListStart
-      \resumeProjectHeading
-          {\textbf{\href{https://nyaaywatch.in}{NyaayWatch}}}{April 2026 -- Present}
-          \vspace{-16pt}
-          \resumeItemListStart
-            \resumeItem{Built an open-source civic data platform with 5,000+ monthly visitors, automated Indian court data ingestion, PostgreSQL/S3 evidence storage, versioned snapshots, public APIs, and rollbackable AWS/Cloudflare publishing.}
-\resumeItemListEnd
-  \resumeSubHeadingListEnd
-\vspace{-20pt}
+\resumeSubHeadingListStart
+
+  \resumeProjectHeading
+      {\textbf{\href{https://nyaaywatch.in}{\underline{NyaayWatch}}} \emph{}}{April 2026 -- Present}
+      \vspace{-16pt}
+      \resumeItemListStart
+        \resumeItem{Built an open-source civic data platform with \textbf{5,000+ monthly visitors}, automated Indian court data ingestion, PostgreSQL/S3 evidence storage, versioned snapshots, public APIs, and rollbackable AWS/Cloudflare publishing.}
+      \resumeItemListEnd
+
+  \vspace{-15pt}
+
+  \resumeProjectHeading
+      {\textbf{Undergraduate Research}
+      \emph{}}{March 2026 -- Present}
+      \vspace{-16pt}
+      \resumeItemListStart
+        \resumeItem{Developing a unified model for generation, embeddings, and agentic routing in the \href{http://www.svcl.ucsd.edu/}{Statistical Visual Computing Lab (\underline{SVCL})} under \href{https://scholar.google.com/citations?user=Fykyo9gAAAAJ\&hl=en}{Prof. Vasconcelos}, using LoRA-based embedding distillation and generation replay to improve retrieval.}
+        \resumeItem{Benchmarking dense prefill vs. KVCOMM TTFT on H100s across multi-agent workloads in the \href{http://act-lab.org/}{Alternative Computing Technologies (\underline{ACT}) Lab} under \href{https://scholar.google.com/citations?user=LnB5_AcAAAAJ\&hl}{Prof. Esmaeilzadeh} to evaluate KV-cache reuse.}
+      \resumeItemListEnd
+
+\resumeSubHeadingListEnd
+
+\vspace{-22pt}
+% \section{Projects \& Research}
+%     \vspace{-7pt}
+
+%       \resumeProjectHeading
+%           {\textbf{\href{https://nyaaywatch.in}{\underline{NyaayWatch}}} \emph{}}{April 2026 -- Present}
+%           \vspace{-16pt}
+%           \resumeItemListStart
+%             \resumeItem{Built an open-source civic data platform with \textbf{5,000+ monthly visitors}, automated Indian court data ingestion, PostgreSQL/S3 evidence storage, versioned snapshots, public APIs, and rollbackable AWS/Cloudflare publishing.}
+%         \resumeItemListEnd
+% \vspace{-15pt}
+%         \resumeProjectHeading
+%           {\textbf{{Undergraduate Research}} \emph{}}{March 2026 -- Present}
+%           \vspace{-20pt}
+%           \resumeItemListStart
+%             \resumeItem{Developing a unified model for generation, embeddings, and agentic routing in the \href{http://www.svcl.ucsd.edu/}{Statistical Visual Computing Lab (\underline{SVCL})} under \href{https://scholar.google.com/citations?user=Fykyo9gAAAAJ&hl=en}{Prof. Vasconcelos}, using LoRA-based embedding distillation and generation replay to improve retrieval.}
+%             \vspace{-5pt}
+%             \resumeItem{Benchmarking dense prefill vs. KVCOMM TTFT on H100s across multi-agent workloads in the \href{http://act-lab.org/}{Alternative Computing Technologies (\underline{ACT}) Lab} under \href{https://scholar.google.com/citations?user=LnB5_AcAAAAJ&hl}{Prof. Esmaeilzadeh} to evaluate KV-cache reuse.}
+%         \resumeItemListEnd
+\vspace{-22pt}
 
 % \section{Coursework}
 %  \begin{itemize}[leftmargin=0.00in, label={}]
