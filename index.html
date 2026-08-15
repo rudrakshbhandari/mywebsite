@@ -154,8 +154,12 @@
             <div class="hero__photo-wrap">
               <img
                 src="img/Rudraksh-9-600.jpg?v=1"
-                srcset="img/Rudraksh-9-600.jpg?v=1 600w, img/Rudraksh-9-1200.jpg?v=1 1200w"
-                sizes="(max-width: 768px) 260px, 780px"
+                srcset="
+                  img/Rudraksh-9-600.jpg?v=1   600w,
+                  img/Rudraksh-9-1200.jpg?v=1 1200w,
+                  img/Rudraksh-9-1672.jpg?v=1 1672w
+                "
+                sizes="(max-width: 768px) 260px, min(780px, 70vw, calc((100vh - 26rem) * 16 / 9))"
                 alt="Rudraksh Bhandari at Amazon Web Services"
                 class="hero__photo"
                 width="780"
@@ -186,7 +190,7 @@
               <img
                 src="img/Rudraksh-8-about-600.jpg?v=1"
                 srcset="img/Rudraksh-8-about-600.jpg?v=1 600w, img/Rudraksh-8-about-900.jpg?v=1 900w"
-                sizes="(max-width: 900px) 80vw, 420px"
+                sizes="(max-width: 768px) 300px, 480px"
                 alt="Rudraksh Bhandari"
                 class="about__photo"
                 loading="lazy"
@@ -200,9 +204,9 @@
             <h2 class="about__heading">About</h2>
 
             <p class="about__paragraph">
-              I'm Rudraksh, and I'm co-founding
+              I'm building
               <a href="https://outfitrapp.com/" target="_blank" rel="noopener noreferrer" class="text-link">Outfitr</a>
-              — a wardrobe-first social fashion app that plans what to wear today from clothes you already own.
+              — wardrobe-first social fashion that plans what to wear today from clothes you already own.
             </p>
 
             <p class="about__paragraph">
@@ -356,7 +360,9 @@
                 />
               </figure>
               <ul class="exp-card__bullets">
-                <li>Returning to AWS EC2 Gateway Networking for a second Software Development Engineer internship.</li>
+                <li>
+                  Working as a Software Development Engineer intern on AWS EC2 Gateway Networking for a second summer.
+                </li>
               </ul>
             </article>
 

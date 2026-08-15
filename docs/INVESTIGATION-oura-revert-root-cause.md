@@ -55,7 +55,7 @@ b7a1710 feat(content): restore Amazon return and 2x SDE updates (#75)  ← MERGE
 
 **Verification:** `git show origin/main:index.html` includes:
 
-- "Returning to AWS EC2 Gateway Networking Summer 2026"
+- "Returning to AWS Hyperplane Summer 2026"
 - "2x Software Development Engineer Intern"
 - Updated currently card
 
@@ -71,7 +71,7 @@ b7a1710 feat(content): restore Amazon return and 2x SDE updates (#75)  ← MERGE
 
 **origin/main (16aad15):**
 
-- "Returning to AWS EC2 Gateway Networking Summer 2026"
+- "Returning to AWS Hyperplane Summer 2026"
 - "2x Software Development Engineer Intern"
 - Amazon return content present
 
