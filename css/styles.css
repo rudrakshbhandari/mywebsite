@@ -319,8 +319,6 @@ button:focus-visible {
   font-size: clamp(3.5rem, 9.5vw, 9.5rem);
   line-height: 0.9;
   color: var(--color-text);
-  -webkit-text-stroke: 4px var(--color-bg);
-  paint-order: stroke fill;
   letter-spacing: -0.04em;
   display: block;
   position: relative;
@@ -1636,7 +1634,7 @@ button:focus-visible {
 
   /* Hero */
   .hero__line {
-    font-size: clamp(2.4rem, 10vw, 4.5rem);
+    font-size: clamp(2.8rem, 11vw, 5rem);
   }
 
   .hero__subtitle {
