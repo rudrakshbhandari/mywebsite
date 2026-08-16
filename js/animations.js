@@ -17,8 +17,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
   var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var isMobile = window.innerWidth <= 768;
+  var isShortLandscape = window.innerWidth > 768 && window.innerHeight <= 500;
 
-  if (prefersReducedMotion || isMobile) {
+  if (prefersReducedMotion || isMobile || isShortLandscape) {
     initStaticFallback();
     // On mobile, keep the project image crossfade in sync with the sticky
     // image strip so each card gets its own visual.
