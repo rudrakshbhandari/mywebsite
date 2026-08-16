@@ -32,7 +32,13 @@ function currentSceneMode() {
   return 'pinned';
 }
 
+var collageObserver = null;
+
 function killScrollTriggers() {
+  if (collageObserver) {
+    collageObserver.disconnect();
+    collageObserver = null;
+  }
   if (typeof ScrollTrigger === 'undefined') return;
   ScrollTrigger.getAll().forEach(function (trigger) {
     trigger.kill();
@@ -42,7 +48,7 @@ function killScrollTriggers() {
 function applySceneMode() {
   var nextMode = currentSceneMode();
   if (nextMode === sceneMode) {
-    if (sceneMode === 'pinned' && typeof ScrollTrigger !== 'undefined') {
+    if (typeof ScrollTrigger !== 'undefined' && (sceneMode === 'pinned' || sceneMode === 'static-mobile-projects')) {
       ScrollTrigger.refresh();
     }
     return;
@@ -333,7 +339,7 @@ function initProjectsScene() {
   // while NyaayWatch is still centre-screen.
   var lastFeaturedCard = cards[cards.length - 1];
   if (lastFeaturedCard) {
-    var collageObserver = new IntersectionObserver(
+    collageObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           // true = card has scrolled above viewport (top < 0 and not intersecting)
