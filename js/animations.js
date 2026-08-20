@@ -9,32 +9,90 @@
  * Scene 5: Contact — background color transition
  */
 
+var MOBILE_MAX_WIDTH = 768;
+var SHORT_LANDSCAPE_MAX_HEIGHT = 600;
+var sceneMode = 'none';
+
+function prefersReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function isMobileViewport() {
+  return window.innerWidth <= MOBILE_MAX_WIDTH;
+}
+
+function isShortLandscape() {
+  return window.innerWidth > MOBILE_MAX_WIDTH && window.innerHeight <= SHORT_LANDSCAPE_MAX_HEIGHT;
+}
+
+function currentSceneMode() {
+  if (prefersReducedMotion()) return 'static';
+  if (isMobileViewport()) return 'static-mobile-projects';
+  if (isShortLandscape()) return 'static';
+  return 'pinned';
+}
+
+var collageObserver = null;
+
+function killScrollTriggers() {
+  if (collageObserver) {
+    collageObserver.disconnect();
+    collageObserver = null;
+  }
+  if (typeof ScrollTrigger === 'undefined') return;
+  ScrollTrigger.getAll().forEach(function (trigger) {
+    trigger.kill();
+  });
+}
+
+function applySceneMode() {
+  var nextMode = currentSceneMode();
+  if (nextMode === sceneMode) {
+    if (typeof ScrollTrigger !== 'undefined' && (sceneMode === 'pinned' || sceneMode === 'static-mobile-projects')) {
+      ScrollTrigger.refresh();
+    }
+    return;
+  }
+
+  killScrollTriggers();
+  document.body.classList.remove('gsap-ready');
+  sceneMode = nextMode;
+
+  if (nextMode === 'pinned') {
+    document.body.classList.add('gsap-ready');
+    initHeroScene();
+    initAboutScene();
+    initExperienceScene();
+    initProjectsScene();
+    initContactScene();
+    return;
+  }
+
+  initStaticFallback();
+  if (nextMode === 'static-mobile-projects') {
+    initProjectsScene();
+  }
+}
+
+function debounce(fn, wait) {
+  var timer;
+  return function () {
+    clearTimeout(timer);
+    timer = setTimeout(fn, wait);
+  };
+}
+
 document.addEventListener('DOMContentLoaded', function () {
   if (typeof IS_DEV_MODE !== 'undefined' && IS_DEV_MODE) return;
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
   gsap.registerPlugin(ScrollTrigger);
-
-  var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var isMobile = window.innerWidth <= 768;
-
-  if (prefersReducedMotion || isMobile) {
-    initStaticFallback();
-    // On mobile, keep the project image crossfade in sync with the sticky
-    // image strip so each card gets its own visual.
-    if (isMobile && !prefersReducedMotion) {
-      initProjectsScene();
-    }
-    return;
-  }
-
-  document.body.classList.add('gsap-ready');
-
-  initHeroScene();
-  initAboutScene();
-  initExperienceScene();
-  initProjectsScene();
-  initContactScene();
+  applySceneMode();
+  window.addEventListener('resize', debounce(applySceneMode, 150));
+  window.addEventListener('orientationchange', function () {
+    setTimeout(applySceneMode, 250);
+  });
+  window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', applySceneMode);
 });
 
 /* ===========================
@@ -281,7 +339,7 @@ function initProjectsScene() {
   // while NyaayWatch is still centre-screen.
   var lastFeaturedCard = cards[cards.length - 1];
   if (lastFeaturedCard) {
-    var collageObserver = new IntersectionObserver(
+    collageObserver = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           // true = card has scrolled above viewport (top < 0 and not intersecting)
