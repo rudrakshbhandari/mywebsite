@@ -151,6 +151,14 @@
     body.appendChild(grid);
     graph.replaceChildren(monthsRow, body);
     root.hidden = false;
+
+    // The graph is loaded after GSAP creates the pinned Experience scene.
+    // Re-measure the pin spacer once this async content changes the page height.
+    if (window.ScrollTrigger && typeof window.ScrollTrigger.refresh === 'function') {
+      window.requestAnimationFrame(function () {
+        window.ScrollTrigger.refresh();
+      });
+    }
   }
 
   function init() {

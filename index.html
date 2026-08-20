@@ -34,7 +34,7 @@
       property="og:description"
       content="ML researcher at UC San Diego building consumer and public-interest software across mobile products, AI systems, and civic data."
     />
-    <meta property="og:image" content="https://rudrakshbhandari.com/img/Rudraksh-8.jpeg" />
+    <meta property="og:image" content="https://rudrakshbhandari.com/img/Rudraksh-9-og.jpg?v=1" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:url" content="https://rudrakshbhandari.com" />
@@ -47,7 +47,7 @@
       name="twitter:description"
       content="ML researcher at UC San Diego building consumer and public-interest software across mobile products, AI systems, and civic data."
     />
-    <meta name="twitter:image" content="https://rudrakshbhandari.com/img/Rudraksh-8.jpeg" />
+    <meta name="twitter:image" content="https://rudrakshbhandari.com/img/Rudraksh-9-og.jpg?v=1" />
 
     <title>Rudraksh Bhandari | Portfolio</title>
 
@@ -77,7 +77,7 @@
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/tokens.css?v=2" />
-    <link rel="stylesheet" href="css/styles.css?v=5" />
+    <link rel="stylesheet" href="css/styles.css?v=9" />
 
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json">
@@ -120,7 +120,7 @@
             <a href="/work/" class="nav-link">Work</a>
             <a href="#contact" class="nav-link">Contact</a>
             <a
-              href="Rudraksh_Bhandari_Resume.pdf?v=3"
+              href="Rudraksh_Bhandari_Resume.pdf?v=4"
               class="nav-link nav-resume"
               target="_blank"
               rel="noopener noreferrer"
@@ -153,13 +153,17 @@
             <span class="hero__line hero__line--first">Rudraksh</span>
             <div class="hero__photo-wrap">
               <img
-                src="img/Rudraksh-8-600.jpg"
-                srcset="img/Rudraksh-8-600.jpg 600w, img/Rudraksh-8-1200.jpg 1200w"
-                sizes="(max-width: 768px) 260px, 420px"
-                alt="Rudraksh Bhandari"
+                src="img/Rudraksh-9-600.jpg?v=1"
+                srcset="
+                  img/Rudraksh-9-600.jpg?v=1   600w,
+                  img/Rudraksh-9-1200.jpg?v=1 1200w,
+                  img/Rudraksh-9-1672.jpg?v=1 1672w
+                "
+                sizes="(max-width: 480px) 220px, (max-width: 768px) 260px, min(780px, 70vw, max(12rem, calc((100svh - 30rem) * 16 / 9)))"
+                alt="Rudraksh Bhandari at Amazon Web Services"
                 class="hero__photo"
-                width="420"
-                height="560"
+                width="780"
+                height="439"
                 fetchpriority="high"
                 decoding="async"
               />
@@ -184,15 +188,19 @@
           <div class="about__photo-col">
             <div class="about__photo-sticky">
               <img
-                src="img/Rudraksh-7-600.jpg"
-                srcset="img/Rudraksh-7-600.jpg 600w, img/Rudraksh-7-900.jpg 900w"
-                sizes="(max-width: 900px) 80vw, 420px"
+                src="img/Rudraksh-8-about-600.jpg?v=1"
+                srcset="
+                  img/Rudraksh-8-about-600.jpg?v=1   600w,
+                  img/Rudraksh-8-about-900.jpg?v=1   900w,
+                  img/Rudraksh-8-about-1200.jpg?v=1 1200w
+                "
+                sizes="(max-width: 768px) 300px, 480px"
                 alt="Rudraksh Bhandari"
                 class="about__photo"
                 loading="lazy"
                 decoding="async"
-                width="420"
-                height="560"
+                width="600"
+                height="800"
               />
             </div>
           </div>
@@ -214,8 +222,7 @@
             </p>
 
             <p class="about__paragraph">
-              Last summer, I was a Software Development Engineer (SDE) Intern on the AWS Hyperplane team, and I'll be
-              returning this coming summer.
+              This summer, I'm a Software Development Engineer (SDE) Intern on the AWS EC2 Gateway Networking team.
             </p>
 
             <p class="about__paragraph">
@@ -333,11 +340,36 @@
           <p class="section-kicker section-kicker--light">Where I've shipped</p>
           <h2 class="experience__heading">Experience</h2>
           <p class="section-intro section-intro--light">
-            Co-founding Outfitr. Previously: AWS Hyperplane, two UCSD ML labs, NomNom.
+            Co-founding Outfitr. Currently: AWS EC2 Gateway Networking. Previously: two UCSD ML labs, NomNom.
           </p>
         </div>
         <div class="experience__track-wrapper">
           <div class="experience__track">
+            <!-- Card: AWS EC2 Gateway Networking — Current -->
+            <article class="exp-card">
+              <span class="exp-card__date">Jun 2026 – Present</span>
+              <h3 class="exp-card__company">Amazon Web Services</h3>
+              <h4 class="exp-card__role">Software Development Engineer (SDE) Intern · EC2 Gateway Networking Team</h4>
+              <p class="exp-card__location">Santa Clara, CA</p>
+              <figure class="exp-card__media">
+                <img
+                  src="img/Rudraksh-9-600.jpg?v=1"
+                  srcset="img/Rudraksh-9-600.jpg?v=1 600w, img/Rudraksh-9-1200.jpg?v=1 1200w"
+                  sizes="(max-width: 768px) calc(100vw - 6rem), 364px"
+                  alt="Rudraksh Bhandari at Amazon Web Services"
+                  loading="lazy"
+                  decoding="async"
+                  width="1200"
+                  height="675"
+                />
+              </figure>
+              <ul class="exp-card__bullets">
+                <li>
+                  Working as a Software Development Engineer intern on AWS EC2 Gateway Networking for a second summer.
+                </li>
+              </ul>
+            </article>
+
             <!-- Card: Outfitr -->
             <article class="exp-card">
               <span class="exp-card__date">Mar 2026 – Present</span>
@@ -404,16 +436,16 @@
               </ul>
             </article>
 
-            <!-- Card: AWS Hyperplane -->
+            <!-- Card: AWS EC2 Gateway Networking — Summer 2025 -->
             <article class="exp-card">
               <span class="exp-card__date">Jun 2025 – Sep 2025</span>
               <h3 class="exp-card__company">Amazon Web Services</h3>
-              <h4 class="exp-card__role">Software Development Engineer (SDE) Intern · Hyperplane Team</h4>
+              <h4 class="exp-card__role">Software Development Engineer (SDE) Intern · EC2 Gateway Networking Team</h4>
               <p class="exp-card__location">Sunnyvale, CA</p>
               <ul class="exp-card__bullets">
                 <li>
                   Partnered with operators and senior engineers to design and ship production-ready frontend and backend
-                  tools now adopted by the entire Hyperplane team for daily operations.
+                  tools now adopted by the entire EC2 Gateway Networking team for daily operations.
                 </li>
                 <li>
                   Automated on-call operations by developing a CLI command generator that cut manual engineer effort by
