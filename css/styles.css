@@ -294,7 +294,10 @@ button:focus-visible {
 }
 
 .hero__inner {
+  box-sizing: border-box;
   height: 100vh;
+  height: 100svh;
+  padding-top: calc(61px + env(safe-area-inset-top, 0px));
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -347,16 +350,18 @@ button:focus-visible {
 .hero__photo-wrap {
   position: relative;
   z-index: 1;
-  margin: -0.25em 0;
+  margin: 1.75rem 0;
   will-change: transform, opacity;
 }
 
 .hero__photo {
-  width: min(340px, 42vw);
+  --hero-chrome: calc(30rem + env(safe-area-inset-top, 0px));
+  width: min(780px, 70vw, max(12rem, calc((100vh - var(--hero-chrome)) * 16 / 9)));
+  width: min(780px, 70vw, max(12rem, calc((100svh - var(--hero-chrome)) * 16 / 9)));
   height: auto;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  object-position: 50% 25%;
+  object-position: center;
   border-radius: 14px;
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.15),
@@ -378,6 +383,57 @@ button:focus-visible {
   gap: 0.4rem;
   text-align: center;
   will-change: opacity;
+}
+
+@media (max-height: 800px) and (min-width: 769px) {
+  .hero__photo-wrap {
+    margin: 1rem 0;
+  }
+
+  .hero__subtitle {
+    margin-top: 1.25rem;
+  }
+}
+
+@media (max-height: 600px) and (min-width: 769px) {
+  .scene--hero {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  .hero__inner {
+    height: auto;
+    min-height: 100vh;
+    min-height: 100svh;
+    overflow: visible;
+  }
+
+  .hero__photo {
+    width: min(420px, 55vw);
+  }
+
+  .scene--experience {
+    overflow: visible;
+  }
+
+  .experience__track-wrapper {
+    overflow: visible;
+  }
+
+  .experience__track {
+    flex-direction: column;
+    padding: 1.25rem 2rem 2rem;
+    gap: 1rem;
+    transform: none;
+  }
+
+  .exp-card {
+    flex: none;
+    width: min(42rem, calc(100% - 4rem));
+    max-height: none;
+    overflow: visible;
+  }
 }
 
 .hero__subtitle-line {
@@ -442,7 +498,7 @@ button:focus-visible {
   max-width: none;
   aspect-ratio: 3 / 4;
   object-fit: cover;
-  object-position: 55% center;
+  object-position: 50% center;
   border-radius: 12px;
   box-shadow:
     0 20px 50px rgba(0, 0, 0, 0.1),
@@ -710,7 +766,7 @@ button:focus-visible {
 }
 
 .experience__header {
-  padding: 4rem 2rem 2rem;
+  padding: clamp(1.25rem, 4vh, 4rem) 2rem clamp(0.75rem, 2vh, 2rem);
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -739,9 +795,16 @@ button:focus-visible {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
-  padding: 1.75rem;
+  padding: clamp(1rem, 2vh, 1.75rem);
   backdrop-filter: blur(8px);
   transition: border-color 0.3s ease;
+}
+
+@media (min-width: 769px) and (min-height: 601px) {
+  .exp-card {
+    max-height: calc(100svh - 10rem);
+    overflow-y: auto;
+  }
 }
 
 .exp-card:hover {
@@ -780,6 +843,20 @@ button:focus-visible {
   font-size: var(--fs-xs);
   color: rgba(255, 255, 255, 0.4);
   margin-bottom: 1.25rem;
+}
+
+.exp-card__media {
+  margin: 0 0 0.75rem;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.exp-card__media img {
+  display: block;
+  width: 100%;
+  height: clamp(56px, 12vh, 110px);
+  object-fit: cover;
+  object-position: 78% 32%;
 }
 
 .exp-card__bullets {
@@ -1572,7 +1649,7 @@ button:focus-visible {
   }
 
   .hero__photo-wrap {
-    margin: -0.2em 0;
+    margin: 1rem 0;
   }
 
   /* About */
@@ -1620,6 +1697,11 @@ button:focus-visible {
     flex: none;
     width: 100%;
     padding: 1.75rem;
+  }
+
+  .exp-card__media img {
+    height: auto;
+    aspect-ratio: 16 / 9;
   }
 
   /* Projects: stack vertically on mobile, image stays sticky as you scroll cards */
@@ -1828,7 +1910,7 @@ button:focus-visible {
   }
 
   .hero__photo-wrap {
-    margin: -0.3em 0;
+    margin: 0.85rem 0;
   }
 }
 
@@ -1876,6 +1958,28 @@ button:focus-visible {
 
   .hero__inner {
     position: relative;
+  }
+
+  .scene--experience {
+    overflow: visible;
+  }
+
+  .experience__track-wrapper {
+    overflow: visible;
+  }
+
+  .experience__track {
+    flex-direction: column;
+    padding: 1.25rem 2rem 2rem;
+    gap: 1rem;
+    transform: none;
+  }
+
+  .exp-card {
+    flex: none;
+    width: min(42rem, calc(100% - 4rem));
+    max-height: none;
+    overflow: visible;
   }
 }
 
