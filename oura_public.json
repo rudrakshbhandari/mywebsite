@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-08-23T19:23:41.947Z",
+  "lastUpdatedIso": "2026-08-23T20:24:01.584Z",
   "day": "2026-08-22",
   "byDay": [
     {
@@ -13,11 +13,11 @@
       "activeCalories": 197,
       "spo2Average": null,
       "workoutCount": 2,
-      "totalSleepDuration": 27120,
-      "deepSleepDuration": 5670,
-      "remSleepDuration": 6780,
-      "lightSleepDuration": 14670,
-      "sleepEfficiency": 90
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-08-18",
@@ -30,11 +30,11 @@
       "activeCalories": 206,
       "spo2Average": null,
       "workoutCount": 1,
-      "totalSleepDuration": 27570,
-      "deepSleepDuration": 6240,
-      "remSleepDuration": 6060,
-      "lightSleepDuration": 15270,
-      "sleepEfficiency": 89
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-08-19",
@@ -47,11 +47,11 @@
       "activeCalories": 198,
       "spo2Average": null,
       "workoutCount": 1,
-      "totalSleepDuration": 28470,
-      "deepSleepDuration": 7500,
-      "remSleepDuration": 6120,
-      "lightSleepDuration": 14850,
-      "sleepEfficiency": 93
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-08-20",
@@ -64,11 +64,11 @@
       "activeCalories": 236,
       "spo2Average": null,
       "workoutCount": 2,
-      "totalSleepDuration": 30090,
-      "deepSleepDuration": 7950,
-      "remSleepDuration": 6030,
-      "lightSleepDuration": 16110,
-      "sleepEfficiency": 88
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-08-21",
@@ -81,11 +81,11 @@
       "activeCalories": 252,
       "spo2Average": null,
       "workoutCount": 1,
-      "totalSleepDuration": 30060,
-      "deepSleepDuration": 9150,
-      "remSleepDuration": 6720,
-      "lightSleepDuration": 14190,
-      "sleepEfficiency": 93
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-08-22",
@@ -98,11 +98,11 @@
       "activeCalories": 63,
       "spo2Average": null,
       "workoutCount": 0,
-      "totalSleepDuration": 35640,
-      "deepSleepDuration": 9420,
-      "remSleepDuration": 8580,
-      "lightSleepDuration": 17640,
-      "sleepEfficiency": 90
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
     },
     {
       "day": "2026-08-23",
