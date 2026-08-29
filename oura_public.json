@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-08-29T06:18:19.767Z",
+  "lastUpdatedIso": "2026-08-29T06:41:53.347Z",
   "day": "2026-08-28",
   "byDay": [
     {
@@ -29,7 +29,7 @@
       "steps": 1894,
       "activeCalories": 132,
       "spo2Average": null,
-      "workoutCount": 0,
+      "workoutCount": 1,
       "totalSleepDuration": 32430,
       "deepSleepDuration": 8310,
       "remSleepDuration": 8100,
@@ -46,7 +46,7 @@
       "steps": 4117,
       "activeCalories": 194,
       "spo2Average": null,
-      "workoutCount": 0,
+      "workoutCount": 1,
       "totalSleepDuration": 27360,
       "deepSleepDuration": 5700,
       "remSleepDuration": 6450,
@@ -63,7 +63,7 @@
       "steps": 3855,
       "activeCalories": 220,
       "spo2Average": null,
-      "workoutCount": 0,
+      "workoutCount": 1,
       "totalSleepDuration": 28740,
       "deepSleepDuration": 5850,
       "remSleepDuration": 6390,
@@ -80,7 +80,7 @@
       "steps": 3197,
       "activeCalories": 406,
       "spo2Average": null,
-      "workoutCount": 0,
+      "workoutCount": 4,
       "totalSleepDuration": 28230,
       "deepSleepDuration": 8790,
       "remSleepDuration": 6720,
