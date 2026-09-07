@@ -20,6 +20,16 @@
 
   const STATS_URL = '/stats_public.json';
 
+  function shouldShowAboutStats() {
+    return window.SITE_CONFIG?.showAboutStats !== false;
+  }
+
+  function applyStatsVisibility() {
+    const statsSection = document.querySelector('[data-stats-section]');
+    if (!statsSection) return;
+    statsSection.hidden = !shouldShowAboutStats();
+  }
+
   function floorToNiceNumber(value) {
     if (value < 1000) return Math.floor(value / 10) * 10;
     if (value < 10000) return Math.floor(value / 100) * 100;
@@ -84,6 +94,9 @@
   }
 
   async function loadStats() {
+    applyStatsVisibility();
+    if (!shouldShowAboutStats()) return;
+
     try {
       const response = await fetch(STATS_URL, { cache: 'no-store' });
       if (!response.ok) return;
