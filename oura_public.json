@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-09-13T07:25:46.147Z",
+  "lastUpdatedIso": "2026-09-13T07:37:09.028Z",
   "day": "2026-09-12",
   "byDay": [
     {
@@ -97,7 +97,7 @@
       "steps": 8845,
       "activeCalories": 494,
       "spo2Average": null,
-      "workoutCount": 0,
+      "workoutCount": 1,
       "totalSleepDuration": 31080,
       "deepSleepDuration": 5910,
       "remSleepDuration": 6120,
@@ -4183,7 +4183,7 @@
   "lowActivityMinutes": 284,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
-  "workoutCount": 0,
+  "workoutCount": 1,
   "workoutMinutes": 0,
-  "workoutCalories": 0
+  "workoutCalories": 40
 }
