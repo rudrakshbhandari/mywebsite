@@ -222,12 +222,12 @@
             </p>
 
             <p class="about__paragraph">
-              This summer, I'm a Software Development Engineer (SDE) Intern on the AWS EC2 Gateway Networking team.
+              I'm currently a Software Development Engineer (SDE) Intern on the AWS EC2 Gateway Networking team.
             </p>
 
             <p class="about__paragraph">
-              I'm a second-year Computer Science major and ML researcher at University of California San Diego, where
-              I'm working with the
+              I'm a third-year Computer Science major and ML researcher at University of California San Diego, where I'm
+              working with the
               <a href="http://act-lab.org/" target="_blank" rel="noopener noreferrer" class="text-link"
                 >Alternative Computing Technologies Lab</a
               >
@@ -258,10 +258,10 @@
             </p>
 
             <p class="about__paragraph">
-              Through
+              At
               <a href="https://tritonse.github.io/" target="_blank" rel="noopener noreferrer" class="text-link"
                 >Triton Software Engineering</a
-              >, I build full-stack features for the
+              >, I built full-stack features for the
               <a href="https://browercenter.org/" target="_blank" rel="noopener noreferrer" class="text-link"
                 >David Brower Center</a
               >
@@ -340,7 +340,8 @@
           <p class="section-kicker section-kicker--light">Where I've shipped</p>
           <h2 class="experience__heading">Experience</h2>
           <p class="section-intro section-intro--light">
-            Co-founding Outfitr. Currently: AWS EC2 Gateway Networking. Previously: two UCSD ML labs, NomNom.
+            Building Outfitr. Currently: AWS EC2 Gateway Networking. Previously: two UCSD ML labs, NomNom, and Triton
+            Software Engineering.
           </p>
         </div>
         <div class="experience__track-wrapper">
@@ -365,25 +366,32 @@
               </figure>
               <ul class="exp-card__bullets">
                 <li>
-                  Working as a Software Development Engineer intern on AWS EC2 Gateway Networking for a second summer.
+                  Built a gameday testing framework for a distributed host-health system, turning three historical
+                  customer-impacting incidents, including multi-zone failures, into repeatable regression tests with
+                  controlled fault injection.
+                </li>
+                <li>
+                  Designed a guardrailed Python/Bedrock AI agent that runs one-command gameday replays with
+                  deterministic safety checks in under 10 minutes.
                 </li>
               </ul>
             </article>
 
             <!-- Card: Outfitr -->
             <article class="exp-card">
-              <span class="exp-card__date">Mar 2026 – Present</span>
+              <span class="exp-card__date">Apr 2026 – Present</span>
               <h3 class="exp-card__company">Outfitr</h3>
-              <h4 class="exp-card__role">Co-founder</h4>
+              <h4 class="exp-card__role">Co-founder &amp; Lead Developer</h4>
               <p class="exp-card__location">Remote</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Building an AI styling app that turns your wardrobe into daily outfit recommendations — describe the
-                  occasion, it picks the fit, you preview it on yourself with virtual try-on.
+                  Launched a social fashion app that helps Gen Z decide what to wear from clothes they already own, with
+                  closet import, outfit recommendations, and friend polls.
                 </li>
                 <li>
-                  Building iOS app (summer 2026 launch) across wardrobe cataloging, AI outfit generation, virtual
-                  try-on, and social friend polling to crowdsource the final call.
+                  Architected a multimodal wardrobe-extraction pipeline that processed 226 real-customer photos across
+                  97 production jobs, identifying 1,365 garment candidates and adding 279 garments to users' closets
+                  with zero job-level failures.
                 </li>
               </ul>
             </article>
@@ -396,8 +404,7 @@
               <p class="exp-card__location">San Diego, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Researching knowledge distillation of embedding models for retrieval-augmented generation in Prof.
-                  Nuno Vasconcelos'
+                  Developing a unified model for generation, embeddings, and agentic routing in Prof. Nuno Vasconcelos'
                   <a
                     href="http://www.svcl.ucsd.edu/"
                     target="_blank"
@@ -406,9 +413,7 @@
                     >Statistical Visual Computing Laboratory (SVCL)</a
                   >.
                 </li>
-                <li>
-                  Training compact retrievers to match large teacher model quality, evaluated across BEIR benchmarks.
-                </li>
+                <li>Using LoRA-based embedding distillation and generation replay to improve retrieval quality.</li>
               </ul>
             </article>
 
@@ -420,7 +425,8 @@
               <p class="exp-card__location">San Diego, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Researching KV cache acceleration for multi-agent LLM inference in Prof. Hadi Esmaeilzadeh's
+                  Benchmarking dense prefill against KVCOMM time-to-first-token across multi-agent workloads in Prof.
+                  Hadi Esmaeilzadeh's
                   <a
                     href="http://act-lab.org/"
                     target="_blank"
@@ -429,10 +435,7 @@
                     >Alternative Computing Technologies (ACT) Lab</a
                   >.
                 </li>
-                <li>
-                  Reducing time-to-first-token by sharing cached key-value computations across agents with overlapping
-                  context.
-                </li>
+                <li>Evaluating KV-cache reuse on H100s to understand its impact on multi-agent inference.</li>
               </ul>
             </article>
 
@@ -479,14 +482,14 @@
 
             <!-- Card: TSE David Brower Center -->
             <article class="exp-card">
-              <span class="exp-card__date">Nov 2024 – Present</span>
+              <span class="exp-card__date">Nov 2024 – Jun 2026</span>
               <h3 class="exp-card__company">Triton Software Engineering</h3>
               <h4 class="exp-card__role">Software Developer · Nonprofit client projects</h4>
               <p class="exp-card__location">San Diego, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Building full-stack features for David Brower Center, a database platform for nonprofit organizations
-                  to visualize relationships between NPOs, using TypeScript, React, Node.js, Prisma, and Postgres.
+                  Built full-stack features for David Brower Center, a database platform for nonprofit organizations to
+                  visualize relationships between NPOs, using TypeScript, React, Node.js, Prisma, and Postgres.
                 </li>
                 <li>
                   Previously developed features for Psyches of Color, a mental health mobile app for underserved
@@ -606,9 +609,7 @@
             <!-- 1. Outfitr -->
             <article class="proj-card proj-card--featured" data-project="1">
               <h3 class="proj-card__title">Outfitr</h3>
-              <p class="proj-card__metric">
-                Co-founder · iOS waitlist live · internal TestFlight beta · Wardrobe-first AI styling
-              </p>
+              <p class="proj-card__metric">Co-founder · Launched · Social fashion · Wardrobe-first AI styling</p>
               <p class="proj-card__desc">
                 AI styling app that solves outfit decision fatigue. Describe the occasion, Outfitr picks from your
                 actual wardrobe, you preview it with virtual try-on, and poll friends if you want a second opinion.
@@ -684,8 +685,8 @@
             <article class="proj-card" data-project="2">
               <h3 class="proj-card__title">NyaayWatch</h3>
               <p class="proj-card__metric">
-                Public-interest · Supreme Court, all 25 High Courts, every state & UT · NJDG-sourced · Reproducible
-                snapshots
+                Public-interest · 5K+ monthly visitors · Supreme Court, all 25 High Courts, every state & UT ·
+                NJDG-sourced · Reproducible snapshots
               </p>
               <p class="proj-card__desc">
                 Publishes reviewed, versioned snapshots of pending caseloads, clearance rates, and wait times across
