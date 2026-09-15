@@ -222,12 +222,13 @@
             </p>
 
             <p class="about__paragraph">
-              This summer, I'm a Software Development Engineer (SDE) Intern on the AWS EC2 Gateway Networking team.
+              I recently wrapped up my second summer as a Software Development Engineer (SDE) Intern on the AWS EC2
+              Gateway Networking team and am heading back to UC San Diego for my final two quarters.
             </p>
 
             <p class="about__paragraph">
-              I'm a second-year Computer Science major and ML researcher at University of California San Diego, where
-              I'm working with the
+              I'm a third-year Computer Science major and ML researcher at University of California San Diego, where I'm
+              working with the
               <a href="http://act-lab.org/" target="_blank" rel="noopener noreferrer" class="text-link"
                 >Alternative Computing Technologies Lab</a
               >
@@ -340,14 +341,14 @@
           <p class="section-kicker section-kicker--light">Where I've shipped</p>
           <h2 class="experience__heading">Experience</h2>
           <p class="section-intro section-intro--light">
-            Co-founding Outfitr. Currently: AWS EC2 Gateway Networking. Previously: two UCSD ML labs, NomNom.
+            Wrapped up my second AWS summer. Now: final two quarters at UCSD, Outfitr, and undergraduate research.
           </p>
         </div>
         <div class="experience__track-wrapper">
           <div class="experience__track">
             <!-- Card: AWS EC2 Gateway Networking — Current -->
-            <article class="exp-card">
-              <span class="exp-card__date">Jun 2026 – Present</span>
+            <article class="exp-card" style="order: 1">
+              <span class="exp-card__date">Jun 2026 – Sep 2026</span>
               <h3 class="exp-card__company">Amazon Web Services</h3>
               <h4 class="exp-card__role">Software Development Engineer (SDE) Intern · EC2 Gateway Networking Team</h4>
               <p class="exp-card__location">Santa Clara, CA</p>
@@ -365,39 +366,50 @@
               </figure>
               <ul class="exp-card__bullets">
                 <li>
-                  Working as a Software Development Engineer intern on AWS EC2 Gateway Networking for a second summer.
+                  Built a Python gameday fault-injection framework for AWS Hyperplane, translating three historical
+                  customer-impacting incidents into repeatable failure scenarios using AWS Fault Injection Service and
+                  service APIs.
+                </li>
+                <li>
+                  Designed TCP peer-exchange and UDP health-probe failure scenarios across a pre-production Hyperplane
+                  fleet of 2,500+ hosts, tracing failure propagation through distributed host and target health systems.
+                </li>
+                <li>
+                  Reduced a multi-step manual gameday workflow to a single CLI command covering fault injection,
+                  CloudWatch evidence collection, health validation, rollback, and recovery.
                 </li>
               </ul>
             </article>
 
             <!-- Card: Outfitr -->
-            <article class="exp-card">
-              <span class="exp-card__date">Mar 2026 – Present</span>
+            <article class="exp-card" style="order: 3">
+              <span class="exp-card__date">Apr 2026 – Present</span>
               <h3 class="exp-card__company">Outfitr</h3>
-              <h4 class="exp-card__role">Co-founder</h4>
+              <h4 class="exp-card__role">Co-founder &amp; Lead Developer</h4>
               <p class="exp-card__location">Remote</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Building an AI styling app that turns your wardrobe into daily outfit recommendations — describe the
-                  occasion, it picks the fit, you preview it on yourself with virtual try-on.
+                  Launched a fashion app that helps Gen Z decide what to wear from clothes they already own, with closet
+                  import, outfit recommendations, and friend polls; ranked in the top 10% of Y Combinator Summer and
+                  Fall '26 applicants.
                 </li>
                 <li>
-                  Building iOS app (summer 2026 launch) across wardrobe cataloging, AI outfit generation, virtual
-                  try-on, and social friend polling to crowdsource the final call.
+                  Architected a production multimodal closet-extraction pipeline using SAM3, VLM-based classification,
+                  and embedding-based deduplication, processing 200+ real-customer photos across 100+ jobs and adding
+                  300+ garments to users' closets.
                 </li>
               </ul>
             </article>
 
             <!-- Card: SVCL Research -->
-            <article class="exp-card">
+            <article class="exp-card" style="order: 6">
               <span class="exp-card__date">Apr 2026 – Present</span>
               <h3 class="exp-card__company">UC San Diego · SVCL</h3>
               <h4 class="exp-card__role">Undergraduate Researcher</h4>
               <p class="exp-card__location">San Diego, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Researching knowledge distillation of embedding models for retrieval-augmented generation in Prof.
-                  Nuno Vasconcelos'
+                  Developing a unified model for generation, embeddings, and agentic routing in Prof. Nuno Vasconcelos'
                   <a
                     href="http://www.svcl.ucsd.edu/"
                     target="_blank"
@@ -406,21 +418,20 @@
                     >Statistical Visual Computing Laboratory (SVCL)</a
                   >.
                 </li>
-                <li>
-                  Training compact retrievers to match large teacher model quality, evaluated across BEIR benchmarks.
-                </li>
+                <li>Using LoRA-based embedding distillation and generation replay to improve retrieval.</li>
               </ul>
             </article>
 
             <!-- Card: ACT Lab Research -->
-            <article class="exp-card">
+            <article class="exp-card" style="order: 7">
               <span class="exp-card__date">Mar 2026 – Present</span>
               <h3 class="exp-card__company">UC San Diego · ACT Lab</h3>
               <h4 class="exp-card__role">Undergraduate Researcher</h4>
               <p class="exp-card__location">San Diego, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Researching KV cache acceleration for multi-agent LLM inference in Prof. Hadi Esmaeilzadeh's
+                  Benchmarking dense prefill vs. KVCOMM time-to-first-token on H100s across multi-agent workloads in
+                  Prof. Hadi Esmaeilzadeh's
                   <a
                     href="http://act-lab.org/"
                     target="_blank"
@@ -429,38 +440,49 @@
                     >Alternative Computing Technologies (ACT) Lab</a
                   >.
                 </li>
-                <li>
-                  Reducing time-to-first-token by sharing cached key-value computations across agents with overlapping
-                  context.
-                </li>
+                <li>Evaluating KV-cache reuse to understand its impact on multi-agent inference.</li>
               </ul>
             </article>
 
             <!-- Card: AWS EC2 Gateway Networking — Summer 2025 -->
-            <article class="exp-card">
+            <article class="exp-card" style="order: 2">
               <span class="exp-card__date">Jun 2025 – Sep 2025</span>
               <h3 class="exp-card__company">Amazon Web Services</h3>
               <h4 class="exp-card__role">Software Development Engineer (SDE) Intern · EC2 Gateway Networking Team</h4>
               <p class="exp-card__location">Sunnyvale, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Partnered with operators and senior engineers to design and ship production-ready frontend and backend
-                  tools now adopted by the entire EC2 Gateway Networking team for daily operations.
+                  Built a React/TypeScript CLI command generator for on-call incident response, cutting manual engineer
+                  effort by 75% and reducing command preparation time from over 2 minutes to under 30 seconds.
                 </li>
                 <li>
-                  Automated on-call operations by developing a CLI command generator that cut manual engineer effort by
-                  ~75% and improved incident response latency.
+                  Engineered a Java/Python AWS event service using Lambda, SSM, SQS, and SNS to surface patch status
+                  across EC2 cluster groups, improving visibility for root-cause analysis during incidents.
+                </li>
+              </ul>
+            </article>
+
+            <!-- Card: NyaayWatch -->
+            <article class="exp-card" style="order: 5">
+              <span class="exp-card__date">Apr 2026 – Present</span>
+              <h3 class="exp-card__company">NyaayWatch</h3>
+              <h4 class="exp-card__role">Founder · Open-source civic data platform</h4>
+              <p class="exp-card__location">India · Remote</p>
+              <ul class="exp-card__bullets">
+                <li>
+                  Built and operate an open-source court-data platform serving 10,000+ monthly visitors across India's
+                  Supreme Court, all 25 High Courts, and 36 lower-court geographies through public APIs, evidence packs,
+                  and interactive dashboards.
                 </li>
                 <li>
-                  Engineered a backend event-publishing service that unified patching visibility across EC2 cluster
-                  groups, reducing root-cause detection time and accelerating cross-team debugging during availability
-                  incidents.
+                  Designed a reproducible pipeline that separates raw court-data captures from published data, storing
+                  evidence in S3 and immutable snapshots in Postgres for validation, replay, and rollback.
                 </li>
               </ul>
             </article>
 
             <!-- Card: NomNom -->
-            <article class="exp-card">
+            <article class="exp-card" style="order: 8">
               <span class="exp-card__date">Sep 2025 – Mar 2026</span>
               <h3 class="exp-card__company">NomNom</h3>
               <h4 class="exp-card__role">Co-founder</h4>
@@ -478,15 +500,15 @@
             </article>
 
             <!-- Card: TSE David Brower Center -->
-            <article class="exp-card">
-              <span class="exp-card__date">Nov 2024 – Present</span>
+            <article class="exp-card" style="order: 9">
+              <span class="exp-card__date">Nov 2024 – Jun 2026</span>
               <h3 class="exp-card__company">Triton Software Engineering</h3>
               <h4 class="exp-card__role">Software Developer · Nonprofit client projects</h4>
               <p class="exp-card__location">San Diego, CA</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Building full-stack features for David Brower Center, a database platform for nonprofit organizations
-                  to visualize relationships between NPOs, using TypeScript, React, Node.js, Prisma, and Postgres.
+                  Built full-stack features for David Brower Center, a database platform for nonprofit organizations to
+                  visualize relationships between NPOs, using TypeScript, React, Node.js, Prisma, and Postgres.
                 </li>
                 <li>
                   Previously developed features for Psyches of Color, a mental health mobile app for underserved
@@ -500,16 +522,15 @@
             </article>
 
             <!-- Card: ShareAllBooks -->
-            <article class="exp-card">
+            <article class="exp-card" style="order: 4">
               <span class="exp-card__date">Aug 2023 – Sep 2024</span>
               <h3 class="exp-card__company">ShareAllBooks</h3>
               <h4 class="exp-card__role">Founder</h4>
               <p class="exp-card__location">United Arab Emirates</p>
               <ul class="exp-card__bullets">
                 <li>
-                  Founded and launched a book-sharing mobile app (App Store & Play Store), reaching
-                  <span data-stat="shareallbooks-downloads" data-stat-format="compact-plus">2K+</span> downloads within
-                  the first year.
+                  Built and launched a React Native book-sharing app on App Store &amp; Play Store, reaching 2,000+
+                  downloads and 1,500+ donations/sales within months.
                 </li>
                 <li>
                   Featured in
@@ -519,7 +540,7 @@
                     rel="noopener noreferrer"
                     class="text-link text-link--light"
                     >national UAE press</a
-                  >; facilitated 1,500+ donations/sales, creating a trusted community platform for books.
+                  >; peaked at #41 in the App Store's Top Charts for Books.
                 </li>
                 <li>
                   Utilized React Native, JavaScript, Firebase, and EmailJS for user authentication, data storage, and
@@ -684,8 +705,8 @@
             <article class="proj-card" data-project="2">
               <h3 class="proj-card__title">NyaayWatch</h3>
               <p class="proj-card__metric">
-                Public-interest · Supreme Court, all 25 High Courts, every state & UT · NJDG-sourced · Reproducible
-                snapshots
+                Public-interest · 10K+ monthly visitors · Supreme Court, all 25 High Courts, every state &amp; UT ·
+                NJDG-sourced · Reproducible snapshots
               </p>
               <p class="proj-card__desc">
                 Publishes reviewed, versioned snapshots of pending caseloads, clearance rates, and wait times across
@@ -788,7 +809,7 @@
         <div class="contact__inner">
           <p class="contact__status">
             <span class="contact__status-line contact__status-line--primary"
-              >Looking for full-time roles from April 2027</span
+              >Looking for full-time roles from March 2027</span
             >
             <span class="contact__status-line"
               >Open to conversations with investors, retail partners, and early users of Outfitr.</span
