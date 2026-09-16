@@ -1,11 +1,11 @@
 {
-  "lastUpdatedIso": "2026-09-16T01:11:27.440Z",
+  "lastUpdatedIso": "2026-09-16T01:35:14.918Z",
   "day": "2026-09-15",
   "byDay": [
     {
       "day": "2026-09-09",
       "sleepScore": 91,
-      "readinessScore": 84,
+      "readinessScore": 83,
       "activityScore": 82,
       "restingHrBpm": null,
       "hrvMs": null,
@@ -22,7 +22,7 @@
     {
       "day": "2026-09-10",
       "sleepScore": 86,
-      "readinessScore": 71,
+      "readinessScore": 70,
       "activityScore": 76,
       "restingHrBpm": null,
       "hrvMs": null,
