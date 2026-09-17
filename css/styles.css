@@ -859,6 +859,16 @@ button:focus-visible {
   object-position: 78% 32%;
 }
 
+.exp-card__media--pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
+.exp-card__media--pair img {
+  min-width: 0;
+}
+
 .exp-card__bullets {
   list-style: none;
   padding: 0;
