@@ -867,6 +867,22 @@ button:focus-visible {
 
 .exp-card__media--pair img {
   min-width: 0;
+  object-position: center 72%;
+}
+
+.exp-card__media--article img {
+  object-position: 25% 50%;
+}
+
+.exp-card__media--portrait img {
+  aspect-ratio: 1;
+  object-position: center;
+}
+
+.exp-card__media--uncropped img {
+  object-fit: contain;
+  object-position: center;
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .exp-card__bullets {
