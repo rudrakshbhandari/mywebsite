@@ -875,6 +875,7 @@ button:focus-visible {
 }
 
 .exp-card__media--portrait img {
+  height: auto;
   aspect-ratio: 1;
   object-position: center;
 }
