@@ -859,6 +859,41 @@ button:focus-visible {
   object-position: 78% 32%;
 }
 
+.exp-card__media--pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
+}
+
+.exp-card__media--pair img {
+  min-width: 0;
+  object-position: center 72%;
+}
+
+.exp-card__media--article img {
+  object-position: 10% 50%;
+}
+
+.exp-card__media--portrait img {
+  height: auto;
+  aspect-ratio: 1;
+  object-position: center;
+}
+
+.exp-card__media--uncropped img {
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  object-position: center;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.exp-card__media--portrait {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .exp-card__bullets {
   list-style: none;
   padding: 0;
@@ -1702,6 +1737,10 @@ button:focus-visible {
   .exp-card__media img {
     height: auto;
     aspect-ratio: 16 / 9;
+  }
+
+  .exp-card__media--portrait img {
+    aspect-ratio: 1;
   }
 
   /* Projects: stack vertically on mobile, image stays sticky as you scroll cards */
