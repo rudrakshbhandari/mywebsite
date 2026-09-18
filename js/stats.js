@@ -9,7 +9,6 @@
  *   - "app-downloads"           total across all shipped apps (iOS + Android)
  *   - "shareallbooks-downloads" ShareAllBooks iOS + Android total
  *   - "monthly-visitors"        aggregate visits across tracked sites, last 30d
- *   - "visitor-count"           aggregate tracked visits used by the footer counter
  *
  * Supported data-stat-format values:
  *   - "compact-plus"   e.g. 2047 -> "2K+"
@@ -62,9 +61,6 @@
       return any ? total : null;
     }
     if (key === 'monthly-visitors') {
-      return stats.websiteVisitors?.totalVisits ?? null;
-    }
-    if (key === 'visitor-count') {
       return stats.websiteVisitors?.totalVisits ?? null;
     }
     return null;
