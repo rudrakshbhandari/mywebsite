@@ -148,8 +148,8 @@ function initHeroScene() {
   if (!heroSection || !heroInner || !firstLine || !lastLine || !photoWrap) return;
 
   /* --- Entrance: elements land in a tight, overlapping position --- */
-  var overlap = 50;
-  var spread = 10;
+  var overlap = 60;
+  var spread = 30;
   var entranceSettled = false;
 
   function finishEntrance() {
