@@ -149,7 +149,7 @@ function initHeroScene() {
 
   /* --- Entrance: elements land in a tight, overlapping position --- */
   var overlap = 50;
-  var spread = overlap + 10;
+  var spread = 10;
   var entranceSettled = false;
 
   function finishEntrance() {
