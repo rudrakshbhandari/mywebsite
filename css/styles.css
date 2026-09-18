@@ -373,7 +373,7 @@ button:focus-visible {
   font-size: clamp(var(--fs-xs), 1.15vw, var(--fs-sm));
   font-weight: var(--fw-semibold);
   color: var(--color-text);
-  margin-top: 2rem;
+  margin-top: 1rem;
   position: relative;
   z-index: 2;
   letter-spacing: 0.08em;
@@ -391,7 +391,7 @@ button:focus-visible {
   }
 
   .hero__subtitle {
-    margin-top: 1.25rem;
+    margin-top: 0.75rem;
   }
 }
 
