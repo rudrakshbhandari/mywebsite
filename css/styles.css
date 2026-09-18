@@ -871,7 +871,7 @@ button:focus-visible {
 }
 
 .exp-card__media--article img {
-  object-position: 25% 50%;
+  object-position: 10% 50%;
 }
 
 .exp-card__media--portrait img {
