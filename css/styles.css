@@ -605,17 +605,17 @@ button:focus-visible {
   display: inline-block;
   min-width: 3.2ch;
   padding: 0.18rem 0.35rem;
-  border: 2px solid var(--color-ink);
+  border: 2px solid rgba(255, 255, 255, 0.75);
   border-radius: 0.35rem;
-  box-shadow: 2px 2px 0 var(--color-ink);
-  color: var(--color-ink);
+  box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.75);
+  color: var(--color-white);
   font-family: var(--font-body);
   font-size: 0.95em;
   font-weight: var(--fw-bold);
   letter-spacing: 0.02em;
   line-height: 1;
   text-align: center;
-  background: var(--color-paper);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .about__contributions {
