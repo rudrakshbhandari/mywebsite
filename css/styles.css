@@ -1678,6 +1678,7 @@ button:focus-visible {
     font-size: var(--fs-xs);
     letter-spacing: 0.06em;
     margin-top: 1.25rem;
+    top: 0;
     gap: 0.5rem;
   }
 
@@ -1980,6 +1981,7 @@ button:focus-visible {
 
   .gsap-ready .hero__subtitle {
     opacity: 1;
+    top: 0;
   }
 
   .gsap-ready .about__paragraph {
