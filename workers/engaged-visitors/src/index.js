@@ -28,13 +28,14 @@ export class VisitorCounter {
 
     const suppliedSession = typeof body.sessionId === 'string' ? body.sessionId : null;
     const sessionId = suppliedSession || crypto.randomUUID();
+    const now = Date.now();
     const seen = await this.state.storage.get(`session:${sessionId}`);
     let count = (await this.state.storage.get('count')) || 0;
 
-    if (!seen) {
+    if (!seen || seen.expiresAt <= now) {
       count += 1;
       await this.state.storage.put('count', count);
-      await this.state.storage.put(`session:${sessionId}`, true, { expirationTtl: 60 * 60 * 24 * 30 });
+      await this.state.storage.put(`session:${sessionId}`, { expiresAt: now + 60 * 60 * 24 * 30 });
     }
 
     return Response.json({ count, sessionId }, { headers });
