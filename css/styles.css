@@ -1969,6 +1969,10 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 
+  .hero__subtitle {
+    top: 0;
+  }
+
   .gsap-ready .hero__line {
     opacity: 1;
     transform: none;
