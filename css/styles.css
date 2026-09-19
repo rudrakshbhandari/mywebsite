@@ -373,8 +373,9 @@ button:focus-visible {
   font-size: clamp(var(--fs-xs), 1.15vw, var(--fs-sm));
   font-weight: var(--fw-semibold);
   color: var(--color-text);
-  margin-top: 2rem;
+  margin-top: 1rem;
   position: relative;
+  top: -2rem;
   z-index: 2;
   letter-spacing: 0.08em;
   display: flex;
@@ -391,7 +392,8 @@ button:focus-visible {
   }
 
   .hero__subtitle {
-    margin-top: 1.25rem;
+    margin-top: 0.75rem;
+    top: -1.25rem;
   }
 }
 
@@ -1676,6 +1678,7 @@ button:focus-visible {
     font-size: var(--fs-xs);
     letter-spacing: 0.06em;
     margin-top: 1.25rem;
+    top: 0;
     gap: 0.5rem;
   }
 
@@ -1966,6 +1969,10 @@ button:focus-visible {
     scroll-behavior: auto !important;
   }
 
+  .hero__subtitle {
+    top: 0;
+  }
+
   .gsap-ready .hero__line {
     opacity: 1;
     transform: none;
@@ -1978,6 +1985,7 @@ button:focus-visible {
 
   .gsap-ready .hero__subtitle {
     opacity: 1;
+    top: 0;
   }
 
   .gsap-ready .about__paragraph {
