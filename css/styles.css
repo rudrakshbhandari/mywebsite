@@ -415,6 +415,10 @@ button:focus-visible {
     width: min(420px, 55vw);
   }
 
+  .hero__subtitle {
+    top: 0;
+  }
+
   .scene--experience {
     overflow: visible;
   }
