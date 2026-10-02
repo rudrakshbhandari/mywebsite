@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-10-02T19:49:30.311Z",
+  "lastUpdatedIso": "2026-10-02T20:12:05.069Z",
   "day": "2026-10-02",
   "byDay": [
     {
@@ -106,7 +106,7 @@
     },
     {
       "day": "2026-10-02",
-      "sleepScore": 69,
+      "sleepScore": 67,
       "readinessScore": 76,
       "activityScore": null,
       "restingHrBpm": null,
@@ -122,21 +122,21 @@
       "sleepEfficiency": null
     }
   ],
-  "sleepScore": 69,
-  "sleepDeep": 68,
-  "sleepEfficiency": 51,
+  "sleepScore": 67,
+  "sleepDeep": 72,
+  "sleepEfficiency": 48,
   "sleepLatency": 1,
-  "sleepRem": 53,
-  "sleepRestfulness": 82,
-  "sleepTiming": 54,
-  "sleepTotal": 97,
+  "sleepRem": 49,
+  "sleepRestfulness": 71,
+  "sleepTiming": 52,
+  "sleepTotal": 98,
   "readinessScore": 76,
   "readinessActivityBalance": 72,
   "readinessBodyTemp": 100,
   "readinessHrvBalance": 61,
   "readinessPreviousDay": 85,
-  "readinessPreviousNight": 45,
-  "readinessRecoveryIndex": 91,
+  "readinessPreviousNight": 40,
+  "readinessRecoveryIndex": 96,
   "readinessRestingHr": 94,
   "readinessSleepBalance": 98,
   "readinessSleepRegularity": 69,
