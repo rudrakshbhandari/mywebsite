@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-10-06T07:45:59.964Z",
+  "lastUpdatedIso": "2026-10-06T08:16:58.000Z",
   "day": "2026-10-05",
   "byDay": [
     {
@@ -94,7 +94,7 @@
       "activityScore": 94,
       "restingHrBpm": null,
       "hrvMs": null,
-      "steps": 5993,
+      "steps": 5996,
       "activeCalories": 763,
       "spo2Average": null,
       "workoutCount": 2,
@@ -4973,7 +4973,7 @@
   "activityStayActive": 86,
   "activityTrainingFreq": 100,
   "activityTrainingVol": 100,
-  "steps": 5993,
+  "steps": 5996,
   "activeCalories": 763,
   "totalCalories": 2599,
   "targetCalories": 400,
