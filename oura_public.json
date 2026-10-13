@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-10-13T09:55:24.939Z",
+  "lastUpdatedIso": "2026-10-13T11:12:34.760Z",
   "day": "2026-10-12",
   "byDay": [
     {
@@ -3690,12 +3690,12 @@
   "activityMeetTargets": 95,
   "activityMoveHour": 100,
   "activityRecoveryTime": 100,
-  "activityStayActive": 80,
+  "activityStayActive": 83,
   "activityTrainingFreq": 100,
   "activityTrainingVol": 100,
   "steps": 7479,
   "activeCalories": 813,
-  "totalCalories": 2693,
+  "totalCalories": 2695,
   "targetCalories": 500,
   "metersToTarget": -6600,
   "highActivityMinutes": 0,
