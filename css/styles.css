@@ -595,6 +595,35 @@ button:focus-visible {
   margin-top: 0.35rem;
 }
 
+.visitor-counter {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.3rem;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-2xs);
+  letter-spacing: 0.04em;
+  color: var(--color-muted);
+  text-transform: lowercase;
+}
+
+.visitor-counter__number {
+  display: inline-block;
+  min-width: 3.2ch;
+  padding: 0.18rem 0.35rem;
+  border: 2px solid rgba(255, 255, 255, 0.75);
+  border-radius: 0.35rem;
+  box-shadow: 2px 2px 0 rgba(255, 255, 255, 0.75);
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 0.95em;
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .about__contributions {
   max-width: 1200px;
   margin: 4rem auto 0;
