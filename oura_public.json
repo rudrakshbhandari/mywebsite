@@ -1,24 +1,7 @@
 {
-  "lastUpdatedIso": "2026-10-17T04:52:09.530Z",
+  "lastUpdatedIso": "2026-10-17T07:10:35.456Z",
   "day": "2026-10-15",
   "byDay": [
-    {
-      "day": "2026-10-10",
-      "sleepScore": 89,
-      "readinessScore": 77,
-      "activityScore": 95,
-      "restingHrBpm": null,
-      "hrvMs": null,
-      "steps": 13630,
-      "activeCalories": 1542,
-      "spo2Average": null,
-      "workoutCount": 6,
-      "totalSleepDuration": 30990,
-      "deepSleepDuration": 6300,
-      "remSleepDuration": 7200,
-      "lightSleepDuration": 17490,
-      "sleepEfficiency": 93
-    },
     {
       "day": "2026-10-11",
       "sleepScore": 69,
@@ -106,6 +89,23 @@
     },
     {
       "day": "2026-10-16",
+      "sleepScore": null,
+      "readinessScore": null,
+      "activityScore": 100,
+      "restingHrBpm": null,
+      "hrvMs": null,
+      "steps": 3847,
+      "activeCalories": 548,
+      "spo2Average": null,
+      "workoutCount": 0,
+      "totalSleepDuration": null,
+      "deepSleepDuration": null,
+      "remSleepDuration": null,
+      "lightSleepDuration": null,
+      "sleepEfficiency": null
+    },
+    {
+      "day": "2026-10-17",
       "sleepScore": null,
       "readinessScore": null,
       "activityScore": null,
