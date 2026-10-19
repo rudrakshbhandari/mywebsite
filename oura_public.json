@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-10-19T10:28:53.793Z",
+  "lastUpdatedIso": "2026-10-19T11:26:43.812Z",
   "day": "2026-10-18",
   "byDay": [
     {
@@ -95,7 +95,7 @@
       "restingHrBpm": null,
       "hrvMs": null,
       "steps": 18903,
-      "activeCalories": 825,
+      "activeCalories": 826,
       "spo2Average": null,
       "workoutCount": 5,
       "totalSleepDuration": 24510,
@@ -4106,13 +4106,13 @@
   "activityTrainingFreq": 100,
   "activityTrainingVol": 99,
   "steps": 18903,
-  "activeCalories": 825,
-  "totalCalories": 2758,
+  "activeCalories": 826,
+  "totalCalories": 2759,
   "targetCalories": 450,
   "metersToTarget": -7900,
   "highActivityMinutes": 60,
   "mediumActivityMinutes": 112,
-  "lowActivityMinutes": 308,
+  "lowActivityMinutes": 309,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
   "workoutCount": 5,
