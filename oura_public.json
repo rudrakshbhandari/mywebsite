@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-10-21T16:29:36.160Z",
+  "lastUpdatedIso": "2026-10-21T18:54:08.715Z",
   "day": "2026-10-21",
   "byDay": [
     {
@@ -123,11 +123,11 @@
     }
   ],
   "sleepScore": 92,
-  "sleepDeep": 89,
-  "sleepEfficiency": 98,
+  "sleepDeep": 95,
+  "sleepEfficiency": 95,
   "sleepLatency": 91,
-  "sleepRem": 94,
-  "sleepRestfulness": 85,
+  "sleepRem": 89,
+  "sleepRestfulness": 89,
   "sleepTiming": 74,
   "sleepTotal": 98,
   "readinessScore": 90,
@@ -140,7 +140,7 @@
   "readinessRestingHr": 91,
   "readinessSleepBalance": 84,
   "readinessSleepRegularity": 77,
-  "tempDeviation": -0.13,
+  "tempDeviation": -0.06,
   "restingHrBpm": null,
   "hrvMs": null,
   "heartRateSeriesDay": "2026-10-21",
