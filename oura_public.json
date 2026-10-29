@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-10-29T18:11:12.549Z",
+  "lastUpdatedIso": "2026-10-29T19:18:08.974Z",
   "day": "2026-10-29",
   "byDay": [
     {
@@ -74,11 +74,11 @@
       "day": "2026-10-27",
       "sleepScore": 60,
       "readinessScore": 67,
-      "activityScore": 89,
+      "activityScore": 92,
       "restingHrBpm": null,
       "hrvMs": null,
       "steps": 11958,
-      "activeCalories": 609,
+      "activeCalories": 1826,
       "spo2Average": null,
       "workoutCount": 4,
       "totalSleepDuration": 13920,
@@ -90,7 +90,7 @@
     {
       "day": "2026-10-28",
       "sleepScore": 85,
-      "readinessScore": 79,
+      "readinessScore": 78,
       "activityScore": 86,
       "restingHrBpm": null,
       "hrvMs": null,
