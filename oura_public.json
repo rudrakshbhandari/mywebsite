@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-10-31T01:48:15.725Z",
+  "lastUpdatedIso": "2026-10-31T02:34:06.051Z",
   "day": "2026-10-30",
   "byDay": [
     {
@@ -95,9 +95,9 @@
       "restingHrBpm": null,
       "hrvMs": null,
       "steps": 15320,
-      "activeCalories": 893,
+      "activeCalories": 908,
       "spo2Average": null,
-      "workoutCount": 0,
+      "workoutCount": 5,
       "totalSleepDuration": 26790,
       "deepSleepDuration": 6510,
       "remSleepDuration": 6570,
@@ -107,7 +107,7 @@
     {
       "day": "2026-10-30",
       "sleepScore": 89,
-      "readinessScore": 79,
+      "readinessScore": 78,
       "activityScore": null,
       "restingHrBpm": null,
       "hrvMs": null,
@@ -130,11 +130,11 @@
   "sleepRestfulness": 82,
   "sleepTiming": 67,
   "sleepTotal": 94,
-  "readinessScore": 79,
-  "readinessActivityBalance": 57,
+  "readinessScore": 78,
+  "readinessActivityBalance": 55,
   "readinessBodyTemp": 90,
   "readinessHrvBalance": 87,
-  "readinessPreviousDay": 84,
+  "readinessPreviousDay": 82,
   "readinessPreviousNight": 94,
   "readinessRecoveryIndex": 95,
   "readinessRestingHr": 61,
