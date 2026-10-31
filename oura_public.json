@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-10-31T09:07:15.371Z",
+  "lastUpdatedIso": "2026-10-31T09:33:32.116Z",
   "day": "2026-10-30",
   "byDay": [
     {
@@ -5383,12 +5383,12 @@
   "activityTrainingVol": 100,
   "steps": 11337,
   "activeCalories": 789,
-  "totalCalories": 2708,
+  "totalCalories": 2710,
   "targetCalories": 450,
   "metersToTarget": -7200,
   "highActivityMinutes": 60,
   "mediumActivityMinutes": 96,
-  "lowActivityMinutes": 362,
+  "lowActivityMinutes": 363,
   "spo2Average": null,
   "spo2BreathingDisturbance": null,
   "workoutCount": 2,
