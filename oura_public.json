@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-11-01T19:18:01.126Z",
+  "lastUpdatedIso": "2026-11-01T19:47:56.056Z",
   "day": "2026-11-01",
   "byDay": [
     {
@@ -145,30 +145,6 @@
   "hrvMs": null,
   "heartRateSeriesDay": "2026-11-01",
   "heartRateSeries": [
-    {
-      "t": "2026-10-31T18:55:45.000Z",
-      "bpm": 87
-    },
-    {
-      "t": "2026-10-31T18:56:01.000Z",
-      "bpm": 83
-    },
-    {
-      "t": "2026-10-31T18:56:24.000Z",
-      "bpm": 91
-    },
-    {
-      "t": "2026-10-31T19:07:06.000Z",
-      "bpm": 91
-    },
-    {
-      "t": "2026-10-31T19:07:07.000Z",
-      "bpm": 87
-    },
-    {
-      "t": "2026-10-31T19:07:37.000Z",
-      "bpm": 89
-    },
     {
       "t": "2026-10-31T19:11:59.700Z",
       "bpm": 107
@@ -4772,12 +4748,24 @@
     {
       "t": "2026-11-01T18:37:49.000Z",
       "bpm": 86
+    },
+    {
+      "t": "2026-11-01T19:07:52.000Z",
+      "bpm": 84
+    },
+    {
+      "t": "2026-11-01T19:08:00.000Z",
+      "bpm": 86
+    },
+    {
+      "t": "2026-11-01T19:08:08.000Z",
+      "bpm": 88
     }
   ],
   "heartRateMinBpm": 71,
   "heartRateMaxBpm": 163,
   "heartRateAvgBpm": 101,
-  "heartRateLatestBpm": 86,
+  "heartRateLatestBpm": 88,
   "activityScore": null,
   "activityMeetTargets": null,
   "activityMoveHour": null,
