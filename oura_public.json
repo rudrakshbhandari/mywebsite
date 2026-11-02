@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-11-02T10:18:04.366Z",
+  "lastUpdatedIso": "2026-11-02T11:07:29.250Z",
   "day": "2026-11-01",
   "byDay": [
     {
@@ -2418,7 +2418,7 @@
   "activityMeetTargets": 78,
   "activityMoveHour": 95,
   "activityRecoveryTime": 87,
-  "activityStayActive": 56,
+  "activityStayActive": 58,
   "activityTrainingFreq": 100,
   "activityTrainingVol": 100,
   "steps": 5427,
