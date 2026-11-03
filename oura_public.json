@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-11-03T11:33:38.126Z",
+  "lastUpdatedIso": "2026-11-03T11:48:01.209Z",
   "day": "2026-11-03",
   "byDay": [
     {
@@ -107,7 +107,7 @@
     {
       "day": "2026-11-03",
       "sleepScore": 30,
-      "readinessScore": 49,
+      "readinessScore": 50,
       "activityScore": null,
       "restingHrBpm": null,
       "hrvMs": null,
@@ -130,11 +130,11 @@
   "sleepRestfulness": 53,
   "sleepTiming": 9,
   "sleepTotal": 16,
-  "readinessScore": 49,
-  "readinessActivityBalance": 68,
+  "readinessScore": 50,
+  "readinessActivityBalance": 69,
   "readinessBodyTemp": 80,
   "readinessHrvBalance": 53,
-  "readinessPreviousDay": 89,
+  "readinessPreviousDay": 90,
   "readinessPreviousNight": 1,
   "readinessRecoveryIndex": 20,
   "readinessRestingHr": 71,
