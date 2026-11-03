@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-11-03T11:18:23.030Z",
+  "lastUpdatedIso": "2026-11-03T11:33:38.126Z",
   "day": "2026-11-03",
   "byDay": [
     {
@@ -91,7 +91,7 @@
       "day": "2026-11-02",
       "sleepScore": 88,
       "readinessScore": 84,
-      "activityScore": 91,
+      "activityScore": 90,
       "restingHrBpm": null,
       "hrvMs": null,
       "steps": 7259,
