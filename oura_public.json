@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-11-03T12:10:58.446Z",
+  "lastUpdatedIso": "2026-11-03T12:24:37.649Z",
   "day": "2026-11-03",
   "byDay": [
     {
@@ -134,7 +134,7 @@
   "readinessActivityBalance": 69,
   "readinessBodyTemp": 80,
   "readinessHrvBalance": 53,
-  "readinessPreviousDay": 90,
+  "readinessPreviousDay": 91,
   "readinessPreviousNight": 1,
   "readinessRecoveryIndex": 20,
   "readinessRestingHr": 71,
