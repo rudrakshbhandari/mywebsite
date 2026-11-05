@@ -1,5 +1,5 @@
 {
-  "lastUpdatedIso": "2026-11-05T11:34:07.516Z",
+  "lastUpdatedIso": "2026-11-05T12:11:03.899Z",
   "day": "2026-11-05",
   "byDay": [
     {
@@ -94,7 +94,7 @@
       "activityScore": 93,
       "restingHrBpm": null,
       "hrvMs": null,
-      "steps": 9037,
+      "steps": 9040,
       "activeCalories": 844,
       "spo2Average": null,
       "workoutCount": 2,
@@ -134,7 +134,7 @@
   "readinessActivityBalance": 73,
   "readinessBodyTemp": 100,
   "readinessHrvBalance": 54,
-  "readinessPreviousDay": 88,
+  "readinessPreviousDay": 89,
   "readinessPreviousNight": 1,
   "readinessRecoveryIndex": 12,
   "readinessRestingHr": 46,
