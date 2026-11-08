@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-07T07:14:28.787Z",
+  "lastUpdated": "2026-11-08T07:15:23.407Z",
   "sources": {
     "cloudflare": "ok",
     "appStore": "ok",
@@ -37,26 +37,26 @@
       "zoneResolution": "domain lookup via /client/v4/zones"
     },
     "windowDays": 30,
-    "windowStart": "2026-10-08T07:14:20.833Z",
-    "windowEnd": "2026-11-07T07:14:20.833Z",
-    "totalVisits": 3981,
-    "totalPageviews": 3329,
-    "totalRequests": 168392,
+    "windowStart": "2026-10-09T07:15:14.239Z",
+    "windowEnd": "2026-11-08T07:15:14.239Z",
+    "totalVisits": 3953,
+    "totalPageviews": 3322,
+    "totalRequests": 166465,
     "perSite": {
       "rudrakshbhandari.com": {
-        "visits": 3509,
-        "pageviews": 3323,
-        "requests": 151733
+        "visits": 3490,
+        "pageviews": 3316,
+        "requests": 150088
       },
       "outfitr.net": {
-        "visits": 3,
+        "visits": 1,
         "pageviews": 0,
-        "requests": 5
+        "requests": 1
       },
       "nyaaywatch.in": {
-        "visits": 469,
+        "visits": 462,
         "pageviews": 6,
-        "requests": 16654
+        "requests": 16376
       }
     }
   }
