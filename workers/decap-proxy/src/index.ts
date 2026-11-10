@@ -12,6 +12,8 @@ interface Env {
   GITHUB_REPO_PRIVATE?: string;
   /** Comma-separated GitHub usernames allowed to log in. Empty = allow all. */
   ALLOWED_GITHUB_USERS?: string;
+  /** Comma-separated exact CMS origins allowed to receive OAuth tokens. */
+  TRUSTED_CMS_ORIGINS?: string;
 }
 
 /** Headers to prevent browsers from caching OAuth responses (avoids stale 404s). */
@@ -72,7 +74,7 @@ const handleAuth = async (url: URL, env: Env) => {
   });
 };
 
-const callbackScriptResponse = (status: string, token: string) => {
+const callbackScriptResponse = (status: string, token: string, trustedOrigins: string[]) => {
   return new Response(
     `<!DOCTYPE html>
 <html>
@@ -80,15 +82,17 @@ const callbackScriptResponse = (status: string, token: string) => {
 <body>
   <p>Authorizing Decap...</p>
   <script>
+    const trustedOrigins = ${JSON.stringify(trustedOrigins)};
     const receiveMessage = (message) => {
+      if (message.source !== window.opener || !trustedOrigins.includes(message.origin)) return;
       window.opener.postMessage(
         'authorization:github:${status}:${JSON.stringify({ token })}',
-        '*'
+        message.origin
       );
       window.removeEventListener("message", receiveMessage, false);
     };
     window.addEventListener("message", receiveMessage, false);
-    window.opener.postMessage("authorizing:github", "*");
+    for (const origin of trustedOrigins) window.opener.postMessage("authorizing:github", origin);
   </script>
 </body>
 </html>`,
@@ -136,7 +140,11 @@ const handleCallback = async (url: URL, env: Env) => {
     }
   }
 
-  return callbackScriptResponse('success', accessToken);
+  const trustedOrigins = (env.TRUSTED_CMS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean);
+  if (trustedOrigins.length === 0) {
+    return new Response('OAuth CMS origins are not configured', { status: 500, headers: NO_CACHE_HEADERS });
+  }
+  return callbackScriptResponse('success', accessToken, trustedOrigins);
 };
 
 export default {

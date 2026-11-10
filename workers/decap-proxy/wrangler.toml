@@ -15,3 +15,4 @@ workers_dev = false
 [vars]
 GITHUB_REPO_PRIVATE = "0"
 ALLOWED_GITHUB_USERS = "rudrakshbhandari"
+TRUSTED_CMS_ORIGINS = "https://rudrakshbhandari.com,https://www.rudrakshbhandari.com"
