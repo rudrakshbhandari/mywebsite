@@ -127,7 +127,7 @@ async function resolveCloudflareZoneTag({ token, site }) {
   return zoneTag;
 }
 
-async function fetchCloudflareVisitors() {
+async function fetchCloudflareVisitors(previous) {
   const token = process.env.CF_API_TOKEN?.trim();
   if (!token) {
     console.warn('[cf] CF_API_TOKEN missing — skipping visitors');
@@ -194,7 +194,14 @@ async function fetchCloudflareVisitors() {
     }
   }
 
-  if (!anySucceeded) return null;
+  const previouslyTrackedSites = Object.keys(previous?.websiteVisitors?.perSite || {});
+  const failedPreviouslyTrackedSite = previouslyTrackedSites.find(domain => !results[domain]);
+  if (!anySucceeded || failedPreviouslyTrackedSite) {
+    if (failedPreviouslyTrackedSite) {
+      console.warn(`[cf] preserving prior aggregate because ${failedPreviouslyTrackedSite} could not be refreshed`);
+    }
+    return null;
+  }
 
   return {
     sourceStatus: 'fresh',
@@ -736,7 +743,7 @@ async function main() {
   const previous = loadPrevious();
 
   const [visitors, apple, play] = await Promise.all([
-    fetchCloudflareVisitors().catch(err => {
+    fetchCloudflareVisitors(previous).catch(err => {
       console.warn(`[cf] failed: ${err.message}`);
       return null;
     }),

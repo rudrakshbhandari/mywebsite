@@ -943,31 +943,33 @@ async function main() {
     console.log(`Fetching last 7 days (${startDate} → ${endDate})...`);
     console.log(`Fetching heart-rate window (${hrStartDatetime} → ${hrEndDatetime})...`);
 
-    const [sleepList, readinessList, activityList, heartRateRaw, spo2List, workoutList, sleepPeriodList] =
-      await Promise.all([
+    const requestResults = await Promise.allSettled([
         fetchSleepDataRange(accessToken, startDate, endDate).catch(e => {
-          console.warn('Sleep fetch failed:', e.message);
-          return [];
+          throw new Error(`Sleep fetch failed: ${e.message}`);
         }),
         fetchReadinessDataRange(accessToken, startDate, endDate).catch(e => {
-          console.warn('Readiness fetch failed:', e.message);
-          return [];
+          throw new Error(`Readiness fetch failed: ${e.message}`);
         }),
         fetchActivityDataRange(accessToken, startDate, endDate).catch(e => {
-          console.warn('Activity fetch failed:', e.message);
-          return [];
+          throw new Error(`Activity fetch failed: ${e.message}`);
         }),
         fetchHeartRateSeries(accessToken, hrStartDatetime, hrEndDatetime).catch(e => {
-          console.warn('Heart rate fetch failed:', e.message);
-          return [];
+          throw new Error(`Heart rate fetch failed: ${e.message}`);
         }),
-        fetchSpo2DataRange(accessToken, startDate, endDate).catch(() => []),
-        fetchWorkoutsRange(accessToken, startDate, endDate).catch(() => []),
+        fetchSpo2DataRange(accessToken, startDate, endDate),
+        fetchWorkoutsRange(accessToken, startDate, endDate),
         fetchSleepPeriodsRange(accessToken, startDate, endDate).catch(e => {
-          console.warn('Sleep periods fetch failed:', e.message);
-          return [];
+          throw new Error(`Sleep periods fetch failed: ${e.message}`);
         }),
       ]);
+
+    const requestErrors = requestResults.filter(result => result.status === 'rejected');
+    const authError = requestErrors.find(result => isUnauthorizedAccessError(result.reason));
+    if (authError) {
+      throw new Error(`Oura API authentication failed: ${authError.reason.message}`);
+    }
+    const [sleepList, readinessList, activityList, heartRateRaw, spo2List, workoutList, sleepPeriodList] =
+      requestResults.map(result => result.status === 'fulfilled' ? result.value : []);
 
     // Build lookup maps by date
     const sleepByDate = new Map();
