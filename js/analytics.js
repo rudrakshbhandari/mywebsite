@@ -95,7 +95,10 @@
   document.addEventListener('DOMContentLoaded', () => {
     bindClickTracking('a[href*="Resume"], a[href$=".pdf"], .nav-resume, .nav__link--resume', 'resume_click');
     bindClickTracking('a[href^="mailto:"]', 'contact_email_click');
-    bindClickTracking('.social-link', 'social_click', el => ({ network: el.getAttribute('title') || 'unknown' }));
+    bindClickTracking('.contact__social-link', 'social_click', el => {
+      const label = el.getAttribute('aria-label') || '';
+      return { network: label.replace(/\s+(profile|page)$/i, '').trim() || 'unknown' };
+    });
     bindClickTracking('a[href="/health"], a[href="/health/"], a[href="health/"]', 'health_nav_click');
     bindClickTracking('a[href="/notes"], a[href="/notes/"], a[href="notes/"]', 'notes_nav_click');
 
