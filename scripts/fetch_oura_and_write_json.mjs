@@ -674,7 +674,7 @@ async function fetchHeartRateSeries(token, startDatetime, endDatetime) {
  * @returns {Promise<Array>}
  */
 async function fetchSpo2DataRange(token, startDate, endDate) {
-  const url = `https://${API_BASE}/v2/usercollection/spo2?start_date=${startDate}&end_date=${endDate}`;
+  const url = `https://${API_BASE}/v2/usercollection/daily_spo2?start_date=${startDate}&end_date=${endDate}`;
   const response = await httpsRequest(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -1052,12 +1052,18 @@ async function main() {
         restingHrBpm: roundOrNull(
           firstDefined(
             readinessData?.resting_heart_rate,
+            sleepPeriod?.lowest_heart_rate,
             sleepData?.heart_rate?.resting,
             sleepData?.heart_rate?.resting_heart_rate
           )
         ),
         hrvMs: roundOrNull(
-          firstDefined(readinessData?.hrv_average_milli, readinessData?.hrv_average, sleepData?.average_hrv)
+          firstDefined(
+            readinessData?.hrv_average_milli,
+            readinessData?.hrv_average,
+            sleepPeriod?.average_hrv,
+            sleepData?.average_hrv
+          )
         ),
         steps: roundOrNull(activityData?.steps),
         activeCalories: roundOrNull(activityData?.active_calories),
@@ -1154,12 +1160,18 @@ async function main() {
       restingHrBpm: roundOrNull(
         firstDefined(
           readinessData?.resting_heart_rate,
+          sleepPeriodByDate.get(dataDay)?.lowest_heart_rate,
           sleepData?.heart_rate?.resting,
           sleepData?.heart_rate?.resting_heart_rate
         )
       ),
       hrvMs: roundOrNull(
-        firstDefined(readinessData?.hrv_average_milli, readinessData?.hrv_average, sleepData?.average_hrv)
+        firstDefined(
+          readinessData?.hrv_average_milli,
+          readinessData?.hrv_average,
+          sleepPeriodByDate.get(dataDay)?.average_hrv,
+          sleepData?.average_hrv
+        )
       ),
       heartRateSeriesDay: heartRateSeries.length > 0 ? dataDay : null,
       heartRateSeries: heartRateSeries.map(point => ({ t: point.timestamp, bpm: point.bpm })),
@@ -1189,7 +1201,14 @@ async function main() {
         firstDefined(spo2Data?.breathing_disturbance_index, spo2Data?.breathing_disturbance)
       ),
       workoutCount: workouts.length,
-      workoutMinutes: roundOrNull(workouts.reduce((sum, w) => sum + Number(firstDefined(w.duration, 0)), 0)),
+      workoutMinutes: roundOrNull(workouts.reduce((sum, workout) => {
+        const start = Date.parse(workout.start_datetime || '');
+        const end = Date.parse(workout.end_datetime || '');
+        if (Number.isFinite(start) && Number.isFinite(end) && end >= start) {
+          return sum + (end - start) / 60000;
+        }
+        return sum + Number(firstDefined(workout.duration, 0)) / 60;
+      }, 0)),
       workoutCalories: roundOrNull(workouts.reduce((sum, w) => sum + Number(firstDefined(w.calories, 0)), 0)),
     };
 
