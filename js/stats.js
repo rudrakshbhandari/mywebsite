@@ -74,6 +74,7 @@
       const value = resolveValue(stats, key);
       const formatted = formatValue(value, format);
       if (formatted) {
+        node.setAttribute('data-counter-authoritative', 'true');
         node.textContent = formatted;
         // Keep GSAP counter animations in sync with the authoritative value.
         if (node.hasAttribute('data-target')) {
