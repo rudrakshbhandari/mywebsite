@@ -140,7 +140,10 @@ const handleCallback = async (url: URL, env: Env) => {
     }
   }
 
-  const trustedOrigins = (env.TRUSTED_CMS_ORIGINS || '').split(',').map(origin => origin.trim()).filter(Boolean);
+  const trustedOrigins = (env.TRUSTED_CMS_ORIGINS || '')
+    .split(',')
+    .map(origin => origin.trim())
+    .filter(Boolean);
   if (trustedOrigins.length === 0) {
     return new Response('OAuth CMS origins are not configured', { status: 500, headers: NO_CACHE_HEADERS });
   }

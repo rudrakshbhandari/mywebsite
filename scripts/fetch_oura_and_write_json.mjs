@@ -944,24 +944,24 @@ async function main() {
     console.log(`Fetching heart-rate window (${hrStartDatetime} → ${hrEndDatetime})...`);
 
     const requestResults = await Promise.allSettled([
-        fetchSleepDataRange(accessToken, startDate, endDate).catch(e => {
-          throw new Error(`Sleep fetch failed: ${e.message}`);
-        }),
-        fetchReadinessDataRange(accessToken, startDate, endDate).catch(e => {
-          throw new Error(`Readiness fetch failed: ${e.message}`);
-        }),
-        fetchActivityDataRange(accessToken, startDate, endDate).catch(e => {
-          throw new Error(`Activity fetch failed: ${e.message}`);
-        }),
-        fetchHeartRateSeries(accessToken, hrStartDatetime, hrEndDatetime).catch(e => {
-          throw new Error(`Heart rate fetch failed: ${e.message}`);
-        }),
-        fetchSpo2DataRange(accessToken, startDate, endDate),
-        fetchWorkoutsRange(accessToken, startDate, endDate),
-        fetchSleepPeriodsRange(accessToken, startDate, endDate).catch(e => {
-          throw new Error(`Sleep periods fetch failed: ${e.message}`);
-        }),
-      ]);
+      fetchSleepDataRange(accessToken, startDate, endDate).catch(e => {
+        throw new Error(`Sleep fetch failed: ${e.message}`);
+      }),
+      fetchReadinessDataRange(accessToken, startDate, endDate).catch(e => {
+        throw new Error(`Readiness fetch failed: ${e.message}`);
+      }),
+      fetchActivityDataRange(accessToken, startDate, endDate).catch(e => {
+        throw new Error(`Activity fetch failed: ${e.message}`);
+      }),
+      fetchHeartRateSeries(accessToken, hrStartDatetime, hrEndDatetime).catch(e => {
+        throw new Error(`Heart rate fetch failed: ${e.message}`);
+      }),
+      fetchSpo2DataRange(accessToken, startDate, endDate),
+      fetchWorkoutsRange(accessToken, startDate, endDate),
+      fetchSleepPeriodsRange(accessToken, startDate, endDate).catch(e => {
+        throw new Error(`Sleep periods fetch failed: ${e.message}`);
+      }),
+    ]);
 
     const requestErrors = requestResults.filter(result => result.status === 'rejected');
     if (requestErrors.length > 0) {
@@ -1201,14 +1201,16 @@ async function main() {
         firstDefined(spo2Data?.breathing_disturbance_index, spo2Data?.breathing_disturbance)
       ),
       workoutCount: workouts.length,
-      workoutMinutes: roundOrNull(workouts.reduce((sum, workout) => {
-        const start = Date.parse(workout.start_datetime || '');
-        const end = Date.parse(workout.end_datetime || '');
-        if (Number.isFinite(start) && Number.isFinite(end) && end >= start) {
-          return sum + (end - start) / 60000;
-        }
-        return sum + Number(firstDefined(workout.duration, 0)) / 60;
-      }, 0)),
+      workoutMinutes: roundOrNull(
+        workouts.reduce((sum, workout) => {
+          const start = Date.parse(workout.start_datetime || '');
+          const end = Date.parse(workout.end_datetime || '');
+          if (Number.isFinite(start) && Number.isFinite(end) && end >= start) {
+            return sum + (end - start) / 60000;
+          }
+          return sum + Number(firstDefined(workout.duration, 0)) / 60;
+        }, 0)
+      ),
       workoutCalories: roundOrNull(workouts.reduce((sum, w) => sum + Number(firstDefined(w.calories, 0)), 0)),
     };
 
