@@ -964,12 +964,15 @@ async function main() {
       ]);
 
     const requestErrors = requestResults.filter(result => result.status === 'rejected');
-    const authError = requestErrors.find(result => isUnauthorizedAccessError(result.reason));
-    if (authError) {
-      throw new Error(`Oura API authentication failed: ${authError.reason.message}`);
+    if (requestErrors.length > 0) {
+      const authError = requestErrors.find(result => isUnauthorizedAccessError(result.reason));
+      if (authError) {
+        throw new Error(`Oura API authentication failed: ${authError.reason.message}`);
+      }
+      throw new Error(`Oura data fetch failed: ${requestErrors.map(result => result.reason.message).join('; ')}`);
     }
     const [sleepList, readinessList, activityList, heartRateRaw, spo2List, workoutList, sleepPeriodList] =
-      requestResults.map(result => result.status === 'fulfilled' ? result.value : []);
+      requestResults.map(result => result.value);
 
     // Build lookup maps by date
     const sleepByDate = new Map();

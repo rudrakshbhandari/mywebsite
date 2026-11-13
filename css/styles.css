@@ -796,6 +796,28 @@ button:focus-visible {
   will-change: transform;
 }
 
+body.static-fallback .scene--experience {
+  overflow: visible;
+}
+
+body.static-fallback .experience__track-wrapper {
+  overflow: visible;
+}
+
+body.static-fallback .experience__track {
+  flex-direction: column;
+  padding: 1.25rem 2rem 2rem;
+  gap: 1rem;
+  transform: none;
+}
+
+body.static-fallback .exp-card {
+  flex: none;
+  width: min(42rem, calc(100% - 4rem));
+  max-height: none;
+  overflow: visible;
+}
+
 .exp-card {
   flex: 0 0 min(420px, 80vw);
   background: rgba(255, 255, 255, 0.06);

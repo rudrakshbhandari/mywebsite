@@ -132,7 +132,7 @@ jobs:
           exit 1
 
       - name: Rotate OAuth secrets after refresh
-        if: always() && steps.fetch_oura.outcome == 'success'
+        if: always()
         env:
           GH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN }}
         run: |
