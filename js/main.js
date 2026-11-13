@@ -198,6 +198,7 @@ function initCounters() {
 }
 
 function animateCounter(element) {
+  if (element.hasAttribute('data-counter-authoritative')) return;
   var originalText = element.textContent;
   var isDecimal = originalText.includes('.');
 
@@ -206,6 +207,10 @@ function animateCounter(element) {
     var current = 0;
     var increment = target / 50;
     var timer = setInterval(function () {
+      if (element.hasAttribute('data-counter-authoritative')) {
+        clearInterval(timer);
+        return;
+      }
       current += increment;
       if (current >= target) {
         element.textContent = originalText;
@@ -225,6 +230,10 @@ function animateCounter(element) {
     var numCurrent = 0;
     var numIncrement = numTarget / 50;
     var numTimer = setInterval(function () {
+      if (element.hasAttribute('data-counter-authoritative')) {
+        clearInterval(numTimer);
+        return;
+      }
       numCurrent += numIncrement;
       if (numCurrent >= numTarget) {
         element.textContent = numTarget + suffix;
