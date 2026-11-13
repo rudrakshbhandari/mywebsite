@@ -14,7 +14,7 @@ This note exists to keep future maintenance work on the Oura health pipeline fro
 
 - Local runs read Oura credentials from `.env` plus `.oura_token` unless `OURA_ACCESS_TOKEN` or `OURA_REFRESH_TOKEN` is explicitly set in the environment.
 - GitHub Actions reads `OURA_CLIENT_ID`, `OURA_CLIENT_SECRET`, `OURA_REFRESH_TOKEN`, and optional `OURA_ACCESS_TOKEN` from repo secrets.
-- Scheduled runs prefer a cached `OURA_ACCESS_TOKEN` and only refresh (rotating `OURA_REFRESH_TOKEN`) when that access token is missing or returns 401. This avoids rotating the refresh token every 15 minutes.
+- Scheduled runs prefer a cached `OURA_ACCESS_TOKEN` and only refresh (rotating `OURA_REFRESH_TOKEN`) when that access token is missing or returns 401. This avoids rotating the refresh token on every scheduled run.
 - After a refresh, CI must persist both `OURA_REFRESH_TOKEN` and `OURA_ACCESS_TOKEN`. Oura refresh tokens are rotated on use — if secret update fails after refresh, the old secret is permanently dead until manual reauth.
 - CI retries secret updates aggressively (~15 minutes) because GitHub Secrets can return transient 503s.
 - Local `.oura_token` does not magically sync with GitHub secrets, so it can become stale over time.
