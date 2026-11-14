@@ -2,8 +2,8 @@ name: Oura Health Data Update
 
 on:
   schedule:
-    # Every 15 minutes (reduces deploy churn; was */5 causing 100/day Vercel limit hits)
-    - cron: '*/15 * * * *'
+    # Every 30 minutes to balance data freshness with Actions usage.
+    - cron: '*/30 * * * *'
   workflow_dispatch: # Allow manual trigger
 
 concurrency:
