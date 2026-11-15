@@ -891,6 +891,10 @@ body.static-fallback .exp-card {
   object-position: 78% 32%;
 }
 
+.exp-card__media--aws-2025 img {
+  object-position: 78% 12%;
+}
+
 .exp-card__media--pair {
   display: grid;
   grid-template-columns: 1fr 1fr;
