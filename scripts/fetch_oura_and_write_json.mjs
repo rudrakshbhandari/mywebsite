@@ -956,7 +956,14 @@ async function main() {
       fetchHeartRateSeries(accessToken, hrStartDatetime, hrEndDatetime).catch(e => {
         throw new Error(`Heart rate fetch failed: ${e.message}`);
       }),
-      fetchSpo2DataRange(accessToken, startDate, endDate),
+      fetchSpo2DataRange(accessToken, startDate, endDate).catch(error => {
+        const message = String(error?.message || '').toLowerCase();
+        if (isUnauthorizedAccessError(error) && message.includes('spo2 scope')) {
+          console.warn('SpO2 fetch skipped: Oura authorization is missing the SpO2 scope. Reauthorize the Oura connection to restore this metric.');
+          return [];
+        }
+        throw new Error(`SpO2 fetch failed: ${error.message}`);
+      }),
       fetchWorkoutsRange(accessToken, startDate, endDate),
       fetchSleepPeriodsRange(accessToken, startDate, endDate).catch(e => {
         throw new Error(`Sleep periods fetch failed: ${e.message}`);
