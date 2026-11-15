@@ -369,7 +369,7 @@ button:focus-visible {
   object-position: center;
   border-radius: 0;
   box-shadow: none;
-  transform: scale(1.15);
+  transform: scale(1.2);
 }
 
 .hero__subtitle {
