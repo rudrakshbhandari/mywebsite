@@ -352,6 +352,11 @@ button:focus-visible {
   z-index: 1;
   margin: 1.75rem 0;
   will-change: transform, opacity;
+  overflow: hidden;
+  border-radius: 14px;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.15),
+    0 10px 25px rgba(0, 0, 0, 0.08);
 }
 
 .hero__photo {
@@ -362,10 +367,9 @@ button:focus-visible {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   object-position: center;
-  border-radius: 14px;
-  box-shadow:
-    0 30px 80px rgba(0, 0, 0, 0.15),
-    0 10px 25px rgba(0, 0, 0, 0.08);
+  border-radius: 0;
+  box-shadow: none;
+  transform: scale(1.15);
 }
 
 .hero__subtitle {
