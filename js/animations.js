@@ -59,6 +59,7 @@ function applySceneMode() {
   sceneMode = nextMode;
 
   if (nextMode === 'pinned') {
+    document.body.classList.remove('static-fallback');
     document.body.classList.add('gsap-ready');
     initHeroScene();
     initAboutScene();
@@ -68,6 +69,7 @@ function applySceneMode() {
     return;
   }
 
+  document.body.classList.add('static-fallback');
   initStaticFallback();
   if (nextMode === 'static-mobile-projects') {
     initProjectsScene();
@@ -83,8 +85,16 @@ function debounce(fn, wait) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  if (typeof IS_DEV_MODE !== 'undefined' && IS_DEV_MODE) return;
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+  if (typeof IS_DEV_MODE !== 'undefined' && IS_DEV_MODE) {
+    document.body.classList.add('static-fallback');
+    initStaticFallback();
+    return;
+  }
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    document.body.classList.add('static-fallback');
+    initStaticFallback();
+    return;
+  }
 
   gsap.registerPlugin(ScrollTrigger);
   applySceneMode();
