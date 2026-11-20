@@ -4,7 +4,7 @@ This note exists to keep future maintenance work on the Oura health pipeline fro
 
 ## Mental Model
 
-- `oura_public.json` is the only public payload for `/health`; GitHub Actions publishes it to Cloudflare Workers KV instead of committing it to Git.
+- `oura_public.json` is the public payload for `/health`; GitHub Actions publishes it to Cloudflare Workers KV instead of committing updates to Git. The same Worker serves `stats_public.json` and `github_contributions.json` for the other data driven site widgets.
 - `.github/workflows/oura-update.yml` is the scheduled production path.
 - `.github/workflows/health-dashboard-watchdog.yml` is the hourly freshness alert path and must fail when data is more than 12 hours old.
 - `scripts/fetch_oura_and_write_json.mjs` is the single source of truth for local and CI fetch behavior.
@@ -21,7 +21,7 @@ This note exists to keep future maintenance work on the Oura health pipeline fro
 
 ## Publishing health data
 
-The scheduled workflow compares the generated payload with the current public Worker endpoint and writes the KV value only when health data changes. It does not create Git commits or PRs. The `oura-health-data` KV namespace and repository variable `OURA_KV_NAMESPACE_ID` are configured. The Worker at `https://oura-health-data.rudrakshbhandari99.workers.dev/oura_public.json` exposes read-only JSON and permits browser requests from the portfolio domains. Repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` provide deployment and write access.
+The scheduled workflows compare each generated payload with its current Worker endpoint and write to KV only when data changes. They do not create Git commits or PRs. The `oura-health-data` KV namespace and repository variable `OURA_KV_NAMESPACE_ID` are configured. The Worker serves `/oura_public.json`, `/stats_public.json`, and `/github_contributions.json` as read-only JSON and permits browser requests from the portfolio domains. Repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` provide deployment and write access.
 
 **Do not use `secrets` in step `if:`** in Actions YAML — GitHub rejects the workflow (schedule and `workflow_dispatch` stop entirely). Use `env:` with an expression and check in the shell instead.
 

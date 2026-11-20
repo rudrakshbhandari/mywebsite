@@ -44,28 +44,8 @@ jobs:
         id: check_changes
         if: steps.fetch_oura.outcome == 'success'
         env:
-          OURA_DATA_URL: https://oura-health-data.rudrakshbhandari99.workers.dev
-        run: |
-          if ! curl --fail --silent --show-error --location "$OURA_DATA_URL/oura_public.json" --output .oura_current_public.json; then
-            echo "No prior public snapshot found; this run will publish the initial snapshot."
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          node --input-type=module -e '
-            import { appendFileSync, readFileSync } from "node:fs";
-            const path = "oura_public.json";
-            const previous = JSON.parse(readFileSync(".oura_current_public.json", "utf8"));
-            const next = JSON.parse(readFileSync(path, "utf8"));
-            delete previous.lastUpdatedIso;
-            delete next.lastUpdatedIso;
-            if (JSON.stringify(previous) === JSON.stringify(next)) {
-              appendFileSync(process.env.GITHUB_OUTPUT, "changed=false\n");
-              console.log("Public health data is unchanged; skipping upload.");
-            } else {
-              appendFileSync(process.env.GITHUB_OUTPUT, "changed=true\n");
-              console.log("Public health data changed; uploading new snapshot.");
-            }
-          '
+          PUBLIC_SNAPSHOT_URL: https://oura-health-data.rudrakshbhandari99.workers.dev/oura_public.json
+        run: node scripts/compare-public-snapshot.mjs oura_public.json lastUpdatedIso
 
       - name: Publish public snapshot to Workers KV
         if: steps.check_changes.outputs.changed == 'true'
@@ -191,7 +171,7 @@ jobs:
           fi
 
       - name: Close dashboard alert issue after recovery
-        if: success() && steps.fetch_oura.outcome == 'success' && (steps.check_changes.outputs.changed != 'true' || steps.merge_pr.outputs.merged == 'true')
+        if: success() && steps.fetch_oura.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_TITLE: Health dashboard automation alert

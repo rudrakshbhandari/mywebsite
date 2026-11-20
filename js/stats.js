@@ -1,7 +1,7 @@
 /**
  * Portfolio stats loader.
  *
- * Reads stats_public.json (refreshed daily by the stats-update GH Action) and
+ * Reads stats_public.json from the public data Worker (refreshed daily) and
  * updates any element with a data-stat attribute. Falls back silently to the
  * baked-in HTML text if the JSON is missing or a value is null.
  *
@@ -18,7 +18,7 @@
 (function () {
   'use strict';
 
-  const STATS_URL = '/stats_public.json';
+  const STATS_URL = 'https://oura-health-data.rudrakshbhandari99.workers.dev/stats_public.json';
 
   function floorToNiceNumber(value) {
     if (value < 1000) return Math.floor(value / 10) * 10;
@@ -86,8 +86,9 @@
 
   async function loadStats() {
     try {
-      const response = await fetch(STATS_URL, { cache: 'no-store' });
-      if (!response.ok) return;
+      let response = await fetch(STATS_URL, { cache: 'no-store' });
+      if (!response.ok) response = await fetch('/stats_public.json', { cache: 'no-store' });
+      if (!response.ok) throw new Error(`Stats endpoint returned HTTP ${response.status}`);
       const stats = await response.json();
       applyStats(stats);
     } catch (err) {
