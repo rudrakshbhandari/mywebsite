@@ -47,7 +47,7 @@ script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cl
 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
 font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com;
 img-src 'self' data: https:;
-connect-src 'self' https://cloudflareinsights.com https://www.google-analytics.com https://region1.google-analytics.com;
+connect-src 'self' https://oura-health-data.rudrakshbhandari99.workers.dev https://cloudflareinsights.com https://www.google-analytics.com https://region1.google-analytics.com;
 object-src 'none';
 frame-ancestors 'none';
 base-uri 'self';

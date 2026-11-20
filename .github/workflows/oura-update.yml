@@ -80,11 +80,16 @@ jobs:
         env:
           OURA_DATA_URL: https://oura-health-data.rudrakshbhandari99.workers.dev
         run: |
-          curl --fail --silent --show-error --location "$OURA_DATA_URL/oura_public.json" --output .oura_published_public.json
-          cmp --silent oura_public.json .oura_published_public.json || {
-            echo "::error::Published Workers KV snapshot does not match the generated snapshot."
-            exit 1
-          }
+          for attempt in $(seq 1 6); do
+            if curl --fail --silent --show-error --location "$OURA_DATA_URL/oura_public.json" --output .oura_published_public.json && cmp --silent oura_public.json .oura_published_public.json; then
+              echo "Published snapshot verified on attempt ${attempt}."
+              exit 0
+            fi
+            echo "Published snapshot is not visible yet (attempt ${attempt}/6); retrying in 10 seconds."
+            sleep 10
+          done
+          echo "::error::Published Workers KV snapshot did not become visible or did not match the generated snapshot."
+          exit 1
 
       - name: Rotate OAuth secrets after refresh
         if: always()

@@ -23,4 +23,4 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: deploy workers/oura-data/src/index.js --config workers/oura-data/wrangler.toml
+          command: deploy --config workers/oura-data/wrangler.toml
