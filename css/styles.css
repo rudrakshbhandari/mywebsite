@@ -366,10 +366,10 @@ button:focus-visible {
   height: auto;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  object-position: center;
+  object-position: 70% center;
   border-radius: 0;
   box-shadow: none;
-  transform: scale(1.2);
+  transform: scale(1.82);
 }
 
 .hero__subtitle {
