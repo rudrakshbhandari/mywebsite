@@ -34,7 +34,8 @@ Create these Cloudflare rules after cutover:
    - `Permissions-Policy: camera=(), microphone=(), geolocation=()`
 
 3. Cache Rules
-   - HTML and `oura_public.json`: bypass long cache / revalidate
+   - HTML: bypass long cache / revalidate
+   - Oura JSON is served by the Cloudflare Worker with a 60 second cache TTL
    - CSS and JS: short cache
    - images and icons: long immutable cache
 
@@ -46,7 +47,7 @@ script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cl
 style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
 font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com;
 img-src 'self' data: https:;
-connect-src 'self' https://cloudflareinsights.com https://www.google-analytics.com https://region1.google-analytics.com;
+connect-src 'self' https://oura-health-data.rudrakshbhandari99.workers.dev https://cloudflareinsights.com https://www.google-analytics.com https://region1.google-analytics.com;
 object-src 'none';
 frame-ancestors 'none';
 base-uri 'self';

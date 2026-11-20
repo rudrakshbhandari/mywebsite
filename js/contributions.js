@@ -1,14 +1,15 @@
 /**
  * GitHub contribution calendar renderer.
  *
- * Reads /github_contributions.json (refreshed via
+ * Reads github_contributions.json from the public data Worker (refreshed via
  * scripts/fetch_github_contributions.mjs) and paints a GitHub-style
- * year heatmap into #github-contributions.
+ * year heatmap into #github-contributions. The checked-in JSON remains the
+ * fallback if the Worker is unavailable.
  */
 (function () {
   'use strict';
 
-  const DATA_URL = '/github_contributions.json';
+  const DATA_URL = 'https://oura-health-data.rudrakshbhandari99.workers.dev/github_contributions.json';
   const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
   const DAY_LABELS = ['', 'Mon', '', 'Wed', '', 'Fri', ''];
 
@@ -165,14 +166,22 @@
     const root = document.getElementById('github-contributions');
     if (!root) return;
 
-    fetch(DATA_URL, { credentials: 'same-origin' })
+    fetch(DATA_URL, { cache: 'no-store' })
       .then(res => {
         if (!res.ok) throw new Error('Failed to load contributions');
         return res.json();
       })
       .then(data => renderGraph(root, data))
       .catch(() => {
-        root.hidden = true;
+        fetch('/github_contributions.json', { cache: 'no-store' })
+          .then(res => {
+            if (!res.ok) throw new Error('Failed to load fallback contributions');
+            return res.json();
+          })
+          .then(data => renderGraph(root, data))
+          .catch(() => {
+            root.hidden = true;
+          });
       });
   }
 
