@@ -5,35 +5,22 @@ on:
     # Daily at 07:10 UTC (00:10 PT) — reports from the prior day are settled.
     - cron: '10 7 * * *'
   workflow_dispatch:
-    inputs:
-      persist:
-        description: Commit and merge the fetched stats update
-        required: false
-        default: false
-        type: boolean
 
 concurrency:
   group: stats-update
   cancel-in-progress: false
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
   fetch-and-commit:
     runs-on: ubuntu-latest
     timeout-minutes: 15
 
-    env:
-      # Same PAT pattern as oura-update.yml so opened PRs run required checks.
-      GH_AUTH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && secrets.OURA_SECRET_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && secrets.OURA_SECRET_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -55,78 +42,36 @@ jobs:
           set -o pipefail
           node scripts/fetch_stats.mjs 2>&1 | tee .stats_fetch.log
 
-      - name: Check if stats changed
+      - name: Compare published stats snapshot
         id: check_changes
         if: steps.fetch_stats.outcome == 'success'
-        run: |
-          if [ -f .stats_no_change ]; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-            rm -f .stats_no_change
-          elif git diff --quiet stats_public.json 2>/dev/null; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
-          fi
+        env:
+          PUBLIC_SNAPSHOT_URL: https://oura-health-data.rudrakshbhandari99.workers.dev/stats_public.json
+        run: node scripts/compare-public-snapshot.mjs stats_public.json lastUpdated
 
       - name: Print fetched website visitor totals
         if: github.event_name == 'workflow_dispatch'
         run: node -e "const s=require('./stats_public.json'); console.log(JSON.stringify(s.websiteVisitors, null, 2));"
 
-      - name: Create branch and PR if changed
-        if: steps.check_changes.outputs.changed == 'true' && (github.event_name != 'workflow_dispatch' || inputs.persist)
-        id: create_pr
+      - name: Publish stats snapshot to Workers KV
+        if: steps.check_changes.outputs.changed == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: kv key put stats_public.json --path=stats_public.json --namespace-id=${{ vars.OURA_KV_NAMESPACE_ID }}
+
+      - name: Verify published stats snapshot
+        if: steps.check_changes.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
+          PUBLIC_SNAPSHOT_URL: https://oura-health-data.rudrakshbhandari99.workers.dev/stats_public.json
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-
-          BRANCH_NAME="stats-update-$(date -u +%Y%m%d-%H%M%S)"
-          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-
-          git checkout -b "$BRANCH_NAME"
-          git add stats_public.json
-          git commit -m "chore(stats): refresh portfolio stats [$(date -u +%Y-%m-%d)]"
-          git push origin "$BRANCH_NAME"
-
-          PR_URL=$(gh pr create \
-            --title "chore(stats): refresh portfolio stats [$(date -u +%Y-%m-%d)]" \
-            --body "Automated portfolio stats refresh (downloads + website visitors)." \
-            --base main \
-            --head "$BRANCH_NAME")
-
-          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
-          echo "Created PR: $PR_URL"
-
-      - name: Merge stats PR after CI (poll)
-        if: steps.check_changes.outputs.changed == 'true' && (github.event_name != 'workflow_dispatch' || inputs.persist)
-        env:
-          GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
-        run: |
-          PR_URL="${{ steps.create_pr.outputs.pr_url }}"
-          echo "Waiting for required checks, then merging: $PR_URL"
-          sleep 15
-
-          for attempt in $(seq 1 48); do
-            echo "merge attempt $attempt/48..."
-            if gh pr merge "$PR_URL" --squash --delete-branch; then
-              echo "Merged successfully."
+          for attempt in $(seq 1 6); do
+            if curl --fail --silent --show-error --location "$PUBLIC_SNAPSHOT_URL" --output .stats_published.json && cmp --silent stats_public.json .stats_published.json; then
+              echo "Published stats snapshot verified on attempt ${attempt}."
               exit 0
             fi
-            STATE=$(gh pr view "$PR_URL" --json state -q .state 2>/dev/null || echo "")
-            if [ "$STATE" = "MERGED" ]; then
-              echo "PR already merged."
-              exit 0
-            fi
-            # Branch protection requires up-to-date branches (strict mode).
-            # If main moved ahead, update the PR branch so checks re-run.
-            MERGE_STATE=$(gh pr view "$PR_URL" --json mergeStateStatus -q .mergeStateStatus 2>/dev/null || echo "")
-            if [ "$MERGE_STATE" = "BEHIND" ]; then
-              echo "Branch is behind main — updating branch..."
-              gh pr update-branch "$PR_URL" || true
-            fi
-            sleep 15
+            sleep 10
           done
-
-          echo "::error::Timed out waiting to merge stats PR."
+          echo "::error::Published stats snapshot did not match the generated snapshot."
           exit 1
