@@ -32,7 +32,7 @@
     "prettier": "^3.0.0"
   },
   "overrides": {
-    "simple-git": ">=3.36.0",
+    "simple-git": ">=4.1.0",
     "path-to-regexp": "0.1.13"
   }
 }
