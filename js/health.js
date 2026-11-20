@@ -1,5 +1,5 @@
 // Oura public data endpoint
-const DATA_URL = 'https://health-data.rudrakshbhandari.com/oura_public.json';
+const DATA_URL = 'https://oura-health-data.rudrakshbhandari99.workers.dev/oura_public.json';
 const FALLBACK_DATA_URL = '/oura_public.json';
 
 // Status thresholds for scores

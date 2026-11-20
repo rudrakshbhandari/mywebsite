@@ -186,7 +186,7 @@ cat oura_public.json
 
 2. Create a Pull Request to `main`
 
-3. Merge the PR — the site deploys via the Pages workflow. Oura data is published independently to Cloudflare R2 by the scheduled workflow.
+3. Merge the PR — the site deploys via the Pages workflow. Oura data is published independently to Cloudflare Workers KV by the scheduled workflow.
 
 ---
 
@@ -206,7 +206,7 @@ To test the GitHub Actions workflow immediately:
 
 1. Visit `https://yourdomain.com/health`
 2. Check that data loads (may show "No data" until first Oura sync)
-3. Inspect `https://health-data.rudrakshbhandari.com/oura_public.json` to verify the published JSON structure
+3. Inspect `https://oura-health-data.rudrakshbhandari99.workers.dev/oura_public.json` to verify the published JSON structure
 4. Check that the workflow runs successfully in GitHub Actions
 
 ---

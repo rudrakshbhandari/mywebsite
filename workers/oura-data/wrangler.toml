@@ -1,0 +1,8 @@
+name = "oura-health-data"
+main = "src/index.js"
+compatibility_date = "2026-11-19"
+workers_dev = true
+
+[[kv_namespaces]]
+binding = "OURA_DATA"
+id = "52cce48cf0e74b0ea1a5d976d97dad14"

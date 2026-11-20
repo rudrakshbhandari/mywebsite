@@ -35,7 +35,7 @@ Create these Cloudflare rules after cutover:
 
 3. Cache Rules
    - HTML: bypass long cache / revalidate
-   - Oura JSON is served from the Cloudflare R2 custom domain with a 60 second cache TTL
+   - Oura JSON is served by the Cloudflare Worker with a 60 second cache TTL
    - CSS and JS: short cache
    - images and icons: long immutable cache
 

@@ -4,7 +4,7 @@ This note exists to keep future maintenance work on the Oura health pipeline fro
 
 ## Mental Model
 
-- `oura_public.json` is the only public payload for `/health`; GitHub Actions publishes it to Cloudflare R2 instead of committing it to Git.
+- `oura_public.json` is the only public payload for `/health`; GitHub Actions publishes it to Cloudflare Workers KV instead of committing it to Git.
 - `.github/workflows/oura-update.yml` is the scheduled production path.
 - `.github/workflows/health-dashboard-watchdog.yml` is the hourly freshness alert path and must fail when data is more than 12 hours old.
 - `scripts/fetch_oura_and_write_json.mjs` is the single source of truth for local and CI fetch behavior.
@@ -21,7 +21,7 @@ This note exists to keep future maintenance work on the Oura health pipeline fro
 
 ## Publishing health data
 
-The scheduled workflow compares the generated payload with the current public R2 object and uploads it only when health data changes. It does not create Git commits or PRs. Create an R2 bucket named `oura-health-data`, attach the custom domain `health-data.rudrakshbhandari.com`, and apply [`infra/oura-r2-cors.json`](../infra/oura-r2-cors.json). Then configure repository variables `OURA_R2_BUCKET=oura-health-data` and `OURA_R2_PUBLIC_URL=https://health-data.rudrakshbhandari.com`, plus secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` with R2 write access. Cloudflare documents [custom domain access](https://developers.cloudflare.com/r2/buckets/public-buckets/) and [R2 CORS configuration](https://developers.cloudflare.com/r2/buckets/cors/).
+The scheduled workflow compares the generated payload with the current public Worker endpoint and writes the KV value only when health data changes. It does not create Git commits or PRs. The `oura-health-data` KV namespace and repository variable `OURA_KV_NAMESPACE_ID` are configured. The Worker at `https://oura-health-data.rudrakshbhandari99.workers.dev/oura_public.json` exposes read-only JSON and permits browser requests from the portfolio domains. Repository secrets `CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` provide deployment and write access.
 
 **Do not use `secrets` in step `if:`** in Actions YAML — GitHub rejects the workflow (schedule and `workflow_dispatch` stop entirely). Use `env:` with an expression and check in the shell instead.
 
@@ -64,8 +64,8 @@ git diff -- oura_public.json
 ## Noise To Avoid
 
 - The fetch script may write `.oura_no_change` for local no-op runs. Treat it as temporary and do not commit it.
-- A rerun can update only `lastUpdatedIso` in `oura_public.json` even when the health payload is otherwise unchanged. The R2 publisher ignores that field and skips unchanged payloads.
-- If the run reports `No changes detected in data`, the scheduled workflow compares with R2 and skips the upload when the public payload is unchanged.
+- A rerun can update only `lastUpdatedIso` in `oura_public.json` even when the health payload is otherwise unchanged. The publisher ignores that field and skips unchanged payloads.
+- If the run reports `No changes detected in data`, the scheduled workflow compares with KV and skips the write when the public payload is unchanged.
 
 ## HR Timeline Notes
 

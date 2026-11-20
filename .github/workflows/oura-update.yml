@@ -44,13 +44,9 @@ jobs:
         id: check_changes
         if: steps.fetch_oura.outcome == 'success'
         env:
-          R2_PUBLIC_URL: ${{ vars.OURA_R2_PUBLIC_URL }}
+          OURA_DATA_URL: https://oura-health-data.rudrakshbhandari99.workers.dev
         run: |
-          if [ -z "${R2_PUBLIC_URL:-}" ]; then
-            echo "::error::Set OURA_R2_PUBLIC_URL to the public base URL for the Oura R2 object."
-            exit 1
-          fi
-          if ! curl --fail --silent --show-error --location "$R2_PUBLIC_URL/oura_public.json" --output .oura_current_public.json; then
+          if ! curl --fail --silent --show-error --location "$OURA_DATA_URL/oura_public.json" --output .oura_current_public.json; then
             echo "No prior public snapshot found; this run will publish the initial snapshot."
             echo "changed=true" >> "$GITHUB_OUTPUT"
             exit 0
@@ -71,22 +67,22 @@ jobs:
             }
           '
 
-      - name: Publish public snapshot to Cloudflare R2
+      - name: Publish public snapshot to Workers KV
         if: steps.check_changes.outputs.changed == 'true'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: r2 object put "${{ vars.OURA_R2_BUCKET }}/oura_public.json" --file=oura_public.json --content-type=application/json --cache-control="public, max-age=60, s-maxage=60"
+          command: kv key put oura_public.json --path=oura_public.json --namespace-id=${{ vars.OURA_KV_NAMESPACE_ID }}
 
       - name: Verify published snapshot
         if: steps.check_changes.outputs.changed == 'true'
         env:
-          R2_PUBLIC_URL: ${{ vars.OURA_R2_PUBLIC_URL }}
+          OURA_DATA_URL: https://oura-health-data.rudrakshbhandari99.workers.dev
         run: |
-          curl --fail --silent --show-error --location "$R2_PUBLIC_URL/oura_public.json" --output .oura_published_public.json
+          curl --fail --silent --show-error --location "$OURA_DATA_URL/oura_public.json" --output .oura_published_public.json
           cmp --silent oura_public.json .oura_published_public.json || {
-            echo "::error::Published R2 snapshot does not match the generated snapshot."
+            echo "::error::Published Workers KV snapshot does not match the generated snapshot."
             exit 1
           }
 
