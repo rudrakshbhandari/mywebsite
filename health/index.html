@@ -1,0 +1,1752 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Health Metrics - Oura Ring Data | Rudraksh Bhandari" />
+    <meta name="author" content="Rudraksh Bhandari" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' https://www.googletagmanager.com; connect-src 'self' https://oura-health-data.rudrakshbhandari99.workers.dev https://www.google-analytics.com https://region1.google-analytics.com; form-action 'self'; upgrade-insecure-requests"
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://rudrakshbhandari.com/health" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/img/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/img/apple-touch-icon.png" />
+
+    <meta name="theme-color" content="#0f172a" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Health Metrics | Rudraksh Bhandari" />
+    <meta property="og:description" content="Daily health metrics from Oura Ring" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://rudrakshbhandari.com/health" />
+
+    <title>Health Metrics | Rudraksh Bhandari</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="../css/tokens.css?v=2" />
+
+    <style>
+      /* CSS Variables - Matching main site */
+      :root {
+        --primary-color: #6366f1;
+        --primary-dark: #4f46e5;
+        --primary-glow: rgba(99, 102, 241, 0.4);
+        --secondary-color: #94a3b8;
+        --accent-color: #22d3ee;
+        --accent-glow: rgba(34, 211, 238, 0.3);
+        --text-primary: #f1f5f9;
+        --text-secondary: #94a3b8;
+        --text-light: #ffffff;
+        --background-light: #0f172a;
+        --background-dark: #020617;
+        --background-gray: #1e293b;
+        --background-card: #1e293b;
+        --border-color: #334155;
+        --shadow-glow: 0 0 30px var(--primary-glow);
+
+        /* Dashboard type pairing — defined in css/tokens.css (linked above).
+           Deliberate alternate to the brand serif: Inter/Space Grotesk read
+           better for the numeric, data-dense dashboard UI. */
+        --font-family: var(--font-dashboard-body);
+        --font-display: var(--font-dashboard-display);
+        --radius-lg: 0.75rem;
+        --radius-xl: 1rem;
+        --transition-normal: 0.3s ease-in-out;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: var(--font-family);
+        font-size: var(--fs-base);
+        line-height: var(--lh-base);
+        color: var(--text-primary);
+        background: var(--background-dark);
+        min-height: 100vh;
+        min-height: 100dvh;
+        overflow-x: hidden;
+      }
+
+      /* Background gradient */
+      .page-background {
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 80%, rgba(34, 211, 238, 0.1) 0%, transparent 50%), var(--background-dark);
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      /* Header */
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: calc(1rem + env(safe-area-inset-top, 0px)) calc(1.5rem + env(safe-area-inset-right, 0px)) 1rem
+          calc(1.5rem + env(safe-area-inset-left, 0px));
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .nav-logo a {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-light);
+        text-decoration: none;
+        letter-spacing: -0.02em;
+      }
+
+      .nav-back {
+        color: var(--text-secondary);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        transition: color var(--transition-normal);
+      }
+
+      .nav-back:hover {
+        color: var(--accent-color);
+      }
+
+      /* Main content */
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 7rem calc(1.5rem + env(safe-area-inset-right, 0px)) 4rem calc(1.5rem + env(safe-area-inset-left, 0px));
+      }
+
+      .page-header {
+        text-align: center;
+        margin-bottom: 3rem;
+      }
+
+      .page-title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 700;
+        color: var(--text-light);
+        margin-bottom: 0.75rem;
+        letter-spacing: -0.02em;
+      }
+
+      .page-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.0625rem;
+        max-width: 560px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+
+      .page-subtitle a {
+        color: var(--accent-color);
+        text-decoration: none;
+        font-weight: 500;
+        border-bottom: 1px solid rgba(34, 211, 238, 0.4);
+        transition:
+          color var(--transition-normal),
+          border-color var(--transition-normal);
+      }
+
+      .page-subtitle a:hover {
+        color: var(--text-light);
+        border-bottom-color: var(--accent-color);
+      }
+
+      .data-source {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--accent-color);
+        font-size: 0.8125rem;
+        font-weight: 500;
+        margin-top: 1.25rem;
+        padding: 0.35rem 0.75rem;
+        background: rgba(34, 211, 238, 0.08);
+        border-radius: 9999px;
+        border: 1px solid rgba(34, 211, 238, 0.2);
+      }
+
+      .data-source i {
+        font-size: 0.9rem;
+      }
+
+      /* Metrics Grid */
+      .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+      }
+
+      .metric-card {
+        background: var(--background-card);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+        padding: 1.5rem;
+        transition: all var(--transition-normal);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .metric-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+        opacity: 0;
+        transition: opacity var(--transition-normal);
+      }
+
+      .metric-card:hover::before {
+        opacity: 1;
+      }
+
+      .metric-card:hover {
+        border-color: rgba(99, 102, 241, 0.5);
+        transform: translateY(-2px);
+        box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.3);
+      }
+
+      .metric-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+
+      .metric-label {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+        font-weight: 500;
+      }
+
+      .metric-icon {
+        width: 2rem;
+        height: 2rem;
+        border-radius: var(--radius-lg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.875rem;
+      }
+
+      .metric-icon.sleep {
+        background: rgba(139, 92, 246, 0.2);
+        color: #a78bfa;
+      }
+      .metric-icon.readiness {
+        background: rgba(99, 102, 241, 0.2);
+        color: #818cf8;
+      }
+      .metric-icon.hr {
+        background: rgba(239, 68, 68, 0.2);
+        color: #f87171;
+      }
+      .metric-icon.hrv {
+        background: rgba(34, 211, 238, 0.2);
+        color: #67e8f9;
+      }
+      .metric-icon.steps {
+        background: rgba(34, 197, 94, 0.2);
+        color: #4ade80;
+      }
+      .metric-icon.calories {
+        background: rgba(245, 158, 11, 0.2);
+        color: #fbbf24;
+      }
+      .metric-icon.temp {
+        background: rgba(251, 113, 133, 0.2);
+        color: #fb7185;
+      }
+      .metric-icon.timeline {
+        background: rgba(45, 212, 191, 0.2);
+        color: #5eead4;
+      }
+      .metric-icon.spo2 {
+        background: rgba(56, 189, 248, 0.2);
+        color: #7dd3fc;
+      }
+      .metric-icon.workout {
+        background: rgba(168, 85, 247, 0.2);
+        color: #c4b5fd;
+      }
+
+      .heartbeat-indicator {
+        --heartbeat-duration: 1s;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.25rem 0.55rem;
+        border: 1px solid rgba(248, 113, 113, 0.35);
+        border-radius: 9999px;
+        background: rgba(127, 29, 29, 0.18);
+      }
+
+      .heartbeat-dot {
+        display: inline-block;
+        width: 0.65rem;
+        height: 0.65rem;
+        border-radius: 50%;
+        background: #f87171;
+        transform-origin: center;
+        box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.4);
+        animation: heartbeat var(--heartbeat-duration) ease-in-out infinite;
+      }
+
+      .heartbeat-text {
+        color: #fecaca;
+        font-size: var(--fs-2xs);
+        font-weight: 600;
+        letter-spacing: 0.01em;
+      }
+
+      .heartbeat-indicator.heartbeat-paused .heartbeat-dot {
+        animation: none;
+        opacity: 0.65;
+      }
+
+      @keyframes heartbeat {
+        0%,
+        45%,
+        100% {
+          transform: scale(1);
+          box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.35);
+        }
+        12% {
+          transform: scale(1.18);
+          box-shadow: 0 0 0 6px rgba(248, 113, 113, 0.15);
+        }
+        24% {
+          transform: scale(1.04);
+          box-shadow: 0 0 0 0 rgba(248, 113, 113, 0.15);
+        }
+      }
+
+      @keyframes heartbeatStream {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-1200px);
+        }
+      }
+
+      @keyframes heartbeatScan {
+        from {
+          transform: translateX(-100%);
+        }
+        to {
+          transform: translateX(100%);
+        }
+      }
+
+      @keyframes heartbeatAura {
+        0%,
+        45%,
+        100% {
+          transform: translate(-50%, -50%) scale(0.94);
+          opacity: 0.68;
+        }
+        12% {
+          transform: translate(-50%, -50%) scale(1.08);
+          opacity: 1;
+        }
+        24% {
+          transform: translate(-50%, -50%) scale(0.98);
+          opacity: 0.8;
+        }
+      }
+
+      @keyframes heartbeatOrb {
+        0%,
+        45%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+        }
+        12% {
+          transform: translate(-50%, -50%) scale(1.18);
+        }
+        24% {
+          transform: translate(-50%, -50%) scale(1.04);
+        }
+      }
+
+      @keyframes heartbeatLiveDot {
+        0% {
+          box-shadow: 0 0 0 0 rgba(251, 113, 133, 0.45);
+        }
+        70% {
+          box-shadow: 0 0 0 7px rgba(251, 113, 133, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(251, 113, 133, 0);
+        }
+      }
+
+      .timeline-chart {
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+        position: relative;
+      }
+
+      .heartbeat-stage {
+        --heartbeat-beat-duration: 1s;
+        --heartbeat-visual-duration: 6s;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 1rem;
+        padding: 1.1rem;
+        border: 1px solid rgba(248, 113, 113, 0.18);
+        border-radius: calc(var(--radius-xl) - 4px);
+        background:
+          radial-gradient(circle at 20% 30%, rgba(248, 113, 113, 0.18), transparent 32%),
+          radial-gradient(circle at 80% 24%, rgba(45, 212, 191, 0.16), transparent 28%),
+          linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.82));
+        box-shadow:
+          inset 0 1px 0 rgba(255, 255, 255, 0.04),
+          0 18px 50px -28px rgba(248, 113, 113, 0.45);
+      }
+
+      .heartbeat-stage::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.06) 48%, transparent 52%);
+        transform: translateX(-100%);
+        animation: heartbeatScan calc(var(--heartbeat-visual-duration) * 1.8) linear infinite;
+        pointer-events: none;
+      }
+
+      .heartbeat-stage.heartbeat-stage-paused::before {
+        animation: none;
+      }
+
+      .heartbeat-stage-header {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem;
+        margin-bottom: 0.85rem;
+      }
+
+      .heartbeat-stage-title {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        color: var(--text-light);
+        font-size: 0.88rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+      }
+
+      .heartbeat-stage-title i {
+        color: #fca5a5;
+      }
+
+      .heartbeat-stage-meta {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        flex-wrap: wrap;
+      }
+
+      .heartbeat-live-chip,
+      .heartbeat-age-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        min-height: 1.8rem;
+        padding: 0.28rem 0.65rem;
+        border-radius: 9999px;
+        font-size: var(--fs-2xs);
+        font-weight: 600;
+        letter-spacing: 0.04em;
+      }
+
+      .heartbeat-live-chip {
+        color: #fecaca;
+        background: rgba(127, 29, 29, 0.36);
+        border: 1px solid rgba(248, 113, 113, 0.24);
+      }
+
+      .heartbeat-live-chip.is-stale {
+        color: #fde68a;
+        background: rgba(120, 53, 15, 0.3);
+        border-color: rgba(245, 158, 11, 0.28);
+      }
+
+      .heartbeat-live-chip::before {
+        content: '';
+        width: 0.45rem;
+        height: 0.45rem;
+        border-radius: 50%;
+        background: #fb7185;
+        box-shadow: 0 0 0 0 rgba(251, 113, 133, 0.45);
+        animation: heartbeatLiveDot 1.6s ease-out infinite;
+      }
+
+      .heartbeat-live-chip.is-stale::before {
+        background: #f59e0b;
+        box-shadow: none;
+        animation: none;
+      }
+
+      .heartbeat-age-chip {
+        color: var(--text-secondary);
+        background: rgba(15, 23, 42, 0.45);
+        border: 1px solid rgba(148, 163, 184, 0.18);
+      }
+
+      .heartbeat-live-chip.stale {
+        color: #fde68a;
+        background: rgba(120, 53, 15, 0.28);
+        border-color: rgba(245, 158, 11, 0.24);
+      }
+
+      .heartbeat-live-chip.stale::before {
+        background: #f59e0b;
+        box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.45);
+      }
+
+      .heartbeat-stage-visual {
+        position: relative;
+        min-height: 170px;
+        padding: 0.5rem 0;
+      }
+
+      .heartbeat-ambient-glow {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 190px;
+        height: 190px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(248, 113, 113, 0.32), rgba(248, 113, 113, 0) 68%);
+        transform: translate(-50%, -50%);
+        filter: blur(6px);
+        opacity: 0.85;
+        animation: heartbeatAura var(--heartbeat-beat-duration) ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      .heartbeat-stage-paused .heartbeat-ambient-glow {
+        animation: none;
+        opacity: 0.35;
+      }
+
+      .heartbeat-orb {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 4.8rem;
+        height: 4.8rem;
+        border-radius: 50%;
+        border: 1px solid rgba(248, 113, 113, 0.32);
+        background:
+          radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3), transparent 30%),
+          radial-gradient(circle at 50% 50%, rgba(248, 113, 113, 0.46), rgba(127, 29, 29, 0.92));
+        box-shadow:
+          0 0 0 1px rgba(255, 255, 255, 0.04),
+          0 0 34px rgba(248, 113, 113, 0.34);
+        transform: translate(-50%, -50%);
+        animation: heartbeatOrb var(--heartbeat-beat-duration) ease-in-out infinite;
+      }
+
+      .heartbeat-orb i {
+        color: white;
+        font-size: 1.35rem;
+      }
+
+      .heartbeat-stage-paused .heartbeat-orb,
+      .heartbeat-stage-paused .heartbeat-orb i {
+        animation: none;
+      }
+
+      .heartbeat-wave {
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        height: 170px;
+        overflow: visible;
+      }
+
+      .heartbeat-wave-grid line {
+        stroke: rgba(148, 163, 184, 0.12);
+        stroke-width: 1;
+      }
+
+      .heartbeat-baseline {
+        stroke: rgba(148, 163, 184, 0.24);
+        stroke-width: 1;
+        stroke-dasharray: 6 8;
+      }
+
+      .heartbeat-wave-trace {
+        fill: none;
+        stroke: #fca5a5;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        filter: drop-shadow(0 0 6px rgba(252, 165, 165, 0.22));
+      }
+
+      .heartbeat-wave-trace.secondary {
+        stroke: rgba(252, 165, 165, 0.16);
+        stroke-width: 2;
+        filter: none;
+      }
+
+      .heartbeat-wave-stream {
+        transition: opacity 0.2s ease;
+      }
+
+      .heartbeat-stage-stats {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.65rem;
+        margin-top: 0.35rem;
+      }
+
+      .heartbeat-stage-stat {
+        padding: 0.7rem 0.8rem;
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: var(--radius-lg);
+        background: rgba(15, 23, 42, 0.44);
+        backdrop-filter: blur(10px);
+      }
+
+      .heartbeat-stage-stat-label {
+        display: block;
+        margin-bottom: 0.18rem;
+        color: var(--text-secondary);
+        font-size: var(--fs-2xs);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .heartbeat-stage-stat-value {
+        display: block;
+        color: var(--text-light);
+        font-size: 1.05rem;
+        font-weight: 600;
+      }
+
+      .heartbeat-stage-note {
+        position: relative;
+        z-index: 2;
+        margin-top: 0.75rem;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        line-height: 1.5;
+      }
+
+      .timeline-chart-inner {
+        position: relative;
+        width: 100%;
+      }
+
+      .timeline-svg {
+        width: 100%;
+        height: 220px;
+        display: block;
+        touch-action: pan-y;
+      }
+
+      .timeline-axis-label {
+        fill: var(--text-secondary);
+        font-size: 12px;
+        font-family: var(--font-family);
+      }
+
+      .timeline-grid-line {
+        stroke: var(--border-color);
+        stroke-width: 1;
+        opacity: 0.4;
+      }
+
+      .timeline-line {
+        fill: none;
+        stroke: #5eead4;
+        stroke-width: 2.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      .timeline-fill {
+        fill: rgba(94, 234, 212, 0.14);
+      }
+
+      .timeline-point {
+        fill: #5eead4;
+        pointer-events: none;
+      }
+
+      .chart-tooltip {
+        position: fixed;
+        z-index: 100;
+        background: rgba(15, 23, 42, 0.98);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 0.5rem 0.75rem;
+        font-size: 0.8125rem;
+        pointer-events: none;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      .chart-tooltip.hidden {
+        display: none;
+      }
+
+      .trend-tooltip {
+        max-width: 240px;
+        line-height: 1.4;
+      }
+
+      .chart-tooltip-time {
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+      }
+
+      .chart-tooltip-value {
+        font-weight: 600;
+        color: #5eead4;
+      }
+
+      .hr-hover-rect {
+        cursor: crosshair;
+      }
+
+      .hr-tracking-line {
+        stroke: rgba(94, 234, 212, 0.5);
+        stroke-width: 1;
+        stroke-dasharray: 4 3;
+        pointer-events: none;
+      }
+
+      .hr-tracking-dot {
+        fill: #5eead4;
+        stroke: var(--background-dark);
+        stroke-width: 2;
+        pointer-events: none;
+      }
+
+      .hr-inline-label {
+        font-family: var(--font-family);
+        font-size: 12px;
+        font-weight: 600;
+        pointer-events: none;
+      }
+
+      .hr-label-bpm {
+        fill: #5eead4;
+      }
+
+      .hr-label-time {
+        fill: var(--text-secondary);
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .timeline-stats {
+        margin-top: 0.75rem;
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 0.75rem;
+      }
+
+      .timeline-stat {
+        background: rgba(15, 23, 42, 0.45);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        padding: 0.5rem 0.75rem;
+      }
+
+      .timeline-stat-label {
+        display: block;
+        color: var(--text-secondary);
+        font-size: var(--fs-2xs);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .timeline-stat-value {
+        display: block;
+        color: var(--text-light);
+        font-size: 1rem;
+        font-weight: 600;
+      }
+
+      /* Contributors Grid (nested inside cards) */
+      .contributors-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      .contributor-item {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .contributor-label {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        text-transform: capitalize;
+      }
+
+      .contributor-bar-container {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .contributor-bar {
+        flex: 1;
+        height: 4px;
+        background: var(--border-color);
+        border-radius: 2px;
+        overflow: hidden;
+      }
+
+      .contributor-bar-fill {
+        height: 100%;
+        border-radius: 2px;
+        transition: width 0.5s ease;
+      }
+
+      .contributor-bar-fill.good {
+        background: #4ade80;
+      }
+      .contributor-bar-fill.fair {
+        background: #fbbf24;
+      }
+      .contributor-bar-fill.poor {
+        background: #f87171;
+      }
+
+      .contributor-value {
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        min-width: 1.5rem;
+        text-align: right;
+      }
+
+      .contributor-value.null {
+        color: var(--text-secondary);
+      }
+
+      /* Section dividers */
+      .section-title {
+        grid-column: 1 / -1;
+        font-family: var(--font-display);
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-top: 1rem;
+        padding-top: 1rem;
+        border-top: 1px solid var(--border-color);
+      }
+
+      /* Wide cards for contributors */
+      .metric-card.wide {
+        grid-column: 1 / -1;
+      }
+
+      .trend-section .metric-header {
+        border-bottom: none;
+      }
+
+      #trend-cards {
+        padding: 0 0.5rem 0.25rem;
+      }
+
+      @media (min-width: 768px) {
+        .metric-card.wide {
+          grid-column: span 2;
+        }
+      }
+
+      @media (min-width: 1024px) {
+        .metric-card.wide {
+          grid-column: span 3;
+        }
+      }
+
+      .metric-status {
+        font-size: 0.75rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 9999px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      .metric-status.good {
+        background: rgba(34, 197, 94, 0.2);
+        color: #4ade80;
+      }
+      .metric-status.fair {
+        background: rgba(245, 158, 11, 0.2);
+        color: #fbbf24;
+      }
+      .metric-status.poor {
+        background: rgba(239, 68, 68, 0.2);
+        color: #f87171;
+      }
+
+      .metric-value {
+        font-family: var(--font-display);
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--text-light);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+      }
+
+      .metric-value.null {
+        color: var(--text-secondary);
+        font-size: 1.5rem;
+        font-weight: 500;
+      }
+
+      .metric-unit {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-left: 0.25rem;
+      }
+
+      .metric-footer {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+        margin-top: 0.75rem;
+      }
+
+      /* Loading State */
+      .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+      }
+
+      .loading-spinner {
+        width: 48px;
+        height: 48px;
+        border: 3px solid var(--border-color);
+        border-top-color: var(--primary-color);
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-bottom: 1.5rem;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* Error State */
+      .error-container {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: var(--text-secondary);
+      }
+
+      .error-icon {
+        font-size: 3rem;
+        color: #f87171;
+        margin-bottom: 1rem;
+      }
+
+      .error-message {
+        font-size: 1.125rem;
+        color: var(--text-primary);
+        margin-bottom: 1.5rem;
+      }
+
+      .retry-btn {
+        background: var(--primary-color);
+        color: var(--text-light);
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: var(--radius-lg);
+        font-family: var(--font-family);
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-normal);
+      }
+
+      .retry-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+        box-shadow: var(--shadow-glow);
+      }
+
+      /* Footer */
+      footer {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem calc(1.5rem + env(safe-area-inset-right, 0px)) calc(2rem + env(safe-area-inset-bottom, 0px))
+          calc(1.5rem + env(safe-area-inset-left, 0px));
+        border-top: 1px solid var(--border-color);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+        color: var(--text-secondary);
+        font-size: 0.875rem;
+      }
+
+      .last-updated {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .update-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--accent-color);
+        border-radius: 50%;
+        animation: pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      .privacy-note {
+        font-size: 0.75rem;
+        opacity: 0.7;
+      }
+
+      /* 7-Day Trend Section */
+      .trend-section {
+        grid-column: 1 / -1;
+        margin-top: 1rem;
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(15, 23, 42, 0.8) 100%);
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-xl);
+      }
+
+      .trend-section .metric-header {
+        padding-bottom: 0.5rem;
+      }
+
+      .trend-card {
+        background: rgba(30, 41, 59, 0.5);
+        border: 1px solid rgba(51, 65, 85, 0.6);
+        border-radius: var(--radius-lg);
+        padding: 1.25rem 1.5rem;
+        margin-bottom: 1rem;
+        transition: border-color var(--transition-normal);
+      }
+
+      .trend-card:hover {
+        border-color: rgba(99, 102, 241, 0.3);
+      }
+
+      .trend-card:last-child {
+        margin-bottom: 0;
+      }
+
+      .trend-header {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-family: var(--font-display);
+        font-size: 0.9375rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 1rem;
+      }
+
+      .trend-header i {
+        color: var(--primary-color);
+      }
+
+      .trend-chart-row {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+        height: 180px;
+      }
+
+      .trend-y-axis {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        font-size: var(--fs-2xs);
+        color: var(--text-secondary);
+        padding-right: 0.5rem;
+        min-width: 2rem;
+        height: 100%;
+      }
+
+      .trend-bars {
+        flex: 1;
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+        height: 100%;
+        overscroll-behavior-x: contain;
+      }
+
+      .trend-day {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 0;
+        height: 100%;
+      }
+
+      .trend-day-bar-wrap {
+        width: 100%;
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+        flex: 1;
+        position: relative;
+      }
+
+      .trend-bar {
+        width: 100%;
+        max-width: 40px;
+        min-height: 6px;
+        border-radius: 6px 6px 0 0;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+
+      .trend-bar:hover {
+        filter: brightness(1.15);
+        transform: scaleY(1.02);
+        transform-origin: bottom;
+      }
+
+      .trend-bar.sleep {
+        background: linear-gradient(180deg, #818cf8 0%, #6366f1 100%);
+      }
+      .trend-bar.readiness {
+        background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+      }
+      .trend-bar.steps {
+        background: linear-gradient(180deg, #fbbf24 0%, #f59e0b 100%);
+      }
+
+      .trend-day-label {
+        font-size: var(--fs-2xs);
+        color: var(--text-secondary);
+        margin-top: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+      }
+
+      .trend-day-value {
+        font-size: 0.8125rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-top: 0.25rem;
+      }
+
+      .trend-day-value.null {
+        color: var(--text-secondary);
+        font-weight: 400;
+      }
+
+      .trend-day-bar-wrap[data-tooltip] {
+        cursor: help;
+      }
+
+      /* Sleep duration stacked bars */
+      .sleep-stacked-bar {
+        width: 100%;
+        max-width: 40px;
+        display: flex;
+        flex-direction: column;
+        border-radius: 6px 6px 0 0;
+        overflow: hidden;
+        min-height: 6px;
+        cursor: pointer;
+        transition: filter 0.2s ease;
+      }
+
+      .sleep-stacked-bar:hover {
+        filter: brightness(1.15);
+      }
+
+      .sleep-segment {
+        width: 100%;
+        transition: height 0.3s ease;
+      }
+
+      .sleep-segment.deep {
+        background: #6366f1;
+      }
+      .sleep-segment.rem {
+        background: #818cf8;
+      }
+      .sleep-segment.light {
+        background: #a5b4fc;
+      }
+
+      .sleep-legend {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 0.75rem;
+        flex-wrap: wrap;
+      }
+
+      .sleep-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+        font-size: 0.7rem;
+        color: var(--text-secondary);
+      }
+
+      .sleep-legend-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
+
+      .sleep-legend-dot.deep {
+        background: #6366f1;
+      }
+      .sleep-legend-dot.rem {
+        background: #818cf8;
+      }
+      .sleep-legend-dot.light {
+        background: #a5b4fc;
+      }
+
+      .sleep-detail-label {
+        font-size: 0.65rem;
+        color: var(--text-secondary);
+        margin-top: 0.125rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      /* Hidden states */
+      .hidden {
+        display: none !important;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .heartbeat-dot,
+        .heartbeat-live-chip::before,
+        .heartbeat-ambient-glow,
+        .heartbeat-orb i,
+        .heartbeat-wave-stream,
+        .heartbeat-stage::before {
+          animation: none;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .metrics-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .metric-value {
+          font-size: 2rem;
+        }
+
+        main {
+          padding-top: calc(5.5rem + env(safe-area-inset-top, 0px));
+          padding-bottom: calc(2.75rem + env(safe-area-inset-bottom, 0px));
+        }
+
+        .page-header {
+          margin-bottom: 2rem;
+        }
+
+        .nav-logo a {
+          font-size: 1.1rem;
+        }
+
+        .nav-back {
+          min-height: 44px;
+          padding: 0.4rem 0.6rem;
+          align-items: center;
+          -webkit-tap-highlight-color: transparent;
+        }
+
+        .metric-card {
+          padding: 1.25rem;
+        }
+
+        .timeline-svg {
+          height: 200px;
+        }
+
+        .timeline-stats {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .heartbeat-stage-header {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .heartbeat-stage-stats {
+          grid-template-columns: 1fr;
+        }
+
+        .trend-chart-row {
+          flex-direction: column;
+          height: auto;
+        }
+
+        .trend-y-axis {
+          flex-direction: row;
+          justify-content: flex-start;
+          gap: 1rem;
+          padding-bottom: 0.25rem;
+          height: auto;
+        }
+
+        .trend-bars {
+          overflow-x: auto;
+          padding-bottom: 0.5rem;
+          -webkit-overflow-scrolling: touch;
+          height: 140px;
+          touch-action: pan-x pan-y;
+        }
+
+        .trend-day {
+          flex: 0 0 auto;
+          min-width: 44px;
+        }
+
+        footer {
+          flex-direction: column;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-background"></div>
+
+    <header>
+      <div class="nav-container">
+        <div class="nav-logo">
+          <a href="/">Rudraksh Bhandari</a>
+        </div>
+        <a href="/" class="nav-back">
+          <i class="fas fa-arrow-left"></i>
+          Back to Portfolio
+        </a>
+      </div>
+    </header>
+
+    <main>
+      <div class="page-header">
+        <h1 class="page-title">Health Metrics</h1>
+        <p class="page-subtitle">
+          A transparent view of my daily wellness data.
+          <br />
+          Inspired by Bryan Johnson's
+          <a
+            href="https://blueprint.bryanjohnson.com/blogs/news/bryan-johnsons-protocol"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Blueprint Protocol</a
+          >. #DontDie
+        </p>
+        <div class="data-source">
+          <i class="fas fa-ring"></i>
+          <span>Powered by Oura Ring 4</span>
+        </div>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-state" class="loading-container">
+        <div class="loading-spinner"></div>
+        <p>Loading health data...</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="error-state" class="error-container hidden">
+        <div class="error-icon"><i class="fas fa-exclamation-circle"></i></div>
+        <p class="error-message">Unable to load health data</p>
+        <button id="retry-btn" class="retry-btn" type="button">Try Again</button>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div id="metrics-container" class="metrics-grid hidden">
+        <!-- Sleep Score with Contributors -->
+        <div class="metric-card wide">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon sleep"><i class="fas fa-moon"></i></span>
+              Sleep Score
+            </span>
+            <span id="sleep-status" class="metric-status hidden">Good</span>
+          </div>
+          <div class="metric-value" id="sleep-score">--</div>
+          <div class="contributors-grid" id="sleep-contributors">
+            <!-- Sleep contributors populated by JS -->
+          </div>
+        </div>
+
+        <!-- Readiness with Contributors -->
+        <div class="metric-card wide">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon readiness"><i class="fas fa-battery-three-quarters"></i></span>
+              Readiness
+            </span>
+            <span id="readiness-status" class="metric-status hidden">Good</span>
+          </div>
+          <div class="metric-value" id="readiness-score">--</div>
+          <div class="contributors-grid" id="readiness-contributors">
+            <!-- Readiness contributors populated by JS -->
+          </div>
+        </div>
+
+        <!-- Activity Score -->
+        <div class="metric-card wide" id="activity-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon steps"><i class="fas fa-person-walking"></i></span>
+              Activity
+            </span>
+            <span id="activity-status" class="metric-status hidden">Good</span>
+          </div>
+          <div class="metric-value" id="activity-score">--</div>
+          <div class="contributors-grid" id="activity-contributors">
+            <!-- Activity contributors populated by JS -->
+          </div>
+        </div>
+
+        <!-- Heart Rate Timeline -->
+        <div class="metric-card wide" id="heart-rate-timeline-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon timeline"><i class="fas fa-chart-line"></i></span>
+              Heart Rate Timeline
+            </span>
+          </div>
+          <div class="timeline-chart">
+            <!--
+            <div class="heartbeat-stage heartbeat-stage-paused" id="heartbeat-stage">
+              <div class="heartbeat-stage-header">
+                <div class="heartbeat-stage-title">
+                  <i class="fas fa-heart-pulse" aria-hidden="true"></i>
+                  <span>Latest HR pulse</span>
+                </div>
+                <div class="heartbeat-stage-meta">
+                  <span class="heartbeat-live-chip" id="heartbeat-source-chip">Latest HR sample</span>
+                  <span class="heartbeat-age-chip" id="heartbeat-age">Waiting for data</span>
+                </div>
+              </div>
+              <div class="heartbeat-stage-visual">
+                <div class="heartbeat-ambient-glow" aria-hidden="true"></div>
+                <div class="heartbeat-orb" aria-hidden="true">
+                  <i class="fas fa-heart"></i>
+                </div>
+                <svg
+                  class="heartbeat-wave"
+                  id="heartbeat-wave"
+                  viewBox="0 0 1200 170"
+                  preserveAspectRatio="none"
+                  aria-label="Animated heartbeat waveform"
+                >
+                  <g class="heartbeat-wave-grid" aria-hidden="true">
+                    <line x1="0" y1="35" x2="1200" y2="35"></line>
+                    <line x1="0" y1="85" x2="1200" y2="85"></line>
+                    <line x1="0" y1="135" x2="1200" y2="135"></line>
+                    <line x1="150" y1="0" x2="150" y2="170"></line>
+                    <line x1="300" y1="0" x2="300" y2="170"></line>
+                    <line x1="450" y1="0" x2="450" y2="170"></line>
+                    <line x1="600" y1="0" x2="600" y2="170"></line>
+                    <line x1="750" y1="0" x2="750" y2="170"></line>
+                    <line x1="900" y1="0" x2="900" y2="170"></line>
+                    <line x1="1050" y1="0" x2="1050" y2="170"></line>
+                  </g>
+                  <line class="heartbeat-baseline" x1="0" y1="85" x2="1200" y2="85"></line>
+                  <g class="heartbeat-wave-stream" id="heartbeat-wave-stream">
+                    <path class="heartbeat-wave-trace secondary" id="heartbeat-wave-secondary-a" d=""></path>
+                    <path class="heartbeat-wave-trace secondary" id="heartbeat-wave-secondary-b" d=""></path>
+                    <path class="heartbeat-wave-trace" id="heartbeat-wave-primary-a" d=""></path>
+                    <path class="heartbeat-wave-trace" id="heartbeat-wave-primary-b" d=""></path>
+                  </g>
+                </svg>
+              </div>
+              <div class="heartbeat-stage-stats">
+                <div class="heartbeat-stage-stat">
+                  <span class="heartbeat-stage-stat-label">Cadence</span>
+                  <span class="heartbeat-stage-stat-value" id="heartbeat-cadence">-- bpm</span>
+                </div>
+                <div class="heartbeat-stage-stat">
+                  <span class="heartbeat-stage-stat-label">Recent Range</span>
+                  <span class="heartbeat-stage-stat-value" id="heartbeat-variation">-- bpm</span>
+                </div>
+                <div class="heartbeat-stage-stat">
+                  <span class="heartbeat-stage-stat-label">Samples</span>
+                  <span class="heartbeat-stage-stat-value" id="heartbeat-window">-- points</span>
+                </div>
+              </div>
+              <div class="heartbeat-stage-note" id="heartbeat-stage-note">
+                Heart cadence uses the latest HR sample. The line shows recent sampled HR values, not an ECG trace.
+              </div>
+            </div>
+            -->
+            <div class="timeline-chart-inner">
+              <svg
+                id="heart-rate-timeline"
+                class="timeline-svg"
+                viewBox="0 0 1060 220"
+                preserveAspectRatio="xMidYMid meet"
+              >
+                <g id="hr-axis-y"></g>
+                <g id="hr-axis-x"></g>
+                <g id="hr-grid"></g>
+                <path id="heart-rate-fill" class="timeline-fill" d=""></path>
+                <path id="heart-rate-line" class="timeline-line" d=""></path>
+                <g id="hr-points"></g>
+                <line
+                  id="hr-tracking-line"
+                  class="hr-tracking-line"
+                  x1="0"
+                  y1="0"
+                  x2="0"
+                  y2="0"
+                  style="display: none"
+                ></line>
+                <circle id="hr-tracking-dot" class="hr-tracking-dot" cx="0" cy="0" r="5" style="display: none"></circle>
+                <text id="hr-label-bpm" class="hr-inline-label hr-label-bpm" x="0" y="0" style="display: none"></text>
+                <text id="hr-label-time" class="hr-inline-label hr-label-time" x="0" y="0" style="display: none"></text>
+                <rect id="hr-hover-area" fill="transparent" class="hr-hover-rect"></rect>
+              </svg>
+              <div id="hr-tooltip" class="chart-tooltip hidden">
+                <div class="chart-tooltip-time" id="hr-tooltip-time">--</div>
+                <div class="chart-tooltip-value" id="hr-tooltip-value">-- bpm</div>
+              </div>
+            </div>
+          </div>
+          <div class="timeline-stats">
+            <div class="timeline-stat">
+              <span class="timeline-stat-label">Min</span>
+              <span class="timeline-stat-value" id="heart-rate-min">--</span>
+            </div>
+            <div class="timeline-stat">
+              <span class="timeline-stat-label">Avg</span>
+              <span class="timeline-stat-value" id="heart-rate-avg">--</span>
+            </div>
+            <div class="timeline-stat">
+              <span class="timeline-stat-label">Max</span>
+              <span class="timeline-stat-value" id="heart-rate-max">--</span>
+            </div>
+            <div class="timeline-stat">
+              <span class="timeline-stat-label">Latest</span>
+              <span class="timeline-stat-value" id="heart-rate-latest">--</span>
+            </div>
+          </div>
+          <div class="metric-footer" id="heart-rate-timeline-footer">Intraday heart rate trend</div>
+        </div>
+
+        <!-- Resting HR -->
+        <div class="metric-card" id="resting-hr-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon hr"><i class="fas fa-heart-pulse"></i></span>
+              Resting Heart Rate
+            </span>
+            <span
+              class="heartbeat-indicator heartbeat-paused"
+              id="heartbeat-indicator"
+              aria-label="Current heart rate unavailable"
+            >
+              <span class="heartbeat-dot" aria-hidden="true"></span>
+              <span class="heartbeat-text" id="heartbeat-text">-- bpm</span>
+            </span>
+          </div>
+          <div class="metric-value" id="resting-hr">--<span class="metric-unit">bpm</span></div>
+          <div class="metric-footer" id="resting-hr-footer">Resting HR from Oura (lowest overnight)</div>
+        </div>
+
+        <!-- HRV -->
+        <div class="metric-card" id="hrv-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon hrv"><i class="fas fa-wave-square"></i></span>
+              Heart Rate Variability
+            </span>
+          </div>
+          <div class="metric-value" id="hrv">--<span class="metric-unit">ms</span></div>
+          <div class="metric-footer">Recovery indicator (higher = better)</div>
+        </div>
+
+        <!-- Temperature -->
+        <div class="metric-card" id="temp-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon temp"><i class="fas fa-temperature-half"></i></span>
+              Temperature Deviation
+            </span>
+          </div>
+          <div class="metric-value" id="temp-deviation">--<span class="metric-unit">°C</span></div>
+          <div class="metric-footer">Body temp vs baseline</div>
+        </div>
+
+        <!-- Steps -->
+        <div class="metric-card" id="steps-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon steps"><i class="fas fa-shoe-prints"></i></span>
+              Steps
+            </span>
+          </div>
+          <div class="metric-value" id="steps">--</div>
+          <div class="metric-footer" id="steps-footer">Daily step count</div>
+        </div>
+
+        <!-- Active Calories -->
+        <div class="metric-card" id="calories-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon calories"><i class="fas fa-fire"></i></span>
+              Active Calories
+            </span>
+          </div>
+          <div class="metric-value" id="calories">--<span class="metric-unit">kcal</span></div>
+          <div class="metric-footer" id="calories-footer">Burned through activity</div>
+        </div>
+
+        <!-- Blood Oxygen -->
+        <div class="metric-card" id="spo2-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon spo2"><i class="fas fa-lungs"></i></span>
+              SpO2
+            </span>
+          </div>
+          <div class="metric-value" id="spo2">--<span class="metric-unit">%</span></div>
+          <div class="metric-footer" id="spo2-footer">Average blood oxygen level</div>
+        </div>
+
+        <!-- Workouts -->
+        <div class="metric-card" id="workout-card">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon workout"><i class="fas fa-dumbbell"></i></span>
+              Workouts
+            </span>
+          </div>
+          <div class="metric-value" id="workout-count">--</div>
+          <div class="metric-footer" id="workout-footer">Sessions logged</div>
+        </div>
+
+        <!-- Last 7 Days Trend -->
+        <div class="metric-card wide trend-section" id="trend-section">
+          <div class="metric-header">
+            <span class="metric-label">
+              <span class="metric-icon timeline"><i class="fas fa-chart-bar"></i></span>
+              Last 7 Days
+            </span>
+          </div>
+          <div class="trend-cards" id="trend-cards">
+            <!-- Populated by JS -->
+          </div>
+          <div id="trend-tooltip" class="chart-tooltip trend-tooltip hidden" aria-hidden="true"></div>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="last-updated">
+        <span class="update-dot"></span>
+        <span id="last-updated">Loading...</span>
+      </div>
+      <div class="privacy-note">Oura data and page refresh every 15 min • Aggregated metrics only</div>
+    </footer>
+    <script src="/js/config.js"></script>
+    <script src="/js/analytics.js"></script>
+    <script src="/js/health.js"></script>
+  </body>
+</html>

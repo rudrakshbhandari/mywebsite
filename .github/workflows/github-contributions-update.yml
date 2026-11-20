@@ -1,0 +1,64 @@
+name: GitHub Contributions Update
+
+on:
+  schedule:
+    # Daily at 08:20 UTC (01:20 PT) — after the prior day's contributions settle.
+    - cron: '20 8 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: github-contributions-update
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch GitHub contributions
+        id: fetch_contributions
+        run: |
+          set -o pipefail
+          YEAR=$(date -u +%Y) node scripts/fetch_github_contributions.mjs 2>&1 | tee .github_contributions_fetch.log
+
+      - name: Compare published contribution snapshot
+        id: check_changes
+        if: steps.fetch_contributions.outcome == 'success'
+        env:
+          PUBLIC_SNAPSHOT_URL: https://oura-health-data.rudrakshbhandari99.workers.dev/github_contributions.json
+        run: node scripts/compare-public-snapshot.mjs github_contributions.json lastUpdatedIso
+
+      - name: Publish contribution snapshot to Workers KV
+        if: steps.check_changes.outputs.changed == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: kv key put github_contributions.json --path=github_contributions.json --namespace-id=${{ vars.OURA_KV_NAMESPACE_ID }}
+
+      - name: Verify published contribution snapshot
+        if: steps.check_changes.outputs.changed == 'true'
+        env:
+          PUBLIC_SNAPSHOT_URL: https://oura-health-data.rudrakshbhandari99.workers.dev/github_contributions.json
+        run: |
+          for attempt in $(seq 1 6); do
+            if curl --fail --silent --show-error --location "$PUBLIC_SNAPSHOT_URL" --output .contributions_published.json && cmp --silent github_contributions.json .contributions_published.json; then
+              echo "Published contribution snapshot verified on attempt ${attempt}."
+              exit 0
+            fi
+            sleep 15
+          done
+          echo "::error::Published contribution snapshot did not match the generated snapshot."
+          exit 1

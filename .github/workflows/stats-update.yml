@@ -1,0 +1,77 @@
+name: Portfolio Stats Update
+
+on:
+  schedule:
+    # Daily at 07:10 UTC (00:10 PT) — reports from the prior day are settled.
+    - cron: '10 7 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: stats-update
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-and-commit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Fetch portfolio stats
+        id: fetch_stats
+        env:
+          CF_API_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT_ID: ${{ secrets.CF_ACCOUNT_ID }}
+          CF_EXTRA_ZONES: ${{ secrets.CF_EXTRA_ZONES }}
+          CF_EXTRA_SITE_TAGS: ${{ secrets.CF_EXTRA_SITE_TAGS }}
+          APPLE_TEAMS: ${{ secrets.APPLE_TEAMS }}
+          GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT_JSON }}
+          GOOGLE_GCS_USER_OAUTH_JSON: ${{ secrets.GOOGLE_GCS_USER_OAUTH_JSON }}
+          DEBUG_APPLE: '1'
+        run: |
+          set -o pipefail
+          node scripts/fetch_stats.mjs 2>&1 | tee .stats_fetch.log
+
+      - name: Compare published stats snapshot
+        id: check_changes
+        if: steps.fetch_stats.outcome == 'success'
+        env:
+          PUBLIC_SNAPSHOT_URL: https://oura-health-data.rudrakshbhandari99.workers.dev/stats_public.json
+        run: node scripts/compare-public-snapshot.mjs stats_public.json lastUpdated
+
+      - name: Print fetched website visitor totals
+        if: github.event_name == 'workflow_dispatch'
+        run: node -e "const s=require('./stats_public.json'); console.log(JSON.stringify(s.websiteVisitors, null, 2));"
+
+      - name: Publish stats snapshot to Workers KV
+        if: steps.check_changes.outputs.changed == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: kv key put stats_public.json --path=stats_public.json --namespace-id=${{ vars.OURA_KV_NAMESPACE_ID }}
+
+      - name: Verify published stats snapshot
+        if: steps.check_changes.outputs.changed == 'true'
+        env:
+          PUBLIC_SNAPSHOT_URL: https://oura-health-data.rudrakshbhandari99.workers.dev/stats_public.json
+        run: |
+          for attempt in $(seq 1 6); do
+            if curl --fail --silent --show-error --location "$PUBLIC_SNAPSHOT_URL" --output .stats_published.json && cmp --silent stats_public.json .stats_published.json; then
+              echo "Published stats snapshot verified on attempt ${attempt}."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::Published stats snapshot did not match the generated snapshot."
+          exit 1
