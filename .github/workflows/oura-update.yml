@@ -2,7 +2,7 @@ name: Oura Health Data Update
 
 on:
   schedule:
-    # Every 15 minutes (reduces deploy churn; was */5 causing 100/day Vercel limit hits)
+    # Refresh the public data snapshot every 15 minutes without creating Git commits.
     - cron: '*/15 * * * *'
   workflow_dispatch: # Allow manual trigger
 
@@ -11,39 +11,17 @@ concurrency:
   cancel-in-progress: false
 
 permissions:
-  contents: write
+  contents: read
   issues: write
-  pull-requests: write
-
-# PAT used for git push + gh pr create must NOT be the default GITHUB_TOKEN:
-# GitHub suppresses pull_request / push workflows for events created with GITHUB_TOKEN,
-# so required status checks never run and PRs cannot merge under branch protection.
 
 jobs:
-  fetch-and-commit:
+  fetch-and-publish:
     runs-on: ubuntu-latest
     timeout-minutes: 40
-
-    env:
-      # Prefer OURA_SECRET_UPDATE_TOKEN (same PAT as gh secret set) so PRs are opened as a
-      # real user and CI (checks / preview) runs. Falls back to GITHUB_TOKEN for fetch-only.
-      GH_AUTH_TOKEN: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && secrets.OURA_SECRET_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && secrets.OURA_SECRET_UPDATE_TOKEN || secrets.GITHUB_TOKEN }}
-
-      # GitHub forbids `secrets` in step `if:` — that made the whole workflow invalid and
-      # stopped schedule + workflow_dispatch. Use env + bash instead.
-      - name: Warn if Oura PAT missing for PR merges
-        env:
-          OURA_PAT_CONFIGURED: ${{ secrets.OURA_SECRET_UPDATE_TOKEN != '' && 'yes' || 'no' }}
-        run: |
-          if [ "${OURA_PAT_CONFIGURED}" != "yes" ]; then
-            echo "::warning::OURA_SECRET_UPDATE_TOKEN is not set. PRs opened with GITHUB_TOKEN do not trigger pull_request workflows (GitHub restriction), so required checks never run and merges stall. Set OURA_SECRET_UPDATE_TOKEN to the same PAT you use for gh secret set (repo Contents + Pull requests)."
-          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
@@ -62,74 +40,55 @@ jobs:
           set -o pipefail
           node scripts/fetch_oura_and_write_json.mjs 2>&1 | tee .oura_fetch.log
 
-      - name: Check if files changed
+      - name: Compare current public snapshot
         id: check_changes
         if: steps.fetch_oura.outcome == 'success'
+        env:
+          R2_PUBLIC_URL: ${{ vars.OURA_R2_PUBLIC_URL }}
         run: |
-          if [ -f .oura_no_change ]; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-            rm -f .oura_no_change
-          elif git diff --quiet oura_public.json 2>/dev/null; then
-            echo "changed=false" >> $GITHUB_OUTPUT
-          else
-            echo "changed=true" >> $GITHUB_OUTPUT
+          if [ -z "${R2_PUBLIC_URL:-}" ]; then
+            echo "::error::Set OURA_R2_PUBLIC_URL to the public base URL for the Oura R2 object."
+            exit 1
           fi
+          if ! curl --fail --silent --show-error --location "$R2_PUBLIC_URL/oura_public.json" --output .oura_current_public.json; then
+            echo "No prior public snapshot found; this run will publish the initial snapshot."
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          node --input-type=module -e '
+            import { appendFileSync, readFileSync } from "node:fs";
+            const path = "oura_public.json";
+            const previous = JSON.parse(readFileSync(".oura_current_public.json", "utf8"));
+            const next = JSON.parse(readFileSync(path, "utf8"));
+            delete previous.lastUpdatedIso;
+            delete next.lastUpdatedIso;
+            if (JSON.stringify(previous) === JSON.stringify(next)) {
+              appendFileSync(process.env.GITHUB_OUTPUT, "changed=false\n");
+              console.log("Public health data is unchanged; skipping upload.");
+            } else {
+              appendFileSync(process.env.GITHUB_OUTPUT, "changed=true\n");
+              console.log("Public health data changed; uploading new snapshot.");
+            }
+          '
 
-      - name: Create branch and PR if changed
+      - name: Publish public snapshot to Cloudflare R2
         if: steps.check_changes.outputs.changed == 'true'
-        id: create_pr
-        env:
-          GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: r2 object put "${{ vars.OURA_R2_BUCKET }}/oura_public.json" --file=oura_public.json --content-type=application/json --cache-control="public, max-age=60, s-maxage=60"
 
-          BRANCH_NAME="oura-update-$(date -u +%Y%m%d-%H%M%S)"
-          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
-
-          git checkout -b "$BRANCH_NAME"
-          git add oura_public.json
-          git commit -m "feat(health): update Oura Ring metrics [$(date -u +%Y-%m-%d)]"
-          git push origin "$BRANCH_NAME"
-
-          PR_URL=$(gh pr create \
-            --title "feat(health): update Oura Ring metrics [$(date -u +%Y-%m-%d)]" \
-            --body "Automated health data update from Oura Ring." \
-            --base main \
-            --head "$BRANCH_NAME")
-
-          echo "pr_url=$PR_URL" >> $GITHUB_OUTPUT
-          echo "Created PR: $PR_URL"
-
-      - name: Merge Oura PR after CI (poll)
-        id: merge_pr
+      - name: Verify published snapshot
         if: steps.check_changes.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ env.GH_AUTH_TOKEN }}
+          R2_PUBLIC_URL: ${{ vars.OURA_R2_PUBLIC_URL }}
         run: |
-          PR_URL="${{ steps.create_pr.outputs.pr_url }}"
-          echo "Waiting for required checks, then merging: $PR_URL"
-          sleep 15
-
-          for attempt in $(seq 1 48); do
-            echo "merge attempt $attempt/48..."
-            if gh pr merge "$PR_URL" --squash --delete-branch; then
-              echo "merged=true" >> $GITHUB_OUTPUT
-              echo "Merged successfully."
-              exit 0
-            fi
-            STATE=$(gh pr view "$PR_URL" --json state -q .state 2>/dev/null || echo "")
-            if [ "$STATE" = "MERGED" ]; then
-              echo "merged=true" >> $GITHUB_OUTPUT
-              echo "PR already merged."
-              exit 0
-            fi
-            sleep 15
-          done
-
-          echo "::error::Timed out waiting to merge Oura PR. Open PRs require passing checks; verify OURA_SECRET_UPDATE_TOKEN is set so pull_request workflows run."
-          echo "merged=false" >> $GITHUB_OUTPUT
-          exit 1
+          curl --fail --silent --show-error --location "$R2_PUBLIC_URL/oura_public.json" --output .oura_published_public.json
+          cmp --silent oura_public.json .oura_published_public.json || {
+            echo "::error::Published R2 snapshot does not match the generated snapshot."
+            exit 1
+          }
 
       - name: Rotate OAuth secrets after refresh
         if: always()

@@ -34,7 +34,8 @@ Create these Cloudflare rules after cutover:
    - `Permissions-Policy: camera=(), microphone=(), geolocation=()`
 
 3. Cache Rules
-   - HTML and `oura_public.json`: bypass long cache / revalidate
+   - HTML: bypass long cache / revalidate
+   - Oura JSON is served from the Cloudflare R2 custom domain with a 60 second cache TTL
    - CSS and JS: short cache
    - images and icons: long immutable cache
 

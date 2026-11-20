@@ -1,5 +1,6 @@
 // Oura public data endpoint
-const DATA_URL = '/oura_public.json';
+const DATA_URL = 'https://health-data.rudrakshbhandari.com/oura_public.json';
+const FALLBACK_DATA_URL = '/oura_public.json';
 
 // Status thresholds for scores
 const STATUS_THRESHOLDS = {
@@ -913,9 +914,16 @@ async function loadHealthData() {
   metricsContainer.classList.add('hidden');
 
   try {
-    const response = await fetch(DATA_URL, {
-      cache: 'no-cache',
-    });
+    let response;
+    try {
+      response = await fetch(DATA_URL, { cache: 'no-cache' });
+    } catch {
+      response = null;
+    }
+
+    if (!response?.ok) {
+      response = await fetch(FALLBACK_DATA_URL, { cache: 'no-cache' });
+    }
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}`);
