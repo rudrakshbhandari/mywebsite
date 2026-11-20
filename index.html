@@ -1,0 +1,958 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="ML researcher at UC San Diego building consumer and public-interest software across mobile products, AI systems, and civic data."
+    />
+    <meta name="keywords" content="portfolio, developer, software engineer, web developer" />
+    <meta name="author" content="Rudraksh Bhandari" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data: https:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com; font-src 'self' data: https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' 'sha256-rR/RWSAasE0jjLwGOkGLI+gwWMtoC1now33sqjmfbs0=' 'sha256-zQU6HeLTQX9XpXyeu63kgl9FHETbFcqviKDFhjdm3pM=' https://cdnjs.cloudflare.com https://www.googletagmanager.com https://static.cloudflareinsights.com; connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://cloudflareinsights.com; form-action 'self'; upgrade-insecure-requests"
+    />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://rudrakshbhandari.com/" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="16x16" href="img/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="img/apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="img/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="img/android-chrome-512x512.png" />
+
+    <meta name="theme-color" content="#F5F0EB" />
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:site_name" content="Rudraksh Bhandari" />
+    <meta property="og:title" content="Rudraksh Bhandari - Portfolio" />
+    <meta
+      property="og:description"
+      content="ML researcher at UC San Diego building consumer and public-interest software across mobile products, AI systems, and civic data."
+    />
+    <meta property="og:image" content="https://rudrakshbhandari.com/img/Rudraksh-9-og.jpg?v=1" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content="https://rudrakshbhandari.com" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Rudraksh Bhandari - Portfolio" />
+    <meta
+      name="twitter:description"
+      content="ML researcher at UC San Diego building consumer and public-interest software across mobile products, AI systems, and civic data."
+    />
+    <meta name="twitter:image" content="https://rudrakshbhandari.com/img/Rudraksh-9-og.jpg?v=1" />
+
+    <title>Rudraksh Bhandari | Portfolio</title>
+
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <!-- Fonts: Plus Jakarta Sans (display) + Libre Baskerville (body serif) -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      integrity="sha384-iw3OoTErCYJJB9mCa8LNS2hbsQ7M3C0EpIsO/H5+EGAkPGc6rk+V8i04oW/K5xq0"
+      crossorigin="anonymous"
+    />
+
+    <!-- Reset scroll before first paint to avoid empty-space flash -->
+    <script>
+      if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+      window.scrollTo(0, 0);
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/tokens.css?v=2" />
+    <link rel="stylesheet" href="css/styles.css?v=15" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Rudraksh Bhandari",
+        "url": "https://rudrakshbhandari.com/",
+        "alumniOf": "University of California San Diego",
+        "jobTitle": "Software Engineer",
+        "knowsAbout": ["React Native", "Node.js", "TypeScript", "AWS", "Firebase", "MongoDB"],
+        "sameAs": [
+          "https://www.linkedin.com/in/rudrakshbhandari",
+          "https://github.com/rudrakshbhandari",
+          "https://x.com/rudrakshb06"
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Film grain overlay -->
+    <div class="film-grain" aria-hidden="true"></div>
+
+    <!-- Skip to main content link -->
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <!-- Development Mode Overlay -->
+    <div id="dev-overlay" style="display: none"></div>
+
+    <!-- Minimal top nav -->
+    <header>
+      <nav class="navbar" id="navbar" aria-label="Primary">
+        <div class="nav-container">
+          <a href="#hero" class="nav-logo">RB</a>
+          <div class="nav-menu" id="nav-menu">
+            <a href="#hero" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#experience" class="nav-link">Experience</a>
+            <a href="#projects" class="nav-link">Projects</a>
+            <a href="/work/" class="nav-link">Work</a>
+            <a href="#contact" class="nav-link">Contact</a>
+            <a
+              href="Rudraksh_Bhandari_Resume.pdf?v=5"
+              class="nav-link nav-resume"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Résumé</a
+            >
+          </div>
+          <button
+            id="nav-toggle"
+            class="nav-toggle"
+            aria-expanded="false"
+            aria-controls="nav-menu"
+            aria-label="Toggle navigation"
+          >
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </button>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content">
+      <!-- ============================================ -->
+      <!-- SCENE 1 — HERO (scroll-pinned letter spread) -->
+      <!-- ============================================ -->
+      <section id="hero" class="scene scene--hero">
+        <div class="hero__inner">
+          <h1 class="hero__name" aria-label="Rudraksh Bhandari">
+            <span class="hero__line hero__line--first">Rudraksh</span>
+            <div class="hero__photo-wrap">
+              <img
+                src="img/Rudraksh-9-600.jpg?v=1"
+                srcset="
+                  img/Rudraksh-9-600.jpg?v=1   600w,
+                  img/Rudraksh-9-1200.jpg?v=1 1200w,
+                  img/Rudraksh-9-1672.jpg?v=1 1672w
+                "
+                sizes="(max-width: 480px) 220px, (max-width: 768px) 260px, min(780px, 70vw, max(12rem, calc((100svh - 30rem) * 16 / 9)))"
+                alt="Rudraksh Bhandari at Amazon Web Services"
+                class="hero__photo"
+                width="780"
+                height="439"
+                fetchpriority="high"
+                decoding="async"
+              />
+            </div>
+            <span class="hero__line hero__line--last">Bhandari</span>
+          </h1>
+          <p class="hero__subtitle">
+            <span class="hero__subtitle-line hero__subtitle-line--lede"
+              >building Outfitr · 2x SWE Intern @ AWS · CS @ UCSD</span
+            >
+            <span class="hero__subtitle-line"
+              >Shipped my first app at 16. <span class="hero__upright">AWS</span>
+              <span class="hero__upright">SWE</span> Intern at 18. Now, building the social layer for fashion.</span
+            >
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SCENE 2 — ABOUT (sticky photo + text reveal) -->
+      <!-- ============================================ -->
+      <section id="about" class="scene scene--about">
+        <div class="about__container">
+          <div class="about__photo-col">
+            <div class="about__photo-sticky">
+              <img
+                src="img/Rudraksh-8-about-600.jpg?v=1"
+                srcset="
+                  img/Rudraksh-8-about-600.jpg?v=1   600w,
+                  img/Rudraksh-8-about-900.jpg?v=1   900w,
+                  img/Rudraksh-8-about-1200.jpg?v=1 1200w
+                "
+                sizes="(max-width: 768px) 300px, 480px"
+                alt="Rudraksh Bhandari"
+                class="about__photo"
+                loading="lazy"
+                decoding="async"
+                width="600"
+                height="800"
+              />
+            </div>
+          </div>
+          <div class="about__text-col">
+            <h2 class="about__heading">About</h2>
+
+            <p class="about__paragraph">
+              I'm building
+              <a href="https://outfitrapp.com/" target="_blank" rel="noopener noreferrer" class="text-link">Outfitr</a>
+              — wardrobe-first social fashion that plans what to wear today from clothes you already own.
+            </p>
+
+            <p class="about__paragraph">
+              Before this, I co-founded
+              <a href="https://nomnom.cc" target="_blank" rel="noopener noreferrer" class="text-link">NomNom</a>, a
+              dining-hall delivery marketplace for UCSD's ~40k students, building both the student and rider apps before
+              UCSD admin shut us down. This was my most public failure, and it taught us that consumer products that
+              depend on institutional permission are fragile.
+            </p>
+
+            <p class="about__paragraph">
+              I recently wrapped up my second summer as a Software Development Engineer (SDE) Intern on the AWS EC2
+              Gateway Networking team and am heading back to UC San Diego for my final two quarters.
+            </p>
+
+            <p class="about__paragraph">
+              I'm a third-year Computer Science major and undergraduate researcher at University of California San
+              Diego, where I've worked in Dr. Ranjit Jhala's Lab. Through July 2026, I conducted undergraduate ML
+              research with the
+              <a href="http://act-lab.org/" target="_blank" rel="noopener noreferrer" class="text-link"
+                >Alternative Computing Technologies Lab</a
+              >
+              and the
+              <a href="http://www.svcl.ucsd.edu/" target="_blank" rel="noopener noreferrer" class="text-link"
+                >Statistical Visual Computing Lab (SVCL)</a
+              >.
+            </p>
+
+            <p class="about__paragraph">
+              I also build for public impact:
+              <a href="https://nyaaywatch.in" target="_blank" rel="noopener noreferrer" class="text-link">NyaayWatch</a>
+              turns Indian court-system snapshots into public evidence surfaces, and
+              <a href="https://shareallbooks.com/" target="_blank" rel="noopener noreferrer" class="text-link"
+                >ShareAllBooks</a
+              >
+              was a UAE book-sharing app
+              <a
+                href="https://www.khaleejtimes.com/uae/dubai-student-creates-app-for-free-exchange-of-books"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="text-link"
+                >featured in national press</a
+              >
+              that reached
+              <span data-stat="shareallbooks-downloads" data-stat-format="compact-plus">2K+</span> downloads and 1,500+
+              book transactions.
+            </p>
+
+            <p class="about__paragraph">
+              At
+              <a href="https://tritonse.github.io/" target="_blank" rel="noopener noreferrer" class="text-link"
+                >Triton Software Engineering</a
+              >, I built full-stack features for the
+              <a href="https://browercenter.org/" target="_blank" rel="noopener noreferrer" class="text-link"
+                >David Brower Center</a
+              >
+              using TypeScript, React, Node.js, Prisma, and Postgres.
+            </p>
+
+            <div class="about__stats">
+              <div class="about__stat">
+                <span
+                  class="about__stat-number"
+                  data-target="2K+"
+                  data-stat="app-downloads"
+                  data-stat-format="compact-plus"
+                  >2K+</span
+                >
+                <span class="about__stat-label">App Downloads</span>
+              </div>
+              <div class="about__stat">
+                <span
+                  class="about__stat-number"
+                  data-target="—"
+                  data-stat="monthly-visitors"
+                  data-stat-format="compact-plus"
+                  >—</span
+                >
+                <span class="about__stat-label">Monthly Site Visitors</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="github-contributions" class="about__contributions" hidden aria-label="GitHub contributions in 2026">
+          <div class="about__contributions-header">
+            <h3 class="about__contributions-heading">
+              <span data-contrib-total>9,682</span> contributions in
+              <span data-contrib-year>2026</span>
+            </h3>
+            <a
+              href="https://github.com/rudrakshbhandari"
+              class="about__contributions-link"
+              data-contrib-profile
+              target="_blank"
+              rel="noopener noreferrer"
+              >View on GitHub →</a
+            >
+          </div>
+          <div class="about__contributions-scroll">
+            <div class="contrib-graph" data-contrib-graph></div>
+          </div>
+          <div class="contrib-graph__footer">
+            <a
+              href="https://docs.github.com/en/account-and-profile/reference/profile-contributions-reference"
+              class="contrib-graph__learn"
+              target="_blank"
+              rel="noopener noreferrer"
+              >Learn how GitHub counts contributions</a
+            >
+            <div class="contrib-graph__legend" aria-hidden="true">
+              <span>Less</span>
+              <span class="contrib-graph__day" data-level="0"></span>
+              <span class="contrib-graph__day" data-level="1"></span>
+              <span class="contrib-graph__day" data-level="2"></span>
+              <span class="contrib-graph__day" data-level="3"></span>
+              <span class="contrib-graph__day" data-level="4"></span>
+              <span>More</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SCENE 3 — EXPERIENCE (horizontal scroll)     -->
+      <!-- ============================================ -->
+      <section id="experience" class="scene scene--experience">
+        <div class="experience__header">
+          <p class="section-kicker section-kicker--light">Where I've shipped</p>
+          <h2 class="experience__heading">Experience</h2>
+          <p class="section-intro section-intro--light">
+            Wrapped up my second summer interning at AWS. Now: final two quarters at UCSD, Outfitr, and research in Dr.
+            Ranjit Jhala's Lab. Previously: undergraduate research at ACT Lab and SVCL, completed in July 2026.
+          </p>
+        </div>
+        <div class="experience__track-wrapper">
+          <div class="experience__track">
+            <!-- Card: AWS EC2 Gateway Networking — 2026 -->
+            <article class="exp-card">
+              <span class="exp-card__date">Jun 2026 – Sep 2026</span>
+              <h3 class="exp-card__company">Amazon Web Services</h3>
+              <h4 class="exp-card__role">Software Development Engineer Intern ·<br />EC2 Gateway Networking Team</h4>
+              <p class="exp-card__location">Santa Clara, CA</p>
+              <figure class="exp-card__media">
+                <img
+                  src="img/Rudraksh-9-600.jpg?v=1"
+                  srcset="img/Rudraksh-9-600.jpg?v=1 600w, img/Rudraksh-9-1200.jpg?v=1 1200w"
+                  sizes="(max-width: 768px) calc(100vw - 6rem), 364px"
+                  alt="Rudraksh Bhandari at Amazon Web Services"
+                  loading="lazy"
+                  decoding="async"
+                  width="1200"
+                  height="675"
+                />
+              </figure>
+              <ul class="exp-card__bullets">
+                <li>
+                  Built a Python gameday fault-injection framework for AWS Hyperplane, translating three historical
+                  customer-impacting incidents into repeatable failure scenarios using AWS Fault Injection Service and
+                  service APIs.
+                </li>
+                <li>
+                  Designed TCP peer-exchange and UDP health-probe failure scenarios across a pre-production Hyperplane
+                  fleet of 2,500+ hosts, tracing failure propagation through distributed host and target health systems.
+                </li>
+                <li>
+                  Reduced a multi-step manual gameday workflow to a single CLI command covering fault injection,
+                  CloudWatch evidence collection, health validation, rollback, and recovery.
+                </li>
+              </ul>
+            </article>
+
+            <!-- Card: AWS EC2 Gateway Networking — 2025 -->
+            <article class="exp-card">
+              <span class="exp-card__date">Jun 2025 – Sep 2025</span>
+              <h3 class="exp-card__company">Amazon Web Services</h3>
+              <h4 class="exp-card__role">Software Development Engineer Intern ·<br />EC2 Gateway Networking Team</h4>
+              <p class="exp-card__location">Sunnyvale, CA</p>
+              <figure class="exp-card__media exp-card__media--aws-2025">
+                <img
+                  src="img/aws-2025-internship.jpg?v=1"
+                  alt="Rudraksh Bhandari outside Amazon Web Services"
+                  loading="lazy"
+                  decoding="async"
+                  width="1182"
+                  height="666"
+                />
+              </figure>
+              <ul class="exp-card__bullets">
+                <li>
+                  Built a React/TypeScript CLI command generator for on-call incident response, cutting manual engineer
+                  effort by 75% and reducing command preparation time from over 2 minutes to under 30 seconds.
+                </li>
+                <li>
+                  Engineered a Java/Python AWS event service using Lambda, SSM, SQS, and SNS to surface patch status
+                  across EC2 cluster groups, improving visibility for root-cause analysis during incidents.
+                </li>
+              </ul>
+            </article>
+
+            <!-- Card: Outfitr -->
+            <article class="exp-card">
+              <span class="exp-card__date">Apr 2026 – Present</span>
+              <h3 class="exp-card__company">Outfitr</h3>
+              <h4 class="exp-card__role">Co-founder &amp; Lead Developer</h4>
+              <p class="exp-card__location">Remote</p>
+              <figure class="exp-card__media">
+                <img
+                  src="img/outfitr-landing.png?v=1"
+                  alt="Outfitr landing page showing a personal stylist and virtual try-on"
+                  loading="lazy"
+                  decoding="async"
+                  width="1200"
+                  height="800"
+                />
+              </figure>
+              <ul class="exp-card__bullets">
+                <li>
+                  Launched a fashion app that helps Gen Z decide what to wear from clothes they already own, with closet
+                  import, outfit recommendations, and friend polls.
+                </li>
+                <li>Ranked in the top 10% of Y Combinator Summer and Fall '26 applicants.</li>
+                <li>
+                  Architected a production multimodal closet-extraction pipeline using SAM3, VLM-based classification,
+                  and embedding-based deduplication, processing 200+ real-customer photos across 100+ jobs and adding
+                  300+ garments to users' closets.
+                </li>
+              </ul>
+            </article>
+
+            <!-- Card: ShareAllBooks -->
+            <article class="exp-card">
+              <span class="exp-card__date">Aug 2023 – Sep 2024</span>
+              <h3 class="exp-card__company">ShareAllBooks</h3>
+              <h4 class="exp-card__role">Founder</h4>
+              <p class="exp-card__location">United Arab Emirates</p>
+              <figure class="exp-card__media exp-card__media--article">
+                <img
+                  src="img/shareallbooks-article.png?v=1"
+                  alt="Khaleej Times article about ShareAllBooks"
+                  loading="lazy"
+                  decoding="async"
+                  width="1370"
+                  height="392"
+                />
+              </figure>
+              <ul class="exp-card__bullets">
+                <li>
+                  Built and launched a React Native book-sharing app on App Store &amp; Play Store, reaching
+                  <span data-stat="shareallbooks-downloads" data-stat-format="thousands-plus">2,000+</span> downloads
+                  and 1,500+ donations/sales within months.
+                </li>
+                <li>
+                  Featured in
+                  <a
+                    href="https://www.khaleejtimes.com/uae/dubai-student-creates-app-for-free-exchange-of-books"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-link text-link--light"
+                    >national UAE press</a
+                  >; peaked at #41 in the App Store's Top Charts for Books.
+                </li>
+                <li>
+                  Utilized React Native, JavaScript, Firebase, and EmailJS for user authentication, data storage, and
+                  email confirmations.
+                </li>
+              </ul>
+            </article>
+
+            <!-- Card: NyaayWatch -->
+            <article class="exp-card">
+              <span class="exp-card__date">Apr 2026 – Present</span>
+              <h3 class="exp-card__company">NyaayWatch</h3>
+              <h4 class="exp-card__role">Founder · Open-source civic data platform</h4>
+              <p class="exp-card__location">India · Remote</p>
+              <ul class="exp-card__bullets">
+                <li>
+                  Built and operate an open-source court-data platform serving 10,000+ monthly visitors across India's
+                  Supreme Court, all 25 High Courts, and 36 lower-court geographies through public APIs, evidence packs,
+                  and interactive dashboards.
+                </li>
+                <li>
+                  Designed a reproducible pipeline that separates raw court-data captures from published data, storing
+                  evidence in S3 and immutable snapshots in Postgres for validation, replay, and rollback.
+                </li>
+              </ul>
+              <figure class="exp-card__media exp-card__media--uncropped">
+                <img
+                  src="img/nyaaywatch-live.png?v=1"
+                  alt="NyaayWatch public court-data dashboard"
+                  loading="lazy"
+                  decoding="async"
+                  width="1440"
+                  height="980"
+                />
+              </figure>
+            </article>
+
+            <!-- Card: SVCL Research -->
+            <article class="exp-card">
+              <span class="exp-card__date">Apr 2026 – Jul 2026</span>
+              <h3 class="exp-card__company">UC San Diego · SVCL</h3>
+              <h4 class="exp-card__role">Undergraduate Researcher</h4>
+              <p class="exp-card__location">San Diego, CA</p>
+              <ul class="exp-card__bullets">
+                <li>
+                  Developed a unified model for generation, embeddings, and agentic routing in Prof. Nuno Vasconcelos'
+                  <a
+                    href="http://www.svcl.ucsd.edu/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-link text-link--light"
+                    >Statistical Visual Computing Laboratory (SVCL)</a
+                  >.
+                </li>
+                <li>Used LoRA-based embedding distillation and generation replay to improve retrieval.</li>
+              </ul>
+            </article>
+
+            <!-- Card: ACT Lab Research -->
+            <article class="exp-card">
+              <span class="exp-card__date">Mar 2026 – Jul 2026</span>
+              <h3 class="exp-card__company">UC San Diego · ACT Lab</h3>
+              <h4 class="exp-card__role">Undergraduate Researcher</h4>
+              <p class="exp-card__location">San Diego, CA</p>
+              <ul class="exp-card__bullets">
+                <li>
+                  Benchmarked dense prefill vs. KVCOMM time-to-first-token on H100s across multi-agent workloads in
+                  Prof. Hadi Esmaeilzadeh's
+                  <a
+                    href="http://act-lab.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-link text-link--light"
+                    >Alternative Computing Technologies (ACT) Lab</a
+                  >.
+                </li>
+                <li>Evaluated KV-cache reuse to understand its impact on multi-agent inference.</li>
+              </ul>
+            </article>
+
+            <!-- Card: NomNom -->
+            <article class="exp-card">
+              <span class="exp-card__date">Sep 2025 – Mar 2026</span>
+              <h3 class="exp-card__company">NomNom</h3>
+              <h4 class="exp-card__role">Co-founder</h4>
+              <p class="exp-card__location">San Diego, CA</p>
+              <ul class="exp-card__bullets">
+                <li>
+                  Built a two-sided dining-hall delivery marketplace for UCSD's ~40k students — separate React Native
+                  apps for students and riders, with Stripe payments, live order tracking, and UCSD-only SSO.
+                </li>
+                <li>
+                  Shipped the Student and Rider apps in closed beta; handled product, engineering, and operations
+                  end-to-end alongside my co-founder.
+                </li>
+              </ul>
+              <figure class="exp-card__media exp-card__media--pair">
+                <img
+                  src="img/nomnom-student.png?v=1"
+                  alt="NomNom Campus Food Delivery App Store listing"
+                  loading="lazy"
+                  decoding="async"
+                  width="510"
+                  height="360"
+                />
+                <img
+                  src="img/nomnom-rider.png?v=1"
+                  alt="NomNom Rider Campus Delivery App Store listing"
+                  loading="lazy"
+                  decoding="async"
+                  width="522"
+                  height="360"
+                />
+              </figure>
+            </article>
+
+            <!-- Card: TSE David Brower Center -->
+            <article class="exp-card">
+              <span class="exp-card__date">Nov 2024 – Jun 2026</span>
+              <h3 class="exp-card__company">Triton Software Engineering</h3>
+              <h4 class="exp-card__role">Software Developer · Nonprofit client projects</h4>
+              <p class="exp-card__location">San Diego, CA</p>
+              <ul class="exp-card__bullets">
+                <li>
+                  Built full-stack features for David Brower Center, a database platform for nonprofit organizations to
+                  visualize relationships between NPOs, using TypeScript, React, Node.js, Prisma, and Postgres.
+                </li>
+                <li>
+                  Previously developed features for Psyches of Color, a mental health mobile app for underserved
+                  communities, using React Native, Node.js, Express.js, and MongoDB.
+                </li>
+              </ul>
+              <figure class="exp-card__media exp-card__media--portrait">
+                <img
+                  src="img/tse-team.jpeg?v=1"
+                  alt="Triton Software Engineering team photo"
+                  loading="lazy"
+                  decoding="async"
+                  width="768"
+                  height="1024"
+                />
+              </figure>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SCENE 4 — PROJECTS (full-viewport crossfade) -->
+      <!-- ============================================ -->
+      <section id="projects" class="scene scene--projects">
+        <div class="projects__pin-container">
+          <!-- Project images (stacked, crossfaded) -->
+          <div class="projects__images" aria-hidden="true">
+            <img
+              src="img/nomnom.png?v=2"
+              alt=""
+              class="projects__img"
+              data-project="0"
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              src="img/outfitr-landing.png?v=1"
+              alt=""
+              class="projects__img"
+              data-project="1"
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              src="img/nyaaywatch-live.png?v=1"
+              alt=""
+              class="projects__img"
+              data-project="2"
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              src="img/ShareAllBooks.jpg?v=1"
+              alt=""
+              class="projects__img"
+              data-project="3"
+              loading="lazy"
+              decoding="async"
+            />
+            <!-- Shown instead of a project image when "Also built" is active -->
+            <div class="projects__also-built-collage">
+              <div class="collage-card">
+                <p class="collage-card__name">Vibe Tracker</p>
+                <p class="collage-card__stack">Next.js · Prisma</p>
+              </div>
+              <div class="collage-card">
+                <p class="collage-card__name">David Brower Center</p>
+                <p class="collage-card__stack">React · Postgres</p>
+              </div>
+              <div class="collage-card">
+                <p class="collage-card__name">Psyches of Color</p>
+                <p class="collage-card__stack">React Native · MongoDB</p>
+              </div>
+              <div class="collage-card">
+                <p class="collage-card__name">Health Dashboard</p>
+                <p class="collage-card__stack">JS · Oura API</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Project info cards -->
+          <div class="projects__cards">
+            <div class="projects__intro">
+              <p class="section-kicker">Selected work</p>
+              <h2 class="projects__heading">What I'm building</h2>
+              <div class="projects__meta-links">
+                <a href="/work/" class="projects__meta-link">View all work →</a>
+              </div>
+            </div>
+
+            <p class="projects__tier-label">Building now</p>
+
+            <!-- 1. Outfitr -->
+            <article class="proj-card proj-card--featured" data-project="1">
+              <h3 class="proj-card__title">Outfitr</h3>
+              <p class="proj-card__metric">
+                Co-founder · iOS waitlist live · internal TestFlight beta · Wardrobe-first AI styling
+              </p>
+              <p class="proj-card__desc">
+                AI styling app that solves outfit decision fatigue. Describe the occasion, Outfitr picks from your
+                actual wardrobe, you preview it with virtual try-on, and poll friends if you want a second opinion.
+              </p>
+              <ul class="proj-card__bullets">
+                <li>
+                  iOS app: wardrobe photo upload → auto-tagging by type and color → occasion-based outfit generation.
+                </li>
+                <li>AI pipeline for closet cataloging and outfit composition with reasoning.</li>
+                <li>Virtual try-on so you preview looks on your own photo before committing.</li>
+                <li>Social polling: share outfit options with friends for live votes.</li>
+              </ul>
+              <div class="proj-card__tech">
+                <span>TypeScript</span><span>React Native</span><span>AI</span><span>AWS</span>
+              </div>
+              <a href="https://outfitrapp.com/" target="_blank" rel="noopener noreferrer" class="proj-card__link"
+                >Visit outfitrapp.com →</a
+              >
+            </article>
+
+            <p class="projects__tier-label">Prior work</p>
+
+            <!-- 2. NomNom -->
+            <article class="proj-card" data-project="0">
+              <h3 class="proj-card__title">NomNom</h3>
+              <p class="proj-card__metric">Co-founder · Built student + rider apps · Sep 2025 – Mar 2026</p>
+              <p class="proj-card__desc">
+                Two-sided dining-hall delivery marketplace for UCSD's ~40k students. Built and shipped both the student
+                and rider apps. Shut down by UCSD administration — taught us that products requiring institutional
+                permission don't scale.
+              </p>
+              <ul class="proj-card__bullets">
+                <li>Built dual React Native apps (Student + Rider) in a TypeScript monorepo.</li>
+                <li>
+                  Firestore transactions for order accept/drop-off; OTP + live tracking eliminate double-claims and
+                  disputes.
+                </li>
+                <li>Stripe payments, Expo Location ETAs, in-app chat, UCSD-only SSO.</li>
+              </ul>
+              <div class="proj-card__tech">
+                <span>React Native</span><span>TypeScript</span><span>Firestore</span><span>Stripe</span>
+              </div>
+              <a href="https://nomnom.cc" target="_blank" rel="noopener noreferrer" class="proj-card__link"
+                >Visit nomnom.cc →</a
+              >
+            </article>
+
+            <!-- 3. ShareAllBooks -->
+            <article class="proj-card" data-project="3">
+              <h3 class="proj-card__title">ShareAllBooks</h3>
+              <p class="proj-card__metric">
+                <span data-stat="shareallbooks-downloads" data-stat-format="compact-plus">2K+</span> installs · 1,500+
+                book transactions ·
+                <a
+                  href="https://www.khaleejtimes.com/uae/dubai-student-creates-app-for-free-exchange-of-books"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-link"
+                  >featured in UAE national press</a
+                >
+              </p>
+              <p class="proj-card__desc">
+                Founded and shipped a book-sharing app for the UAE, App Store + Play Store. Handled auth, real-time
+                database, and transactional email end-to-end.
+              </p>
+              <div class="proj-card__tech"><span>React Native</span><span>Firebase</span><span>EmailJS</span></div>
+              <a href="https://www.shareallbooks.com" target="_blank" rel="noopener noreferrer" class="proj-card__link"
+                >Visit shareallbooks.com →</a
+              >
+            </article>
+
+            <!-- 4. NyaayWatch -->
+            <article class="proj-card" data-project="2">
+              <h3 class="proj-card__title">NyaayWatch</h3>
+              <p class="proj-card__metric">
+                Public-interest · 10K+ monthly visitors · Supreme Court, all 25 High Courts, every state &amp; UT ·
+                NJDG-sourced · Reproducible snapshots
+              </p>
+              <p class="proj-card__desc">
+                Publishes reviewed, versioned snapshots of pending caseloads, clearance rates, and wait times across
+                India's Supreme Court, all 25 High Courts, and the lower courts in every state and Union Territory —
+                drawn from public NJDG data with full methodology, every number linked to a dated source.
+              </p>
+              <div class="proj-card__tech">
+                <span>Node.js</span><span>TypeScript</span><span>PostgreSQL</span><span>AWS</span>
+              </div>
+              <a href="https://nyaaywatch.in" target="_blank" rel="noopener noreferrer" class="proj-card__link"
+                >Visit nyaaywatch.in →</a
+              >
+            </article>
+
+            <p class="projects__tier-label">Also built</p>
+
+            <div class="projects__also-built-grid">
+              <!-- 5. Vibe Tracker -->
+              <article class="proj-card proj-card--compact" data-project="4">
+                <h3 class="proj-card__title">Vibe Tracker</h3>
+                <p class="proj-card__desc">
+                  GitHub commit analytics — dedup'd SHA tracking, branch/PR activity, OAuth.
+                </p>
+                <div class="proj-card__tech"><span>Next.js</span><span>TypeScript</span><span>Prisma</span></div>
+                <a
+                  href="https://vibe-tracker-max.vercel.app/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="proj-card__link"
+                  >Live →</a
+                >
+              </article>
+
+              <!-- 6. David Brower Center -->
+              <article class="proj-card proj-card--compact" data-project="5">
+                <h3 class="proj-card__title">David Brower Center</h3>
+                <p class="proj-card__desc">Nonprofit relationship-mapping platform with Triton Software Engineering.</p>
+                <div class="proj-card__tech"><span>TypeScript</span><span>React</span><span>Postgres</span></div>
+                <a
+                  href="https://github.com/TritonSE/David-Brower-Center"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="proj-card__link"
+                  >GitHub →</a
+                >
+              </article>
+
+              <!-- 7. Psyches of Color -->
+              <article class="proj-card proj-card--compact" data-project="6">
+                <h3 class="proj-card__title">Psyches of Color</h3>
+                <p class="proj-card__desc">Mental-health mobile app for underserved communities, 12-person TSE team.</p>
+                <div class="proj-card__tech"><span>React Native</span><span>Node.js</span><span>MongoDB</span></div>
+                <a
+                  href="https://github.com/TritonSE/Psyches-Of-Color-App"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="proj-card__link"
+                  >GitHub →</a
+                >
+              </article>
+
+              <!-- 8. Health Dashboard -->
+              <article class="proj-card proj-card--compact" data-project="7">
+                <h3 class="proj-card__title">Health Metrics Dashboard</h3>
+                <p class="proj-card__desc">
+                  Personal Oura Ring data pipeline — GitHub Actions, trend charts, daily status.
+                </p>
+                <div class="proj-card__tech"><span>JavaScript</span><span>Oura API</span><span>Chart.js</span></div>
+                <a href="/health/" class="proj-card__link">Dashboard →</a>
+              </article>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SKILLS — Prose paragraph                     -->
+      <!-- ============================================ -->
+      <section id="skills" class="scene scene--skills">
+        <div class="skills__container">
+          <h2 class="skills__heading">Skills & Stack</h2>
+          <p class="skills__prose">
+            I work across the stack with <strong>Java</strong>, <strong>Python</strong>, <strong>JavaScript</strong>,
+            <strong>TypeScript</strong>, and <strong>C++</strong>. I build apps with <strong>React Native</strong>,
+            <strong>React</strong>, and <strong>Next.js</strong>, and backend services with <strong>Node.js</strong> and
+            <strong>Express.js</strong>; my backend toolkit also includes <strong>Prisma</strong> and
+            <strong>Fastify</strong>. My databases include <strong>PostgreSQL</strong>, <strong>Redis</strong>,
+            <strong>DynamoDB</strong>, and <strong>MongoDB</strong>, with additional experience in
+            <strong>Firestore</strong> and <strong>MySQL</strong>. My tools include <strong>Git</strong>,
+            <strong>AWS</strong>, <strong>Docker</strong>, <strong>Cloudflare</strong>, <strong>Xcode</strong>, and
+            <strong>Expo</strong>, along with <strong>Firebase</strong>, <strong>Vercel</strong>, and
+            <strong>Stripe</strong>.
+          </p>
+        </div>
+      </section>
+
+      <!-- ============================================ -->
+      <!-- SCENE 5 — CONTACT (dramatic finale)         -->
+      <!-- ============================================ -->
+      <section id="contact" class="scene scene--contact">
+        <div class="contact__inner">
+          <p class="contact__status">
+            <span class="contact__status-line contact__status-line--primary"
+              >Open to SWE full-time roles from March 2027</span
+            >
+          </p>
+          <p class="contact__tagline">Let's build something people want</p>
+          <a
+            href="https://calendly.com/rudrakshbhandari99/20min"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="contact__cta"
+            >Book a 20-minute chat →</a
+          >
+          <a href="mailto:hello@rudrakshbhandari.com" class="contact__email">hello@rudrakshbhandari.com</a>
+          <div class="contact__socials">
+            <a
+              href="https://www.linkedin.com/in/rudrakshbhandari"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="contact__social-link"
+              aria-label="LinkedIn profile"
+              >LinkedIn</a
+            >
+            <a
+              href="https://github.com/rudrakshbhandari"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="contact__social-link"
+              aria-label="GitHub profile"
+              >GitHub</a
+            >
+            <a
+              href="https://www.instagram.com/rudy.builds"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="contact__social-link"
+              aria-label="Instagram profile"
+              >Instagram</a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer__inner">
+        <p>&copy; 2026 Rudraksh Bhandari</p>
+        <a href="/health/" class="footer__link">Health dashboard</a>
+      </div>
+    </footer>
+
+    <!-- GSAP + ScrollTrigger -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+      integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+      integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d"
+      crossorigin="anonymous"
+    ></script>
+    <!-- JavaScript -->
+    <script src="js/config.js"></script>
+    <script src="js/analytics.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/animations.js"></script>
+    <script src="js/stats.js"></script>
+    <script src="js/contributions.js"></script>
+
+    <!-- Cloudflare Web Analytics -->
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "7045f28413c9496d933d2299661cfc69"}'
+    ></script>
+  </body>
+</html>
