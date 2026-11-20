@@ -40,4 +40,6 @@ const published = await response.json();
 const ignored = new Set(ignoredFields);
 const changed = JSON.stringify(canonicalize(generated, ignored)) !== JSON.stringify(canonicalize(published, ignored));
 appendFileSync(process.env.GITHUB_OUTPUT, `changed=${changed}\n`);
-console.log(changed ? 'Public snapshot changed; it will be published.' : 'Public snapshot is unchanged; skipping publish.');
+console.log(
+  changed ? 'Public snapshot changed; it will be published.' : 'Public snapshot is unchanged; skipping publish.'
+);
