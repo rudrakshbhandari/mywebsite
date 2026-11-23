@@ -23,7 +23,7 @@ const API_BASE = 'api.ouraring.com';
 const IS_GITHUB_ACTIONS = process.env.GITHUB_ACTIONS === 'true';
 const SHOULD_FAIL_ON_API_ERROR = IS_GITHUB_ACTIONS || process.env.OURA_FAIL_ON_API_ERROR === 'true';
 const PT_TIME_ZONE = 'America/Los_Angeles';
-const OAUTH_SCOPES = ['daily', 'heartrate', 'spo2Daily', 'workout'];
+const OAUTH_SCOPES = ['daily', 'heartrate', 'spo2', 'workout'];
 const DEFAULT_OAUTH_CALLBACK_PORT = 3000;
 /** Max HR samples in public JSON (~minute-level over 24h; keeps payload small vs full Oura stream). */
 const HR_TIMELINE_MAX_POINTS = 1440;
@@ -958,7 +958,7 @@ async function main() {
       }),
       fetchSpo2DataRange(accessToken, startDate, endDate).catch(error => {
         // SpO2 is optional for this dashboard. Oura returns this specific 401
-        // when the account has not granted the spo2Daily scope; preserve the
+        // when the account has not granted the spo2 scope; preserve the
         // other metrics while leaving SpO2 fields empty. Other SpO2 failures
         // remain fatal so real API problems are still visible.
         if (
@@ -966,7 +966,7 @@ async function main() {
             .toLowerCase()
             .includes('not authorized access spo2 scope')
         ) {
-          console.warn('Oura token lacks the optional spo2Daily scope; continuing without SpO2 data.');
+          console.warn('Oura token lacks the optional spo2 scope; continuing without SpO2 data.');
           return [];
         }
         throw error;

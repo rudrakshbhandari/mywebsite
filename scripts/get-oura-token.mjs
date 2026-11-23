@@ -14,7 +14,7 @@ const PORT = 3000;
 const REDIRECT_URI = `http://localhost:${PORT}/callback`;
 const OAUTH_AUTHORIZE_ENDPOINT = 'https://cloud.ouraring.com/oauth/authorize';
 const OAUTH_TOKEN_ENDPOINT = 'https://api.ouraring.com/oauth/token';
-const SCOPES = ['daily', 'heartrate', 'spo2Daily', 'workout'];
+const SCOPES = ['daily', 'heartrate', 'spo2', 'workout'];
 
 function ensureCredentials() {
   const clientId = process.env.OURA_CLIENT_ID?.trim();
