@@ -961,7 +961,11 @@ async function main() {
         // when the account has not granted the spo2Daily scope; preserve the
         // other metrics while leaving SpO2 fields empty. Other SpO2 failures
         // remain fatal so real API problems are still visible.
-        if (String(error?.message || '').toLowerCase().includes('not authorized access spo2 scope')) {
+        if (
+          String(error?.message || '')
+            .toLowerCase()
+            .includes('not authorized access spo2 scope')
+        ) {
           console.warn('Oura token lacks the optional spo2Daily scope; continuing without SpO2 data.');
           return [];
         }
