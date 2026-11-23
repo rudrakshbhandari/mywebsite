@@ -2,8 +2,8 @@
  * Portfolio stats loader.
  *
  * Reads stats_public.json from the public data Worker (refreshed daily) and
- * updates any element with a data-stat attribute. Falls back silently to the
- * baked-in HTML text if the JSON is missing or a value is null.
+ * updates any element with a data-stat attribute. Falls back to the bundled
+ * snapshot for missing data, then retains the baked-in HTML if neither works.
  *
  * Supported data-stat keys:
  *   - "app-downloads"           total across all shipped apps (iOS + Android)
@@ -18,6 +18,7 @@
 (function () {
   'use strict';
 
+  const SNAPSHOT_URL = '/stats_public.json';
   const STATS_URL = 'https://oura-health-data.rudrakshbhandari99.workers.dev/stats_public.json';
 
   function floorToNiceNumber(value) {
@@ -27,7 +28,7 @@
   }
 
   function formatValue(value, format) {
-    if (value == null || Number.isNaN(value)) return null;
+    if (!Number.isFinite(value) || value < 0) return null;
     if (format === 'exact') return value.toLocaleString('en-US');
 
     if (format === 'thousands-plus') {
@@ -53,7 +54,7 @@
       let total = 0;
       let any = false;
       for (const app of Object.values(apps)) {
-        if (app?.total != null) {
+        if (Number.isFinite(app?.total) && app.total >= 0) {
           total += app.total;
           any = true;
         }
@@ -67,7 +68,8 @@
   }
 
   function applyStats(stats) {
-    const nodes = document.querySelectorAll('[data-stat]');
+    const nodes = document.querySelectorAll('[data-stat]:not([data-counter-authoritative])');
+    let missing = false;
     nodes.forEach(node => {
       const key = node.getAttribute('data-stat');
       const format = node.getAttribute('data-stat-format') || 'compact-plus';
@@ -80,20 +82,32 @@
         if (node.hasAttribute('data-target')) {
           node.setAttribute('data-target', formatted);
         }
+      } else {
+        missing = true;
       }
     });
+    return missing;
+  }
+
+  async function fetchStats(url) {
+    const response = await fetch(url, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`Stats endpoint returned HTTP ${response.status}`);
+    return response.json();
   }
 
   async function loadStats() {
     try {
-      let response = await fetch(STATS_URL, { cache: 'no-store' });
-      if (!response.ok) response = await fetch('/stats_public.json', { cache: 'no-store' });
-      if (!response.ok) throw new Error(`Stats endpoint returned HTTP ${response.status}`);
-      const stats = await response.json();
-      applyStats(stats);
+      const liveStats = await fetchStats(STATS_URL);
+      if (!applyStats(liveStats)) return;
     } catch (err) {
-      // Silent failure — fallback HTML remains visible.
-      if (window.console && console.debug) console.debug('stats fetch failed', err);
+      if (window.console && console.debug) console.debug('Live stats fetch failed', err);
+    }
+
+    try {
+      applyStats(await fetchStats(SNAPSHOT_URL));
+    } catch (err) {
+      // Keep the baked-in HTML visible if both sources fail.
+      if (window.console && console.debug) console.debug('Bundled stats fetch failed', err);
     }
   }
 
